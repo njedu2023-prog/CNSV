@@ -1,0 +1,6 @@
+-e .
+pandas
+pyarrow
+requests
+PyYAML
+pytest

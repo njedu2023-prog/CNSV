@@ -1,0 +1,7 @@
+runtime:
+  default_mode: "research_mode"
+  require_downstream_ready: true
+  fail_on_downstream_fail: true
+  allow_formal_signal: false
+  allow_live_assist: false
+  allow_backtest_when_ready_pass: true

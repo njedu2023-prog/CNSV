@@ -1,0 +1,27 @@
+cnsvdata:
+  repo: "njedu2023-prog/CNSVdata"
+  branch: "main"
+  raw_base_url: "https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main"
+
+required_remote_files:
+  downstream_ready: "metadata/downstream_ready.json"
+  data_manifest: "metadata/data_manifest.json"
+  failure_summary: "data/quality/failure_summary_latest.md"
+  data_quality: "data/quality/data_quality_latest.json"
+  data_gaps: "data/quality/data_gaps_latest.json"
+  acceptance: "data/quality/acceptance_latest.json"
+  downstream_smoke: "data/quality/downstream_smoke_latest.json"
+  trade_calendar: "data/processed/trade_calendar.parquet"
+  daily: "data/processed/cnsv_daily.parquet"
+  one_min: "data/processed/cnsv_1min.parquet"
+  five_min: "data/processed/cnsv_5min.parquet"
+  fifteen_min: "data/processed/cnsv_15min.parquet"
+  thirty_min: "data/processed/cnsv_30min.parquet"
+  sixty_min: "data/processed/cnsv_60min.parquet"
+  moneyflow: "data/processed/cnsv_moneyflow.parquet"
+  corporate_actions: "data/processed/corporate_actions.parquet"
+  structural_breaks: "data/processed/structural_breaks.parquet"
+
+local_cache:
+  enabled: true
+  root: ".cache/cnsvdata"

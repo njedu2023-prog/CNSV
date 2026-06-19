@@ -1,0 +1,16 @@
+[project]
+name = "cnsv"
+version = "1.0.0"
+description = "CNSV main program for 600150.SH manual quantitative swing trading assistance"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,5 @@
+report:
+  output_json: "docs/data/latest_data_report.json"
+  output_md: "reports/latest_data_report.md"
+  archive_dir: "reports/archive"
+  html_index: "docs/index.html"
