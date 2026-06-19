@@ -53,7 +53,7 @@ HTML = """<!doctype html>
     .summary-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; line-height: 1.25; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
     .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; color: #424245; font-size: 14px; overflow-wrap: anywhere; }
-    table { width: 100%; border-collapse: collapse; font-size: 15px; background: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
     th, td { text-align: left; border-top: 1px solid #e8e8ed; padding: 12px 16px; vertical-align: top; }
     th { color: var(--muted); font-weight: 600; width: 46%; }
     ul { margin: 0; padding-left: 20px; }
