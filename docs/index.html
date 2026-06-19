@@ -127,7 +127,7 @@ fetch("data/latest_data_report.json")
       metric("CNSVdata 就绪", gate.ready, gate.ready ? "ok" : "bad"),
       metric("门禁状态", statusText(gate.status), gate.status === "PASS" ? "ok" : gate.status === "WARN" ? "warn" : "bad"),
       metric("允许继续", gate.can_continue, gate.can_continue ? "ok" : "bad"),
-      metric("允许回测准备", gate.can_prepare_backtest),
+      metric("允许回测准备", gate.can_run_backtest),
       metric("允许 moneyflow 强因子", gate.can_use_moneyflow_as_strong_factor),
       metric("允许正式信号", false, "bad")
     ].join("");
