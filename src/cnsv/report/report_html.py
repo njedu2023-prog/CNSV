@@ -12,24 +12,42 @@ HTML = """<!doctype html>
   <title>CNSV 中国船舶数据状态报告</title>
   <style>
     :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    * { box-sizing: border-box; }
     body { margin: 0; background: #f5f7fa; color: #18212f; }
-    main { max-width: 1120px; margin: 0 auto; padding: 28px 18px 42px; }
-    h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: 0; }
-    .subtitle { margin: 0 0 20px; color: #5f6b7a; }
-    h2 { font-size: 18px; margin: 0 0 12px; }
-    section { background: #fff; border: 1px solid #d8dee8; border-radius: 8px; padding: 16px; margin: 14px 0; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
-    .metric { border: 1px solid #e3e7ee; border-radius: 6px; padding: 10px; background: #fbfcfe; min-height: 62px; }
-    .label { color: #5f6b7a; font-size: 12px; }
-    .value { font-size: 18px; font-weight: 650; margin-top: 4px; overflow-wrap: anywhere; }
+    main { width: min(100%, 1180px); margin: 0 auto; padding: clamp(16px, 3vw, 30px); }
+    h1 { font-size: clamp(24px, 5vw, 42px); margin: 0 0 8px; letter-spacing: 0; line-height: 1.2; }
+    .subtitle { margin: 0 0 20px; color: #5f6b7a; font-size: clamp(14px, 2.5vw, 18px); line-height: 1.6; }
+    h2 { font-size: clamp(19px, 3vw, 24px); margin: 0 0 14px; }
+    h3 { font-size: 18px; margin: 0; }
+    section { background: #fff; border: 1px solid #d8dee8; border-radius: 8px; padding: clamp(14px, 2vw, 20px); margin: 14px 0; overflow: hidden; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+    .metric { border: 1px solid #e3e7ee; border-radius: 6px; padding: 12px; background: #fbfcfe; min-height: 68px; }
+    .label { color: #5f6b7a; font-size: 13px; line-height: 1.35; }
+    .value { font-size: clamp(18px, 3vw, 24px); font-weight: 650; margin-top: 6px; overflow-wrap: anywhere; line-height: 1.25; }
     .ok { color: #0f7a45; }
     .warn { color: #9a6700; }
     .bad { color: #b42318; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { text-align: left; border-bottom: 1px solid #e3e7ee; padding: 9px 6px; vertical-align: top; }
-    th { color: #5f6b7a; font-weight: 600; }
+    details { border: 1px solid #d8dee8; border-radius: 8px; background: #fbfcfe; margin: 12px 0; overflow: hidden; }
+    summary { cursor: pointer; list-style: none; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "展开"; color: #35618f; font-size: 13px; white-space: nowrap; }
+    details[open] summary::after { content: "折叠"; }
+    .summary-main { min-width: 0; }
+    .summary-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1px solid #d5deea; background: #fff; border-radius: 999px; padding: 5px 9px; color: #3f5876; font-size: 13px; overflow-wrap: anywhere; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; }
+    th, td { text-align: left; border-top: 1px solid #e3e7ee; padding: 10px 12px; vertical-align: top; }
+    th { color: #5f6b7a; font-weight: 600; width: 46%; }
     ul { margin: 0; padding-left: 20px; }
     .notice { color: #5f6b7a; }
+    @media (max-width: 640px) {
+      main { padding: 14px; }
+      section { padding: 14px; }
+      summary { align-items: flex-start; }
+      th, td { display: block; width: 100%; padding: 8px 10px; }
+      td { border-top: 0; padding-top: 0; }
+    }
   </style>
 </head>
 <body>
@@ -46,6 +64,27 @@ HTML = """<!doctype html>
 const yesNo = value => value ? "是" : "否";
 const statusText = value => ({PASS: "通过", WARN: "警告", FAIL: "失败"}[value] || value || "");
 const actionName = value => ({formal_signal_generation: "正式买卖信号生成", auto_order: "自动下单", broker_api: "券商接口连接"}[value] || value);
+const strengthName = value => ({positive: "偏强", negative: "偏弱", neutral: "中性"}[value] || value);
+const checkName = value => ({
+  daily_non_empty: "日线数据非空",
+  one_min_non_empty: "1分钟数据非空",
+  moneyflow_non_empty: "资金流数据非空",
+  daily_core_fields: "日线核心字段",
+  one_min_core_fields: "1分钟核心字段",
+  moneyflow_core_fields: "资金流核心字段",
+  latest_trade_date_daily_vs_1min: "日线与1分钟交易日一致",
+  latest_trade_date_daily_vs_moneyflow: "日线与资金流交易日一致",
+  daily_close_vs_1min_latest_close: "日线收盘与分钟最新价一致"
+}[value] || value);
+const detailText = value => {
+  if (!value) return "";
+  return String(value)
+    .replace("daily must not be empty", "日线数据不能为空")
+    .replace("1min must not be empty", "1分钟数据不能为空")
+    .replace("moneyflow must not be empty", "资金流数据不能为空")
+    .replace("missing fields: []", "核心字段齐全")
+    .replace("relative diff=", "相对差异=");
+};
 const fmt = value => {
   if (value === null || value === undefined || value === "") return "-";
   if (typeof value === "number") return Number.isInteger(value) ? String(value) : value.toFixed(4);
@@ -55,8 +94,11 @@ const fmt = value => {
 function metric(label, value, tone = "") {
   return `<div class="metric"><div class="label">${label}</div><div class="value ${tone}">${fmt(value)}</div></div>`;
 }
-function table(title, rows) {
-  return `<h3>${title}</h3><table><tbody>${rows.map(([k, v]) => `<tr><th>${k}</th><td>${fmt(v)}</td></tr>`).join("")}</tbody></table>`;
+function rows(items) {
+  return `<table><tbody>${items.map(([k, v]) => `<tr><th>${k}</th><td>${fmt(v)}</td></tr>`).join("")}</tbody></table>`;
+}
+function fold(title, chips, tableRows) {
+  return `<details><summary><div class="summary-main"><div class="summary-title">${title}</div><div class="chips">${chips.map(([k, v]) => `<span class="chip">${k}：${fmt(v)}</span>`).join("")}</div></div></summary>${rows(tableRows)}</details>`;
 }
 fetch("data/latest_data_report.json")
   .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
@@ -81,11 +123,15 @@ fetch("data/latest_data_report.json")
       metric("文件数量", manifest.file_count)
     ].join("");
     document.getElementById("features").innerHTML = [
-      table("量价摘要", [["最新收盘价", f.price_volume?.latest_close], ["最新涨跌幅", f.price_volume?.latest_pct_chg], ["5日均线", f.price_volume?.ma5], ["10日均线", f.price_volume?.ma10], ["20日均线", f.price_volume?.ma20], ["1日收益", f.price_volume?.ret_1d], ["5日收益", f.price_volume?.ret_5d], ["20日收益", f.price_volume?.ret_20d], ["5日成交量比", f.price_volume?.volume_ratio_5d], ["5日成交额比", f.price_volume?.amount_ratio_5d]]),
-      table("分钟结构摘要", [["日内最高价", f.minute_structure?.latest_intraday_high], ["日内最低价", f.minute_structure?.latest_intraday_low], ["日内最新价", f.minute_structure?.latest_intraday_close], ["日内振幅", f.minute_structure?.intraday_range_pct], ["收盘位置", f.minute_structure?.close_position_in_day_range], ["最近30分钟收益", f.minute_structure?.last_30min_return], ["最近60分钟收益", f.minute_structure?.last_60min_return], ["日内成交量合计", f.minute_structure?.intraday_volume_sum], ["日内成交额合计", f.minute_structure?.intraday_amount_sum]]),
-      table("资金流摘要", [["净流入金额", f.moneyflow?.net_mf_amount], ["主力资金是否可用", f.moneyflow?.main_force_available], ["资金流最新交易日", f.moneyflow?.moneyflow_latest_trade_date], ["资金流滞后天数", f.moneyflow?.moneyflow_lag_days], ["基础强弱", f.moneyflow?.moneyflow_strength_basic], ["是否可作强因子", f.moneyflow?.can_use_as_strong_factor], ["资金流提示", f.moneyflow?.moneyflow_warning]])
+      fold("量价摘要", [["收盘价", f.price_volume?.latest_close], ["涨跌幅", f.price_volume?.latest_pct_chg], ["20日均线", f.price_volume?.ma20]], [["最新收盘价", f.price_volume?.latest_close], ["最新涨跌幅", f.price_volume?.latest_pct_chg], ["5日均线", f.price_volume?.ma5], ["10日均线", f.price_volume?.ma10], ["20日均线", f.price_volume?.ma20], ["1日收益", f.price_volume?.ret_1d], ["5日收益", f.price_volume?.ret_5d], ["20日收益", f.price_volume?.ret_20d], ["5日成交量比", f.price_volume?.volume_ratio_5d], ["5日成交额比", f.price_volume?.amount_ratio_5d]]),
+      fold("分钟结构摘要", [["日内最高", f.minute_structure?.latest_intraday_high], ["日内最低", f.minute_structure?.latest_intraday_low], ["日内最新", f.minute_structure?.latest_intraday_close]], [["日内最高价", f.minute_structure?.latest_intraday_high], ["日内最低价", f.minute_structure?.latest_intraday_low], ["日内最新价", f.minute_structure?.latest_intraday_close], ["日内振幅", f.minute_structure?.intraday_range_pct], ["收盘位置", f.minute_structure?.close_position_in_day_range], ["最近30分钟收益", f.minute_structure?.last_30min_return], ["最近60分钟收益", f.minute_structure?.last_60min_return], ["日内成交量合计", f.minute_structure?.intraday_volume_sum], ["日内成交额合计", f.minute_structure?.intraday_amount_sum]]),
+      fold("资金流摘要", [["净流入", f.moneyflow?.net_mf_amount], ["强弱", strengthName(f.moneyflow?.moneyflow_strength_basic)], ["可作强因子", f.moneyflow?.can_use_as_strong_factor]], [["净流入金额", f.moneyflow?.net_mf_amount], ["主力资金是否可用", f.moneyflow?.main_force_available], ["资金流最新交易日", f.moneyflow?.moneyflow_latest_trade_date], ["资金流滞后天数", f.moneyflow?.moneyflow_lag_days], ["基础强弱", strengthName(f.moneyflow?.moneyflow_strength_basic)], ["是否可作强因子", f.moneyflow?.can_use_as_strong_factor], ["资金流提示", f.moneyflow?.moneyflow_warning]])
     ].join("");
-    document.getElementById("validation").innerHTML = [metric("校验状态", statusText(validation.status), validation.status === "PASS" ? "ok" : validation.status === "WARN" ? "warn" : "bad"), metric("失败项数量", validation.failed_count), metric("警告项数量", validation.warn_count)].join("") + `<table><tbody>${(validation.checks || []).map(item => `<tr><th>${item.name}</th><td>${statusText(item.status)}</td><td>${item.detail || ""}</td></tr>`).join("")}</tbody></table>`;
+    document.getElementById("validation").innerHTML = [
+      metric("校验状态", statusText(validation.status), validation.status === "PASS" ? "ok" : validation.status === "WARN" ? "warn" : "bad"),
+      metric("失败项数量", validation.failed_count),
+      metric("警告项数量", validation.warn_count)
+    ].join("") + `<details><summary><div class="summary-main"><div class="summary-title">查看校验明细</div><div class="chips"><span class="chip">共 ${(validation.checks || []).length} 项</span></div></div></summary><table><tbody>${(validation.checks || []).map(item => `<tr><th>${checkName(item.name)}</th><td>${statusText(item.status)}</td><td>${detailText(item.detail)}</td></tr>`).join("")}</tbody></table></details>`;
     document.getElementById("forbidden").innerHTML = `<ul>${(data.forbidden_actions || []).map(item => `<li>${actionName(item)}</li>`).join("")}</ul>`;
   })
   .catch(err => { document.getElementById("gate").innerHTML = `<p class="notice">无法读取数据报告：${err}</p>`; });
