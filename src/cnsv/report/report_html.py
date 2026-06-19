@@ -86,7 +86,7 @@ HTML = """<!doctype html>
   <section><h2>禁止动作</h2><div id="forbidden"></div></section>
 </main>
 <script>
-const yesNo = value => value ? "是" : "否";
+const yesNo = value => value ? "YES" : "NO";
 const statusText = value => ({PASS: "PASS", WARN: "WARN", FAIL: "FAIL"}[value] || value || "");
 const actionName = value => ({formal_signal_generation: "正式信号生成", auto_order: "自动下单", broker_api: "Broker API"}[value] || value);
 const strengthName = value => ({positive: "偏强", negative: "偏弱", neutral: "中性"}[value] || value);
