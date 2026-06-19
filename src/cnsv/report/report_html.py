@@ -15,15 +15,15 @@ HTML = """<!doctype html>
     * { box-sizing: border-box; }
     body { margin: 0; background: #f5f7fa; color: #18212f; }
     main { width: min(100%, 1180px); margin: 0 auto; padding: clamp(16px, 3vw, 30px); }
-    h1 { font-size: clamp(24px, 5vw, 42px); margin: 0 0 8px; letter-spacing: 0; line-height: 1.2; }
+    h1 { font-size: 24px; margin: 0 0 8px; letter-spacing: 0; line-height: 1.2; }
     .subtitle { margin: 0 0 20px; color: #5f6b7a; font-size: clamp(14px, 2.5vw, 18px); line-height: 1.6; }
-    h2 { font-size: clamp(19px, 3vw, 24px); margin: 0 0 14px; }
+    h2 { font-size: 24px; margin: 0 0 14px; }
     h3 { font-size: 18px; margin: 0; }
     section { background: #fff; border: 1px solid #d8dee8; border-radius: 8px; padding: clamp(14px, 2vw, 20px); margin: 14px 0; overflow: hidden; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; }
     .metric { border: 1px solid #e3e7ee; border-radius: 6px; padding: 12px; background: #fbfcfe; min-height: 68px; }
     .label { color: #5f6b7a; font-size: 13px; line-height: 1.35; }
-    .value { font-size: clamp(18px, 3vw, 24px); font-weight: 650; margin-top: 6px; overflow-wrap: anywhere; line-height: 1.25; }
+    .value { font-size: 22px; font-weight: 650; margin-top: 6px; overflow-wrap: anywhere; line-height: 1.25; }
     .ok { color: #0f7a45; }
     .warn { color: #9a6700; }
     .bad { color: #b42318; }
@@ -33,7 +33,7 @@ HTML = """<!doctype html>
     summary::after { content: "展开"; color: #35618f; font-size: 13px; white-space: nowrap; }
     details[open] summary::after { content: "折叠"; }
     .summary-main { min-width: 0; }
-    .summary-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .summary-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip { border: 1px solid #d5deea; background: #fff; border-radius: 999px; padding: 5px 9px; color: #3f5876; font-size: 13px; overflow-wrap: anywhere; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; }
