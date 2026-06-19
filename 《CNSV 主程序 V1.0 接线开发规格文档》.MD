@@ -1,1035 +1,769 @@
-# CNSVdata V1.2 升级后复检与下一阶段补强开发文档
+# CNSV 主程序 V1.0 接线开发规格文档
 
-> 适用仓库：`njedu2023-prog/CNSVdata`  
-> 当前阶段：V1.1 已完成基础升级，仓库已经从“能跑的数据底座”进入“验收闭环化”的阶段。  
-> 下一阶段目标：把 CNSVdata 从“流程已经设计并搭建”升级为“真实运行稳定、失败可定位、历史可追溯、缺口可回补、字段契约可版本化”的专业级量化数据底座。  
+> 仓库：`njedu2023-prog/CNSV`  
+> 上游数据仓库：`njedu2023-prog/CNSVdata`  
+> 标的：`600150.SH / 中国船舶`  
+> 当前阶段：CNSVdata 数据底座已完成当前阶段验收，CNSV 主程序进入 V1.0 接线开发阶段。  
 > 开发对象：Codex  
-> 严格边界：本仓库只做数据采集、标准化、质量检查、快照、血缘、验收、回补和下游读取契约；不做买卖信号、不做交易建议、不做模型预测。
+> 文档定位：这是 CNSV 主程序第一阶段的开发执行文档，不是 CNSVdata 开发文档，不替代《CNSV 中国船舶实盘人工量化波段系统总需求文档 V3.2》。
 
 ---
 
-## 0. 当前复检结论
+## 0. 本文档必须解决的问题
 
-当前 CNSVdata 已经明显比 V1.0 完整，已经具备以下能力：
+CNSVdata 已经完成当前阶段数据底座验收。
 
-1. `data/preview` 目录已经能看到日线、资金流、交易日历、preview manifest 等人工预览文件。
-2. GitHub Actions 已经能够自动更新 daily 数据。
-3. 仓库已经具备 `data/processed`、`data/preview`、`metadata`、`data/quality` 等基础目录。
-4. 已经有质量检查、验收、下游 smoke read 的开发方向。
-5. 项目已经从“空架子”进入“可运行数据底座”的状态。
-
-但从专业量化数据底座角度看，还不能直接判定为 100% 完成。
-
-当前更准确的状态是：
+CNSV 主程序现在要做的不是重新拉数据，也不是马上开发正式买卖信号，而是先完成：
 
 ```text
-CNSVdata 当前完成度：约 75% - 80%
+安全读取 CNSVdata
+识别数据是否可用
+建立主程序基础目录
+建立数据加载层
+建立基础特征层
+生成数据状态报告
+建立 CI 验收
+严格禁止正式信号
 ```
 
-原因：
+一句话：
 
 ```text
-已经具备基础数据链路和验收框架；
-但还需要真实跑通验收、历史快照、失败摘要、自动回补、字段级契约、事件数据做实、下游集成验证。
-```
-
----
-
-## 1. 本次 V1.2 的核心目标
-
-V1.2 不要扩展交易逻辑，不要开发信号系统。
-
-本次重点是把 V1.1 的“验收设计”变成“稳定生产能力”。
-
-核心目标：
-
-```text
-1. 验收工作流必须真实跑通
-2. 验收结果必须有清晰摘要
-3. 每次质量结果必须可追溯
-4. 数据缺口必须可检测、可回补
-5. 字段契约必须从文件级升级到字段级
-6. corporate_actions / structural_breaks 不能只是占位
-7. 下游 CNSV 主系统读取必须有明确 READY / NOT_READY 状态
+CNSV V1.0 的目标不是预测和交易，而是把主程序地基搭准。
 ```
 
 ---
 
-## 2. 当前最重要的问题
-
-### 2.1 Acceptance 工作流需要真实跑通
-
-如果 `.github/workflows/acceptance.yml` 已经存在，但还没有实际运行成功，则当前只能叫：
+## 1. 当前项目关系
 
 ```text
-验收流程已搭建
+CNSVdata = 上游数据底座
+CNSV = 主程序 / 模型层 / 决策层 / 报告层
 ```
 
-不能叫：
+CNSVdata 负责：
 
 ```text
-验收闭环已完成
+数据采集
+数据清洗
+processed parquet
+preview
+manifest
+quality
+acceptance
+downstream_ready
+failure_summary
+history
+backfill
 ```
 
-Codex 必须先确保：
+CNSV 负责：
 
 ```text
-Actions -> acceptance.yml -> Run workflow
+读取 CNSVdata
+校验数据准入
+构建基础特征
+运行模型
+生成研究报告
+生成回测报告
+生成试运行辅助报告
+未来生成受控人工辅助信号
 ```
 
-可以真实运行，并产出：
+V1.0 阶段只完成前四项：
 
 ```text
-data/quality/data_quality_latest.json
-data/quality/acceptance_latest.json
-data/quality/downstream_smoke_latest.json
-metadata/data_manifest.json
-```
-
-如果运行失败，必须输出清晰原因，不允许只给 Python traceback。
-
----
-
-### 2.2 latest 文件不够，必须有历史快照
-
-当前很多数据文件只保留 latest，例如：
-
-```text
-data/quality/acceptance_latest.json
-data/quality/downstream_smoke_latest.json
-metadata/data_manifest.json
-```
-
-这对日常运行方便，但不利于追溯。
-
-一旦未来出现：
-
-```text
-某天数据异常
-某天策略结果异常
-某天模型判断失真
-某天分钟线缺失
-某天资金流全 0
-```
-
-如果只有 latest，就很难回查当时的数据状态。
-
-因此 V1.2 必须增加历史快照。
-
----
-
-### 2.3 缺少失败摘要
-
-如果验收失败，只在 GitHub Actions 里看到 traceback，后续定位会很慢。
-
-需要新增：
-
-```text
-data/quality/failure_summary_latest.md
-data/quality/failure_summary_latest.json
-```
-
-让人一眼看到：
-
-```text
-哪一个文件失败
-哪一项检查失败
-严重程度
-是否阻断下游
-建议修复命令
+读取 CNSVdata
+校验数据准入
+构建基础特征摘要
+生成数据状态报告
 ```
 
 ---
 
-### 2.4 缺少自动回补机制
+## 2. V1.0 严格边界
 
-数据底座最常见的问题不是“天天彻底失败”，而是：
+### 2.1 允许开发
 
 ```text
-某个交易日缺失
-某个分钟段缺失
-moneyflow 延迟
-日线更新了但分钟线没更新
-manifest 更新了但 quality 没更新
+1. 建立 CNSV 主程序基础目录结构
+2. 读取 CNSVdata 的 metadata/downstream_ready.json
+3. 读取 CNSVdata 的 metadata/data_manifest.json
+4. 读取 CNSVdata 的 processed parquet
+5. 校验 downstream_ready 的 ready/status/allowed_usage
+6. 建立数据加载层
+7. 建立基础数据验证层
+8. 建立基础量价特征摘要
+9. 建立基础分钟结构特征摘要
+10. 建立基础资金流特征摘要
+11. 生成 latest_data_report.json
+12. 生成 latest_data_report.md
+13. 生成 docs/index.html
+14. 建立 pytest 测试
+15. 建立 check_data GitHub Actions
 ```
 
-因此必须有：
+### 2.2 严格禁止
 
 ```text
-缺口检测
-回补脚本
-回补后重建 processed
-回补后重跑 quality / acceptance / smoke
+1. 不直接拉取 Tushare
+2. 不配置 TUSHARE_TOKEN
+3. 不绕过 CNSVdata
+4. 不连接券商接口
+5. 不自动下单
+6. 不生成正式买卖信号
+7. 不生成高置信强信号
+8. 不输出正式交易建议
+9. 不开发 live_assist_mode 正式模式
+10. 不开发 champion/challenger 自动上线机制
+11. 不开发深度学习模型
+12. 不把报告命名为 latest_signal
+13. 不把 data_report 伪装成 signal
+14. 不一次性铺开 V3.2 全部终局功能
 ```
 
 ---
 
-### 2.5 字段级 Contract 还不够
+## 3. CNSVdata 接入规则
 
-当前 contract 多数还是 required_files 级别。
+### 3.1 默认数据源
 
-专业下游系统还需要知道：
-
-```text
-字段含义
-字段单位
-字段类型
-字段是否允许为空
-字段来源
-字段是否复权
-更新时间
-延迟容忍度
-是否核心字段
-异常时处理方式
-```
-
-没有字段级 contract，下游 CNSV 主系统未来会很容易读错字段、读错单位、读错口径。
-
----
-
-### 2.6 事件数据还需要做实
-
-`corporate_actions.parquet` 和 `structural_breaks.parquet` 如果只是空表或占位文件，对中国船舶波段系统的价值不够。
-
-中国船舶这种标的，事件层很重要：
+CNSV 默认从 GitHub raw 读取 CNSVdata：
 
 ```text
-停复牌
-除权除息
-重大公告
-重组预期
-船舶订单
-央企整合
-行业政策
-军工板块事件
-异常涨跌停
-结构性行情切换
+https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main
 ```
 
-这部分如果不做实，后续主系统会缺少解释结构变化的能力。
+### 3.2 第一读取入口
 
----
-
-## 3. V1.2 必须完成的任务总表
-
-| 优先级 | 任务 | 目标 |
-|---|---|---|
-| P0 | 跑通 acceptance workflow | 证明闭环真实可运行 |
-| P0 | 新增失败摘要 | 失败后能快速定位 |
-| P0 | 下游 READY 状态 | 给 CNSV 主系统明确开关 |
-| P1 | 历史快照 | 质量结果可追溯 |
-| P1 | 缺口检测 | 发现缺日/缺分钟 |
-| P1 | 回补脚本 | 支持补数据 |
-| P1 | 字段级 contract | 防止下游读错 |
-| P2 | 事件数据做实 | 补 corporate_actions / structural_breaks |
-| P2 | README 运维说明 | 人工可执行 |
-| P2 | 测试覆盖增强 | 保证升级不漂移 |
-
----
-
-## 4. 任务一：确保 Acceptance 工作流真实可运行
-
-### 4.1 文件
-
-检查并修复：
-
-```text
-.github/workflows/acceptance.yml
-```
-
-### 4.2 必须执行的命令顺序
-
-workflow 中必须包含：
-
-```bash
-pip install -r requirements.txt
-pytest
-python scripts/quality_check.py
-python scripts/build_data_manifest.py
-python scripts/acceptance_check.py
-python scripts/smoke_downstream_read.py
-```
-
-建议顺序：
-
-```text
-1. pytest
-2. quality_check.py
-3. build_data_manifest.py
-4. acceptance_check.py
-5. smoke_downstream_read.py
-6. build_failure_summary.py
-7. commit data/quality metadata
-```
-
-注意：
-
-```text
-不要使用 continue-on-error: true
-不要吞掉异常
-不要把失败伪装成成功
-```
-
-### 4.3 必须产出的文件
-
-运行成功或失败后，应尽量产出：
-
-```text
-data/quality/data_quality_latest.json
-data/quality/acceptance_latest.json
-data/quality/downstream_smoke_latest.json
-data/quality/failure_summary_latest.json
-data/quality/failure_summary_latest.md
-metadata/data_manifest.json
-metadata/downstream_ready.json
-```
-
-如果中途失败，也应该尽可能输出 failure summary。
-
----
-
-## 5. 任务二：新增失败摘要脚本
-
-### 5.1 新增文件
-
-```text
-scripts/build_failure_summary.py
-```
-
-### 5.2 目标
-
-读取以下文件：
-
-```text
-data/quality/data_quality_latest.json
-data/quality/acceptance_latest.json
-data/quality/downstream_smoke_latest.json
-```
-
-生成：
-
-```text
-data/quality/failure_summary_latest.json
-data/quality/failure_summary_latest.md
-```
-
-### 5.3 JSON 输出格式
-
-```json
-{
-  "status": "FAIL",
-  "generated_at": "2026-06-18 16:55:00",
-  "blocking": true,
-  "failed_count": 2,
-  "warn_count": 1,
-  "top_failures": [
-    {
-      "source": "acceptance",
-      "name": "daily_close_vs_minute_last_close",
-      "status": "FAIL",
-      "detail": "daily close and minute last close mismatch",
-      "suggested_action": "rerun fetch_minute and rebuild processed data"
-    }
-  ],
-  "top_warnings": [
-    {
-      "source": "quality",
-      "name": "moneyflow_latest_trade_date",
-      "status": "WARN",
-      "detail": "moneyflow is one trading day behind",
-      "suggested_action": "wait for source update or rerun fetch_moneyflow"
-    }
-  ]
-}
-```
-
-### 5.4 MD 输出格式
-
-生成一个人能直接看懂的 Markdown：
-
-```markdown
-# CNSVdata Failure Summary
-
-## Overall Status
-
-FAIL
-
-## Blocking
-
-true
-
-## Top Failures
-
-### 1. daily_close_vs_minute_last_close
-
-- Source: acceptance
-- Status: FAIL
-- Detail: daily close and minute last close mismatch
-- Suggested action: rerun fetch_minute and rebuild processed data
-
-## Top Warnings
-
-...
-```
-
-### 5.5 状态规则
-
-```text
-任意 FAIL -> summary status = FAIL
-无 FAIL 但有 WARN -> summary status = WARN
-全 PASS -> summary status = PASS
-```
-
----
-
-## 6. 任务三：新增下游 READY 状态
-
-### 6.1 新增文件
+CNSV 主程序必须先读取：
 
 ```text
 metadata/downstream_ready.json
 ```
 
-### 6.2 生成逻辑
+禁止先读 parquet。
 
-可以在 `scripts/smoke_downstream_read.py` 中生成，也可以新增：
-
-```text
-scripts/build_downstream_ready.py
-```
-
-推荐新增独立脚本：
+正确顺序：
 
 ```text
-scripts/build_downstream_ready.py
+1. metadata/downstream_ready.json
+2. metadata/data_manifest.json
+3. data/quality/failure_summary_latest.md
+4. data/processed/*.parquet
 ```
 
-### 6.3 输出格式
+### 3.3 downstream_ready 门禁
 
-```json
-{
-  "ready": true,
-  "status": "PASS",
-  "generated_at": "2026-06-18 16:58:00",
-  "latest_trade_date": "2026-06-18",
-  "quality_status": "PASS",
-  "acceptance_status": "PASS",
-  "smoke_status": "PASS",
-  "contract_version": "1.1.0",
-  "manifest_snapshot_id": "cnsvdata-2026-06-18-xxxx",
-  "blocking_reason": null
-}
+必须执行以下规则：
+
+```text
+ready = false:
+  阻断，不读取 parquet，不生成数据报告，只输出阻断原因。
+
+status = FAIL:
+  阻断，不读取 parquet，不生成数据报告，只输出失败原因。
+
+status = WARN:
+  允许接线开发和观察级读取，但不得生成正式信号。
+
+status = PASS:
+  允许正常读取，允许生成数据报告，允许进入后续回测准备。
 ```
 
-如果失败：
+### 3.4 allowed_usage 规则
 
-```json
-{
-  "ready": false,
-  "status": "FAIL",
-  "generated_at": "2026-06-18 16:58:00",
-  "latest_trade_date": "2026-06-18",
-  "quality_status": "PASS",
-  "acceptance_status": "FAIL",
-  "smoke_status": "FAIL",
-  "contract_version": "1.1.0",
-  "manifest_snapshot_id": "cnsvdata-2026-06-18-xxxx",
-  "blocking_reason": "acceptance_check failed"
-}
+必须读取并遵守：
+
+```text
+allowed_usage.can_develop_cnsv_main_program
+allowed_usage.can_run_daily_ingest
+allowed_usage.can_run_backtest
+allowed_usage.can_use_moneyflow_as_strong_factor
+allowed_usage.can_generate_formal_signal
 ```
 
-### 6.4 CNSV 主系统未来读取规则
+执行规则：
 
-未来 CNSV 主系统应优先读取：
+```text
+can_develop_cnsv_main_program = false:
+  主程序停止。
+
+can_run_daily_ingest = false:
+  不得执行日常读取。
+
+can_run_backtest = false:
+  不得运行正式回测。
+
+can_use_moneyflow_as_strong_factor = false:
+  moneyflow 只能低置信使用。
+
+can_generate_formal_signal = false:
+  不得生成正式买卖信号。
+```
+
+特别强调：
+
+```text
+即使 CNSVdata.status = PASS，只要 can_generate_formal_signal = false，CNSV V1.0 也不得生成正式信号。
+```
+
+---
+
+## 4. V1.0 必须读取的上游文件
 
 ```text
 metadata/downstream_ready.json
-```
+metadata/data_manifest.json
 
-规则：
+data/quality/data_quality_latest.json
+data/quality/data_gaps_latest.json
+data/quality/acceptance_latest.json
+data/quality/downstream_smoke_latest.json
+data/quality/failure_summary_latest.md
 
-```text
-ready = true  -> 可以读取数据
-ready = false -> 不得生成正式交易辅助结果
-status = WARN -> 可以观察，但必须降低置信度
-status = FAIL -> 阻断
-```
-
----
-
-## 7. 任务四：新增历史快照机制
-
-### 7.1 目标
-
-每次验收后，把关键结果复制一份到按日期归档的目录。
-
-### 7.2 新增脚本
-
-```text
-scripts/archive_quality_snapshot.py
-```
-
-### 7.3 归档目录建议
-
-```text
-data/quality/history/YYYY-MM-DD/
-metadata/history/YYYY-MM-DD/
-```
-
-例如：
-
-```text
-data/quality/history/2026-06-18/data_quality_latest.json
-data/quality/history/2026-06-18/acceptance_latest.json
-data/quality/history/2026-06-18/downstream_smoke_latest.json
-data/quality/history/2026-06-18/failure_summary_latest.json
-data/quality/history/2026-06-18/failure_summary_latest.md
-
-metadata/history/2026-06-18/data_manifest.json
-metadata/history/2026-06-18/downstream_ready.json
-```
-
-### 7.4 文件名策略
-
-可以保留原名，也可以加时间戳。
-
-推荐：
-
-```text
-YYYY-MM-DD_HHMMSS_acceptance.json
-YYYY-MM-DD_HHMMSS_manifest.json
-```
-
-但为了 GitHub 页面简洁，第一版可以按日期目录保存 latest 副本。
-
-### 7.5 注意事项
-
-不要无限膨胀。
-
-可以只保留：
-
-```text
-最近 60 个交易日
-```
-
-后续再做清理脚本。
-
----
-
-## 8. 任务五：新增缺口检测脚本
-
-### 8.1 新增文件
-
-```text
-scripts/detect_data_gaps.py
-```
-
-### 8.2 目标
-
-检测：
-
-```text
-日线缺失
-分钟线缺失
-资金流缺失
-交易日历缺失
-多周期聚合缺失
-```
-
-### 8.3 输入文件
-
-```text
 data/processed/trade_calendar.parquet
 data/processed/cnsv_daily.parquet
 data/processed/cnsv_1min.parquet
+data/processed/cnsv_5min.parquet
+data/processed/cnsv_15min.parquet
+data/processed/cnsv_30min.parquet
+data/processed/cnsv_60min.parquet
 data/processed/cnsv_moneyflow.parquet
-```
-
-### 8.4 输出文件
-
-```text
-data/quality/data_gaps_latest.json
-```
-
-### 8.5 输出格式
-
-```json
-{
-  "status": "PASS",
-  "generated_at": "2026-06-18 16:45:00",
-  "latest_trade_date": "2026-06-18",
-  "checks": [
-    {
-      "name": "daily_missing_trade_dates",
-      "status": "PASS",
-      "missing_dates": []
-    },
-    {
-      "name": "minute_missing_trade_dates",
-      "status": "WARN",
-      "missing_dates": ["2026-06-17"]
-    },
-    {
-      "name": "moneyflow_missing_trade_dates",
-      "status": "WARN",
-      "missing_dates": ["2026-06-18"]
-    }
-  ]
-}
-```
-
-### 8.6 检测逻辑
-
-使用交易日历中：
-
-```text
-is_open = 1
-```
-
-的日期作为应有交易日。
-
-对比：
-
-```text
-daily.trade_date
-minute.trade_date
-moneyflow.trade_date
-```
-
-缺失规则：
-
-```text
-daily 缺最新交易日：FAIL
-minute 缺最新交易日：FAIL 或 WARN，按数据源延迟策略
-moneyflow 缺最新交易日：WARN
-moneyflow 连续缺 3 个交易日：FAIL
-历史中间缺日：WARN 或 FAIL，取决于是否影响模型训练
+data/processed/corporate_actions.parquet
+data/processed/structural_breaks.parquet
 ```
 
 ---
 
-## 9. 任务六：新增回补脚本
+## 5. CNSV V1.0 目录结构
 
-### 9.1 新增文件
-
-```text
-scripts/backfill_missing_data.py
-```
-
-### 9.2 目标
-
-根据：
+请建立以下目录和文件：
 
 ```text
-data/quality/data_gaps_latest.json
-```
-
-自动或半自动补齐缺失数据。
-
-### 9.3 第一版建议
-
-第一版不要做过度自动化。
-
-建议支持参数：
-
-```bash
-python scripts/backfill_missing_data.py --start-date 20260601 --end-date 20260618 --daily
-python scripts/backfill_missing_data.py --start-date 20260601 --end-date 20260618 --minute
-python scripts/backfill_missing_data.py --start-date 20260601 --end-date 20260618 --moneyflow
-python scripts/backfill_missing_data.py --from-gap-report
-```
-
-### 9.4 回补完成后必须自动执行
-
-```bash
-python scripts/build_processed_daily.py
-python scripts/build_minute_bars.py
-python scripts/build_data_manifest.py
-python scripts/quality_check.py
-python scripts/acceptance_check.py
-python scripts/smoke_downstream_read.py
-python scripts/build_downstream_ready.py
-```
-
-### 9.5 输出文件
-
-```text
-data/quality/backfill_latest.json
-```
-
-示例：
-
-```json
-{
-  "status": "PASS",
-  "generated_at": "2026-06-18 17:10:00",
-  "mode": "from_gap_report",
-  "filled": [
-    {
-      "dataset": "daily",
-      "trade_date": "2026-06-17",
-      "status": "PASS"
-    }
-  ],
-  "failed": []
-}
+CNSV/
+├── .github/
+│   └── workflows/
+│       ├── check_data.yml
+│       └── publish_pages.yml
+├── config/
+│   ├── data_source.yml
+│   ├── runtime.yml
+│   └── report.yml
+├── src/
+│   └── cnsv/
+│       ├── __init__.py
+│       ├── cli/
+│       │   ├── __init__.py
+│       │   ├── check_data.py
+│       │   ├── build_features.py
+│       │   └── generate_data_report.py
+│       ├── data/
+│       │   ├── __init__.py
+│       │   ├── downloader.py
+│       │   ├── downstream_ready.py
+│       │   ├── data_manifest.py
+│       │   ├── loader.py
+│       │   ├── validator.py
+│       │   └── trade_calendar.py
+│       ├── features/
+│       │   ├── __init__.py
+│       │   ├── price_volume_features.py
+│       │   ├── minute_structure_features.py
+│       │   ├── moneyflow_features.py
+│       │   └── feature_bundle.py
+│       ├── report/
+│       │   ├── __init__.py
+│       │   ├── report_json.py
+│       │   ├── report_md.py
+│       │   └── report_html.py
+│       └── utils/
+│           ├── __init__.py
+│           ├── io.py
+│           └── errors.py
+├── reports/
+│   └── archive/
+├── docs/
+│   ├── index.html
+│   └── data/
+├── tests/
+│   ├── test_downstream_ready.py
+│   ├── test_data_manifest.py
+│   ├── test_loader.py
+│   ├── test_features.py
+│   ├── test_report_json.py
+│   └── test_cli.py
+├── requirements.txt
+├── pyproject.toml
+└── README.md
 ```
 
 ---
 
-## 10. 任务七：字段级 Contract 升级
+## 6. 配置文件
 
-### 10.1 当前问题
-
-当前 `config/data_contract.yml` 多数是文件级 required_files。
-
-V1.2 需要补字段级契约。
-
-### 10.2 建议新增文件
-
-```text
-config/field_contract.yml
-```
-
-也可以扩展 `data_contract.yml`，但为了清晰，建议新增独立文件。
-
-### 10.3 字段契约示例
+### 6.1 config/data_source.yml
 
 ```yaml
-contract:
-  version: "1.2.0"
-  timezone: "Asia/Shanghai"
-  datasets:
-    cnsv_daily:
-      path: "data/processed/cnsv_daily.parquet"
-      primary_key: ["trade_date"]
-      required: true
-      freshness:
-        max_lag_trading_days: 0
-      fields:
-        ts_code:
-          type: "string"
-          required: true
-          nullable: false
-          description: "证券代码"
-        trade_date:
-          type: "string"
-          required: true
-          nullable: false
-          format: "YYYY-MM-DD"
-          description: "交易日期"
-        open:
-          type: "float"
-          required: true
-          nullable: false
-          unit: "CNY"
-          description: "开盘价"
-        high:
-          type: "float"
-          required: true
-          nullable: false
-          unit: "CNY"
-          description: "最高价"
-        low:
-          type: "float"
-          required: true
-          nullable: false
-          unit: "CNY"
-          description: "最低价"
-        close:
-          type: "float"
-          required: true
-          nullable: false
-          unit: "CNY"
-          description: "收盘价"
-        vol:
-          type: "float"
-          required: true
-          nullable: false
-          unit: "shares_or_lots_source_defined"
-          description: "成交量，保留数据源原始口径"
-        amount:
-          type: "float"
-          required: true
-          nullable: false
-          unit: "source_defined"
-          description: "成交额，保留数据源原始口径，需在 manifest 中记录 source"
+cnsvdata:
+  repo: "njedu2023-prog/CNSVdata"
+  branch: "main"
+  raw_base_url: "https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main"
+
+required_remote_files:
+  downstream_ready: "metadata/downstream_ready.json"
+  data_manifest: "metadata/data_manifest.json"
+  failure_summary: "data/quality/failure_summary_latest.md"
+  trade_calendar: "data/processed/trade_calendar.parquet"
+  daily: "data/processed/cnsv_daily.parquet"
+  one_min: "data/processed/cnsv_1min.parquet"
+  five_min: "data/processed/cnsv_5min.parquet"
+  fifteen_min: "data/processed/cnsv_15min.parquet"
+  thirty_min: "data/processed/cnsv_30min.parquet"
+  sixty_min: "data/processed/cnsv_60min.parquet"
+  moneyflow: "data/processed/cnsv_moneyflow.parquet"
+  corporate_actions: "data/processed/corporate_actions.parquet"
+  structural_breaks: "data/processed/structural_breaks.parquet"
+
+local_cache:
+  enabled: true
+  root: ".cache/cnsvdata"
 ```
 
-### 10.4 质量检查接入
+### 6.2 config/runtime.yml
 
-`quality_check.py` 和 `acceptance_check.py` 应读取 `field_contract.yml`，检查：
-
-```text
-字段是否存在
-字段类型是否符合
-是否允许为空
-是否核心字段
-是否满足 freshness
+```yaml
+runtime:
+  default_mode: "research_mode"
+  require_downstream_ready: true
+  fail_on_downstream_fail: true
+  allow_formal_signal: false
+  allow_live_assist: false
+  allow_backtest_when_ready_pass: true
 ```
 
-第一版可以先做字段存在性和 nullable 检查，后续再做完整类型验证。
+### 6.3 config/report.yml
+
+```yaml
+report:
+  output_json: "docs/data/latest_data_report.json"
+  output_md: "reports/latest_data_report.md"
+  archive_dir: "reports/archive"
+  html_index: "docs/index.html"
+```
 
 ---
 
-## 11. 任务八：事件数据做实
+## 7. 数据模块开发要求
 
-### 11.1 目标
+### 7.1 src/cnsv/data/downloader.py
 
-不要让：
+实现：
 
-```text
-corporate_actions.parquet
-structural_breaks.parquet
-```
+```python
+def fetch_text(url: str) -> str:
+    ...
 
-长期只是空表或占位文件。
+def fetch_json(url: str) -> dict:
+    ...
 
-### 11.2 最小可用版本
-
-先做最小可用版本，不追求一次性全覆盖。
-
-#### corporate_actions 最小字段
-
-```text
-ts_code
-event_date
-available_at
-event_type
-event_name
-description
-raw_source
-impact_level
-created_at
-```
-
-#### event_type 建议
-
-```text
-dividend
-ex_right
-suspension
-resume
-announcement
-restructure
-industry_policy
-large_order
-other
-```
-
-### 11.3 structural_breaks 最小字段
-
-```text
-regime_id
-start_date
-end_date
-description
-reason
-impact_fields
-model_action
-created_at
-```
-
-### 11.4 第一阶段允许人工维护
-
-如果自动抓公告还没接入，第一阶段可以允许：
-
-```text
-config/manual_corporate_actions.yml
-config/manual_structural_breaks.yml
-```
-
-再由脚本生成 parquet。
-
-新增或强化：
-
-```text
-scripts/build_corporate_actions.py
-scripts/build_structural_breaks.py
+def fetch_parquet(url: str):
+    ...
 ```
 
 要求：
 
 ```text
-允许空表，但空表必须明确 status = WARN 或 empty_allowed = true
-不允许文件缺失
-不允许 schema 缺字段
+支持 raw.githubusercontent.com
+支持 timeout
+错误信息必须包含 URL
+不得吞异常
 ```
 
----
+### 7.2 src/cnsv/data/downstream_ready.py
 
-## 12. 任务九：Preview Manifest 强化
+实现：
 
-### 12.1 当前情况
+```python
+def load_downstream_ready(source_config: dict) -> dict:
+    ...
 
-`data/preview` 里已经有：
-
-```text
-cnsv_daily_latest.csv
-cnsv_moneyflow_latest.csv
-preview_manifest.csv
-trade_calendar_latest.csv
+def evaluate_downstream_gate(payload: dict) -> dict:
+    ...
 ```
 
-这说明 preview 已经能输出部分人工预览文件。
+返回：
 
-### 12.2 需要补充
+```python
+{
+    "ready": bool,
+    "status": "PASS|WARN|FAIL",
+    "can_continue": bool,
+    "can_develop": bool,
+    "can_run_daily_ingest": bool,
+    "can_run_backtest": bool,
+    "can_use_moneyflow_as_strong_factor": bool,
+    "can_generate_formal_signal": bool,
+    "blocking_reason": str | None,
+    "warnings": list[str],
+}
+```
 
-`preview_manifest.csv` 应记录：
+### 7.3 src/cnsv/data/data_manifest.py
+
+实现：
+
+```python
+def load_data_manifest(source_config: dict) -> dict:
+    ...
+
+def validate_manifest(manifest: dict) -> dict:
+    ...
+```
+
+必须检查：
 
 ```text
-preview_file
-source_file
-rows
-columns
-min_date
-max_date
+snapshot_id
 generated_at
-status
+latest_trade_date
+files
+required parquet
+sha256
+rows
 ```
 
-### 12.3 Preview 必须覆盖
+### 7.4 src/cnsv/data/loader.py
+
+实现：
+
+```python
+def load_all_core_data(source_config: dict) -> dict:
+    ...
+```
+
+返回：
+
+```python
+{
+    "downstream_ready": dict,
+    "data_manifest": dict,
+    "trade_calendar": DataFrame,
+    "daily": DataFrame,
+    "one_min": DataFrame,
+    "five_min": DataFrame,
+    "fifteen_min": DataFrame,
+    "thirty_min": DataFrame,
+    "sixty_min": DataFrame,
+    "moneyflow": DataFrame,
+    "corporate_actions": DataFrame,
+    "structural_breaks": DataFrame,
+}
+```
+
+必须先读 downstream_ready，判断通过后再读 parquet。
+
+### 7.5 src/cnsv/data/validator.py
+
+实现：
+
+```python
+def validate_loaded_data(bundle: dict) -> dict:
+    ...
+```
+
+检查：
 
 ```text
-trade_calendar_latest.csv
-cnsv_daily_latest.csv
-cnsv_moneyflow_latest.csv
-cnsv_1min_latest.csv
-cnsv_5min_latest.csv
-cnsv_15min_latest.csv
-cnsv_30min_latest.csv
-cnsv_60min_latest.csv
-corporate_actions.csv
-structural_breaks.csv
-preview_manifest.csv
+daily 非空
+1min 非空
+moneyflow 非空
+latest_trade_date 一致
+daily close 与 1min 最新 close 接近
+核心字段齐全
 ```
 
-如果某些 source 文件不存在或为空，preview_manifest 中必须标注，不要沉默。
+输出：
+
+```python
+{
+    "status": "PASS|WARN|FAIL",
+    "failed_count": 0,
+    "warn_count": 0,
+    "checks": []
+}
+```
 
 ---
 
-## 13. 任务十：README 增加运维指南
+## 8. 基础特征模块
 
-README 需要新增：
+V1.0 只做特征摘要，不做预测。
 
-```text
-## V1.2 运维与验收流程
-```
+### 8.1 price_volume_features.py
 
-内容包括：
-
-### 13.1 每日正常链路
+输出：
 
 ```text
-fetch_daily
-fetch_minute
-build_processed
-data_quality_check
-acceptance
-archive_quality_snapshot
+latest_close
+latest_pct_chg
+latest_volume
+latest_amount
+ma5
+ma10
+ma20
+ret_1d
+ret_5d
+ret_20d
+volume_ratio_5d
+amount_ratio_5d
 ```
 
-### 13.2 手动验收命令
+### 8.2 minute_structure_features.py
+
+输出：
+
+```text
+latest_intraday_high
+latest_intraday_low
+latest_intraday_close
+intraday_range_pct
+close_position_in_day_range
+last_30min_return
+last_60min_return
+intraday_volume_sum
+intraday_amount_sum
+```
+
+### 8.3 moneyflow_features.py
+
+输出：
+
+```text
+net_mf_amount
+main_force_available
+moneyflow_latest_trade_date
+moneyflow_lag_days
+moneyflow_strength_basic
+moneyflow_warning
+can_use_as_strong_factor
+```
+
+如果 `allowed_usage.can_use_moneyflow_as_strong_factor = false`，必须标注低置信。
+
+### 8.4 feature_bundle.py
+
+实现：
+
+```python
+def build_feature_bundle(data_bundle: dict, gate: dict) -> dict:
+    ...
+```
+
+输出：
+
+```python
+{
+    "price_volume": {},
+    "minute_structure": {},
+    "moneyflow": {},
+    "feature_status": "PASS|WARN|FAIL"
+}
+```
+
+---
+
+## 9. 报告输出
+
+### 9.1 JSON 报告
+
+输出：
+
+```text
+docs/data/latest_data_report.json
+```
+
+必须包含：
+
+```json
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "1.0.0",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "mode": "research_mode",
+    "report_type": "data_status_report"
+  },
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": []
+  },
+  "data_manifest": {
+    "snapshot_id": "",
+    "latest_trade_date": "",
+    "generated_at": "",
+    "file_count": 0
+  },
+  "loaded_data_summary": {
+    "daily_rows": 0,
+    "one_min_rows": 0,
+    "moneyflow_rows": 0,
+    "latest_trade_date": ""
+  },
+  "validation": {
+    "status": "PASS",
+    "failed_count": 0,
+    "warn_count": 0,
+    "checks": []
+  },
+  "features": {
+    "price_volume": {},
+    "minute_structure": {},
+    "moneyflow": {}
+  },
+  "allowed_actions": {
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_generate_formal_signal": false
+  },
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ]
+}
+```
+
+### 9.2 Markdown 报告
+
+输出：
+
+```text
+reports/latest_data_report.md
+reports/archive/YYYY-MM-DD_data_report.md
+```
+
+必须包含：
+
+```text
+CNSVdata Gate 状态
+是否允许继续
+是否允许回测
+是否允许使用 moneyflow 强因子
+是否允许正式信号
+snapshot_id
+latest_trade_date
+数据行数
+量价摘要
+分钟结构摘要
+资金流摘要
+禁止动作
+下一步建议
+```
+
+### 9.3 HTML 页面
+
+输出：
+
+```text
+docs/index.html
+```
+
+要求：
+
+```text
+读取 docs/data/latest_data_report.json
+展示 Gate 状态
+展示 latest_trade_date
+展示数据行数
+展示基础特征
+展示 forbidden_actions
+```
+
+不允许写死数据。
+
+---
+
+## 10. CLI 命令
+
+### 10.1 检查数据
 
 ```bash
-pip install -r requirements.txt
-pytest
-python scripts/quality_check.py
-python scripts/build_data_manifest.py
-python scripts/acceptance_check.py
-python scripts/smoke_downstream_read.py
-python scripts/build_downstream_ready.py
-python scripts/build_failure_summary.py
+python -m cnsv.cli.check_data
 ```
 
-### 13.3 失败定位
+作用：
 
 ```text
-优先看：
-1. data/quality/failure_summary_latest.md
-2. data/quality/acceptance_latest.json
-3. data/quality/downstream_smoke_latest.json
-4. data/quality/data_quality_latest.json
-5. GitHub Actions logs
+读取 downstream_ready
+读取 manifest
+验证是否允许继续
+输出 gate 状态
 ```
 
-### 13.4 下游读取规则
-
-```text
-CNSV 主系统应优先读取 metadata/downstream_ready.json
-
-ready = true:
-  可以读取
-
-ready = false:
-  不得生成正式交易辅助结果
-
-status = WARN:
-  可观察，但必须降低置信度
-
-status = FAIL:
-  阻断
-```
-
----
-
-## 14. 测试要求
-
-V1.2 必须补充或强化测试。
-
-### 14.1 新增测试文件
-
-```text
-tests/test_failure_summary.py
-tests/test_downstream_ready.py
-tests/test_data_gaps.py
-tests/test_backfill_missing_data.py
-tests/test_field_contract.py
-tests/test_archive_quality_snapshot.py
-```
-
-### 14.2 测试原则
-
-```text
-1. 不依赖真实 TUSHARE_TOKEN
-2. 使用 tmp_path 构造临时 parquet/json
-3. 测试 FAIL/WARN/PASS 聚合逻辑
-4. 测试缺文件时必须 FAIL
-5. 测试 ready=false 时下游阻断
-6. 测试 field_contract 可读取
-7. 测试 history 目录可生成
-```
-
-### 14.3 pytest 必须通过
+### 10.2 构建特征
 
 ```bash
-pytest
+python -m cnsv.cli.build_features
 ```
 
-必须在 GitHub Actions 中通过。
+作用：
+
+```text
+读取 CNSVdata
+构建基础量价、分钟、资金流特征
+输出控制台摘要
+```
+
+### 10.3 生成数据报告
+
+```bash
+python -m cnsv.cli.generate_data_report
+```
+
+作用：
+
+```text
+读取 downstream_ready
+读取 manifest
+读取 parquet
+验证数据
+构建特征
+输出 JSON
+输出 Markdown
+输出 HTML
+```
 
 ---
 
-## 15. Acceptance Workflow 建议最终结构
+## 11. GitHub Actions
 
-建议 `.github/workflows/acceptance.yml` 升级为：
+### 11.1 .github/workflows/check_data.yml
 
 ```yaml
-name: Acceptance
+name: Check CNSV Data
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "50 8 * * 1-5"
+    - cron: "5 9 * * 1-5"
 
 permissions:
   contents: write
 
 jobs:
-  acceptance:
+  check-data:
     runs-on: ubuntu-latest
     env:
-      PYTHONPATH: ${{ github.workspace }}
+      PYTHONPATH: ${{ github.workspace }}/src
     steps:
       - uses: actions/checkout@v4
 
@@ -1041,270 +775,311 @@ jobs:
 
       - run: pytest
 
-      - run: python scripts/detect_data_gaps.py
-
-      - run: python scripts/quality_check.py
-
-      - run: python scripts/build_data_manifest.py
-
-      - run: python scripts/acceptance_check.py
-
-      - run: python scripts/smoke_downstream_read.py
-
-      - run: python scripts/build_downstream_ready.py
-
-      - run: python scripts/build_failure_summary.py
-        if: always()
-
-      - run: python scripts/archive_quality_snapshot.py
-        if: always()
+      - run: python -m cnsv.cli.generate_data_report
 
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/quality metadata
-          git diff --cached --quiet || git commit -m "data: update acceptance and quality snapshots"
+          git add reports docs
+          git diff --cached --quiet || git commit -m "report: update CNSV data status report"
           git push
-        if: always()
 ```
 
-注意：
+说明：
 
 ```text
-build_failure_summary.py 和 archive_quality_snapshot.py 可以 if: always()
-但核心验收脚本不能 continue-on-error
+09:05 UTC = 北京时间 17:05
+```
+
+CNSVdata Acceptance 约北京时间 16:50 跑，CNSV 17:05 读取合理。
+
+### 11.2 .github/workflows/publish_pages.yml
+
+第一版可简单发布 `docs/`。
+
+---
+
+## 12. requirements.txt
+
+必须包含：
+
+```text
+pandas
+pyarrow
+requests
+PyYAML
+pytest
+```
+
+可选：
+
+```text
+jinja2
 ```
 
 ---
 
-## 16. V1.2 完成后的验收标准
+## 13. pyproject.toml
 
-Codex 完成后，必须满足：
+建议新增：
 
-### 16.1 文件存在
+```toml
+[project]
+name = "cnsv"
+version = "1.0.0"
+description = "CNSV main program for 600150.SH manual quantitative swing trading assistance"
+requires-python = ">=3.11"
 
-```text
-scripts/build_failure_summary.py
-scripts/build_downstream_ready.py
-scripts/archive_quality_snapshot.py
-scripts/detect_data_gaps.py
-scripts/backfill_missing_data.py
-config/field_contract.yml
-metadata/downstream_ready.json
-data/quality/failure_summary_latest.json
-data/quality/failure_summary_latest.md
-data/quality/data_gaps_latest.json
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 ```
 
-### 16.2 命令可运行
+---
+
+## 14. 测试要求
+
+### 14.1 test_downstream_ready.py
+
+必须测试：
+
+```text
+ready=false -> can_continue=false
+status=FAIL -> can_continue=false
+status=WARN -> can_continue=true 但限制用途
+status=PASS -> can_continue=true
+can_generate_formal_signal=false -> 禁止正式信号
+```
+
+### 14.2 test_data_manifest.py
+
+必须测试：
+
+```text
+manifest 缺 snapshot_id -> FAIL
+manifest 缺 files -> FAIL
+manifest 正常 -> PASS
+```
+
+### 14.3 test_loader.py
+
+必须测试：
+
+```text
+先读 downstream_ready
+ready=false 不继续读 parquet
+ready=true 才读 parquet
+```
+
+### 14.4 test_features.py
+
+必须测试：
+
+```text
+daily 基础特征
+minute 基础特征
+moneyflow 强因子禁用时降级
+```
+
+### 14.5 test_report_json.py
+
+必须测试：
+
+```text
+latest_data_report.json 包含 meta
+包含 cnsvdata_gate
+包含 validation
+包含 features
+包含 forbidden_actions
+```
+
+### 14.6 test_cli.py
+
+必须测试：
+
+```text
+CLI 模块可 import
+main 函数可调用
+```
+
+测试不得依赖真实网络，必须 mock。
+
+---
+
+## 15. V1.0 验收标准
+
+完成后必须满足：
 
 ```bash
+pip install -r requirements.txt
 pytest
-python scripts/detect_data_gaps.py
-python scripts/quality_check.py
-python scripts/build_data_manifest.py
-python scripts/acceptance_check.py
-python scripts/smoke_downstream_read.py
-python scripts/build_downstream_ready.py
-python scripts/build_failure_summary.py
-python scripts/archive_quality_snapshot.py
+python -m cnsv.cli.check_data
+python -m cnsv.cli.build_features
+python -m cnsv.cli.generate_data_report
 ```
 
-### 16.3 GitHub Actions 可运行
+必须生成：
 
 ```text
-Actions -> Acceptance -> Run workflow
+reports/latest_data_report.md
+docs/data/latest_data_report.json
+docs/index.html
 ```
 
-运行后必须能在仓库中看到：
+行为必须正确：
 
 ```text
-data/quality/failure_summary_latest.md
-metadata/downstream_ready.json
-data/quality/history/
-metadata/history/
+ready=false -> 阻断
+status=FAIL -> 阻断
+status=WARN -> 降级继续
+status=PASS -> 正常读取
+can_generate_formal_signal=false -> 不生成正式信号
 ```
-
-### 16.4 下游 READY 正确
-
-```text
-全部 PASS -> ready=true
-任何核心 FAIL -> ready=false
-WARN -> ready=true 但 status=WARN
-```
-
-### 16.5 缺口检测正确
-
-如果手工构造缺失日期，`detect_data_gaps.py` 必须能输出缺失项。
-
-### 16.6 回补脚本不误伤
-
-`backfill_missing_data.py` 不得删除已有数据。
-
-如果回补失败，必须输出失败原因。
 
 ---
 
-## 17. 完成后 Codex 必须汇报
+## 16. 本阶段不做的功能
 
-Codex 完成后，请按以下格式汇报：
+以下功能不属于 V1.0：
+
+```text
+1. 20D 路径预测
+2. 目标先到概率
+3. 止损先到概率
+4. 正式买卖信号
+5. 目标仓位
+6. 目标股数
+7. 风险预算仓位模型
+8. 成交仿真
+9. Purged walk-forward 回测
+10. champion/challenger 模型治理
+11. live_assist_mode
+12. high confidence signal
+13. broker API
+14. 自动下单
+```
+
+这些以后再做。
+
+---
+
+## 17. 与 V3.2 总需求文档的关系
+
+```text
+V3.2 总需求文档 = 终局蓝图
+V1.0 接线开发规格 = 当前 Codex 执行任务
+```
+
+Codex 必须优先完成 V1.0 接线，不得擅自一次性开发 V3.2 的全部终局功能。
+
+---
+
+## 18. Codex 完成后必须汇报
 
 ```text
 一、修改文件清单
 二、新增文件清单
-三、删除文件清单，如没有则写无
-四、是否改变原有数据路径契约
-五、是否触碰 TUSHARE_TOKEN
-六、pytest 结果
-七、acceptance workflow 是否可运行
-八、downstream_ready.json 当前状态
-九、failure_summary 当前状态
-十、仍然存在的风险
-十一、下一步建议
+三、是否删除文件，如无写无
+四、是否改变 CNSVdata 读取路径
+五、是否配置或使用 TUSHARE_TOKEN
+六、是否生成正式信号
+七、pytest 是否通过
+八、check_data.yml 是否可运行
+九、是否生成 latest_data_report.json
+十、是否生成 latest_data_report.md
+十一、downstream_ready 读取逻辑是否实现
+十二、ready=false 是否能阻断
+十三、can_generate_formal_signal=false 是否能禁止正式信号
+十四、下一步建议
 ```
 
 ---
 
-## 18. 严格禁止事项
+## 19. 给 Codex 的最终执行口令
 
 ```text
-1. 不允许为了通过验收强行输出 PASS
-2. 不允许把异常吞掉不报
-3. 不允许 workflow 使用 continue-on-error 掩盖核心失败
-4. 不允许删除已有 data/preview 功能
-5. 不允许改动已约定的 processed 路径
-6. 不允许写入真实 token
-7. 不允许打印 token
-8. 不允许生成买卖建议
-9. 不允许开发交易信号
-10. 不允许修改 CNSV 主系统
+继续 CNSV 主程序仓库开发。
+
+当前阶段：CNSV 主程序 V1.0 接线开发。
+
+上游 CNSVdata 已完成当前阶段数据底座验收。CNSV 主程序现在只做第一阶段接线，不做正式交易信号。
+
+请按《CNSV 主程序 V1.0 接线开发规格文档》一次性完成：
+
+1. 建立 CNSV 主程序基础目录结构；
+2. 新增 config/data_source.yml、config/runtime.yml、config/report.yml；
+3. 新增 src/cnsv/data/downstream_ready.py；
+4. 新增 src/cnsv/data/data_manifest.py；
+5. 新增 src/cnsv/data/downloader.py；
+6. 新增 src/cnsv/data/loader.py；
+7. 新增 src/cnsv/data/validator.py；
+8. 新增 src/cnsv/features/price_volume_features.py；
+9. 新增 src/cnsv/features/minute_structure_features.py；
+10. 新增 src/cnsv/features/moneyflow_features.py；
+11. 新增 src/cnsv/features/feature_bundle.py；
+12. 新增 src/cnsv/report/report_json.py；
+13. 新增 src/cnsv/report/report_md.py；
+14. 新增 src/cnsv/report/report_html.py；
+15. 新增 CLI：
+    - python -m cnsv.cli.check_data
+    - python -m cnsv.cli.build_features
+    - python -m cnsv.cli.generate_data_report
+16. 新增 .github/workflows/check_data.yml；
+17. 新增 .github/workflows/publish_pages.yml；
+18. 新增 pytest 测试；
+19. 更新 README.md；
+20. 确保生成：
+    - reports/latest_data_report.md
+    - docs/data/latest_data_report.json
+    - docs/index.html
+
+严格禁止：
+- 不直接拉 Tushare；
+- 不使用 TUSHARE_TOKEN；
+- 不绕过 CNSVdata；
+- 不生成正式买卖信号；
+- 不生成 high confidence signal；
+- 不连接券商；
+- 不自动下单；
+- 不把报告命名为 latest_signal；
+- 不一次性开发 V3.2 的全部终局功能。
+
+验收标准：
+- pytest 必须通过；
+- ready=false 必须阻断；
+- status=FAIL 必须阻断；
+- status=WARN 必须降级；
+- status=PASS 正常读取；
+- can_generate_formal_signal=false 必须禁止正式信号；
+- latest_data_report.json 必须生成；
+- latest_data_report.md 必须生成；
+- check_data.yml 必须可运行。
 ```
 
 ---
 
-## 19. 本次 V1.2 完成后的预期完成度
-
-如果 V1.2 完成，CNSVdata 完成度可从当前：
+## 20. 最重要原则
 
 ```text
-75% - 80%
+CNSV 主程序第一步不是预测，而是安全读取。
 ```
 
-提升到：
+V1.0 的成功标准：
 
 ```text
-85% - 90%
+能正确读取 CNSVdata；
+能识别数据是否可用；
+数据不可用时能阻断；
+数据可用时能生成基础数据报告；
+能严格禁止正式信号。
 ```
 
-但仍不是 100%。
-
-后续还需要：
+后续阶段：
 
 ```text
-1. 多数据源交叉校验
-2. 公告自动抓取
-3. 数据漂移监控
-4. 外部告警通知
-5. 下游 CNSV 主系统正式接入
-6. 历史版本冻结
-7. 数据血缘可视化
+V1.1 基础特征增强
+V1.2 基准模型
+V1.3 20D 路径预测
+V1.4 回测与成交仿真
+V1.5 试运行辅助报告
 ```
-
----
-
-## 20. 给 Codex 的最终执行口令
-
-请直接复制以下内容给 Codex：
-
-```text
-继续 CNSVdata 主线。
-
-当前阶段：V1.2 升级后复检与下一阶段补强。
-
-目标：
-把 V1.1 已经搭好的验收框架，升级为真实可运行、失败可定位、历史可追溯、缺口可回补、字段契约可版本化、下游 CNSV 可安全读取的数据底座。
-
-严格边界：
-不开发交易信号，不输出买卖建议，不做模型预测，不修改 CNSV 主系统，不改变已有 processed 路径，不删除 preview 功能，不泄露 TUSHARE_TOKEN。
-
-请一次性完成以下任务：
-
-1. 确保 .github/workflows/acceptance.yml 可以真实手动运行和定时运行
-2. 新增 scripts/build_failure_summary.py
-   - 输出 data/quality/failure_summary_latest.json
-   - 输出 data/quality/failure_summary_latest.md
-3. 新增 scripts/build_downstream_ready.py
-   - 输出 metadata/downstream_ready.json
-   - ready=true/false 必须根据 quality、acceptance、smoke 真实状态判断
-4. 新增 scripts/archive_quality_snapshot.py
-   - 归档 data/quality 和 metadata 的关键结果到 history/YYYY-MM-DD/
-5. 新增 scripts/detect_data_gaps.py
-   - 检测 daily、minute、moneyflow 的交易日缺口
-   - 输出 data/quality/data_gaps_latest.json
-6. 新增 scripts/backfill_missing_data.py
-   - 支持按 start-date/end-date 回补 daily、minute、moneyflow
-   - 支持 --from-gap-report
-   - 回补后必须重建 processed、manifest、quality、acceptance、smoke、ready
-7. 新增 config/field_contract.yml
-   - 把文件级契约升级为字段级契约
-   - 至少覆盖 daily、1min、moneyflow、trade_calendar
-8. 强化 scripts/build_data_manifest.py
-   - manifest 中加入 contract_version、quality_status、ready_status
-9. 强化 scripts/build_preview_csv.py
-   - preview_manifest.csv 记录 preview_file、source_file、rows、columns、min_date、max_date、generated_at、status
-10. 强化 corporate_actions / structural_breaks
-   - 如暂时没有自动数据源，允许从 config/manual_corporate_actions.yml 和 config/manual_structural_breaks.yml 生成
-   - 不允许文件缺失
-   - 空表必须明确 empty_allowed 或 WARN
-11. 更新 README.md
-   - 增加 V1.2 运维指南
-   - 增加失败定位顺序
-   - 增加 downstream_ready 读取规则
-12. 新增测试：
-   - tests/test_failure_summary.py
-   - tests/test_downstream_ready.py
-   - tests/test_data_gaps.py
-   - tests/test_backfill_missing_data.py
-   - tests/test_field_contract.py
-   - tests/test_archive_quality_snapshot.py
-
-完成要求：
-- pytest 必须通过
-- acceptance workflow 必须可运行
-- FAIL 必须阻断
-- WARN 必须说明原因
-- downstream_ready.json 必须真实反映能否被 CNSV 下游读取
-- 不得用固定 PASS 假装完成
-- 不得吞掉异常
-- 不得泄露 token
-- 不得生成交易建议或买卖信号
-
-完成后请汇报：
-1. 修改文件清单
-2. 新增文件清单
-3. 是否改变原路径契约
-4. 是否触碰 TUSHARE_TOKEN
-5. pytest 结果
-6. acceptance workflow 运行方式
-7. downstream_ready 当前状态
-8. failure_summary 当前状态
-9. 仍有风险
-10. 下一步建议
-```
-
----
-
-## 21. 最后原则
-
-CNSVdata 的价值不是“文件多”，而是：
-
-```text
-数据真实
-质量可查
-失败可见
-历史可追
-缺口可补
-下游可控
-```
-
-这六件事做实，CNSV 主系统才有可靠地基。
