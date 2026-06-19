@@ -17,7 +17,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-pages:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.pages.outputs.enabled }}
+    steps:
+      - id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          API_URL: ${{ github.api_url }}
+        run: |
+          status=$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${API_URL}/repos/${REPO}/pages")
+          if [ "$status" = "200" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          elif [ "$status" = "404" ]; then
+            echo "::notice::GitHub Pages is not enabled for this repository; skipping deploy. Enable Pages with GitHub Actions as the source to publish docs/."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            cat /tmp/pages.json
+            echo "Unexpected GitHub Pages API status: $status"
+            exit 1
+          fi
+
   deploy:
+    needs: check-pages
+    if: needs.check-pages.outputs.enabled == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
