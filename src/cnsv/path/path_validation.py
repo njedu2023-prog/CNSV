@@ -13,6 +13,7 @@ from cnsv.path.path_evaluator import contains_forbidden_path_key
 from cnsv.path.path_metrics import actual_path_outcome, summarize_validation_rows
 
 STAGE = "V1.3_path_validation"
+VERSION = "1.3"
 
 
 def run_path_validation(
@@ -31,7 +32,7 @@ def run_path_validation(
     payload = {
         "meta": {
             "system": "CNSV",
-            "version": "1.3.0",
+            "version": VERSION,
             "stage": STAGE,
             "report_type": "path_validation_report",
             "ts_code": "600150.SH",
