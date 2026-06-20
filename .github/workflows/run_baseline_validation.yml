@@ -33,6 +33,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git restore \
+            docs/data/latest_baseline_model_report.json \
+            docs/data/baseline_registry.json \
+            docs/baseline.html \
+            docs/index.html \
+            reports/latest_baseline_model_report.md \
+            reports/archive/*_baseline_model_report.md || true
           git add \
             docs/data/latest_baseline_validation_report.json \
             docs/data/baseline_validation_registry.json \
