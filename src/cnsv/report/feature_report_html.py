@@ -22,16 +22,19 @@ HTML = """<!doctype html>
     section { background: var(--surface); border-radius: 22px; padding: 28px; margin: 18px 0; box-shadow: var(--shadow); overflow: hidden; }
     h2 { font-size: 14px; margin: 0 0 18px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; }
+    .strip { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
     .metric { border: 1px solid rgba(210,210,215,.8); border-radius: 18px; padding: 18px; background: var(--soft); min-height: 96px; }
+    .strip .metric { min-height: 0; padding: 9px 12px; border-radius: 999px; flex: 0 1 auto; display: flex; align-items: center; gap: 8px; }
     .label { color: var(--muted); font-size: 14px; line-height: 1.35; }
     .value { font-size: 14px; font-weight: 700; margin-top: 12px; overflow-wrap: anywhere; line-height: 1.25; }
+    .strip .label, .strip .value { font-size: 12px; margin: 0; line-height: 1.2; white-space: nowrap; }
     #gate .value { font-size: 12px; }
     .ok { color: var(--green); } .bad { color: var(--red); }
     details { border: 1px solid rgba(210,210,215,.9); border-radius: 18px; background: var(--soft); margin: 14px 0; overflow: hidden; }
     summary { cursor: pointer; list-style: none; padding: 18px 20px; display: flex; justify-content: space-between; gap: 16px; }
     summary::-webkit-details-marker { display: none; }
-    summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--blue); border-bottom: 2px solid var(--blue); transform: rotate(45deg); margin: 5px 2px 0 auto; flex: 0 0 auto; }
-    details[open] summary::after { transform: rotate(225deg); margin-top: 10px; }
+    summary::after { content: "+"; color: var(--blue); font-size: 18px; font-weight: 700; line-height: 1; margin-left: auto; flex: 0 0 auto; }
+    details[open] summary::after { content: "-"; }
     .summary-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
     .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; color: #424245; font-size: 14px; }
@@ -40,7 +43,7 @@ HTML = """<!doctype html>
     table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
     th, td { text-align: left; border-top: 1px solid #e8e8ed; padding: 12px 16px; vertical-align: top; }
     th { color: var(--muted); width: 46%; }
-    @media (max-width: 640px) { main { padding: 22px 14px 36px; } header { text-align: left; padding: 10px 0 18px; } .subtitle { font-size: 17px; margin-left: 0; } section { border-radius: 18px; padding: 18px; } th, td { display: block; width: 100%; padding: 8px 10px; } td { border-top: 0; padding-top: 0; } }
+    @media (max-width: 640px) { main { padding: 22px 14px 36px; } header { text-align: left; padding: 10px 0 18px; } .subtitle { font-size: 17px; margin-left: 0; } section { border-radius: 18px; padding: 18px; } .strip { gap: 8px; } th, td { display: block; width: 100%; padding: 8px 10px; } td { border-top: 0; padding-top: 0; } }
   </style>
 </head>
 <body>
@@ -49,7 +52,7 @@ HTML = """<!doctype html>
     <p class="eyebrow">CNSV V1.1 FEATURE REPORT</p>
     <h1>中国船舶数据状态与特征报告</h1>
   </header>
-  <section><h2>数据报告</h2><div id="dataReport" class="grid"></div></section>
+  <section><h2>数据报告</h2><div id="dataReport" class="strip"></div></section>
   <section><h2>特征报告</h2><div id="featureMeta" class="grid"></div></section>
   <section><h2>门禁状态</h2><div id="gate" class="grid"></div></section>
   <section><h2>特征质量</h2><div id="quality" class="grid"></div><div id="qualityDetails"></div></section>
