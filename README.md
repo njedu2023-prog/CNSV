@@ -2,7 +2,35 @@
 
 CNSV 是中国船舶 `600150.SH` 实盘人工量化波段系统的主程序仓库。
 
-## V1.1 当前阶段
+## V1.2 当前阶段
+
+当前阶段是基准模型层。V1.2 在 V1.1 特征层基础上，构建透明、可解释、可测试的 5D/10D/20D 终端收益分布基准模型。
+
+V1.2 新增：
+
+- `B0_random_walk` 随机游走基准
+- `B1_historical_distribution` 历史分布基准
+- `B2_state_grouped_distribution` 状态分组历史分布，样本不足时透明回退
+- `B3_volatility_adjusted` 波动率调整历史分布
+- Baseline Quality 检查
+- Baseline Registry
+- `latest_baseline_model_report.json`、`latest_baseline_model_report.md`
+- `docs/baseline.html` 基准模型看板
+
+V1.2 仍然不做：
+
+- 不生成正式买卖信号
+- 不输出买入/卖出建议
+- 不输出目标仓位或目标股数
+- 不输出止盈止损
+- 不开发 20D 路径抽样或触达概率
+- 不开发正式回测引擎
+- 不连接券商接口
+- 不自动下单
+- 不配置或使用 `TUSHARE_TOKEN`
+- 不绕过 `CNSVdata`
+
+## V1.1 特征层
 
 当前阶段是基础特征增强与资金流核心层。V1.1 在 V1.0 数据接线层已经跑通的基础上，构建稳定、可解释、可测试的基础特征层。
 
@@ -82,6 +110,7 @@ python -m cnsv.cli.check_data
 python -m cnsv.cli.build_features
 python -m cnsv.cli.generate_data_report
 python -m cnsv.cli.generate_feature_report
+python -m cnsv.cli.run_baseline_models
 ```
 
 报告输出：
@@ -90,11 +119,16 @@ python -m cnsv.cli.generate_feature_report
 docs/data/latest_data_report.json
 docs/data/latest_feature_report.json
 docs/data/feature_registry.json
+docs/data/latest_baseline_model_report.json
+docs/data/baseline_registry.json
 reports/latest_data_report.md
 reports/latest_feature_report.md
+reports/latest_baseline_model_report.md
 reports/archive/YYYY-MM-DD_data_report.md
 reports/archive/YYYY-MM-DD_feature_report.md
+reports/archive/YYYY-MM-DD_baseline_model_report.md
 docs/index.html
+docs/baseline.html
 ```
 
 ## GitHub Actions
@@ -118,3 +152,13 @@ python -m cnsv.cli.generate_feature_report
 ```
 
 随后提交 V1.1 Feature Report、Feature Registry 和 `docs/index.html`。
+
+`.github/workflows/run_baseline_models.yml` 会执行：
+
+```text
+pip install -r requirements.txt
+pytest
+python -m cnsv.cli.run_baseline_models
+```
+
+随后提交 V1.2 Baseline Model Report、Baseline Registry 和 `docs/baseline.html`。
