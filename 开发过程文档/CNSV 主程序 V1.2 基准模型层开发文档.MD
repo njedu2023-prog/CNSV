@@ -1,691 +1,706 @@
-# CNSV 主程序 V1.1 基础特征增强与资金流核心层开发文档
+# CNSV 主程序 V1.2 基准模型层开发文档
 
 > 仓库：`njedu2023-prog/CNSV`  
-> 上游：`njedu2023-prog/CNSVdata`  
+> 上游数据仓库：`njedu2023-prog/CNSVdata`  
 > 标的：`600150.SH / 中国船舶`  
-> 阶段定位：V1.0 数据接线层已经跑通，V1.1 进入“基础特征增强 + 资金流核心层”阶段。  
+> 当前阶段：V1.0 数据接线层已完成，V1.1 基础特征增强与资金流核心层已完成，进入 V1.2 基准模型层。  
 > 开发对象：Codex  
-> 重要边界：本阶段仍然不生成正式买卖信号，不输出买入/卖出建议，不自动下单，不连接券商。
+> 文档定位：本文件是 CNSV 主程序第三阶段开发规格。V1.2 的目标是建立透明、可解释、可测试、可验收的基准模型体系，为后续 20D 路径预测、回测和试运行辅助打基础。
 
 ---
 
-## 0. 当前状态
+## 0. 当前阶段背景
 
-V1.0 已经完成：
-
-```text
-1. CNSV 主程序能读取 CNSVdata
-2. downstream_ready 门禁已接入
-3. data_manifest 已接入
-4. processed parquet 已能读取
-5. latest_data_report.md 已能生成
-6. docs/data/latest_data_report.json 已能生成
-7. docs/index.html 已能展示
-8. Validation = PASS
-9. failed_count = 0
-10. warn_count = 0
-```
-
-当前报告显示：
+CNSV 当前已经完成：
 
 ```text
-ready: True
-status: PASS
-can_continue: True
-can_run_backtest: True
-can_use_moneyflow_as_strong_factor: True
-can_generate_formal_signal: False
+V1.0：数据接线层
+- 读取 CNSVdata
+- downstream_ready 门禁
+- data_manifest 读取
+- processed parquet 读取
+- latest_data_report.json / md / html
+- 禁止正式信号
 
-daily_rows: 3839
-one_min_rows: 1928
-moneyflow_rows: 3839
-latest_trade_date: 2026-06-18
+V1.1：基础特征增强与资金流核心层
+- price_volume 特征
+- minute_structure 特征
+- moneyflow 特征
+- trend 特征
+- volatility 特征
+- feature_quality
+- feature_registry
+- latest_feature_report.json / md / html
 ```
 
-所以 V1.0 地基已经完成，可以进入 V1.1。
+当前已经可以做到：
+
+```text
+数据可读
+特征可算
+资金流可作为强因子
+报告可生成
+HTML 可展示
+pytest / workflow 可运行
+```
+
+现在进入 V1.2。
 
 ---
 
-## 1. V1.1 总目标
+## 1. V1.2 一句话目标
 
-V1.1 的目标是：
-
-```text
-把 V1.0 的“能读数据”升级为“能产出稳定、可解释、可测试的基础特征层”。
-```
-
-重点是：
+V1.2 只做一件事：
 
 ```text
-资金流特征
-量价特征
-分钟结构特征
-趋势特征
-波动率特征
-特征质量检查
-特征报告
+建立 CNSV 的透明基准模型层。
 ```
 
-V1.1 不是交易信号阶段。
+不要一上来开发复杂模型。
+
+不要生成正式交易信号。
+
+不要输出买入卖出建议。
+
+V1.2 的核心是：
+
+```text
+先知道“不用复杂模型时，中国船舶未来收益分布大概是什么样”。
+```
+
+后续所有复杂模型，都必须和这些基准模型比较，只有稳定优于基准，才有资格进入候选模型。
 
 ---
 
-## 2. V1.1 严格边界
+## 2. V1.2 严格边界
 
 ### 2.1 允许开发
 
 ```text
-1. 增强 price_volume_features.py
-2. 增强 minute_structure_features.py
-3. 增强 moneyflow_features.py
-4. 新增 trend_features.py
-5. 新增 volatility_features.py
-6. 新增 feature_quality.py
-7. 新增 feature_registry.py
-8. 新增 feature_report_json.py
-9. 新增 feature_report_md.py
-10. 新增 feature_report_html.py
-11. 新增 generate_feature_report CLI
-12. 新增 run_features.yml
-13. 新增 pytest 测试
-14. 更新 README.md
-15. 更新 docs/index.html
+1. 基准模型 B0：随机游走 / 不变价格模型
+2. 基准模型 B1：历史无条件收益分布模型
+3. 基准模型 B2：状态分组历史收益分布模型
+4. 基准模型 B3：简单波动率调整模型
+5. 20D 基础终点收益分布
+6. 5D / 10D / 20D 研究型收益分布
+7. 基础分位数输出
+8. 基础区间覆盖率检查
+9. 基准模型报告
+10. baseline_model_report.json
+11. baseline_model_report.md
+12. baseline.html / index 页面入口
+13. pytest 测试
+14. run_baseline_models.yml workflow
 ```
 
 ### 2.2 严格禁止
 
 ```text
-1. 不生成正式买卖信号
-2. 不输出买入建议
-3. 不输出卖出建议
-4. 不输出目标仓位
-5. 不输出目标股数
-6. 不输出止损价
-7. 不输出止盈价
-8. 不开发 20D 路径预测
-9. 不开发目标先到概率
-10. 不开发正式回测引擎
-11. 不开发成交仿真
-12. 不进入 live_assist_mode
-13. 不连接券商接口
-14. 不自动下单
-15. 不使用 TUSHARE_TOKEN
-16. 不绕过 CNSVdata
-17. 不把 feature_report 命名为 signal_report
+1. 不生成正式买入信号
+2. 不生成正式卖出信号
+3. 不输出目标仓位
+4. 不输出目标股数
+5. 不输出止损价
+6. 不输出止盈价
+7. 不输出交易建议
+8. 不进入 live_assist_mode
+9. 不开发自动下单
+10. 不连接券商接口
+11. 不使用 TUSHARE_TOKEN
+12. 不绕过 CNSVdata
+13. 不开发复杂深度学习模型
+14. 不开发强化学习模型
+15. 不开发 champion/challenger 上线机制
+16. 不把 baseline report 命名为 signal report
+17. 不把概率分布解释成交易指令
 ```
 
 ---
 
-## 3. V1.1 新增/强化目录
+## 3. V1.2 模型定义
 
-请在现有 V1.0 基础上新增或强化：
+### 3.1 预测目标
+
+V1.2 只预测研究型收益分布，不生成交易动作。
+
+预测目标：
 
 ```text
-src/cnsv/features/
-├── price_volume_features.py
-├── minute_structure_features.py
-├── moneyflow_features.py
-├── trend_features.py
-├── volatility_features.py
-├── feature_quality.py
-├── feature_registry.py
-└── feature_bundle.py
-
-src/cnsv/report/
-├── feature_report_json.py
-├── feature_report_md.py
-└── feature_report_html.py
-
-src/cnsv/cli/
-├── build_features.py
-└── generate_feature_report.py
-
-reports/
-├── latest_feature_report.md
-└── archive/YYYY-MM-DD_feature_report.md
-
-docs/data/
-├── latest_feature_report.json
-└── feature_registry.json
-
-.github/workflows/
-└── run_features.yml
+5D terminal_return
+10D terminal_return
+20D terminal_return
 ```
+
+核心收益定义：
+
+```text
+terminal_return_h = ln(close[t+h] / close[t])
+```
+
+其中：
+
+```text
+h = 5, 10, 20 个 A 股交易日
+```
+
+V1.2 暂不做：
+
+```text
+60D 正式预测
+120D 正式预测
+路径预测
+触碰概率
+目标先到概率
+止损先到概率
+```
+
+这些属于后续阶段。
 
 ---
 
-## 4. 资金流特征开发要求
+## 4. 基准模型体系
+
+### 4.1 B0：随机游走 / 不变价格模型
 
 文件：
 
 ```text
-src/cnsv/features/moneyflow_features.py
+src/cnsv/models/baseline_b0_random_walk.py
 ```
 
-### 4.1 输入
+定义：
 
 ```text
-data_bundle["moneyflow"]
-data_bundle["daily"]
-gate["can_use_moneyflow_as_strong_factor"]
+未来期望收益 = 0
+未来终点价格 = 当前收盘价
+收益分布可用近期历史波动估计
 ```
 
-moneyflow 参考字段：
+输出字段：
 
 ```text
-trade_date
-buy_sm_amount
-sell_sm_amount
-buy_md_amount
-sell_md_amount
-buy_lg_amount
-sell_lg_amount
-buy_elg_amount
-sell_elg_amount
-net_mf_amount
+model_id: B0_random_walk
+horizon
+current_close
+expected_return
+expected_price
+volatility_estimate
+p10_return
+p50_return
+p90_return
+p10_price
+p50_price
+p90_price
 ```
 
-如果字段缺失，不能报假 PASS，必须在 feature_quality 中 WARN 或 FAIL。
-
-### 4.2 必须输出字段
+要求：
 
 ```text
-moneyflow_latest_trade_date
-net_mf_amount
-net_mf_ratio
-small_order_net
-medium_order_net
-large_order_net
-extra_large_order_net
-main_force_net
-main_force_ratio
+B0 是最低基准。
+任何复杂模型至少要比 B0 更有解释力。
+```
+
+---
+
+### 4.2 B1：历史无条件收益分布模型
+
+文件：
+
+```text
+src/cnsv/models/baseline_b1_historical_distribution.py
+```
+
+定义：
+
+```text
+使用历史所有 h 日收益作为未来 h 日收益分布。
+```
+
+对每个 horizon：
+
+```text
+5D
+10D
+20D
+```
+
+计算：
+
+```text
+sample_size
+mean_return
+median_return
+std_return
+p05_return
+p10_return
+p25_return
+p50_return
+p75_return
+p90_return
+p95_return
+positive_prob
+negative_prob
+expected_price
+p10_price
+p50_price
+p90_price
+```
+
+要求：
+
+```text
+不得使用未来数据泄露。
+每个 t 的 h 日收益只能用历史 close[t+h] / close[t] 计算。
+```
+
+---
+
+### 4.3 B2：状态分组历史收益分布模型
+
+文件：
+
+```text
+src/cnsv/models/baseline_b2_state_grouped_distribution.py
+```
+
+目标：
+
+```text
+在不同状态下，历史未来收益分布不同。
+```
+
+分组状态来自 V1.1 feature：
+
+```text
+trend_state
+volatility_state
 flow_strength_basic
-flow_strength_score
-flow_continuity_3d
-flow_continuity_5d
-flow_continuity_10d
-positive_flow_days_5d
-positive_flow_days_10d
-flow_reversal_1d
-flow_reversal_3d
 price_flow_confirm
 price_flow_divergence
-volume_flow_confirm
-can_use_as_strong_factor
-moneyflow_warning
 ```
 
-### 4.3 计算定义
+第一版至少支持以下状态组合：
 
 ```text
-small_order_net = buy_sm_amount - sell_sm_amount
-medium_order_net = buy_md_amount - sell_md_amount
-large_order_net = buy_lg_amount - sell_lg_amount
-extra_large_order_net = buy_elg_amount - sell_elg_amount
-main_force_net = large_order_net + extra_large_order_net
-net_mf_ratio = net_mf_amount / daily.amount
-main_force_ratio = main_force_net / daily.amount
-```
-
-如果 `daily.amount` 缺失或为 0，输出 null，并给 WARN。
-
-### 4.4 flow_strength_basic
-
-```text
-main_force_net > 0 且 net_mf_amount > 0 -> positive
-main_force_net < 0 且 net_mf_amount < 0 -> negative
-其他 -> mixed
-```
-
-### 4.5 flow_strength_score
-
-范围必须限制在：
-
-```text
--100 到 +100
-```
-
-建议第一版：
-
-```text
-score = 50 * clip(net_mf_ratio / 0.05, -1, 1)
-      + 50 * clip(main_force_ratio / 0.05, -1, 1)
-```
-
-### 4.6 price_flow_confirm
-
-```text
-price_ret_1d > 0 且 net_mf_amount > 0 -> True
-price_ret_1d < 0 且 net_mf_amount < 0 -> True
-其他 -> False
-```
-
-### 4.7 price_flow_divergence
-
-```text
-price_ret_1d > 0 且 net_mf_amount < 0 -> True
-price_ret_1d < 0 且 net_mf_amount > 0 -> True
-其他 -> False
-```
-
-### 4.8 volume_flow_confirm
-
-```text
-volume_ratio_5d > 1 且 net_mf_amount > 0 -> inflow_confirmed
-volume_ratio_5d > 1 且 net_mf_amount < 0 -> outflow_confirmed
-其他 -> neutral
-```
-
----
-
-## 5. 量价特征增强
-
-文件：
-
-```text
-src/cnsv/features/price_volume_features.py
-```
-
-必须输出：
-
-```text
-latest_trade_date
-latest_open
-latest_high
-latest_low
-latest_close
-latest_pre_close
-latest_pct_chg
-latest_volume
-latest_amount
-
-ma5
-ma10
-ma20
-ma60
-
-ret_1d
-ret_3d
-ret_5d
-ret_10d
-ret_20d
-ret_60d
-
-volume_ma5
-volume_ma20
-volume_ratio_5d
-volume_ratio_20d
-
-amount_ma5
-amount_ma20
-amount_ratio_5d
-amount_ratio_20d
-
-price_position_20d
-price_position_60d
-
-new_high_20d
-new_low_20d
-new_high_60d
-new_low_60d
-```
-
-`price_position_20d` 定义：
-
-```text
-(close - rolling_low_20d) / (rolling_high_20d - rolling_low_20d)
-```
-
-分母为 0 时输出 null，并由 feature_quality 记录 WARN。
-
----
-
-## 6. 分钟结构特征增强
-
-文件：
-
-```text
-src/cnsv/features/minute_structure_features.py
-```
-
-必须输出：
-
-```text
-latest_intraday_date
-latest_intraday_open
-latest_intraday_high
-latest_intraday_low
-latest_intraday_close
-
-intraday_range_pct
-close_position_in_day_range
-
-morning_return
-afternoon_return
-last_30min_return
-last_60min_return
-
-morning_volume_ratio
-afternoon_volume_ratio
-last_30min_volume_ratio
-last_60min_volume_ratio
-
-intraday_amount_sum
-intraday_volume_sum
-
-late_session_strength
-late_session_weakness
-intraday_reversal_flag
-```
-
-规则：
-
-```text
-late_session_strength:
-last_30min_return > 0 且 close_position_in_day_range > 0.6
-
-late_session_weakness:
-last_30min_return < 0 且 close_position_in_day_range < 0.4
-
-intraday_reversal_flag:
-close_position_in_day_range < 0.35 且 intraday_high 明显高于 close
-```
-
----
-
-## 7. 趋势特征
-
-新增：
-
-```text
-src/cnsv/features/trend_features.py
-```
-
-必须输出：
-
-```text
-trend_ma5_ma20
-trend_ma10_ma60
-close_above_ma5
-close_above_ma10
-close_above_ma20
-close_above_ma60
-ma5_slope
-ma10_slope
-ma20_slope
 trend_state
-```
-
-`trend_state` 建议规则：
-
-```text
-close > ma5 > ma10 > ma20 -> strong_uptrend
-close > ma20 且 ma5 > ma20 -> uptrend
-close < ma5 < ma10 < ma20 -> strong_downtrend
-close < ma20 -> downtrend
-其他 -> neutral
-```
-
----
-
-## 8. 波动率特征
-
-新增：
-
-```text
-src/cnsv/features/volatility_features.py
-```
-
-必须输出：
-
-```text
-realized_vol_5d
-realized_vol_10d
-realized_vol_20d
-atr_14d
-intraday_range_ma5
-intraday_range_ma20
 volatility_state
+flow_strength_basic
 ```
 
-`volatility_state` 建议规则：
+例如：
 
 ```text
-realized_vol_20d 位于过去一年 70% 分位以上 -> high_vol
-realized_vol_20d 位于过去一年 30% 分位以下 -> low_vol
-其他 -> normal_vol
-历史不足 -> unknown
+uptrend + normal_vol + positive_flow
+downtrend + high_vol + negative_flow
+neutral + normal_vol + mixed_flow
+```
+
+输出字段：
+
+```text
+model_id: B2_state_grouped_distribution
+horizon
+state_key
+state_sample_size
+fallback_used
+fallback_reason
+mean_return
+median_return
+p10_return
+p50_return
+p90_return
+positive_prob
+expected_price
+p10_price
+p50_price
+p90_price
+```
+
+样本不足规则：
+
+```text
+如果 state_sample_size < 30：
+  fallback 到 B1 historical_distribution
+  fallback_used = true
 ```
 
 ---
 
-## 9. 特征质量检查
+### 4.4 B3：简单波动率调整模型
+
+文件：
+
+```text
+src/cnsv/models/baseline_b3_volatility_adjusted.py
+```
+
+目标：
+
+```text
+用当前波动状态调整未来分布宽度。
+```
+
+第一版不做 GARCH，只做简单波动率缩放。
+
+输入：
+
+```text
+realized_vol_20d
+历史 h 日收益 std
+```
+
+定义：
+
+```text
+adjusted_std = historical_std * current_vol / long_term_vol
+```
+
+输出：
+
+```text
+model_id: B3_volatility_adjusted
+horizon
+mean_return
+adjusted_std
+volatility_scale
+p10_return
+p50_return
+p90_return
+p10_price
+p50_price
+p90_price
+```
+
+限制：
+
+```text
+volatility_scale 必须有上下限，例如 0.5 到 2.0。
+```
+
+---
+
+## 5. 模型目录结构
 
 新增：
 
 ```text
-src/cnsv/features/feature_quality.py
+src/cnsv/models/
+├── __init__.py
+├── baseline_b0_random_walk.py
+├── baseline_b1_historical_distribution.py
+├── baseline_b2_state_grouped_distribution.py
+├── baseline_b3_volatility_adjusted.py
+├── baseline_registry.py
+├── baseline_runner.py
+├── baseline_evaluator.py
+└── baseline_schema.py
 ```
 
-必须检查：
+---
+
+## 6. baseline_runner
+
+文件：
 
 ```text
-1. 特征是否为空
-2. 关键特征是否为 null
-3. 是否出现 inf
-4. 是否出现 nan
-5. moneyflow 是否允许作为强因子
-6. 数据行数是否足够
-7. 最新交易日是否一致
+src/cnsv/models/baseline_runner.py
 ```
 
-输出结构：
+必须实现：
+
+```python
+def run_all_baselines(data_bundle: dict, feature_bundle: dict, horizons: list[int]) -> dict:
+    ...
+```
+
+输入：
+
+```text
+data_bundle
+feature_bundle
+horizons = [5, 10, 20]
+```
+
+输出：
 
 ```python
 {
     "status": "PASS|WARN|FAIL",
+    "generated_at": "",
+    "latest_trade_date": "",
+    "current_close": 0,
+    "horizons": [5, 10, 20],
+    "models": {
+        "B0_random_walk": {},
+        "B1_historical_distribution": {},
+        "B2_state_grouped_distribution": {},
+        "B3_volatility_adjusted": {}
+    },
+    "warnings": [],
     "failed_count": 0,
-    "warn_count": 0,
-    "checks": []
+    "warn_count": 0
+}
+```
+
+---
+
+## 7. baseline_evaluator
+
+文件：
+
+```text
+src/cnsv/models/baseline_evaluator.py
+```
+
+V1.2 不做完整样本外回测，但必须做基础自检。
+
+必须检查：
+
+```text
+1. 每个模型是否输出完整
+2. 每个 horizon 是否存在
+3. 分位数是否顺序正确：p10 <= p50 <= p90
+4. 价格是否为正
+5. sample_size 是否足够
+6. fallback 是否被标注
+7. 不能出现 nan / inf
+```
+
+输出：
+
+```python
+{
+    "status": "PASS|WARN|FAIL",
+    "checks": [],
+    "failed_count": 0,
+    "warn_count": 0
 }
 ```
 
 规则：
 
 ```text
-核心 daily 特征不可计算 -> FAIL
-核心 minute 特征不可计算 -> FAIL
-moneyflow 不可作为强因子 -> WARN
-非核心特征 null -> WARN
-出现 inf -> FAIL
+缺核心模型 -> FAIL
+分位数顺序错误 -> FAIL
+价格小于等于 0 -> FAIL
+样本不足但有 fallback -> WARN
+nan / inf -> FAIL
 ```
 
 ---
 
-## 10. 特征注册表
+## 8. baseline_registry
 
-新增：
+文件：
 
 ```text
-src/cnsv/features/feature_registry.py
+src/cnsv/models/baseline_registry.py
 ```
 
 必须记录：
 
 ```text
-feature_name
-category
+model_id
+model_name
 description
-source
-formula
-required
-used_in_v1_1
+input_data
+input_features
+horizons
+output_fields
+is_trade_signal
+stage
+```
+
+所有 V1.2 模型：
+
+```text
+is_trade_signal = false
+stage = V1.2_baseline_model
 ```
 
 输出到：
 
 ```text
-docs/data/feature_registry.json
+docs/data/baseline_registry.json
 ```
 
 ---
 
-## 11. Feature Report
+## 9. Baseline Report
 
-### 11.1 JSON 输出
+### 9.1 JSON 报告
 
 新增：
 
 ```text
-docs/data/latest_feature_report.json
+docs/data/latest_baseline_model_report.json
 ```
 
-必须包含：
+结构：
 
 ```json
 {
   "meta": {
     "system": "CNSV",
-    "version": "1.1.0",
-    "report_type": "feature_report",
+    "version": "1.2.0",
+    "report_type": "baseline_model_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
     "generated_at": "",
-    "latest_trade_date": ""
+    "latest_trade_date": "",
+    "is_trade_signal": false
   },
   "cnsvdata_gate": {},
-  "data_manifest": {},
-  "feature_quality": {
+  "feature_quality": {},
+  "baseline_quality": {
     "status": "PASS",
     "failed_count": 0,
     "warn_count": 0,
     "checks": []
   },
-  "features": {
-    "price_volume": {},
-    "minute_structure": {},
-    "moneyflow": {},
-    "trend": {},
-    "volatility": {}
+  "current_state": {
+    "latest_close": 0,
+    "trend_state": "",
+    "volatility_state": "",
+    "flow_strength_basic": "",
+    "can_use_moneyflow_as_strong_factor": true
   },
-  "feature_registry": [],
+  "baseline_models": {
+    "B0_random_walk": {},
+    "B1_historical_distribution": {},
+    "B2_state_grouped_distribution": {},
+    "B3_volatility_adjusted": {}
+  },
+  "baseline_registry": [],
   "forbidden_actions": [
     "formal_signal_generation",
     "auto_order",
     "broker_api"
   ],
-  "next_stage": "V1.2 baseline models"
+  "next_stage": "V1.3 20D path distribution"
 }
 ```
 
-### 11.2 Markdown 输出
+### 9.2 Markdown 报告
 
 新增：
 
 ```text
-reports/latest_feature_report.md
-reports/archive/YYYY-MM-DD_feature_report.md
+reports/latest_baseline_model_report.md
+reports/archive/YYYY-MM-DD_baseline_model_report.md
 ```
 
 必须包含：
 
 ```text
-1. CNSVdata Gate 状态
+1. Gate 状态
 2. Feature Quality 状态
-3. 最新交易日
-4. 量价特征摘要
-5. 分钟结构特征摘要
-6. 资金流特征摘要
-7. 趋势特征摘要
-8. 波动率特征摘要
-9. 资金流是否可作为强因子
-10. 禁止动作
-11. 下一阶段建议
+3. Baseline Quality 状态
+4. 最新交易日
+5. 当前收盘价
+6. 当前 trend_state
+7. 当前 volatility_state
+8. 当前 flow_strength_basic
+9. B0 模型摘要
+10. B1 模型摘要
+11. B2 模型摘要
+12. B3 模型摘要
+13. 5D / 10D / 20D 分布摘要
+14. 样本数量
+15. fallback 情况
+16. 禁止动作
+17. 下一阶段建议
 ```
 
-### 11.3 HTML 输出
+### 9.3 HTML 页面
 
-更新：
+新增：
+
+```text
+docs/baseline.html
+```
+
+并更新：
 
 ```text
 docs/index.html
 ```
 
-至少展示：
+`index.html` 增加入口：
 
 ```text
 Data Report
 Feature Report
-Gate Status
-Feature Quality
-Moneyflow Summary
-Trend Summary
-Volatility Summary
+Baseline Model Report
 ```
+
+baseline.html 读取：
+
+```text
+docs/data/latest_baseline_model_report.json
+```
+
+展示：
+
+```text
+B0/B1/B2/B3
+5D/10D/20D 分位数
+当前状态
+baseline_quality
+forbidden_actions
+```
+
+不得写死数据。
 
 ---
 
-## 12. CLI 命令
-
-### 12.1 构建特征
-
-```bash
-python -m cnsv.cli.build_features
-```
-
-必须：
-
-```text
-读取 CNSVdata
-构建 V1.1 所有特征
-输出控制台摘要
-```
-
-### 12.2 生成特征报告
+## 10. CLI 命令
 
 新增：
 
 ```bash
-python -m cnsv.cli.generate_feature_report
+python -m cnsv.cli.run_baseline_models
 ```
 
-必须：
+必须执行：
 
 ```text
 1. 读取 CNSVdata
 2. 读取 downstream_ready
 3. 构建 feature_bundle
-4. 运行 feature_quality
-5. 输出 latest_feature_report.json
-6. 输出 latest_feature_report.md
-7. 更新 docs/index.html
+4. 运行 B0/B1/B2/B3
+5. 运行 baseline_evaluator
+6. 输出 latest_baseline_model_report.json
+7. 输出 latest_baseline_model_report.md
+8. 输出 baseline.html
+9. 更新 index.html
 ```
 
 ---
 
-## 13. GitHub Actions
+## 11. GitHub Actions
 
 新增：
 
 ```text
-.github/workflows/run_features.yml
+.github/workflows/run_baseline_models.yml
 ```
 
-内容建议：
+建议内容：
 
 ```yaml
-name: Run CNSV Features
+name: Run CNSV Baseline Models
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 9 * * 1-5"
+    - cron: "25 9 * * 1-5"
 
 permissions:
   contents: write
 
 jobs:
-  run-features:
+  run-baseline-models:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: ${{ github.workspace }}/src
@@ -700,93 +715,105 @@ jobs:
 
       - run: pytest
 
-      - run: python -m cnsv.cli.generate_feature_report
+      - run: python -m cnsv.cli.run_baseline_models
 
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports docs
-          git diff --cached --quiet || git commit -m "report: update CNSV feature report"
+          git diff --cached --quiet || git commit -m "report: update CNSV baseline model report"
           git push
 ```
 
 说明：
 
 ```text
-09:15 UTC = 北京时间 17:15
+09:25 UTC = 北京时间 17:25
+```
+
+执行顺序：
+
+```text
+CNSVdata Acceptance：约 16:50
+CNSV check_data：约 17:05
+CNSV run_features：约 17:15
+CNSV run_baseline_models：约 17:25
 ```
 
 ---
 
-## 14. 测试要求
+## 12. 测试要求
 
 新增测试：
 
 ```text
-tests/test_price_volume_features.py
-tests/test_minute_structure_features.py
-tests/test_moneyflow_features.py
-tests/test_trend_features.py
-tests/test_volatility_features.py
-tests/test_feature_quality.py
-tests/test_feature_registry.py
-tests/test_feature_report_json.py
-tests/test_feature_cli.py
+tests/test_baseline_b0_random_walk.py
+tests/test_baseline_b1_historical_distribution.py
+tests/test_baseline_b2_state_grouped_distribution.py
+tests/test_baseline_b3_volatility_adjusted.py
+tests/test_baseline_runner.py
+tests/test_baseline_evaluator.py
+tests/test_baseline_registry.py
+tests/test_baseline_report_json.py
+tests/test_baseline_cli.py
 ```
 
 必须测试：
 
 ```text
-1. net_mf_ratio 计算正确
-2. main_force_net 计算正确
-3. flow_strength_score 限制在 -100 到 100
-4. price_flow_divergence 可识别
-5. volume_flow_confirm 可识别
-6. trend_state 可识别
-7. volatility_state 可识别
-8. feature_quality 能识别 nan / inf
-9. latest_feature_report.json 结构完整
-10. generate_feature_report CLI 可运行
+1. B0 输出完整
+2. B1 分位数顺序正确
+3. B2 样本不足时 fallback 到 B1
+4. B3 volatility_scale 有上下限
+5. 所有价格输出为正
+6. 不出现 nan / inf
+7. baseline_evaluator 能识别分位数顺序错误
+8. latest_baseline_model_report.json 结构完整
+9. run_baseline_models CLI 可运行
+10. forbidden_actions 包含 formal_signal_generation
 ```
 
-测试不得依赖真实网络，必须使用 mock DataFrame。
+测试不得依赖真实网络。
+
+必须使用 mock DataFrame / mock feature_bundle。
 
 ---
 
-## 15. V1.1 验收标准
+## 13. V1.2 验收标准
 
 完成后必须能运行：
 
 ```bash
 pip install -r requirements.txt
 pytest
-python -m cnsv.cli.build_features
-python -m cnsv.cli.generate_feature_report
+python -m cnsv.cli.run_baseline_models
 ```
 
 必须生成：
 
 ```text
-docs/data/latest_feature_report.json
-reports/latest_feature_report.md
-docs/data/feature_registry.json
+docs/data/latest_baseline_model_report.json
+docs/data/baseline_registry.json
+reports/latest_baseline_model_report.md
+docs/baseline.html
 docs/index.html
 ```
 
 并且：
 
 ```text
-feature_quality.status = PASS
+baseline_quality.status = PASS
 failed_count = 0
+is_trade_signal = false
 can_generate_formal_signal = false
 forbidden_actions 包含 formal_signal_generation
 ```
 
 ---
 
-## 16. 本阶段不做
+## 14. 本阶段不做
 
-V1.1 不做：
+V1.2 不做：
 
 ```text
 1. 正式买入信号
@@ -795,18 +822,22 @@ V1.1 不做：
 4. 目标股数
 5. 止损价
 6. 止盈价
-7. 20D 路径预测
-8. 目标先到概率
-9. 回测引擎
-10. 成交仿真
-11. live_assist_mode
-12. 自动下单
-13. 券商接口
+7. 20D 路径采样
+8. 触碰概率
+9. 目标先到概率
+10. 止损先到概率
+11. 正式回测结论
+12. 成交仿真
+13. live_assist_mode
+14. 自动下单
+15. 券商接口
 ```
+
+V1.2 是基准模型，不是交易系统。
 
 ---
 
-## 17. 后续阶段
+## 15. 与后续阶段关系
 
 ```text
 V1.0 = 数据接线层
@@ -817,9 +848,13 @@ V1.4 = 回测与成交仿真
 V1.5 = 试运行辅助报告
 ```
 
+V1.2 完成后，才允许进入 V1.3。
+
 ---
 
-## 18. Codex 完成后必须汇报
+## 16. Codex 完成后必须汇报
+
+请按以下格式汇报：
 
 ```text
 一、修改文件清单
@@ -829,86 +864,96 @@ V1.5 = 试运行辅助报告
 五、是否使用 TUSHARE_TOKEN
 六、是否生成正式信号
 七、pytest 是否通过
-八、run_features.yml 是否可运行
-九、latest_feature_report.json 是否生成
-十、latest_feature_report.md 是否生成
-十一、feature_quality 当前状态
-十二、moneyflow 是否可作为强因子
+八、run_baseline_models.yml 是否可运行
+九、latest_baseline_model_report.json 是否生成
+十、latest_baseline_model_report.md 是否生成
+十一、baseline_quality 当前状态
+十二、B0/B1/B2/B3 是否全部输出
 十三、是否仍然禁止 formal_signal_generation
-十四、下一步建议
+十四、是否存在 fallback
+十五、下一步建议
 ```
 
 ---
 
-## 19. 给 Codex 的最终执行口令
+## 17. 给 Codex 的最终执行口令
 
 ```text
 继续 CNSV 主程序仓库开发。
 
-当前阶段：CNSV V1.1 基础特征增强与资金流核心层。
+当前阶段：CNSV V1.2 基准模型层。
 
-V1.0 数据接线层已经跑通。现在不要开发正式交易信号，不要开发路径预测，不要开发回测引擎。请只做基础特征增强，重点强化 A 股实战最重要的资金流特征。
+V1.0 数据接线层已经跑通，V1.1 基础特征增强与资金流核心层已经完成。现在不要开发正式交易信号，不要开发路径预测，不要开发回测引擎。请只做透明基准模型层。
 
 请一次性完成：
 
-1. 增强 src/cnsv/features/price_volume_features.py
-2. 增强 src/cnsv/features/minute_structure_features.py
-3. 增强 src/cnsv/features/moneyflow_features.py
-4. 新增 src/cnsv/features/trend_features.py
-5. 新增 src/cnsv/features/volatility_features.py
-6. 新增 src/cnsv/features/feature_quality.py
-7. 新增 src/cnsv/features/feature_registry.py
-8. 强化 src/cnsv/features/feature_bundle.py
-9. 新增 src/cnsv/report/feature_report_json.py
-10. 新增 src/cnsv/report/feature_report_md.py
-11. 新增 src/cnsv/report/feature_report_html.py
-12. 新增 python -m cnsv.cli.generate_feature_report
-13. 更新 python -m cnsv.cli.build_features
-14. 新增 .github/workflows/run_features.yml
-15. 新增相关 pytest 测试
-16. 更新 README.md
-17. 更新 docs/index.html
+1. 新增 src/cnsv/models/baseline_b0_random_walk.py
+2. 新增 src/cnsv/models/baseline_b1_historical_distribution.py
+3. 新增 src/cnsv/models/baseline_b2_state_grouped_distribution.py
+4. 新增 src/cnsv/models/baseline_b3_volatility_adjusted.py
+5. 新增 src/cnsv/models/baseline_registry.py
+6. 新增 src/cnsv/models/baseline_runner.py
+7. 新增 src/cnsv/models/baseline_evaluator.py
+8. 新增 src/cnsv/models/baseline_schema.py
+9. 新增 src/cnsv/report/baseline_report_json.py
+10. 新增 src/cnsv/report/baseline_report_md.py
+11. 新增 src/cnsv/report/baseline_report_html.py
+12. 新增 python -m cnsv.cli.run_baseline_models
+13. 新增 .github/workflows/run_baseline_models.yml
+14. 新增 tests/test_baseline_b0_random_walk.py
+15. 新增 tests/test_baseline_b1_historical_distribution.py
+16. 新增 tests/test_baseline_b2_state_grouped_distribution.py
+17. 新增 tests/test_baseline_b3_volatility_adjusted.py
+18. 新增 tests/test_baseline_runner.py
+19. 新增 tests/test_baseline_evaluator.py
+20. 新增 tests/test_baseline_registry.py
+21. 新增 tests/test_baseline_report_json.py
+22. 新增 tests/test_baseline_cli.py
+23. 更新 README.md
+24. 更新 docs/index.html
+25. 新增 docs/baseline.html
 
 必须生成：
-- docs/data/latest_feature_report.json
-- reports/latest_feature_report.md
-- docs/data/feature_registry.json
+- docs/data/latest_baseline_model_report.json
+- docs/data/baseline_registry.json
+- reports/latest_baseline_model_report.md
+- docs/baseline.html
 
 严格禁止：
 - 不生成正式买卖信号
 - 不输出买入/卖出建议
 - 不输出目标仓位
 - 不输出目标股数
-- 不开发 20D 路径预测
+- 不输出止损价/止盈价
+- 不开发 20D 路径采样
+- 不开发触碰概率
+- 不开发目标先到概率
 - 不开发回测引擎
 - 不连接券商
 - 不自动下单
 - 不使用 TUSHARE_TOKEN
 - 不绕过 CNSVdata
-- 不把 feature_report 命名为 signal_report
+- 不把 baseline_model_report 命名为 signal_report
 
 验收标准：
 - pytest 必须通过
-- python -m cnsv.cli.generate_feature_report 必须可运行
-- latest_feature_report.json 必须生成
-- latest_feature_report.md 必须生成
-- feature_quality.status 必须为 PASS
+- python -m cnsv.cli.run_baseline_models 必须可运行
+- latest_baseline_model_report.json 必须生成
+- latest_baseline_model_report.md 必须生成
+- baseline_quality.status 必须为 PASS
+- is_trade_signal 必须为 false
 - can_generate_formal_signal 必须仍为 false
 - forbidden_actions 必须包含 formal_signal_generation
 ```
 
 ---
 
-## 20. 最重要原则
+## 18. 最重要原则
 
 ```text
-V1.1 的核心不是预测，而是把特征层做扎实。
+V1.2 的核心不是预测交易，而是建立以后所有模型必须打败的透明基准。
 ```
 
-尤其是：
+没有基准模型，后面任何复杂模型都没有比较对象。
 
-```text
-资金流是 A 股波段系统的第一核心输入。
-```
-
-但本阶段仍然只是特征，不是信号。
+基准模型是 CNSV 专业化的必经层。
