@@ -19,6 +19,8 @@ HTML = """<!doctype html>
     .eyebrow { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; }
     h1 { font-size: 18px; margin: 0; line-height: 1.25; }
     .subtitle { max-width: 760px; margin: 12px auto 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    nav { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+    nav a { border: 1px solid var(--line); border-radius: 999px; color: var(--blue); text-decoration: none; padding: 6px 11px; font-size: 12px; background: #fff; }
     section { background: var(--surface); border-radius: 20px; padding: 22px 26px; margin: 16px 0; box-shadow: var(--shadow); overflow: hidden; }
     .section-head { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; margin-bottom: 14px; }
     h2 { font-size: 14px; margin: 0; line-height: 1.25; }
@@ -49,6 +51,7 @@ HTML = """<!doctype html>
     @media (max-width: 640px) {
       main { padding: 22px 14px 36px; }
       header { text-align: left; padding: 8px 0 18px; }
+      nav { justify-content: flex-start; }
       section { border-radius: 18px; padding: 18px; }
       .section-head { display: block; }
       .section-note { margin-top: 6px; }
@@ -64,6 +67,7 @@ HTML = """<!doctype html>
     <p class="eyebrow">CNSV V1.1 特征看板</p>
     <h1>中国船舶特征看板</h1>
     <p class="subtitle">展示 CNSVdata 准入、数据覆盖、特征质量和 V1.1 核心特征。页面不生成交易动作。</p>
+    <nav><a href="#coverage">数据状态</a><a href="#priceVolumeCards">特征看板</a><a href="baseline.html">基准模型看板</a></nav>
   </header>
 
   <section>
