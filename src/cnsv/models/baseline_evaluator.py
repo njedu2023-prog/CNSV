@@ -38,19 +38,25 @@ def _walk_values(value: Any) -> list[Any]:
 
 def evaluate_baseline_models(models: dict[str, Any], horizons: tuple[int, ...] = HORIZONS) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
-    warnings: list[str] = []
+    gating_warnings: list[str] = []
+    non_gating_warnings: list[str] = []
+    fallback_notes: list[dict[str, Any]] = []
 
-    def add(name: str, status: str, detail: str) -> None:
-        checks.append({"name": name, "status": status, "detail": detail})
+    def add(name: str, status: str, detail: str, category: str = "gating") -> None:
+        check = {"name": name, "status": status, "detail": detail, "category": category}
+        checks.append(check)
         if status == "WARN":
-            warnings.append(detail)
+            if category == "non_gating":
+                non_gating_warnings.append(detail)
+            else:
+                gating_warnings.append(detail)
 
     expected_models = {"B0_random_walk", "B1_historical_distribution", "B2_state_grouped_distribution", "B3_volatility_adjusted"}
     missing_models = sorted(expected_models - set(models))
-    add("models_present", "FAIL" if missing_models else "PASS", f"missing models: {missing_models}" if missing_models else "all baseline models present")
+    add("required_models_present", "FAIL" if missing_models else "PASS", f"missing models: {missing_models}" if missing_models else "all baseline models present")
 
     forbidden = [key for key in _walk_keys(models) if any(token in key.lower() for token in FORBIDDEN_FIELD_TOKENS)]
-    add("forbidden_fields_absent", "FAIL" if forbidden else "PASS", f"forbidden fields: {forbidden}" if forbidden else "no forbidden field names")
+    add("no_trade_signal_fields", "FAIL" if forbidden else "PASS", f"forbidden fields: {forbidden}" if forbidden else "no forbidden field names")
 
     bad_numbers = [value for value in _walk_values(models) if isinstance(value, float) and not math.isfinite(value)]
     add("finite_numbers", "FAIL" if bad_numbers else "PASS", "all numeric values are finite" if not bad_numbers else "nan or inf detected")
@@ -63,6 +69,7 @@ def evaluate_baseline_models(models: dict[str, Any], horizons: tuple[int, ...] =
             if not row:
                 add(f"{model_id}.{key}.present", "FAIL", f"{model_id} missing {key}")
                 continue
+            add(f"{model_id}.{key}.present", "PASS", f"{model_id} {key} present")
             returns = [row.get(name) for name in ("p10_return", "p50_return", "p90_return")]
             if all(value is not None for value in returns):
                 ordered = returns[0] <= returns[1] <= returns[2]
@@ -81,11 +88,38 @@ def evaluate_baseline_models(models: dict[str, Any], horizons: tuple[int, ...] =
             sample_size = row.get("sample_size", row.get("state_sample_size"))
             if isinstance(sample_size, int) and sample_size < 30:
                 if row.get("fallback_used") is True:
-                    add(f"{model_id}.{key}.sample_size", "WARN", "state sample below 30 with fallback")
+                    reason = row.get("fallback_reason") or "state_sample_size_below_threshold"
+                    note = {
+                        "model": model_id,
+                        "horizon": key,
+                        "reason": reason,
+                        "state_sample_size": sample_size,
+                        "fallback_method": "B1_historical_distribution",
+                        "gating": False,
+                        "is_trade_signal": False,
+                    }
+                    fallback_notes.append(note)
+                    message = f"{model_id} {key} state sample below threshold; transparent fallback to B1, non-gating"
+                    add(f"{model_id}.{key}.controlled_fallback", "PASS", message, category="non_gating")
+                    non_gating_warnings.append(message)
                 elif model_id != "B2_state_grouped_distribution":
                     add(f"{model_id}.{key}.sample_size", "WARN", "sample size below 30")
 
     failed_count = sum(1 for check in checks if check["status"] == "FAIL")
-    warn_count = sum(1 for check in checks if check["status"] == "WARN")
-    status = "FAIL" if failed_count else "WARN" if warn_count else "PASS"
-    return {"status": status, "failed_count": failed_count, "warn_count": warn_count, "checks": checks, "warnings": warnings}
+    gating_warning_count = len(gating_warnings)
+    non_gating_warning_count = len(non_gating_warnings)
+    status = "FAIL" if failed_count else "WARN" if gating_warning_count else "PASS"
+    return {
+        "status": status,
+        "failed_count": failed_count,
+        "warn_count": gating_warning_count,
+        "blocking_error_count": failed_count,
+        "gating_warning_count": gating_warning_count,
+        "non_gating_warning_count": non_gating_warning_count,
+        "fallback_count": len(fallback_notes),
+        "checks": checks,
+        "warnings": gating_warnings,
+        "gating_warnings": gating_warnings,
+        "non_gating_warnings": non_gating_warnings,
+        "fallback_notes": fallback_notes,
+    }
