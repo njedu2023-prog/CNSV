@@ -1,0 +1,318 @@
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "1.5",
+    "stage": "V1.5_human_decision_support",
+    "report_type": "human_decision_support_report",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "generated_at": "2026-06-20T17:39:06.912415+00:00",
+    "latest_trade_date": "2026-06-18",
+    "is_trade_signal": false
+  },
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": [
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
+    ],
+    "can_auto_order": false,
+    "can_connect_broker_api": false,
+    "support_stage_permission": "V1.5 only supports human-readable evidence review."
+  },
+  "evidence_availability": {
+    "all_required_available": true,
+    "available_reports": [
+      "data_report",
+      "feature_report",
+      "baseline_model_report",
+      "baseline_validation_report",
+      "path_distribution_report",
+      "path_validation_report",
+      "observation_backtest_report"
+    ],
+    "missing_reports": [],
+    "reports": {
+      "data_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json"
+      },
+      "feature_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json"
+      },
+      "baseline_model_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json"
+      },
+      "baseline_validation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json"
+      },
+      "path_distribution_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json"
+      },
+      "path_validation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json"
+      },
+      "observation_backtest_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json"
+      }
+    }
+  },
+  "human_decision_support_quality": {
+    "status": "WARN",
+    "failed_count": 0,
+    "warn_count": 2,
+    "blocking_error_count": 0,
+    "checks": [
+      {
+        "name": "version_is_1_5",
+        "status": "PASS",
+        "detail": "version=1.5"
+      },
+      {
+        "name": "is_trade_signal_false",
+        "status": "PASS",
+        "detail": "V1.5 remains observation support only"
+      },
+      {
+        "name": "forbidden_actions_present",
+        "status": "PASS",
+        "detail": "required forbidden actions present"
+      },
+      {
+        "name": "no_forbidden_trade_fields",
+        "status": "PASS",
+        "detail": "no forbidden trade action field names"
+      },
+      {
+        "name": "observation_backtest_available",
+        "status": "PASS",
+        "detail": "V1.4 evidence required"
+      },
+      {
+        "name": "required_sections_present",
+        "status": "PASS",
+        "detail": "all V1.5 sections exist"
+      },
+      {
+        "name": "p2_is_auxiliary",
+        "status": "PASS",
+        "detail": "P2 remains auxiliary"
+      },
+      {
+        "name": "missing_reports_degraded",
+        "status": "PASS",
+        "detail": "missing_reports=[]"
+      },
+      {
+        "name": "evidence_strength_not_insufficient",
+        "status": "PASS",
+        "detail": "evidence_strength=moderate"
+      },
+      {
+        "name": "human_review_flag",
+        "status": "WARN",
+        "detail": "human_review_required=True"
+      },
+      {
+        "name": "evidence_conflict",
+        "status": "WARN",
+        "detail": "evidence conflict requires human review"
+      }
+    ]
+  },
+  "current_state_summary": {
+    "latest_trade_date": "2026-06-18",
+    "latest_close": 36.14,
+    "trend_state": "downtrend",
+    "volatility_state": "normal_vol",
+    "flow_strength_basic": "mixed",
+    "data_quality_status": "PASS",
+    "feature_quality_status": "PASS",
+    "cnsvdata_gate_status": "PASS"
+  },
+  "model_evidence_summary": {
+    "terminal_distribution_summary": {
+      "B0_random_walk": {
+        "20D_median_return": null,
+        "20D_positive_probability": null,
+        "sample_size": 3819,
+        "fallback_used": null
+      },
+      "B1_historical_distribution": {
+        "20D_median_return": -0.0027598913562555207,
+        "20D_positive_probability": null,
+        "sample_size": 3819,
+        "fallback_used": null
+      },
+      "B2_state_grouped_distribution": {
+        "20D_median_return": 0.015880351368989434,
+        "20D_positive_probability": null,
+        "sample_size": null,
+        "fallback_used": false
+      },
+      "B3_volatility_adjusted": {
+        "20D_median_return": null,
+        "20D_positive_probability": null,
+        "sample_size": 3819,
+        "fallback_used": null
+      }
+    },
+    "path_distribution_summary": {
+      "P0_historical_path_replay": {
+        "20D_positive_terminal_prob": 0.48939512961508247,
+        "20D_touch_up_5pct_prob": 0.6035611416601204,
+        "20D_touch_down_5pct_prob": 0.5980623199790521,
+        "20D_max_drawdown_p50": -0.08520559559135232,
+        "fallback_used": false,
+        "state_sample_size": 3819
+      },
+      "P1_volatility_adjusted_path": {
+        "20D_positive_terminal_prob": 0.48939512961508247,
+        "20D_touch_up_5pct_prob": 0.4684472374967269,
+        "20D_touch_down_5pct_prob": 0.43309766954700185,
+        "20D_max_drawdown_p50": -0.05669567924033836,
+        "fallback_used": false,
+        "state_sample_size": 3819
+      },
+      "P2_state_conditional_path": {
+        "20D_positive_terminal_prob": 0.5333333333333333,
+        "20D_touch_up_5pct_prob": 0.5523809523809524,
+        "20D_touch_down_5pct_prob": 0.5523809523809524,
+        "20D_max_drawdown_p50": -0.07420924574209264,
+        "fallback_used": false,
+        "state_sample_size": 105
+      }
+    },
+    "observation_backtest_summary": {
+      "quality_status": "PASS",
+      "standard_sample_size": 648,
+      "purged_sample_size": 81,
+      "leakage_status": "PASS"
+    },
+    "model_support_summary": {
+      "baseline_models": [
+        "B0_random_walk",
+        "B1_historical_distribution",
+        "B2_state_grouped_distribution",
+        "B3_volatility_adjusted"
+      ],
+      "path_models": [
+        "P0_historical_path_replay",
+        "P1_volatility_adjusted_path",
+        "P2_state_conditional_path"
+      ],
+      "p2_role": "辅助状态层，不作为核心决策依赖"
+    }
+  },
+  "path_opportunity_observation": {
+    "upside_path_observation": "medium",
+    "touch_up_observation": 0.4684472374967269,
+    "positive_terminal_observation": 0.48939512961508247,
+    "historical_support_level": "weak",
+    "evidence_strength": "观察项，仅供人工复核"
+  },
+  "path_risk_observation": {
+    "downside_path_observation": 0.43309766954700185,
+    "drawdown_observation": -0.05669567924033836,
+    "touch_down_observation": 0.43309766954700185,
+    "risk_evidence_level": "weak",
+    "risk_attention_level": "medium"
+  },
+  "model_consistency_summary": {
+    "model_consistency_status": "mostly_consistent",
+    "model_consistency_level": "mostly_consistent",
+    "model_disagreement_points": [
+      "B1 与 B3 的 20D 中位收益方向不一致，需要人工复核。"
+    ],
+    "evidence_conflict_summary": [],
+    "p2_role": "辅助状态层，不作为核心决策依赖"
+  },
+  "evidence_conflict_summary": {
+    "evidence_conflict": true,
+    "evidence_conflict_reasons": [
+      "20D P1 相对 P0 表现偏弱。",
+      "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+    ]
+  },
+  "human_attention_items": [
+    {
+      "category": "model_items",
+      "text": "需要人工复核证据冲突：20D P1 相对 P0 表现偏弱。"
+    },
+    {
+      "category": "model_items",
+      "text": "需要人工复核证据冲突：P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+    },
+    {
+      "category": "model_items",
+      "text": "B1 与 B3 的 20D 中位收益方向不一致，需要人工复核。"
+    }
+  ],
+  "human_review_checklist": [
+    {
+      "id": "data_freshness",
+      "text": "确认 latest_trade_date 与当前人工复核日期是否匹配。"
+    },
+    {
+      "id": "market_context",
+      "text": "确认当天市场环境是否存在外部冲击。"
+    },
+    {
+      "id": "industry_context",
+      "text": "确认船舶与军工产业链是否存在重大事件。"
+    },
+    {
+      "id": "intraday_behavior",
+      "text": "复核分时结构与尾盘强弱是否支持当前观察。"
+    },
+    {
+      "id": "path_risk",
+      "text": "复核下穿概率、最大回撤与风险分组。"
+    },
+    {
+      "id": "model_conflict",
+      "text": "复核 B/P 模型之间的方向差异和 P2 辅助层不确定性。"
+    },
+    {
+      "id": "evidence_quality",
+      "text": "复核上游质量门禁、purged 样本与 fallback 情况。"
+    }
+  ],
+  "support_levels": {
+    "observation_priority": "high",
+    "risk_attention_level": "medium",
+    "evidence_strength": "moderate",
+    "model_consistency_level": "mostly_consistent",
+    "human_review_required": true
+  },
+  "upstream_quality_statuses": {
+    "data_quality": "PASS",
+    "feature_quality": "PASS",
+    "baseline_quality": "PASS",
+    "validation_quality": "PASS",
+    "path_quality": "PASS",
+    "path_validation_quality": "PASS",
+    "observation_backtest_quality": "PASS",
+    "leakage_checks": "PASS"
+  },
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ],
+  "next_stage": "V1.6 risk explanation"
+}
