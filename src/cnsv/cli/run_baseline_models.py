@@ -8,6 +8,7 @@ from cnsv.models.baseline_runner import run_baseline_models
 from cnsv.report.baseline_report_html import write_baseline_report_html
 from cnsv.report.baseline_report_json import build_baseline_report_payload, write_baseline_report_json
 from cnsv.report.baseline_report_md import write_baseline_report_md
+from cnsv.report.feature_report_html import write_feature_report_html
 from cnsv.utils.io import load_default_config, repo_root
 
 
@@ -33,6 +34,7 @@ def main() -> int:
     write_baseline_registry(root / "docs/data/baseline_registry.json")
     write_baseline_report_md(payload, root / "reports/latest_baseline_model_report.md", root / "reports/archive")
     write_baseline_report_html(root / "docs/baseline.html")
+    write_feature_report_html(root / "docs/index.html")
     print(
         f"baseline_quality={baseline_run['status']} "
         f"failed={baseline_run['failed_count']} warn={baseline_run['warn_count']}"
@@ -42,4 +44,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
