@@ -5,7 +5,7 @@
     "report_type": "baseline_model_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-20T08:34:18.176039+00:00",
+    "generated_at": "2026-06-20T08:47:21.423562+00:00",
     "latest_trade_date": "2026-06-18",
     "is_trade_signal": false
   },
@@ -143,180 +143,320 @@
     ]
   },
   "baseline_quality": {
-    "status": "WARN",
+    "status": "PASS",
     "failed_count": 0,
-    "warn_count": 3,
+    "warn_count": 0,
+    "blocking_error_count": 0,
+    "gating_warning_count": 0,
+    "non_gating_warning_count": 3,
+    "fallback_count": 3,
     "checks": [
       {
-        "name": "models_present",
+        "name": "required_models_present",
         "status": "PASS",
-        "detail": "all baseline models present"
+        "detail": "all baseline models present",
+        "category": "gating"
       },
       {
-        "name": "forbidden_fields_absent",
+        "name": "no_trade_signal_fields",
         "status": "PASS",
-        "detail": "no forbidden field names"
+        "detail": "no forbidden field names",
+        "category": "gating"
       },
       {
         "name": "finite_numbers",
         "status": "PASS",
-        "detail": "all numeric values are finite"
+        "detail": "all numeric values are finite",
+        "category": "gating"
+      },
+      {
+        "name": "B0_random_walk.5D.present",
+        "status": "PASS",
+        "detail": "B0_random_walk 5D present",
+        "category": "gating"
       },
       {
         "name": "B0_random_walk.5D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B0_random_walk.5D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B0_random_walk.10D.present",
+        "status": "PASS",
+        "detail": "B0_random_walk 10D present",
+        "category": "gating"
       },
       {
         "name": "B0_random_walk.10D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B0_random_walk.10D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B0_random_walk.20D.present",
+        "status": "PASS",
+        "detail": "B0_random_walk 20D present",
+        "category": "gating"
       },
       {
         "name": "B0_random_walk.20D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B0_random_walk.20D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B1_historical_distribution.5D.present",
+        "status": "PASS",
+        "detail": "B1_historical_distribution 5D present",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.5D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.5D.full_quantiles",
         "status": "PASS",
-        "detail": "full quantile order ok"
+        "detail": "full quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.5D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B1_historical_distribution.10D.present",
+        "status": "PASS",
+        "detail": "B1_historical_distribution 10D present",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.10D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.10D.full_quantiles",
         "status": "PASS",
-        "detail": "full quantile order ok"
+        "detail": "full quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.10D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B1_historical_distribution.20D.present",
+        "status": "PASS",
+        "detail": "B1_historical_distribution 20D present",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.20D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.20D.full_quantiles",
         "status": "PASS",
-        "detail": "full quantile order ok"
+        "detail": "full quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B1_historical_distribution.20D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B2_state_grouped_distribution.5D.present",
+        "status": "PASS",
+        "detail": "B2_state_grouped_distribution 5D present",
+        "category": "gating"
       },
       {
         "name": "B2_state_grouped_distribution.5D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B2_state_grouped_distribution.5D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.5D.sample_size",
-        "status": "WARN",
-        "detail": "state sample below 30 with fallback"
+        "name": "B2_state_grouped_distribution.5D.controlled_fallback",
+        "status": "PASS",
+        "detail": "B2_state_grouped_distribution 5D state sample below threshold; transparent fallback to B1, non-gating",
+        "category": "non_gating"
+      },
+      {
+        "name": "B2_state_grouped_distribution.10D.present",
+        "status": "PASS",
+        "detail": "B2_state_grouped_distribution 10D present",
+        "category": "gating"
       },
       {
         "name": "B2_state_grouped_distribution.10D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B2_state_grouped_distribution.10D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.10D.sample_size",
-        "status": "WARN",
-        "detail": "state sample below 30 with fallback"
+        "name": "B2_state_grouped_distribution.10D.controlled_fallback",
+        "status": "PASS",
+        "detail": "B2_state_grouped_distribution 10D state sample below threshold; transparent fallback to B1, non-gating",
+        "category": "non_gating"
+      },
+      {
+        "name": "B2_state_grouped_distribution.20D.present",
+        "status": "PASS",
+        "detail": "B2_state_grouped_distribution 20D present",
+        "category": "gating"
       },
       {
         "name": "B2_state_grouped_distribution.20D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B2_state_grouped_distribution.20D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.20D.sample_size",
-        "status": "WARN",
-        "detail": "state sample below 30 with fallback"
+        "name": "B2_state_grouped_distribution.20D.controlled_fallback",
+        "status": "PASS",
+        "detail": "B2_state_grouped_distribution 20D state sample below threshold; transparent fallback to B1, non-gating",
+        "category": "non_gating"
+      },
+      {
+        "name": "B3_volatility_adjusted.5D.present",
+        "status": "PASS",
+        "detail": "B3_volatility_adjusted 5D present",
+        "category": "gating"
       },
       {
         "name": "B3_volatility_adjusted.5D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B3_volatility_adjusted.5D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B3_volatility_adjusted.10D.present",
+        "status": "PASS",
+        "detail": "B3_volatility_adjusted 10D present",
+        "category": "gating"
       },
       {
         "name": "B3_volatility_adjusted.10D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B3_volatility_adjusted.10D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
+      },
+      {
+        "name": "B3_volatility_adjusted.20D.present",
+        "status": "PASS",
+        "detail": "B3_volatility_adjusted 20D present",
+        "category": "gating"
       },
       {
         "name": "B3_volatility_adjusted.20D.quantiles",
         "status": "PASS",
-        "detail": "quantile order ok"
+        "detail": "quantile order ok",
+        "category": "gating"
       },
       {
         "name": "B3_volatility_adjusted.20D.prices",
         "status": "PASS",
-        "detail": "prices positive"
+        "detail": "prices positive",
+        "category": "gating"
       }
     ],
-    "warnings": [
-      "state sample below 30 with fallback",
-      "state sample below 30 with fallback",
-      "state sample below 30 with fallback"
+    "warnings": [],
+    "gating_warnings": [],
+    "non_gating_warnings": [
+      "B2_state_grouped_distribution 5D state sample below threshold; transparent fallback to B1, non-gating",
+      "B2_state_grouped_distribution 10D state sample below threshold; transparent fallback to B1, non-gating",
+      "B2_state_grouped_distribution 20D state sample below threshold; transparent fallback to B1, non-gating"
+    ],
+    "fallback_notes": [
+      {
+        "model": "B2_state_grouped_distribution",
+        "horizon": "5D",
+        "reason": "state_sample_size_lt_30",
+        "state_sample_size": 0,
+        "fallback_method": "B1_historical_distribution",
+        "gating": false,
+        "is_trade_signal": false
+      },
+      {
+        "model": "B2_state_grouped_distribution",
+        "horizon": "10D",
+        "reason": "state_sample_size_lt_30",
+        "state_sample_size": 0,
+        "fallback_method": "B1_historical_distribution",
+        "gating": false,
+        "is_trade_signal": false
+      },
+      {
+        "model": "B2_state_grouped_distribution",
+        "horizon": "20D",
+        "reason": "state_sample_size_lt_30",
+        "state_sample_size": 0,
+        "fallback_method": "B1_historical_distribution",
+        "gating": false,
+        "is_trade_signal": false
+      }
     ]
   },
   "current_state": {
