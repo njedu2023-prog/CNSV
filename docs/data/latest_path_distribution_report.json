@@ -1,12 +1,12 @@
 {
   "meta": {
     "system": "CNSV",
-    "version": "1.3.0",
+    "version": "1.3",
     "stage": "V1.3_path_distribution",
     "report_type": "path_distribution_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-20T14:08:15.201636+00:00",
+    "generated_at": "2026-06-20T14:54:11.632873+00:00",
     "latest_trade_date": "2026-06-18",
     "is_trade_signal": false
   },
@@ -17,13 +17,15 @@
     "can_develop": true,
     "can_develop_cnsv_main_program": true,
     "can_run_daily_ingest": true,
-    "can_run_backtest": true,
+    "can_run_backtest": false,
     "can_use_moneyflow_as_strong_factor": true,
     "can_generate_formal_signal": false,
     "blocking_reason": null,
     "warnings": [
       "formal signal generation is forbidden by CNSVdata allowed_usage"
-    ]
+    ],
+    "backtest_permission_stage": "V1.4",
+    "stage_permission_note": "V1.3 only supports path distribution and path validation; observation backtest opens in V1.4."
   },
   "path_quality": {
     "status": "PASS",

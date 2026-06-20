@@ -1,12 +1,12 @@
 {
   "meta": {
     "system": "CNSV",
-    "version": "1.3.0",
+    "version": "1.3",
     "stage": "V1.3_path_validation",
     "report_type": "path_validation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-20T14:09:28.552966+00:00",
+    "generated_at": "2026-06-20T14:55:15.274234+00:00",
     "latest_trade_date": "2026-06-18",
     "is_trade_signal": false
   },
