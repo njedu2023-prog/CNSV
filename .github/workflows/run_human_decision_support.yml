@@ -1,0 +1,61 @@
+name: Run CNSV Human Decision Support
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "config/**"
+      - "docs/data/**"
+      - ".github/workflows/run_human_decision_support.yml"
+
+concurrency:
+  group: cnsv-human-decision-support-main
+  cancel-in-progress: true
+
+jobs:
+  run-human-decision-support:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
+      - name: Generate data report
+        run: python -m cnsv.cli.generate_data_report
+      - name: Generate feature report
+        run: python -m cnsv.cli.generate_feature_report
+      - name: Generate baseline model report
+        run: python -m cnsv.cli.run_baseline_models
+      - name: Generate baseline validation report
+        run: python -m cnsv.cli.run_baseline_validation
+      - name: Generate path distribution report
+        run: python -m cnsv.cli.run_path_distribution
+      - name: Generate path validation report
+        run: python -m cnsv.cli.run_path_validation
+      - name: Generate observation backtest report
+        run: python -m cnsv.cli.run_observation_backtest
+      - name: Generate human decision support report
+        run: python -m cnsv.cli.run_human_decision_support
+      - name: Commit human decision support updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/latest_human_decision_support_report.json docs/data/human_decision_support_registry.json reports/latest_human_decision_support_report.md reports/archive/*_human_decision_support_report.md docs/decision_support.html docs/index.html
+          if git diff --cached --quiet; then
+            echo "No human decision support updates to commit"
+          else
+            git commit -m "report: update CNSV human decision support report"
+            git push
+          fi
