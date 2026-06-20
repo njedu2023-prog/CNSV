@@ -1,0 +1,150 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+from cnsv.utils.io import ensure_parent
+
+HTML = """<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CNSV V1.2 基准模型看板</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; --page:#f5f5f7; --surface:#fff; --soft:#fbfbfd; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --blue:#0066cc; --green:#10b64b; --red:#f51505; --amber:#b26a00; --shadow:0 18px 44px rgba(0,0,0,.06); }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--page); color:var(--text); -webkit-font-smoothing:antialiased; }
+    main { width:min(100%,1180px); margin:0 auto; padding:38px 24px 48px; }
+    header { text-align:center; padding:18px 0 28px; }
+    .eyebrow { color:var(--blue); font-size:13px; font-weight:700; letter-spacing:.08em; margin:0 0 8px; }
+    h1 { font-size:18px; margin:0; line-height:1.25; }
+    .subtitle { color:var(--muted); font-size:13px; margin:12px auto 0; line-height:1.45; max-width:760px; }
+    nav { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
+    nav a { border:1px solid var(--line); border-radius:999px; color:var(--blue); text-decoration:none; padding:6px 11px; font-size:12px; background:#fff; }
+    section { background:var(--surface); border-radius:20px; padding:22px 26px; margin:16px 0; box-shadow:var(--shadow); overflow:hidden; }
+    h2 { font-size:14px; margin:0 0 14px; line-height:1.25; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .chip { border:1px solid var(--line); border-radius:999px; background:#fff; padding:7px 11px; color:var(--muted); font-size:12px; line-height:1.2; }
+    .chip strong { color:var(--text); margin-left:6px; }
+    .ok { color:var(--green) !important; font-weight:700; } .bad { color:var(--red) !important; font-weight:700; } .warn { color:var(--amber) !important; font-weight:700; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); gap:10px; }
+    .metric { border:1px solid rgba(210,210,215,.9); border-radius:14px; background:var(--soft); padding:12px 14px; min-width:0; }
+    .label { color:var(--muted); font-size:12px; line-height:1.35; }
+    .value { font-size:13px; font-weight:700; margin-top:7px; overflow-wrap:anywhere; line-height:1.28; }
+    details { border:1px solid rgba(210,210,215,.9); border-radius:16px; background:var(--soft); margin-top:10px; overflow:hidden; }
+    summary { cursor:pointer; list-style:none; padding:13px 14px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { content:"+"; color:var(--blue); font-size:18px; font-weight:700; line-height:1; }
+    details[open] summary::after { content:"-"; }
+    .summary-title { font-size:13px; font-weight:700; margin-bottom:10px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:620px; background:#fff; font-size:12px; }
+    th,td { border-top:1px solid #e8e8ed; text-align:left; padding:9px 10px; line-height:1.35; vertical-align:top; white-space:nowrap; }
+    th { color:var(--muted); font-weight:600; }
+    .footer { color:var(--muted); font-size:12px; text-align:center; padding:18px 0 4px; }
+    @media (max-width:640px){ main{padding:22px 14px 36px} header{text-align:left;padding:8px 0 18px} nav{justify-content:flex-start} section{border-radius:18px;padding:18px} table{min-width:680px} }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">CNSV V1.2 基准模型看板</p>
+    <h1>中国船舶基准模型看板</h1>
+    <p class="subtitle">展示 5D/10D/20D 终端收益分布基准模型，仅用于模型层开发验收，不生成交易动作。</p>
+    <nav><a href="index.html">特征看板</a><a href="data/latest_baseline_model_report.json">JSON 数据</a></nav>
+  </header>
+  <section><h2>状态总览</h2><div id="overview" class="chips"></div></section>
+  <section><h2>CNSVdata 数据门禁</h2><div id="gate" class="chips"></div></section>
+  <section><h2>特征质量</h2><div id="featureQuality" class="chips"></div></section>
+  <section><h2>基准模型质量</h2><div id="baselineQuality" class="chips"></div><div id="qualityChecks"></div></section>
+  <section><h2>当前状态</h2><div id="currentState" class="grid"></div></section>
+  <section><h2>基准模型分布</h2><div id="models"></div></section>
+  <section><h2>模型登记表</h2><div id="registry"></div></section>
+  <section><h2>禁止动作与下一阶段</h2><div id="guardrails" class="chips"></div></section>
+  <div id="footer" class="footer"></div>
+</main>
+<script>
+const NA = "N/A";
+const has = v => v !== null && v !== undefined && v !== "";
+const tone = v => v === "PASS" || v === true ? "ok" : v === "FAIL" || v === false ? "bad" : v === "WARN" ? "warn" : "";
+const cn = v => ({PASS:"通过", WARN:"警告", FAIL:"失败", true:"YES", false:"NO", strong_uptrend:"强上行", uptrend:"上行", strong_downtrend:"强下行", downtrend:"下行", neutral:"中性", high_vol:"高波动", normal_vol:"正常波动", low_vol:"低波动", unknown:"未知", positive:"偏强", negative:"偏弱", mixed:"混合"}[String(v)] || v);
+const percentKeys = new Set(["expected_return","mean_return","median_return","std_return","adjusted_std","p05_return","p10_return","p25_return","p50_return","p75_return","p90_return","p95_return","positive_prob","negative_prob"]);
+const fmt = (v, key="") => {
+  if (!has(v)) return NA;
+  if (typeof v === "boolean") return v ? "YES" : "NO";
+  if (typeof v === "number") return percentKeys.has(key) ? `${(v*100).toFixed(2)}%` : v.toLocaleString("zh-CN",{maximumFractionDigits:4, minimumFractionDigits: key.includes("price") || key.includes("close") ? 2 : 4});
+  return cn(v);
+};
+const chip = (label, value, key="", cls=tone(value)) => `<span class="chip">${label}<strong class="${cls}">${fmt(value,key)}</strong></span>`;
+const metric = (label, value, key="", cls=tone(value)) => `<div class="metric"><div class="label">${label}</div><div class="value ${cls}">${fmt(value,key)}</div></div>`;
+const table = rows => `<div class="table-wrap"><table><thead><tr>${rows[0].map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.slice(1).map(row=>`<tr>${row.map(v=>`<td>${v}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+const forbiddenText = v => ({formal_signal_generation:"正式交易动作生成", auto_order:"自动下单", broker_api:"券商接口"}[v] || v);
+
+fetch("data/latest_baseline_model_report.json").then(r => r.json()).then(payload => {
+  const meta = payload.meta || {};
+  const gate = payload.cnsvdata_gate || {};
+  const featureQuality = payload.feature_quality || {};
+  const baselineQuality = payload.baseline_quality || {};
+  const state = payload.current_state || {};
+  document.getElementById("overview").innerHTML = [
+    chip("版本", meta.version),
+    chip("最新交易日", meta.latest_trade_date),
+    chip("交易动作", meta.is_trade_signal === false ? "NO" : "YES", "", meta.is_trade_signal === false ? "ok" : "bad"),
+    chip("数据快照", (payload.data_manifest || {}).snapshot_id)
+  ].join("");
+  document.getElementById("gate").innerHTML = [
+    chip("状态", gate.status),
+    chip("就绪", gate.ready),
+    chip("允许继续", gate.can_continue),
+    chip("允许 moneyflow 强因子", gate.can_use_moneyflow_as_strong_factor)
+  ].join("");
+  document.getElementById("featureQuality").innerHTML = [
+    chip("状态", featureQuality.status),
+    chip("FAIL 数量", featureQuality.failed_count),
+    chip("WARN 数量", featureQuality.warn_count)
+  ].join("");
+  document.getElementById("baselineQuality").innerHTML = [
+    chip("状态", baselineQuality.status),
+    chip("FAIL 数量", baselineQuality.failed_count),
+    chip("WARN 数量", baselineQuality.warn_count)
+  ].join("");
+  const checks = baselineQuality.checks || [];
+  document.getElementById("qualityChecks").innerHTML = `<details><summary><div><div class="summary-title">质量检查明细</div><div class="chips">${chip("检查项", checks.length)}</div></div></summary>${table([["检查项","状态","说明"], ...checks.map(c => [c.name, fmt(c.status), c.detail])])}</details>`;
+  document.getElementById("currentState").innerHTML = [
+    metric("最新收盘价", state.latest_close, "current_close"),
+    metric("趋势状态", state.trend_state),
+    metric("波动率状态", state.volatility_state),
+    metric("资金流强弱", state.flow_strength_basic),
+    metric("允许 moneyflow 强因子", state.can_use_moneyflow_as_strong_factor)
+  ].join("");
+  document.getElementById("models").innerHTML = Object.entries(payload.baseline_models || {}).map(([modelId, model]) => {
+    const rows = [["周期","样本数","p10 收益","p50 收益","p90 收益","p10 价格","p50 价格","p90 价格","回退"]];
+    Object.entries(model.horizons || {}).forEach(([h, row]) => rows.push([
+      h,
+      fmt(row.sample_size ?? row.state_sample_size),
+      fmt(row.p10_return,"p10_return"),
+      fmt(row.p50_return,"p50_return"),
+      fmt(row.p90_return,"p90_return"),
+      fmt(row.p10_price,"p10_price"),
+      fmt(row.p50_price,"p50_price"),
+      fmt(row.p90_price,"p90_price"),
+      fmt(row.fallback_used)
+    ]));
+    return `<details open><summary><div><div class="summary-title">${modelId}</div><div class="chips">${chip("模型", model.model_id || modelId)}${model.state_key ? chip("状态", model.state_key) : ""}${model.volatility_scale ? chip("波动率缩放", model.volatility_scale) : ""}</div></div></summary>${table(rows)}</details>`;
+  }).join("");
+  document.getElementById("registry").innerHTML = table([["模型 ID","模型名称","阶段","是否交易动作"], ...(payload.baseline_registry || []).map(item => [item.model_id, item.model_name, item.stage, fmt(item.is_trade_signal)])]);
+  document.getElementById("guardrails").innerHTML = (payload.forbidden_actions || []).map(item => chip("禁止", forbiddenText(item))).concat([chip("下一阶段", payload.next_stage)]).join("");
+  document.getElementById("footer").textContent = `generated_at: ${fmt(meta.generated_at)} | 数据快照: ${fmt((payload.data_manifest || {}).snapshot_id)}`;
+}).catch(error => {
+  document.getElementById("overview").innerHTML = `<span class="bad">加载失败：${error}</span>`;
+});
+</script>
+</body>
+</html>
+"""
+
+
+def write_baseline_report_html(path: str | Path) -> Path:
+    target = ensure_parent(path)
+    target.write_text(HTML, encoding="utf-8")
+    return target
