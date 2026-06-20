@@ -20,7 +20,7 @@ def run_path_validation(
     gate: dict[str, Any],
     horizons: tuple[int, ...] = HORIZONS,
     min_history: int = 260,
-    validation_step: int = 20,
+    validation_step: int = 50,
 ) -> dict[str, Any]:
     wf = run_path_walk_forward_validation(data_bundle, gate, horizons, min_history, validation_step)
     standard = _metrics_by_model_horizon(wf["rows"])
@@ -69,7 +69,7 @@ def run_path_walk_forward_validation(
     gate: dict[str, Any],
     horizons: tuple[int, ...] = HORIZONS,
     min_history: int = 260,
-    validation_step: int = 20,
+    validation_step: int = 50,
 ) -> dict[str, Any]:
     daily = sorted_daily(data_bundle.get("daily") if isinstance(data_bundle.get("daily"), pd.DataFrame) else pd.DataFrame())
     if daily.empty or not {"close", "high", "low"}.issubset(daily.columns):
