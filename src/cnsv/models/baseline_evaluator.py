@@ -67,6 +67,14 @@ def evaluate_baseline_models(models: dict[str, Any], horizons: tuple[int, ...] =
             if all(value is not None for value in returns):
                 ordered = returns[0] <= returns[1] <= returns[2]
                 add(f"{model_id}.{key}.quantiles", "PASS" if ordered else "FAIL", "quantile order ok" if ordered else "quantile order broken")
+            full_returns = [row.get(name) for name in ("p05_return", "p10_return", "p25_return", "p50_return", "p75_return", "p90_return", "p95_return")]
+            if all(value is not None for value in full_returns):
+                full_ordered = all(left <= right for left, right in zip(full_returns, full_returns[1:]))
+                add(
+                    f"{model_id}.{key}.full_quantiles",
+                    "PASS" if full_ordered else "FAIL",
+                    "full quantile order ok" if full_ordered else "full quantile order broken",
+                )
             prices = [row.get(name) for name in ("expected_price", "p10_price", "p50_price", "p90_price") if row.get(name) is not None]
             bad_price = [price for price in prices if price <= 0]
             add(f"{model_id}.{key}.prices", "PASS" if not bad_price else "FAIL", "prices positive" if not bad_price else "non-positive price detected")
@@ -81,4 +89,3 @@ def evaluate_baseline_models(models: dict[str, Any], horizons: tuple[int, ...] =
     warn_count = sum(1 for check in checks if check["status"] == "WARN")
     status = "FAIL" if failed_count else "WARN" if warn_count else "PASS"
     return {"status": status, "failed_count": failed_count, "warn_count": warn_count, "checks": checks, "warnings": warnings}
-
