@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -50,20 +52,37 @@ jobs:
         run: python -m cnsv.cli.run_human_decision_support
       - name: Commit human decision support updates
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/latest_human_decision_support_report.json docs/data/human_decision_support_registry.json reports/latest_human_decision_support_report.md reports/archive/*_human_decision_support_report.md docs/decision_support.html docs/index.html
-          if git diff --cached --quiet; then
+          report_paths=(
+            docs/data/latest_human_decision_support_report.json
+            docs/data/human_decision_support_registry.json
+            reports/latest_human_decision_support_report.md
+            reports/archive/*_human_decision_support_report.md
+            docs/decision_support.html
+            docs/index.html
+          )
+          if git diff --quiet -- "${report_paths[@]}"; then
             echo "No human decision support updates to commit"
-          else
-            git commit -m "report: update CNSV human decision support report"
-            for attempt in 1 2 3; do
-              if git pull --rebase origin main && git push; then
-                break
-              fi
-              if [ "$attempt" = "3" ]; then
-                exit 1
-              fi
-              sleep 5
-            done
+            exit 0
           fi
+          git stash push --include-untracked --message human-decision-support-updates -- "${report_paths[@]}"
+          git fetch origin main
+          git reset --hard origin/main
+          git stash pop
+          git add "${report_paths[@]}"
+          if git diff --cached --quiet; then
+            echo "No human decision support updates after sync"
+            exit 0
+          fi
+          git commit -m "report: update CNSV human decision support report"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              break
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            sleep 5
+          done
