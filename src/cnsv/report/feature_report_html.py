@@ -9,7 +9,7 @@ HTML = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CNSV V1.1 Feature Dashboard</title>
+  <title>CNSV V1.1 特征看板</title>
   <style>
     :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; --page:#f5f5f7; --surface:#fff; --soft:#fbfbfd; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --blue:#0066cc; --green:#0b8f45; --red:#d70015; --amber:#b26a00; --shadow:0 18px 44px rgba(0,0,0,.06); }
     * { box-sizing: border-box; }
@@ -61,58 +61,58 @@ HTML = """<!doctype html>
 <body>
 <main>
   <header>
-    <p class="eyebrow">CNSV V1.1 FEATURE DASHBOARD</p>
+    <p class="eyebrow">CNSV V1.1 特征看板</p>
     <h1>中国船舶特征看板</h1>
     <p class="subtitle">展示 CNSVdata 准入、数据覆盖、特征质量和 V1.1 核心特征。页面不生成交易动作。</p>
   </header>
 
   <section>
-    <div class="section-head"><h2>看板总览</h2><span class="section-note">来自 data 与 feature JSON</span></div>
+    <div class="section-head"><h2>看板总览</h2><span class="section-note">来自数据与特征 JSON</span></div>
     <div id="overview" class="grid dense"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>CNSVdata Gate</h2><span class="section-note">数据准入与允许范围</span></div>
+    <div class="section-head"><h2>CNSVdata 数据门禁</h2><span class="section-note">数据准入与允许范围</span></div>
     <div id="gate" class="grid dense"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>Feature Quality</h2><span class="section-note">质量检查与缺失项状态</span></div>
+    <div class="section-head"><h2>特征质量</h2><span class="section-note">质量检查与缺失项状态</span></div>
     <div id="quality" class="grid dense"></div>
     <div id="qualityDetails"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>数据覆盖</h2><span class="section-note">latest_trade_date 与行数</span></div>
+    <div class="section-head"><h2>数据覆盖</h2><span class="section-note">最新交易日与行数</span></div>
     <div id="coverage" class="grid dense"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>Price Volume 核心摘要</h2><span class="section-note">daily 特征</span></div>
+    <div class="section-head"><h2>量价核心摘要</h2><span class="section-note">日线特征</span></div>
     <div id="priceVolumeCards" class="grid dense"></div>
     <div id="priceVolumeTable"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>Moneyflow 核心摘要</h2><span class="section-note">重点字段与完整资金流特征</span></div>
+    <div class="section-head"><h2>资金流核心摘要</h2><span class="section-note">重点字段与完整资金流特征</span></div>
     <div id="moneyflowCards" class="grid dense"></div>
     <div id="moneyflowTable"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>Minute Structure 摘要</h2><span class="section-note">one_min 日内结构</span></div>
+    <div class="section-head"><h2>分钟结构摘要</h2><span class="section-note">1分钟日内结构</span></div>
     <div id="minuteCards" class="grid dense"></div>
     <div id="minuteTable"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>Trend 摘要</h2><span class="section-note">均线与趋势状态</span></div>
+    <div class="section-head"><h2>趋势摘要</h2><span class="section-note">均线与趋势状态</span></div>
     <div id="trendCards" class="grid dense"></div>
     <div id="trendTable"></div>
   </section>
 
   <section>
-    <div class="section-head"><h2>Volatility 摘要</h2><span class="section-note">波动率与 ATR</span></div>
+    <div class="section-head"><h2>波动率摘要</h2><span class="section-note">波动率与 ATR</span></div>
     <div id="volatilityCards" class="grid dense"></div>
     <div id="volatilityTable"></div>
   </section>
@@ -131,7 +131,7 @@ const hasValue = value => value !== null && value !== undefined && value !== "";
 const yesNo = value => value === true ? "YES" : value === false ? "NO" : NA;
 const statusTone = value => value === "PASS" || value === true ? "ok" : value === "FAIL" || value === false ? "bad" : value === "WARN" ? "warn" : "";
 const boolTone = value => value === true ? "ok" : value === false ? "bad" : "";
-const statusText = value => ({PASS: "PASS", WARN: "WARN", FAIL: "FAIL"}[value] || (hasValue(value) ? value : NA));
+const statusText = value => ({PASS: "通过", WARN: "警告", FAIL: "失败"}[value] || (hasValue(value) ? value : NA));
 const formalActionKey = `formal_${"sig"}${"nal"}_generation`;
 const actionText = value => ({
   auto_order: "自动下单",
@@ -157,11 +157,11 @@ const checkName = value => ({
   "trend.trend_state": "趋势.趋势状态",
   "volatility.volatility_state": "波动率.波动状态",
   moneyflow_strong_factor_gate: "资金流强因子门禁",
-  daily_row_count: "daily 行数",
-  one_min_row_count: "one_min 行数",
-  moneyflow_row_count: "moneyflow 行数",
-  latest_trade_date_daily_vs_1min: "daily 与 one_min 交易日一致",
-  latest_trade_date_daily_vs_moneyflow: "daily 与 moneyflow 交易日一致"
+  daily_row_count: "日线行数",
+  one_min_row_count: "1分钟行数",
+  moneyflow_row_count: "资金流行数",
+  latest_trade_date_daily_vs_1min: "日线与1分钟交易日一致",
+  latest_trade_date_daily_vs_moneyflow: "日线与资金流交易日一致"
 }[value] || value);
 const checkDetail = value => String(value || "")
   .replace("price_volume features must not be empty", "量价特征不能为空")
@@ -171,9 +171,9 @@ const checkDetail = value => String(value || "")
   .replace("volatility features must not be empty", "波动率特征不能为空")
   .replace(" is required", " 为必填项")
   .replace("moneyflow can be used as strong factor", "资金流允许作为强因子")
-  .replace("daily rows must be >= 60", "daily 行数必须不少于 60")
-  .replace("one_min rows must be >= 60", "one_min 行数必须不少于 60")
-  .replace("moneyflow rows must be >= 10", "moneyflow 行数必须不少于 10");
+  .replace("daily rows must be >= 60", "日线行数必须不少于 60")
+  .replace("one_min rows must be >= 60", "1分钟行数必须不少于 60")
+  .replace("moneyflow rows must be >= 10", "资金流行数必须不少于 10");
 const percentKeys = new Set(["ret_1d", "ret_3d", "ret_5d", "ret_10d", "ret_20d", "ret_60d", "net_mf_ratio", "main_force_ratio", "intraday_range_pct", "close_position_in_day_range", "morning_return", "afternoon_return", "last_30min_return", "last_60min_return", "morning_volume_ratio", "afternoon_volume_ratio", "last_30min_volume_ratio", "last_60min_volume_ratio", "realized_vol_5d", "realized_vol_10d", "realized_vol_20d", "intraday_range_ma5", "intraday_range_ma20", "price_position_20d", "price_position_60d"]);
 const amountKeys = new Set(["latest_amount", "amount_ma5", "amount_ma20", "intraday_amount_sum", "net_mf_amount", "small_order_net", "medium_order_net", "large_order_net", "extra_large_order_net", "main_force_net"]);
 const intKeys = new Set(["daily_rows", "one_min_rows", "moneyflow_rows", "file_count", "failed_count", "warn_count", "moneyflow_lag_days", "positive_flow_days_5d", "positive_flow_days_10d", "flow_continuity_3d", "flow_continuity_5d", "flow_continuity_10d"]);
@@ -182,6 +182,7 @@ const number = (value, digits = 4) => Number(value).toLocaleString("zh-CN", { ma
 const format = (value, key = "") => {
   if (!hasValue(value)) return NA;
   if (typeof value === "boolean") return yesNo(value);
+  if (value === "PASS" || value === "WARN" || value === "FAIL") return statusText(value);
   if (key === "trend_state") return trendText(value);
   if (key === "volatility_state") return volatilityText(value);
   if (key === "moneyflow_strength_basic" || key === "flow_strength_basic" || key === "volume_flow_confirm") return flowText(value);
@@ -208,7 +209,7 @@ const labels = {
     ["latest_trade_date", "最新交易日"], ["latest_open", "最新开盘价"], ["latest_high", "最新最高价"], ["latest_low", "最新最低价"], ["latest_close", "最新收盘价"], ["latest_pre_close", "昨收价"], ["latest_pct_chg", "最新涨跌幅"], ["latest_volume", "最新成交量"], ["latest_amount", "最新成交额"], ["ma5", "MA5"], ["ma10", "MA10"], ["ma20", "MA20"], ["ma60", "MA60"], ["ret_1d", "1D 收益"], ["ret_3d", "3D 收益"], ["ret_5d", "5D 收益"], ["ret_10d", "10D 收益"], ["ret_20d", "20D 收益"], ["ret_60d", "60D 收益"], ["volume_ma5", "5D 成交量均值"], ["volume_ma20", "20D 成交量均值"], ["volume_ratio_5d", "5D 成交量比"], ["volume_ratio_20d", "20D 成交量比"], ["amount_ma5", "5D 成交额均值"], ["amount_ma20", "20D 成交额均值"], ["amount_ratio_5d", "5D 成交额比"], ["amount_ratio_20d", "20D 成交额比"], ["price_position_20d", "20D 价格位置"], ["price_position_60d", "60D 价格位置"], ["new_high_20d", "20D 新高"], ["new_low_20d", "20D 新低"], ["new_high_60d", "60D 新高"], ["new_low_60d", "60D 新低"]
   ],
   moneyflow: [
-    ["main_force_net", "main_force_net"], ["net_mf_ratio", "net_mf_ratio"], ["flow_strength_score", "flow_strength_score"], ["price_flow_confirm", "price_flow_confirm"], ["price_flow_divergence", "price_flow_divergence"], ["volume_flow_confirm", "volume_flow_confirm"], ["net_mf_amount", "净流入金额"], ["small_order_net", "小单净流入"], ["medium_order_net", "中单净流入"], ["large_order_net", "大单净流入"], ["extra_large_order_net", "超大单净流入"], ["main_force_ratio", "主力净流入占比"], ["main_force_available", "主力资金可用"], ["moneyflow_latest_trade_date", "资金流交易日"], ["moneyflow_lag_days", "资金流滞后天数"], ["moneyflow_strength_basic", "资金流基础强弱"], ["flow_strength_basic", "资金流强弱"], ["flow_continuity_3d", "3D 连续性"], ["flow_continuity_5d", "5D 连续性"], ["flow_continuity_10d", "10D 连续性"], ["positive_flow_days_5d", "5D 净流入天数"], ["positive_flow_days_10d", "10D 净流入天数"], ["flow_reversal_1d", "1D 资金反转"], ["flow_reversal_3d", "3D 资金反转"], ["moneyflow_warning", "资金流提示"], ["can_use_as_strong_factor", "可作强因子"]
+    ["main_force_net", "主力净流入"], ["net_mf_ratio", "净流入占比"], ["flow_strength_score", "资金流强弱分"], ["price_flow_confirm", "价量资金确认"], ["price_flow_divergence", "价量资金背离"], ["volume_flow_confirm", "量能资金确认"], ["net_mf_amount", "净流入金额"], ["small_order_net", "小单净流入"], ["medium_order_net", "中单净流入"], ["large_order_net", "大单净流入"], ["extra_large_order_net", "超大单净流入"], ["main_force_ratio", "主力净流入占比"], ["main_force_available", "主力资金可用"], ["moneyflow_latest_trade_date", "资金流交易日"], ["moneyflow_lag_days", "资金流滞后天数"], ["moneyflow_strength_basic", "资金流基础强弱"], ["flow_strength_basic", "资金流强弱"], ["flow_continuity_3d", "3D 连续性"], ["flow_continuity_5d", "5D 连续性"], ["flow_continuity_10d", "10D 连续性"], ["positive_flow_days_5d", "5D 净流入天数"], ["positive_flow_days_10d", "10D 净流入天数"], ["flow_reversal_1d", "1D 资金反转"], ["flow_reversal_3d", "3D 资金反转"], ["moneyflow_warning", "资金流提示"], ["can_use_as_strong_factor", "可作强因子"]
   ],
   minute: [
     ["latest_intraday_date", "日内日期"], ["latest_intraday_open", "日内开盘价"], ["latest_intraday_high", "日内最高价"], ["latest_intraday_low", "日内最低价"], ["latest_intraday_close", "日内收盘价"], ["intraday_range_pct", "日内振幅"], ["close_position_in_day_range", "日内收盘位置"], ["morning_return", "上午收益"], ["afternoon_return", "下午收益"], ["last_30min_return", "最后 30min 收益"], ["last_60min_return", "最后 60min 收益"], ["morning_volume_ratio", "上午成交量占比"], ["afternoon_volume_ratio", "下午成交量占比"], ["last_30min_volume_ratio", "最后 30min 成交量占比"], ["last_60min_volume_ratio", "最后 60min 成交量占比"], ["intraday_volume_sum", "日内成交量"], ["intraday_amount_sum", "日内成交额"], ["late_session_strength", "尾盘强势"], ["late_session_weakness", "尾盘弱势"], ["intraday_reversal_flag", "日内反转"]
@@ -244,25 +245,25 @@ Promise.all([
     metric("系统", meta.system || dataMeta.system),
     metric("版本", meta.version || dataMeta.version),
     metric("标的", `${meta.ts_code || dataMeta.ts_code || NA} ${meta.name || dataMeta.name || ""}`.trim()),
-    metric("latest_trade_date", meta.latest_trade_date || summary.latest_trade_date || manifest.latest_trade_date),
-    metric("snapshot_id", manifest.snapshot_id),
-    metric("next_stage", featureReport.next_stage)
+    metric("最新交易日", meta.latest_trade_date || summary.latest_trade_date || manifest.latest_trade_date),
+    metric("数据快照 ID", manifest.snapshot_id),
+    metric("下一阶段", featureReport.next_stage)
   ].join("");
 
   document.getElementById("gate").innerHTML = [
-    metric("ready", gate.ready, "", boolTone(gate.ready)),
-    metric("status", gate.status, "", statusTone(gate.status)),
-    metric("can_continue", gate.can_continue, "", boolTone(gate.can_continue)),
-    metric("can_develop", gate.can_develop, "", boolTone(gate.can_develop)),
-    metric("can_run_backtest", gate.can_run_backtest, "", boolTone(gate.can_run_backtest)),
-    metric("can_use_moneyflow_as_strong_factor", gate.can_use_moneyflow_as_strong_factor, "", boolTone(gate.can_use_moneyflow_as_strong_factor))
+    metric("CNSVdata 就绪", gate.ready, "", boolTone(gate.ready)),
+    metric("门禁状态", gate.status, "", statusTone(gate.status)),
+    metric("允许继续", gate.can_continue, "", boolTone(gate.can_continue)),
+    metric("允许开发", gate.can_develop, "", boolTone(gate.can_develop)),
+    metric("允许回测", gate.can_run_backtest, "", boolTone(gate.can_run_backtest)),
+    metric("允许资金流强因子", gate.can_use_moneyflow_as_strong_factor, "", boolTone(gate.can_use_moneyflow_as_strong_factor))
   ].join("");
 
   document.getElementById("quality").innerHTML = [
-    metric("Feature Quality", quality.status, "", statusTone(quality.status)),
-    metric("failed_count", quality.failed_count, "failed_count"),
-    metric("warn_count", quality.warn_count, "warn_count"),
-    metric("checks", (quality.checks || []).length, "file_count")
+    metric("特征质量", quality.status, "", statusTone(quality.status)),
+    metric("失败数量", quality.failed_count, "failed_count"),
+    metric("警告数量", quality.warn_count, "warn_count"),
+    metric("检查项", (quality.checks || []).length, "file_count")
   ].join("");
   document.getElementById("qualityDetails").innerHTML = detail(
     "质量检查明细",
@@ -271,65 +272,65 @@ Promise.all([
   );
 
   document.getElementById("coverage").innerHTML = [
-    metric("latest_trade_date", summary.latest_trade_date || manifest.latest_trade_date),
-    metric("daily rows", summary.daily_rows, "daily_rows"),
-    metric("one_min rows", summary.one_min_rows, "one_min_rows"),
-    metric("moneyflow rows", summary.moneyflow_rows, "moneyflow_rows"),
-    metric("data generated_at", manifest.generated_at),
-    metric("file_count", manifest.file_count, "file_count")
+    metric("最新交易日", summary.latest_trade_date || manifest.latest_trade_date),
+    metric("日线行数", summary.daily_rows, "daily_rows"),
+    metric("1分钟行数", summary.one_min_rows, "one_min_rows"),
+    metric("资金流行数", summary.moneyflow_rows, "moneyflow_rows"),
+    metric("数据生成时间", manifest.generated_at),
+    metric("文件数量", manifest.file_count, "file_count")
   ].join("");
 
   document.getElementById("priceVolumeCards").innerHTML = [
-    metric("latest_close", price.latest_close, "latest_close"),
-    metric("latest_pct_chg", price.latest_pct_chg, "latest_pct_chg"),
+    metric("最新收盘价", price.latest_close, "latest_close"),
+    metric("最新涨跌幅", price.latest_pct_chg, "latest_pct_chg"),
     metric("MA5", price.ma5, "ma5"),
     metric("MA20", price.ma20, "ma20"),
-    metric("ret_20d", price.ret_20d, "ret_20d"),
-    metric("amount_ratio_20d", price.amount_ratio_20d, "amount_ratio_20d")
+    metric("20D 收益", price.ret_20d, "ret_20d"),
+    metric("20D 成交额比", price.amount_ratio_20d, "amount_ratio_20d")
   ].join("");
-  document.getElementById("priceVolumeTable").innerHTML = `<div class="panel"><div class="panel-title">Price Volume 全部核心字段</div>${table(allFields(price, labels.price))}</div>`;
+  document.getElementById("priceVolumeTable").innerHTML = `<div class="panel"><div class="panel-title">量价全部核心字段</div>${table(allFields(price, labels.price))}</div>`;
 
   document.getElementById("moneyflowCards").innerHTML = [
-    metric("main_force_net", moneyflow.main_force_net, "main_force_net"),
-    metric("net_mf_ratio", moneyflow.net_mf_ratio, "net_mf_ratio"),
-    metric("flow_strength_score", moneyflow.flow_strength_score, "flow_strength_score"),
-    metric("price_flow_confirm", moneyflow.price_flow_confirm, "", boolTone(moneyflow.price_flow_confirm)),
-    metric("price_flow_divergence", moneyflow.price_flow_divergence, "", boolTone(!moneyflow.price_flow_divergence)),
-    metric("volume_flow_confirm", moneyflow.volume_flow_confirm, "volume_flow_confirm")
+    metric("主力净流入", moneyflow.main_force_net, "main_force_net"),
+    metric("净流入占比", moneyflow.net_mf_ratio, "net_mf_ratio"),
+    metric("资金流强弱分", moneyflow.flow_strength_score, "flow_strength_score"),
+    metric("价量资金确认", moneyflow.price_flow_confirm, "", boolTone(moneyflow.price_flow_confirm)),
+    metric("价量资金背离", moneyflow.price_flow_divergence, "", boolTone(!moneyflow.price_flow_divergence)),
+    metric("量能资金确认", moneyflow.volume_flow_confirm, "volume_flow_confirm")
   ].join("");
-  document.getElementById("moneyflowTable").innerHTML = `<div class="panel"><div class="panel-title">Moneyflow 全部核心字段</div>${table(allFields(moneyflow, labels.moneyflow))}</div>`;
+  document.getElementById("moneyflowTable").innerHTML = `<div class="panel"><div class="panel-title">资金流全部核心字段</div>${table(allFields(moneyflow, labels.moneyflow))}</div>`;
 
   document.getElementById("minuteCards").innerHTML = [
-    metric("latest_intraday_close", minute.latest_intraday_close, "latest_intraday_close"),
-    metric("intraday_range_pct", minute.intraday_range_pct, "intraday_range_pct"),
-    metric("close_position_in_day_range", minute.close_position_in_day_range, "close_position_in_day_range"),
-    metric("last_30min_return", minute.last_30min_return, "last_30min_return"),
-    metric("late_session_weakness", minute.late_session_weakness, "", boolTone(minute.late_session_weakness)),
-    metric("intraday_reversal_flag", minute.intraday_reversal_flag, "", boolTone(minute.intraday_reversal_flag))
+    metric("日内收盘价", minute.latest_intraday_close, "latest_intraday_close"),
+    metric("日内振幅", minute.intraday_range_pct, "intraday_range_pct"),
+    metric("日内收盘位置", minute.close_position_in_day_range, "close_position_in_day_range"),
+    metric("最后 30min 收益", minute.last_30min_return, "last_30min_return"),
+    metric("尾盘弱势", minute.late_session_weakness, "", boolTone(minute.late_session_weakness)),
+    metric("日内反转", minute.intraday_reversal_flag, "", boolTone(minute.intraday_reversal_flag))
   ].join("");
-  document.getElementById("minuteTable").innerHTML = `<div class="panel"><div class="panel-title">Minute Structure 全部字段</div>${table(allFields(minute, labels.minute))}</div>`;
+  document.getElementById("minuteTable").innerHTML = `<div class="panel"><div class="panel-title">分钟结构全部字段</div>${table(allFields(minute, labels.minute))}</div>`;
 
   document.getElementById("trendCards").innerHTML = [
-    metric("trend_state", trend.trend_state, "trend_state"),
+    metric("趋势状态", trend.trend_state, "trend_state"),
     metric("MA5-MA20", trend.trend_ma5_ma20, "trend_ma5_ma20"),
     metric("MA10-MA60", trend.trend_ma10_ma60, "trend_ma10_ma60"),
-    metric("close_above_ma20", trend.close_above_ma20, "", boolTone(trend.close_above_ma20))
+    metric("收盘在 MA20 上方", trend.close_above_ma20, "", boolTone(trend.close_above_ma20))
   ].join("");
-  document.getElementById("trendTable").innerHTML = `<div class="panel"><div class="panel-title">Trend 全部字段</div>${table(allFields(trend, labels.trend))}</div>`;
+  document.getElementById("trendTable").innerHTML = `<div class="panel"><div class="panel-title">趋势全部字段</div>${table(allFields(trend, labels.trend))}</div>`;
 
   document.getElementById("volatilityCards").innerHTML = [
-    metric("volatility_state", volatility.volatility_state, "volatility_state"),
-    metric("realized_vol_5d", volatility.realized_vol_5d, "realized_vol_5d"),
-    metric("realized_vol_20d", volatility.realized_vol_20d, "realized_vol_20d"),
+    metric("波动率状态", volatility.volatility_state, "volatility_state"),
+    metric("5D 实现波动率", volatility.realized_vol_5d, "realized_vol_5d"),
+    metric("20D 实现波动率", volatility.realized_vol_20d, "realized_vol_20d"),
     metric("ATR 14D", volatility.atr_14d, "atr_14d")
   ].join("");
-  document.getElementById("volatilityTable").innerHTML = `<div class="panel"><div class="panel-title">Volatility 全部字段</div>${table(allFields(volatility, labels.volatility))}</div>`;
+  document.getElementById("volatilityTable").innerHTML = `<div class="panel"><div class="panel-title">波动率全部字段</div>${table(allFields(volatility, labels.volatility))}</div>`;
 
   const forbidden = featureReport.forbidden_actions || dataReport.forbidden_actions || [];
-  document.getElementById("guardrails").innerHTML = forbidden.map(item => metric(actionText(item), "禁止", "", "bad")).join("") + metric("next_stage", featureReport.next_stage);
-  document.getElementById("footer").textContent = `generated_at: ${format(meta.generated_at || dataMeta.generated_at)} | data snapshot: ${format(manifest.snapshot_id)} | data generated_at: ${format(manifest.generated_at)}`;
+  document.getElementById("guardrails").innerHTML = forbidden.map(item => metric(actionText(item), "禁止", "", "bad")).join("") + metric("下一阶段", featureReport.next_stage);
+  document.getElementById("footer").textContent = `生成时间：${format(meta.generated_at || dataMeta.generated_at)} | 数据快照：${format(manifest.snapshot_id)} | 数据生成时间：${format(manifest.generated_at)}`;
 }).catch(err => {
-  document.getElementById("overview").innerHTML = `<p class="error">Dashboard load failed: ${err}</p>`;
+  document.getElementById("overview").innerHTML = `<p class="error">看板加载失败：${err}</p>`;
 });
 </script>
 </body>
