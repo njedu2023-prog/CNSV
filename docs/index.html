@@ -13,8 +13,8 @@
     .eyebrow { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; }
     h1 { font-size: 14px; margin: 0; line-height: 1.25; }
     .subtitle { max-width: 760px; margin: 14px auto 0; color: var(--muted); font-size: 19px; line-height: 1.42; }
-    section { background: var(--surface); border-radius: 22px; padding: 28px; margin: 18px 0; box-shadow: var(--shadow); overflow: hidden; }
-    h2 { font-size: 14px; margin: 0 0 18px; }
+    section { background: var(--surface); border-radius: 22px; padding: 24px 28px; margin: 18px 0; box-shadow: var(--shadow); overflow: hidden; }
+    h2 { font-size: 14px; margin: 0 0 14px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; }
     .strip { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
     .metric { border: 1px solid rgba(210,210,215,.8); border-radius: 18px; padding: 18px; background: var(--soft); min-height: 96px; }
@@ -24,12 +24,12 @@
     .strip .label, .strip .value { font-size: 12px; margin: 0; line-height: 1.2; white-space: nowrap; }
     #gate .value { font-size: 12px; }
     .ok { color: var(--green); } .bad { color: var(--red); }
-    details { border: 1px solid rgba(210,210,215,.9); border-radius: 18px; background: var(--soft); margin: 14px 0; overflow: hidden; }
-    summary { cursor: pointer; list-style: none; padding: 18px 20px; display: flex; justify-content: space-between; gap: 16px; }
+    details { border: 1px solid rgba(210,210,215,.9); border-radius: 18px; background: var(--soft); margin: 10px 0 0; overflow: hidden; }
+    summary { cursor: pointer; list-style: none; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     summary::-webkit-details-marker { display: none; }
     summary::after { content: "+"; color: var(--blue); font-size: 18px; font-weight: 700; line-height: 1; margin-left: auto; flex: 0 0 auto; }
     details[open] summary::after { content: "-"; }
-    .summary-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .summary-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
     .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; color: #424245; font-size: 14px; }
     .chip.positive { color: var(--red); font-weight: 700; }
@@ -47,12 +47,12 @@
     <h1>中国船舶数据状态与特征报告</h1>
   </header>
   <section><h2>数据报告</h2><div id="dataReport" class="strip"></div></section>
-  <section><h2>特征报告</h2><div id="featureMeta" class="grid"></div></section>
-  <section><h2>门禁状态</h2><div id="gate" class="grid"></div></section>
-  <section><h2>特征质量</h2><div id="quality" class="grid"></div><div id="qualityDetails"></div></section>
+  <section><h2>特征报告</h2><div id="featureMeta" class="strip"></div></section>
+  <section><h2>门禁状态</h2><div id="gate" class="strip"></div></section>
+  <section><h2>特征质量</h2><div id="quality" class="strip"></div><div id="qualityDetails"></div></section>
   <section><h2>资金流摘要</h2><div id="moneyflow"></div></section>
-  <section><h2>趋势摘要</h2><div id="trend" class="grid"></div></section>
-  <section><h2>波动率摘要</h2><div id="volatility" class="grid"></div></section>
+  <section><h2>趋势摘要</h2><div id="trend" class="strip"></div></section>
+  <section><h2>波动率摘要</h2><div id="volatility" class="strip"></div></section>
 </main>
 <script>
 const yesNo = value => value ? "YES" : "NO";
