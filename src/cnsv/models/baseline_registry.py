@@ -12,7 +12,7 @@ def build_baseline_registry() -> list[dict[str, Any]]:
     common = {
         "horizons": list(HORIZONS),
         "is_trade_signal": False,
-        "stage": "V1.2_baseline_model",
+        "stage": "V1.2.1_state_grouped_baseline_fix",
     }
     return [
         {
@@ -58,4 +58,3 @@ def write_baseline_registry(path: str | Path) -> Path:
     target = ensure_parent(path)
     target.write_text(json.dumps(build_baseline_registry(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return target
-
