@@ -11,17 +11,21 @@ from cnsv.models.baseline_b2_state_grouped_distribution import run_b2_state_grou
 from cnsv.models.baseline_b3_volatility_adjusted import run_b3_volatility_adjusted
 from cnsv.models.baseline_evaluator import evaluate_baseline_models
 from cnsv.models.baseline_schema import HORIZONS, clean_payload, latest_close, sorted_daily
+from cnsv.models.baseline_state_history import build_historical_state_daily
 
 
 def run_baseline_models(data_bundle: dict[str, Any], features: dict[str, Any], horizons: tuple[int, ...] = HORIZONS) -> dict[str, Any]:
     daily = data_bundle.get("daily")
     daily_df = sorted_daily(daily if isinstance(daily, pd.DataFrame) else pd.DataFrame())
+    moneyflow = data_bundle.get("moneyflow")
+    moneyflow_df = moneyflow if isinstance(moneyflow, pd.DataFrame) else pd.DataFrame()
+    state_daily_df = build_historical_state_daily(daily_df, moneyflow_df)
     current_close = latest_close(daily_df, features)
     manifest = data_bundle.get("data_manifest") or {}
     models = {
         "B0_random_walk": run_b0_random_walk(daily_df, current_close, horizons),
         "B1_historical_distribution": run_b1_historical_distribution(daily_df, current_close, horizons),
-        "B2_state_grouped_distribution": run_b2_state_grouped_distribution(daily_df, current_close, features, horizons),
+        "B2_state_grouped_distribution": run_b2_state_grouped_distribution(state_daily_df, current_close, features, horizons),
         "B3_volatility_adjusted": run_b3_volatility_adjusted(daily_df, current_close, features, horizons),
     }
     quality = evaluate_baseline_models(models, horizons)
@@ -42,4 +46,3 @@ def run_baseline_models(data_bundle: dict[str, Any], features: dict[str, Any], h
             "warn_count": quality["warn_count"],
         }
     )
-
