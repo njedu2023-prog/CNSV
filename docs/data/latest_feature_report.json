@@ -5,7 +5,7 @@
     "report_type": "feature_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-20T16:26:52.465905+00:00",
+    "generated_at": "2026-06-20T16:48:50.967241+00:00",
     "latest_trade_date": "2026-06-18"
   },
   "cnsvdata_gate": {
@@ -24,9 +24,9 @@
     ]
   },
   "data_manifest": {
-    "snapshot_id": "cnsvdata-2026-06-18-f61af6c886dc",
+    "snapshot_id": "cnsvdata-2026-06-18-231609554816",
     "latest_trade_date": "2026-06-18",
-    "generated_at": "2026-06-20 23:10:45",
+    "generated_at": "2026-06-21 00:43:00",
     "file_count": 14
   },
   "feature_quality": {
