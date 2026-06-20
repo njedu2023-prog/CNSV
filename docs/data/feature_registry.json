@@ -1,0 +1,101 @@
+[
+  {
+    "feature_name": "latest_close",
+    "category": "price_volume",
+    "description": "最新收盘价",
+    "source": "daily",
+    "formula": "last(close)",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "ret_1d",
+    "category": "price_volume",
+    "description": "1日收益率",
+    "source": "daily",
+    "formula": "close / close.shift(1) - 1",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "price_position_20d",
+    "category": "price_volume",
+    "description": "20日价格区间位置",
+    "source": "daily",
+    "formula": "(close - rolling_low_20d) / (rolling_high_20d - rolling_low_20d)",
+    "required": false,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "latest_intraday_close",
+    "category": "minute_structure",
+    "description": "最新分钟收盘价",
+    "source": "one_min",
+    "formula": "last(close)",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "close_position_in_day_range",
+    "category": "minute_structure",
+    "description": "日内收盘位置",
+    "source": "one_min",
+    "formula": "(close - intraday_low) / (intraday_high - intraday_low)",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "net_mf_ratio",
+    "category": "moneyflow",
+    "description": "净流入占成交额比例",
+    "source": "moneyflow,daily",
+    "formula": "net_mf_amount / daily.amount",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "main_force_net",
+    "category": "moneyflow",
+    "description": "主力净流入",
+    "source": "moneyflow",
+    "formula": "(buy_lg_amount - sell_lg_amount) + (buy_elg_amount - sell_elg_amount)",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "flow_strength_score",
+    "category": "moneyflow",
+    "description": "资金流强弱分",
+    "source": "moneyflow,daily",
+    "formula": "50*clip(net_mf_ratio/0.05)+50*clip(main_force_ratio/0.05)",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "trend_state",
+    "category": "trend",
+    "description": "趋势状态",
+    "source": "daily",
+    "formula": "close and MA ordering rules",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "realized_vol_20d",
+    "category": "volatility",
+    "description": "20日实现波动率",
+    "source": "daily",
+    "formula": "std(pct_change(close), 20) * sqrt(252)",
+    "required": true,
+    "used_in_v1_1": true
+  },
+  {
+    "feature_name": "volatility_state",
+    "category": "volatility",
+    "description": "波动率状态",
+    "source": "daily",
+    "formula": "20D realized vol percentile over trailing year",
+    "required": true,
+    "used_in_v1_1": true
+  }
+]
