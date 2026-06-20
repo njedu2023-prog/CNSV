@@ -20,10 +20,10 @@ def _state_key(features: dict[str, Any]) -> str:
 
 def _state_terminal_returns(daily: pd.DataFrame, mask: pd.Series, horizon: int) -> pd.Series:
     close = pd.to_numeric(daily["close"], errors="coerce") if "close" in daily.columns else pd.Series(dtype="float64")
-    returns = (close.shift(-horizon) / close).map(lambda value: None if pd.isna(value) or value <= 0 else value)
-    log_returns = pd.Series(float("nan"), index=daily.index, dtype="float64")
-    clean = pd.to_numeric(returns, errors="coerce")
-    log_returns.loc[clean.notna()] = clean.loc[clean.notna()].map(math.log)
+    ratio = close.shift(-horizon) / close
+    clean = pd.to_numeric(ratio, errors="coerce")
+    clean = clean.where(clean > 0)
+    log_returns = clean.map(math.log)
     return pd.to_numeric(log_returns.loc[mask], errors="coerce").dropna()
 
 
