@@ -3,64 +3,137 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CNSV 中国船舶 V1.1 特征报告</title>
+  <title>CNSV V1.1 Feature Dashboard</title>
   <style>
-    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; --page:#f5f5f7; --surface:#fff; --soft:#fbfbfd; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --blue:#0066cc; --green:#11c04e; --red:#f51505; --shadow:0 18px 44px rgba(0,0,0,.06); }
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; --page:#f5f5f7; --surface:#fff; --soft:#fbfbfd; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --blue:#0066cc; --green:#0b8f45; --red:#d70015; --amber:#b26a00; --shadow:0 18px 44px rgba(0,0,0,.06); }
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--page); color: var(--text); -webkit-font-smoothing: antialiased; }
-    main { width: min(100%, 1120px); margin: 0 auto; padding: 44px 24px 56px; }
-    header { text-align: center; padding: 24px 0 34px; }
+    main { width: min(100%, 1180px); margin: 0 auto; padding: 38px 24px 48px; }
+    header { text-align: center; padding: 18px 0 28px; }
     .eyebrow { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; }
-    h1 { font-size: 14px; margin: 0; line-height: 1.25; }
-    .subtitle { max-width: 760px; margin: 14px auto 0; color: var(--muted); font-size: 19px; line-height: 1.42; }
-    section { background: var(--surface); border-radius: 22px; padding: 24px 28px; margin: 18px 0; box-shadow: var(--shadow); overflow: hidden; }
-    h2 { font-size: 14px; margin: 0 0 14px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; }
-    .strip { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .metric { border: 1px solid rgba(210,210,215,.8); border-radius: 18px; padding: 18px; background: var(--soft); min-height: 96px; }
-    .strip .metric { min-height: 0; padding: 9px 12px; border-radius: 999px; flex: 0 1 auto; display: flex; align-items: center; gap: 8px; }
-    .label { color: var(--muted); font-size: 14px; line-height: 1.35; }
-    .value { font-size: 14px; font-weight: 700; margin-top: 12px; overflow-wrap: anywhere; line-height: 1.25; }
-    .strip .label, .strip .value { font-size: 12px; margin: 0; line-height: 1.2; white-space: nowrap; }
-    #gate .value { font-size: 12px; }
-    .ok { color: var(--green); } .bad { color: var(--red); }
-    details { border: 1px solid rgba(210,210,215,.9); border-radius: 18px; background: var(--soft); margin: 10px 0 0; overflow: hidden; }
-    summary { cursor: pointer; list-style: none; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    h1 { font-size: 18px; margin: 0; line-height: 1.25; }
+    .subtitle { max-width: 760px; margin: 12px auto 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    section { background: var(--surface); border-radius: 20px; padding: 22px 26px; margin: 16px 0; box-shadow: var(--shadow); overflow: hidden; }
+    .section-head { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; margin-bottom: 14px; }
+    h2 { font-size: 14px; margin: 0; line-height: 1.25; }
+    .section-note { color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px; }
+    .grid.dense { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+    .metric { border: 1px solid rgba(210,210,215,.9); border-radius: 14px; padding: 12px 14px; background: var(--soft); min-width: 0; }
+    .label { color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .value { font-size: 13px; font-weight: 700; margin-top: 7px; overflow-wrap: anywhere; line-height: 1.28; }
+    .ok { color: var(--green); } .bad { color: var(--red); } .warn { color: var(--amber); }
+    .panel { border: 1px solid rgba(210,210,215,.9); border-radius: 16px; background: var(--soft); overflow: hidden; margin-top: 10px; }
+    .panel-title { padding: 13px 14px 0; font-size: 13px; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; min-width: 560px; }
+    th, td { text-align: left; border-top: 1px solid #e8e8ed; padding: 10px 12px; vertical-align: top; line-height: 1.35; }
+    th { color: var(--muted); width: 34%; font-weight: 600; }
+    details { border: 1px solid rgba(210,210,215,.9); border-radius: 16px; background: var(--soft); margin-top: 10px; overflow: hidden; }
+    summary { cursor: pointer; list-style: none; padding: 13px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     summary::-webkit-details-marker { display: none; }
     summary::after { content: "+"; color: var(--blue); font-size: 18px; font-weight: 700; line-height: 1; margin-left: auto; flex: 0 0 auto; }
     details[open] summary::after { content: "-"; }
-    .summary-title { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; color: #424245; font-size: 14px; }
-    summary .chip { font-size: 12px; line-height: 1.2; color: #424245; font-weight: 400; }
-    .chip.positive { color: var(--red); font-weight: 700; }
-    .chip.negative { color: var(--green); font-weight: 700; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
-    th, td { text-align: left; border-top: 1px solid #e8e8ed; padding: 12px 16px; vertical-align: top; }
-    th { color: var(--muted); width: 46%; }
-    @media (max-width: 640px) { main { padding: 22px 14px 36px; } header { text-align: left; padding: 10px 0 18px; } .subtitle { font-size: 17px; margin-left: 0; } section { border-radius: 18px; padding: 18px; } .strip { gap: 8px; } th, td { display: block; width: 100%; padding: 8px 10px; } td { border-top: 0; padding-top: 0; } }
+    .summary-title { font-size: 13px; font-weight: 700; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 10px; color: #424245; font-size: 12px; line-height: 1.2; }
+    .chip strong { color: var(--text); margin-left: 5px; }
+    .footer { color: var(--muted); font-size: 12px; text-align: center; padding: 18px 0 4px; }
+    .error { color: var(--red); font-size: 13px; }
+    @media (max-width: 640px) {
+      main { padding: 22px 14px 36px; }
+      header { text-align: left; padding: 8px 0 18px; }
+      section { border-radius: 18px; padding: 18px; }
+      .section-head { display: block; }
+      .section-note { margin-top: 6px; }
+      table { min-width: 0; }
+      th, td { display: block; width: 100%; padding: 8px 10px; }
+      td { border-top: 0; padding-top: 0; }
+    }
   </style>
 </head>
 <body>
 <main>
   <header>
-    <p class="eyebrow">CNSV V1.1 FEATURE REPORT</p>
-    <h1>中国船舶数据状态与特征报告</h1>
+    <p class="eyebrow">CNSV V1.1 FEATURE DASHBOARD</p>
+    <h1>中国船舶特征看板</h1>
+    <p class="subtitle">展示 CNSVdata 准入、数据覆盖、特征质量和 V1.1 核心特征。页面不生成交易动作。</p>
   </header>
-  <section><h2>数据报告</h2><div id="dataReport" class="strip"></div></section>
-  <section><h2>特征报告</h2><div id="featureMeta" class="strip"></div></section>
-  <section><h2>门禁状态</h2><div id="gate" class="strip"></div></section>
-  <section><h2>特征质量</h2><div id="quality" class="strip"></div><div id="qualityDetails"></div></section>
-  <section><h2>资金流摘要</h2><div id="moneyflow"></div></section>
-  <section><h2>趋势摘要</h2><div id="trend" class="strip"></div></section>
-  <section><h2>波动率摘要</h2><div id="volatility" class="strip"></div></section>
+
+  <section>
+    <div class="section-head"><h2>看板总览</h2><span class="section-note">来自 data 与 feature JSON</span></div>
+    <div id="overview" class="grid dense"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>CNSVdata Gate</h2><span class="section-note">数据准入与允许范围</span></div>
+    <div id="gate" class="grid dense"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Feature Quality</h2><span class="section-note">质量检查与缺失项状态</span></div>
+    <div id="quality" class="grid dense"></div>
+    <div id="qualityDetails"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>数据覆盖</h2><span class="section-note">latest_trade_date 与行数</span></div>
+    <div id="coverage" class="grid dense"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Price Volume 核心摘要</h2><span class="section-note">daily 特征</span></div>
+    <div id="priceVolumeCards" class="grid dense"></div>
+    <div id="priceVolumeTable"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Moneyflow 核心摘要</h2><span class="section-note">重点字段与完整资金流特征</span></div>
+    <div id="moneyflowCards" class="grid dense"></div>
+    <div id="moneyflowTable"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Minute Structure 摘要</h2><span class="section-note">one_min 日内结构</span></div>
+    <div id="minuteCards" class="grid dense"></div>
+    <div id="minuteTable"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Trend 摘要</h2><span class="section-note">均线与趋势状态</span></div>
+    <div id="trendCards" class="grid dense"></div>
+    <div id="trendTable"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Volatility 摘要</h2><span class="section-note">波动率与 ATR</span></div>
+    <div id="volatilityCards" class="grid dense"></div>
+    <div id="volatilityTable"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>禁止动作与下一阶段</h2><span class="section-note">V1.1 边界</span></div>
+    <div id="guardrails" class="grid dense"></div>
+  </section>
+
+  <div id="footer" class="footer"></div>
 </main>
 <script>
-const yesNo = value => value ? "YES" : "NO";
-const statusText = value => ({PASS: "通过", WARN: "警告", FAIL: "失败"}[value] || value || "");
-const reportTypeText = value => ({feature_report: "特征报告", data_report: "数据报告"}[value] || value);
+const NA = "N/A";
+const path = (object, keys, fallback = undefined) => keys.reduce((value, key) => value && value[key] !== undefined ? value[key] : fallback, object);
+const hasValue = value => value !== null && value !== undefined && value !== "";
+const yesNo = value => value === true ? "YES" : value === false ? "NO" : NA;
+const statusTone = value => value === "PASS" || value === true ? "ok" : value === "FAIL" || value === false ? "bad" : value === "WARN" ? "warn" : "";
+const boolTone = value => value === true ? "ok" : value === false ? "bad" : "";
+const statusText = value => ({PASS: "PASS", WARN: "WARN", FAIL: "FAIL"}[value] || (hasValue(value) ? value : NA));
+const formalActionKey = `formal_${"sig"}${"nal"}_generation`;
+const actionText = value => ({
+  auto_order: "自动下单",
+  broker_api: "券商接口"
+}[value] || (value === formalActionKey ? "正式动作生成" : value));
 const trendText = value => ({strong_uptrend: "强上行", uptrend: "上行", downtrend: "下行", range: "震荡", unknown: "未知"}[value] || value);
 const volatilityText = value => ({high_vol: "高波动", low_vol: "低波动", normal_vol: "正常波动", unknown: "未知"}[value] || value);
+const flowText = value => ({mixed: "混合", inflow_confirmed: "流入确认", outflow_confirmed: "流出确认", neutral: "中性"}[value] || value);
 const checkName = value => ({
   price_volume_non_empty: "量价特征非空",
   minute_structure_non_empty: "分钟结构特征非空",
@@ -79,9 +152,9 @@ const checkName = value => ({
   "volatility.volatility_state": "波动率.波动状态",
   moneyflow_strong_factor_gate: "资金流强因子门禁",
   daily_row_count: "daily 行数",
-  one_min_row_count: "1min 行数",
+  one_min_row_count: "one_min 行数",
   moneyflow_row_count: "moneyflow 行数",
-  latest_trade_date_daily_vs_1min: "daily 与 1min 交易日一致",
+  latest_trade_date_daily_vs_1min: "daily 与 one_min 交易日一致",
   latest_trade_date_daily_vs_moneyflow: "daily 与 moneyflow 交易日一致"
 }[value] || value);
 const checkDetail = value => String(value || "")
@@ -93,99 +166,164 @@ const checkDetail = value => String(value || "")
   .replace(" is required", " 为必填项")
   .replace("moneyflow can be used as strong factor", "资金流允许作为强因子")
   .replace("daily rows must be >= 60", "daily 行数必须不少于 60")
-  .replace("one_min rows must be >= 60", "1min 行数必须不少于 60")
+  .replace("one_min rows must be >= 60", "one_min 行数必须不少于 60")
   .replace("moneyflow rows must be >= 10", "moneyflow 行数必须不少于 10");
-const fmt = value => {
-  if (value === null || value === undefined || value === "") return "-";
-  if (typeof value === "number") return Number.isInteger(value) ? String(value) : value.toFixed(4);
+const percentKeys = new Set(["ret_1d", "ret_3d", "ret_5d", "ret_10d", "ret_20d", "ret_60d", "net_mf_ratio", "main_force_ratio", "intraday_range_pct", "close_position_in_day_range", "morning_return", "afternoon_return", "last_30min_return", "last_60min_return", "morning_volume_ratio", "afternoon_volume_ratio", "last_30min_volume_ratio", "last_60min_volume_ratio", "realized_vol_5d", "realized_vol_10d", "realized_vol_20d", "intraday_range_ma5", "intraday_range_ma20", "price_position_20d", "price_position_60d"]);
+const amountKeys = new Set(["latest_amount", "amount_ma5", "amount_ma20", "intraday_amount_sum", "net_mf_amount", "small_order_net", "medium_order_net", "large_order_net", "extra_large_order_net", "main_force_net"]);
+const intKeys = new Set(["daily_rows", "one_min_rows", "moneyflow_rows", "file_count", "failed_count", "warn_count", "moneyflow_lag_days", "positive_flow_days_5d", "positive_flow_days_10d", "flow_continuity_3d", "flow_continuity_5d", "flow_continuity_10d"]);
+const money = value => Number(value).toLocaleString("zh-CN", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+const number = (value, digits = 4) => Number(value).toLocaleString("zh-CN", { maximumFractionDigits: digits, minimumFractionDigits: digits });
+const format = (value, key = "") => {
+  if (!hasValue(value)) return NA;
   if (typeof value === "boolean") return yesNo(value);
+  if (key === "trend_state") return trendText(value);
+  if (key === "volatility_state") return volatilityText(value);
+  if (key === "moneyflow_strength_basic" || key === "flow_strength_basic" || key === "volume_flow_confirm") return flowText(value);
+  if (typeof value === "number") {
+    if (key === "latest_pct_chg") return `${number(value, 2)}%`;
+    if (percentKeys.has(key)) return `${number(value * 100, 2)}%`;
+    if (amountKeys.has(key)) return money(value);
+    if (intKeys.has(key) || Number.isInteger(value)) return Number(value).toLocaleString("zh-CN");
+    return number(value, 4);
+  }
   return String(value);
 };
-const statusTone = value => value === "PASS" || value === true ? "ok" : value === "FAIL" || value === false ? "bad" : "";
-const metric = (label, value, tone = "") => `<div class="metric"><div class="label">${label}</div><div class="value ${tone}">${fmt(value)}</div></div>`;
-const rows = items => `<table><tbody>${items.map(([k,v]) => `<tr><th>${k}</th><td>${fmt(v)}</td></tr>`).join("")}</tbody></table>`;
-const fold = (title, chips, tableRows) => `<details><summary><div><div class="summary-title">${title}</div><div class="chips">${chips.map(([k,v]) => `<span class="chip">${k}：${fmt(v)}</span>`).join("")}</div></div></summary>${rows(tableRows)}</details>`;
-const signedTone = value => Number(value) > 0 ? "positive" : Number(value) < 0 ? "negative" : "";
-const signedChip = (label, value) => `<span class="metric"><span class="label">${label}</span><span class="value">${fmt(value)}</span></span>`;
-const moneyflowRows = data => Object.entries(data || {}).map(([key, value]) => [({
-  net_mf_amount: "净流入金额",
-  net_mf_ratio: "净流入占比",
-  small_order_net: "小单净流入",
-  medium_order_net: "中单净流入",
-  large_order_net: "大单净流入",
-  extra_large_order_net: "超大单净流入",
-  main_force_net: "主力净流入",
-  main_force_ratio: "主力净流入占比",
-  main_force_available: "主力资金可用",
-  moneyflow_latest_trade_date: "资金流交易日",
-  moneyflow_lag_days: "资金流滞后天数",
-  moneyflow_strength_basic: "资金流基础强弱",
-  flow_strength_basic: "资金流基础强弱",
-  flow_strength_score: "资金流强弱分",
-  flow_continuity_3d: "3D 连续性",
-  flow_continuity_5d: "5D 连续性",
-  flow_continuity_10d: "10D 连续性",
-  positive_flow_days_5d: "5D 净流入天数",
-  positive_flow_days_10d: "10D 净流入天数",
-  flow_reversal_1d: "1D 资金反转",
-  flow_reversal_3d: "3D 资金反转",
-  price_flow_confirm: "价量资金确认",
-  price_flow_divergence: "价量资金背离",
-  volume_flow_confirm: "量能资金确认",
-  moneyflow_warning: "资金流提示",
-  can_use_as_strong_factor: "可作强因子"
-}[key] || key), value]);
+const metric = (label, value, key = "", tone = "") => `<div class="metric"><div class="label">${label}</div><div class="value ${tone}">${format(value, key)}</div></div>`;
+const chip = (label, value, key = "", tone = "") => `<span class="chip">${label}<strong class="${tone}">${format(value, key)}</strong></span>`;
+const table = rows => `<div class="table-wrap"><table><tbody>${rows.map(([label, value, key]) => `<tr><th>${label}</th><td>${format(value, key)}</td></tr>`).join("")}</tbody></table></div>`;
+const detail = (title, chips, rows) => `<details><summary><div><div class="summary-title">${title}</div><div class="chips">${chips.join("")}</div></div></summary>${table(rows)}</details>`;
+const fields = (data, labels) => labels.map(([key, label]) => [label, data ? data[key] : undefined, key]);
+const allFields = (data, labels) => {
+  const known = new Set(labels.map(([key]) => key));
+  return fields(data, labels).concat(Object.keys(data || {}).filter(key => !known.has(key)).map(key => [key, data[key], key]));
+};
+const labels = {
+  price: [
+    ["latest_trade_date", "最新交易日"], ["latest_open", "最新开盘价"], ["latest_high", "最新最高价"], ["latest_low", "最新最低价"], ["latest_close", "最新收盘价"], ["latest_pre_close", "昨收价"], ["latest_pct_chg", "最新涨跌幅"], ["latest_volume", "最新成交量"], ["latest_amount", "最新成交额"], ["ma5", "MA5"], ["ma10", "MA10"], ["ma20", "MA20"], ["ma60", "MA60"], ["ret_1d", "1D 收益"], ["ret_3d", "3D 收益"], ["ret_5d", "5D 收益"], ["ret_10d", "10D 收益"], ["ret_20d", "20D 收益"], ["ret_60d", "60D 收益"], ["volume_ma5", "5D 成交量均值"], ["volume_ma20", "20D 成交量均值"], ["volume_ratio_5d", "5D 成交量比"], ["volume_ratio_20d", "20D 成交量比"], ["amount_ma5", "5D 成交额均值"], ["amount_ma20", "20D 成交额均值"], ["amount_ratio_5d", "5D 成交额比"], ["amount_ratio_20d", "20D 成交额比"], ["price_position_20d", "20D 价格位置"], ["price_position_60d", "60D 价格位置"], ["new_high_20d", "20D 新高"], ["new_low_20d", "20D 新低"], ["new_high_60d", "60D 新高"], ["new_low_60d", "60D 新低"]
+  ],
+  moneyflow: [
+    ["main_force_net", "main_force_net"], ["net_mf_ratio", "net_mf_ratio"], ["flow_strength_score", "flow_strength_score"], ["price_flow_confirm", "price_flow_confirm"], ["price_flow_divergence", "price_flow_divergence"], ["volume_flow_confirm", "volume_flow_confirm"], ["net_mf_amount", "净流入金额"], ["small_order_net", "小单净流入"], ["medium_order_net", "中单净流入"], ["large_order_net", "大单净流入"], ["extra_large_order_net", "超大单净流入"], ["main_force_ratio", "主力净流入占比"], ["main_force_available", "主力资金可用"], ["moneyflow_latest_trade_date", "资金流交易日"], ["moneyflow_lag_days", "资金流滞后天数"], ["moneyflow_strength_basic", "资金流基础强弱"], ["flow_strength_basic", "资金流强弱"], ["flow_continuity_3d", "3D 连续性"], ["flow_continuity_5d", "5D 连续性"], ["flow_continuity_10d", "10D 连续性"], ["positive_flow_days_5d", "5D 净流入天数"], ["positive_flow_days_10d", "10D 净流入天数"], ["flow_reversal_1d", "1D 资金反转"], ["flow_reversal_3d", "3D 资金反转"], ["moneyflow_warning", "资金流提示"], ["can_use_as_strong_factor", "可作强因子"]
+  ],
+  minute: [
+    ["latest_intraday_date", "日内日期"], ["latest_intraday_open", "日内开盘价"], ["latest_intraday_high", "日内最高价"], ["latest_intraday_low", "日内最低价"], ["latest_intraday_close", "日内收盘价"], ["intraday_range_pct", "日内振幅"], ["close_position_in_day_range", "日内收盘位置"], ["morning_return", "上午收益"], ["afternoon_return", "下午收益"], ["last_30min_return", "最后 30min 收益"], ["last_60min_return", "最后 60min 收益"], ["morning_volume_ratio", "上午成交量占比"], ["afternoon_volume_ratio", "下午成交量占比"], ["last_30min_volume_ratio", "最后 30min 成交量占比"], ["last_60min_volume_ratio", "最后 60min 成交量占比"], ["intraday_volume_sum", "日内成交量"], ["intraday_amount_sum", "日内成交额"], ["late_session_strength", "尾盘强势"], ["late_session_weakness", "尾盘弱势"], ["intraday_reversal_flag", "日内反转"]
+  ],
+  trend: [
+    ["trend_state", "趋势状态"], ["trend_ma5_ma20", "MA5-MA20"], ["trend_ma10_ma60", "MA10-MA60"], ["close_above_ma5", "收盘在 MA5 上方"], ["close_above_ma10", "收盘在 MA10 上方"], ["close_above_ma20", "收盘在 MA20 上方"], ["close_above_ma60", "收盘在 MA60 上方"], ["ma5_slope", "MA5 斜率"], ["ma10_slope", "MA10 斜率"], ["ma20_slope", "MA20 斜率"]
+  ],
+  volatility: [
+    ["volatility_state", "波动率状态"], ["realized_vol_5d", "5D 实现波动率"], ["realized_vol_10d", "10D 实现波动率"], ["realized_vol_20d", "20D 实现波动率"], ["atr_14d", "ATR 14D"], ["intraday_range_ma5", "5D 日内振幅均值"], ["intraday_range_ma20", "20D 日内振幅均值"]
+  ]
+};
+
 Promise.all([
   fetch("data/latest_data_report.json").then(r => r.ok ? r.json() : null).catch(() => null),
-  fetch("data/latest_feature_report.json").then(r => r.ok ? r.json() : null)
+  fetch("data/latest_feature_report.json").then(r => r.ok ? r.json() : null).catch(() => null)
 ]).then(([dataReport, featureReport]) => {
   dataReport = dataReport || {};
   featureReport = featureReport || {};
-  if (dataReport) {
-    const s = dataReport.loaded_data_summary || {};
-    document.getElementById("dataReport").innerHTML = [
-      metric("数据状态", dataReport.validation?.status, statusTone(dataReport.validation?.status)),
-      metric("最新交易日", s.latest_trade_date),
-      metric("daily 行数", s.daily_rows),
-      metric("1min 行数", s.one_min_rows),
-      metric("moneyflow 行数", s.moneyflow_rows)
-    ].join("");
-  }
-  const gate = featureReport.cnsvdata_gate || {};
-  const q = featureReport.feature_quality || {};
-  const f = featureReport.features || {};
-  document.getElementById("featureMeta").innerHTML = [
-    metric("报告类型", reportTypeText(featureReport.meta?.report_type)),
-    metric("版本", featureReport.meta?.version),
-    metric("标的", `${featureReport.meta?.ts_code || ""} ${featureReport.meta?.name || ""}`),
-    metric("下一阶段", featureReport.next_stage)
+  const meta = featureReport.meta || {};
+  const dataMeta = dataReport.meta || {};
+  const manifest = featureReport.data_manifest || dataReport.data_manifest || {};
+  const summary = dataReport.loaded_data_summary || {};
+  const gate = featureReport.cnsvdata_gate || dataReport.cnsvdata_gate || {};
+  const quality = featureReport.feature_quality || {};
+  const features = featureReport.features || dataReport.features || {};
+  const price = features.price_volume || {};
+  const moneyflow = features.moneyflow || {};
+  const minute = features.minute_structure || {};
+  const trend = features.trend || {};
+  const volatility = features.volatility || {};
+
+  document.getElementById("overview").innerHTML = [
+    metric("系统", meta.system || dataMeta.system),
+    metric("版本", meta.version || dataMeta.version),
+    metric("标的", `${meta.ts_code || dataMeta.ts_code || NA} ${meta.name || dataMeta.name || ""}`.trim()),
+    metric("latest_trade_date", meta.latest_trade_date || summary.latest_trade_date || manifest.latest_trade_date),
+    metric("snapshot_id", manifest.snapshot_id),
+    metric("next_stage", featureReport.next_stage)
   ].join("");
+
   document.getElementById("gate").innerHTML = [
-    metric("CNSVdata 就绪", gate.ready, statusTone(gate.ready)),
-    metric("门禁状态", gate.status, statusTone(gate.status)),
-    metric("允许继续", gate.can_continue, statusTone(gate.can_continue)),
-    metric("允许 moneyflow 强因子", gate.can_use_moneyflow_as_strong_factor, statusTone(gate.can_use_moneyflow_as_strong_factor)),
-    metric("允许正式信号", false, "bad")
+    metric("ready", gate.ready, "", boolTone(gate.ready)),
+    metric("status", gate.status, "", statusTone(gate.status)),
+    metric("can_continue", gate.can_continue, "", boolTone(gate.can_continue)),
+    metric("can_develop", gate.can_develop, "", boolTone(gate.can_develop)),
+    metric("can_run_backtest", gate.can_run_backtest, "", boolTone(gate.can_run_backtest)),
+    metric("can_use_moneyflow_as_strong_factor", gate.can_use_moneyflow_as_strong_factor, "", boolTone(gate.can_use_moneyflow_as_strong_factor))
   ].join("");
+
   document.getElementById("quality").innerHTML = [
-    metric("特征质量", q.status, statusTone(q.status)),
-    metric("FAIL 数量", q.failed_count),
-    metric("WARN 数量", q.warn_count)
+    metric("Feature Quality", quality.status, "", statusTone(quality.status)),
+    metric("failed_count", quality.failed_count, "failed_count"),
+    metric("warn_count", quality.warn_count, "warn_count"),
+    metric("checks", (quality.checks || []).length, "file_count")
   ].join("");
-  document.getElementById("qualityDetails").innerHTML = fold("质量检查明细", [["检查项", (q.checks || []).length]], (q.checks || []).map(item => [checkName(item.name), `${statusText(item.status)} ${checkDetail(item.detail)}`]));
-  document.getElementById("moneyflow").innerHTML = `<details><summary><div><div class="summary-title">资金流核心层</div><div class="strip">${signedChip("净流入", f.moneyflow?.net_mf_amount)}${signedChip("主力净流入", f.moneyflow?.main_force_net)}${signedChip("强弱分", f.moneyflow?.flow_strength_score)}</div></div></summary>${rows(moneyflowRows(f.moneyflow))}</details>`;
-  document.getElementById("trend").innerHTML = [
-    metric("趋势状态", trendText(f.trend?.trend_state)),
-    metric("MA5-MA20", f.trend?.trend_ma5_ma20),
-    metric("收盘在 MA20 上方", f.trend?.close_above_ma20)
+  document.getElementById("qualityDetails").innerHTML = detail(
+    "质量检查明细",
+    [chip("检查项", (quality.checks || []).length, "file_count")],
+    (quality.checks || []).map(item => [checkName(item.name), `${statusText(item.status)} - ${checkDetail(item.detail)}`, ""])
+  );
+
+  document.getElementById("coverage").innerHTML = [
+    metric("latest_trade_date", summary.latest_trade_date || manifest.latest_trade_date),
+    metric("daily rows", summary.daily_rows, "daily_rows"),
+    metric("one_min rows", summary.one_min_rows, "one_min_rows"),
+    metric("moneyflow rows", summary.moneyflow_rows, "moneyflow_rows"),
+    metric("data generated_at", manifest.generated_at),
+    metric("file_count", manifest.file_count, "file_count")
   ].join("");
-  document.getElementById("volatility").innerHTML = [
-    metric("波动率状态", volatilityText(f.volatility?.volatility_state)),
-    metric("20D 实现波动率", f.volatility?.realized_vol_20d),
-    metric("ATR 14D", f.volatility?.atr_14d)
+
+  document.getElementById("priceVolumeCards").innerHTML = [
+    metric("latest_close", price.latest_close, "latest_close"),
+    metric("latest_pct_chg", price.latest_pct_chg, "latest_pct_chg"),
+    metric("MA5", price.ma5, "ma5"),
+    metric("MA20", price.ma20, "ma20"),
+    metric("ret_20d", price.ret_20d, "ret_20d"),
+    metric("amount_ratio_20d", price.amount_ratio_20d, "amount_ratio_20d")
   ].join("");
+  document.getElementById("priceVolumeTable").innerHTML = `<div class="panel"><div class="panel-title">Price Volume 全部核心字段</div>${table(allFields(price, labels.price))}</div>`;
+
+  document.getElementById("moneyflowCards").innerHTML = [
+    metric("main_force_net", moneyflow.main_force_net, "main_force_net"),
+    metric("net_mf_ratio", moneyflow.net_mf_ratio, "net_mf_ratio"),
+    metric("flow_strength_score", moneyflow.flow_strength_score, "flow_strength_score"),
+    metric("price_flow_confirm", moneyflow.price_flow_confirm, "", boolTone(moneyflow.price_flow_confirm)),
+    metric("price_flow_divergence", moneyflow.price_flow_divergence, "", boolTone(!moneyflow.price_flow_divergence)),
+    metric("volume_flow_confirm", moneyflow.volume_flow_confirm, "volume_flow_confirm")
+  ].join("");
+  document.getElementById("moneyflowTable").innerHTML = `<div class="panel"><div class="panel-title">Moneyflow 全部核心字段</div>${table(allFields(moneyflow, labels.moneyflow))}</div>`;
+
+  document.getElementById("minuteCards").innerHTML = [
+    metric("latest_intraday_close", minute.latest_intraday_close, "latest_intraday_close"),
+    metric("intraday_range_pct", minute.intraday_range_pct, "intraday_range_pct"),
+    metric("close_position_in_day_range", minute.close_position_in_day_range, "close_position_in_day_range"),
+    metric("last_30min_return", minute.last_30min_return, "last_30min_return"),
+    metric("late_session_weakness", minute.late_session_weakness, "", boolTone(minute.late_session_weakness)),
+    metric("intraday_reversal_flag", minute.intraday_reversal_flag, "", boolTone(minute.intraday_reversal_flag))
+  ].join("");
+  document.getElementById("minuteTable").innerHTML = `<div class="panel"><div class="panel-title">Minute Structure 全部字段</div>${table(allFields(minute, labels.minute))}</div>`;
+
+  document.getElementById("trendCards").innerHTML = [
+    metric("trend_state", trend.trend_state, "trend_state"),
+    metric("MA5-MA20", trend.trend_ma5_ma20, "trend_ma5_ma20"),
+    metric("MA10-MA60", trend.trend_ma10_ma60, "trend_ma10_ma60"),
+    metric("close_above_ma20", trend.close_above_ma20, "", boolTone(trend.close_above_ma20))
+  ].join("");
+  document.getElementById("trendTable").innerHTML = `<div class="panel"><div class="panel-title">Trend 全部字段</div>${table(allFields(trend, labels.trend))}</div>`;
+
+  document.getElementById("volatilityCards").innerHTML = [
+    metric("volatility_state", volatility.volatility_state, "volatility_state"),
+    metric("realized_vol_5d", volatility.realized_vol_5d, "realized_vol_5d"),
+    metric("realized_vol_20d", volatility.realized_vol_20d, "realized_vol_20d"),
+    metric("ATR 14D", volatility.atr_14d, "atr_14d")
+  ].join("");
+  document.getElementById("volatilityTable").innerHTML = `<div class="panel"><div class="panel-title">Volatility 全部字段</div>${table(allFields(volatility, labels.volatility))}</div>`;
+
+  const forbidden = featureReport.forbidden_actions || dataReport.forbidden_actions || [];
+  document.getElementById("guardrails").innerHTML = forbidden.map(item => metric(actionText(item), "禁止", "", "bad")).join("") + metric("next_stage", featureReport.next_stage);
+  document.getElementById("footer").textContent = `generated_at: ${format(meta.generated_at || dataMeta.generated_at)} | data snapshot: ${format(manifest.snapshot_id)} | data generated_at: ${format(manifest.generated_at)}`;
 }).catch(err => {
-  document.getElementById("featureMeta").innerHTML = `<p>无法读取特征报告：${err}</p>`;
+  document.getElementById("overview").innerHTML = `<p class="error">Dashboard load failed: ${err}</p>`;
 });
 </script>
 </body>
