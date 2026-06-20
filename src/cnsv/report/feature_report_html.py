@@ -1,0 +1,132 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+from cnsv.utils.io import ensure_parent
+
+HTML = """<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CNSV 中国船舶 V1.1 Feature Report</title>
+  <style>
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; --page:#f5f5f7; --surface:#fff; --soft:#fbfbfd; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --blue:#0066cc; --green:#11845b; --red:#b42318; --shadow:0 18px 44px rgba(0,0,0,.06); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--text); -webkit-font-smoothing: antialiased; }
+    main { width: min(100%, 1120px); margin: 0 auto; padding: 44px 24px 56px; }
+    header { text-align: center; padding: 24px 0 34px; }
+    .eyebrow { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; }
+    h1 { font-size: 14px; margin: 0; line-height: 1.25; }
+    .subtitle { max-width: 760px; margin: 14px auto 0; color: var(--muted); font-size: 19px; line-height: 1.42; }
+    section { background: var(--surface); border-radius: 22px; padding: 28px; margin: 18px 0; box-shadow: var(--shadow); overflow: hidden; }
+    h2 { font-size: 14px; margin: 0 0 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; }
+    .metric { border: 1px solid rgba(210,210,215,.8); border-radius: 18px; padding: 18px; background: var(--soft); min-height: 96px; }
+    .label { color: var(--muted); font-size: 14px; line-height: 1.35; }
+    .value { font-size: 14px; font-weight: 700; margin-top: 12px; overflow-wrap: anywhere; line-height: 1.25; }
+    #gate .value { font-size: 12px; }
+    .ok { color: var(--green); } .bad { color: var(--red); }
+    details { border: 1px solid rgba(210,210,215,.9); border-radius: 18px; background: var(--soft); margin: 14px 0; overflow: hidden; }
+    summary { cursor: pointer; list-style: none; padding: 18px 20px; display: flex; justify-content: space-between; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "展开"; color: var(--blue); font-size: 14px; font-weight: 600; white-space: nowrap; }
+    details[open] summary::after { content: "收起"; }
+    .summary-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; color: #424245; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
+    th, td { text-align: left; border-top: 1px solid #e8e8ed; padding: 12px 16px; vertical-align: top; }
+    th { color: var(--muted); width: 46%; }
+    @media (max-width: 640px) { main { padding: 22px 14px 36px; } header { text-align: left; padding: 10px 0 18px; } .subtitle { font-size: 17px; margin-left: 0; } section { border-radius: 18px; padding: 18px; } th, td { display: block; width: 100%; padding: 8px 10px; } td { border-top: 0; padding-top: 0; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">CNSV V1.1 FEATURE REPORT</p>
+    <h1>中国船舶数据状态与特征报告</h1>
+    <p class="subtitle">接线阶段只展示数据准入、基础摘要和禁止动作，不生成正式 buy/sell signal。</p>
+  </header>
+  <section><h2>Data Report</h2><div id="dataReport" class="grid"></div></section>
+  <section><h2>Feature Report</h2><div id="featureMeta" class="grid"></div></section>
+  <section><h2>Gate Status</h2><div id="gate" class="grid"></div></section>
+  <section><h2>Feature Quality</h2><div id="quality" class="grid"></div><div id="qualityDetails"></div></section>
+  <section><h2>Moneyflow Summary</h2><div id="moneyflow"></div></section>
+  <section><h2>Trend Summary</h2><div id="trend" class="grid"></div></section>
+  <section><h2>Volatility Summary</h2><div id="volatility" class="grid"></div></section>
+</main>
+<script>
+const yesNo = value => value ? "YES" : "NO";
+const fmt = value => {
+  if (value === null || value === undefined || value === "") return "-";
+  if (typeof value === "number") return Number.isInteger(value) ? String(value) : value.toFixed(4);
+  if (typeof value === "boolean") return yesNo(value);
+  return String(value);
+};
+const statusTone = value => value === "PASS" || value === true ? "ok" : value === "FAIL" || value === false ? "bad" : "";
+const metric = (label, value, tone = "") => `<div class="metric"><div class="label">${label}</div><div class="value ${tone}">${fmt(value)}</div></div>`;
+const rows = items => `<table><tbody>${items.map(([k,v]) => `<tr><th>${k}</th><td>${fmt(v)}</td></tr>`).join("")}</tbody></table>`;
+const fold = (title, chips, tableRows) => `<details><summary><div><div class="summary-title">${title}</div><div class="chips">${chips.map(([k,v]) => `<span class="chip">${k}：${fmt(v)}</span>`).join("")}</div></div></summary>${rows(tableRows)}</details>`;
+Promise.all([
+  fetch("data/latest_data_report.json").then(r => r.ok ? r.json() : null).catch(() => null),
+  fetch("data/latest_feature_report.json").then(r => r.ok ? r.json() : null)
+]).then(([dataReport, featureReport]) => {
+  dataReport = dataReport || {};
+  featureReport = featureReport || {};
+  if (dataReport) {
+    const s = dataReport.loaded_data_summary || {};
+    document.getElementById("dataReport").innerHTML = [
+      metric("数据状态", dataReport.validation?.status, statusTone(dataReport.validation?.status)),
+      metric("最新交易日", s.latest_trade_date),
+      metric("daily 行数", s.daily_rows),
+      metric("1min 行数", s.one_min_rows),
+      metric("moneyflow 行数", s.moneyflow_rows)
+    ].join("");
+  }
+  const gate = featureReport.cnsvdata_gate || {};
+  const q = featureReport.feature_quality || {};
+  const f = featureReport.features || {};
+  document.getElementById("featureMeta").innerHTML = [
+    metric("报告类型", featureReport.meta?.report_type),
+    metric("版本", featureReport.meta?.version),
+    metric("标的", `${featureReport.meta?.ts_code || ""} ${featureReport.meta?.name || ""}`),
+    metric("下一阶段", featureReport.next_stage)
+  ].join("");
+  document.getElementById("gate").innerHTML = [
+    metric("CNSVdata 就绪", gate.ready, statusTone(gate.ready)),
+    metric("门禁状态", gate.status, statusTone(gate.status)),
+    metric("允许继续", gate.can_continue, statusTone(gate.can_continue)),
+    metric("允许 moneyflow 强因子", gate.can_use_moneyflow_as_strong_factor, statusTone(gate.can_use_moneyflow_as_strong_factor)),
+    metric("允许正式信号", false, "bad")
+  ].join("");
+  document.getElementById("quality").innerHTML = [
+    metric("Feature Quality", q.status, statusTone(q.status)),
+    metric("FAIL 数量", q.failed_count),
+    metric("WARN 数量", q.warn_count)
+  ].join("");
+  document.getElementById("qualityDetails").innerHTML = fold("质量检查明细", [[(q.checks || []).length, "checks"]], (q.checks || []).map(item => [item.name, `${item.status} ${item.detail || ""}`]));
+  document.getElementById("moneyflow").innerHTML = fold("资金流核心层", [["净流入", f.moneyflow?.net_mf_amount], ["主力净流入", f.moneyflow?.main_force_net], ["强弱分", f.moneyflow?.flow_strength_score]], Object.entries(f.moneyflow || {}));
+  document.getElementById("trend").innerHTML = [
+    metric("趋势状态", f.trend?.trend_state),
+    metric("MA5-MA20", f.trend?.trend_ma5_ma20),
+    metric("收盘在 MA20 上方", f.trend?.close_above_ma20)
+  ].join("");
+  document.getElementById("volatility").innerHTML = [
+    metric("波动率状态", f.volatility?.volatility_state),
+    metric("20D 实现波动率", f.volatility?.realized_vol_20d),
+    metric("ATR 14D", f.volatility?.atr_14d)
+  ].join("");
+}).catch(err => {
+  document.getElementById("featureMeta").innerHTML = `<p>无法读取 Feature Report：${err}</p>`;
+});
+</script>
+</body>
+</html>
+"""
+
+
+def write_feature_report_html(path: str | Path) -> Path:
+    target = ensure_parent(path)
+    target.write_text(HTML, encoding="utf-8")
+    return target
