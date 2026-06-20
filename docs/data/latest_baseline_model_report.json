@@ -5,7 +5,7 @@
     "report_type": "baseline_model_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-20T09:48:33.543820+00:00",
+    "generated_at": "2026-06-20T09:55:14.937136+00:00",
     "latest_trade_date": "2026-06-18",
     "is_trade_signal": false
   },
@@ -148,8 +148,8 @@
     "warn_count": 0,
     "blocking_error_count": 0,
     "gating_warning_count": 0,
-    "non_gating_warning_count": 3,
-    "fallback_count": 3,
+    "non_gating_warning_count": 0,
+    "fallback_count": 0,
     "checks": [
       {
         "name": "required_models_present",
@@ -314,12 +314,6 @@
         "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.5D.controlled_fallback",
-        "status": "PASS",
-        "detail": "B2_state_grouped_distribution 5D state sample below threshold; transparent fallback to B1, non-gating",
-        "category": "non_gating"
-      },
-      {
         "name": "B2_state_grouped_distribution.10D.present",
         "status": "PASS",
         "detail": "B2_state_grouped_distribution 10D present",
@@ -338,12 +332,6 @@
         "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.10D.controlled_fallback",
-        "status": "PASS",
-        "detail": "B2_state_grouped_distribution 10D state sample below threshold; transparent fallback to B1, non-gating",
-        "category": "non_gating"
-      },
-      {
         "name": "B2_state_grouped_distribution.20D.present",
         "status": "PASS",
         "detail": "B2_state_grouped_distribution 20D present",
@@ -360,12 +348,6 @@
         "status": "PASS",
         "detail": "prices positive",
         "category": "gating"
-      },
-      {
-        "name": "B2_state_grouped_distribution.20D.controlled_fallback",
-        "status": "PASS",
-        "detail": "B2_state_grouped_distribution 20D state sample below threshold; transparent fallback to B1, non-gating",
-        "category": "non_gating"
       },
       {
         "name": "B3_volatility_adjusted.5D.present",
@@ -424,40 +406,8 @@
     ],
     "warnings": [],
     "gating_warnings": [],
-    "non_gating_warnings": [
-      "B2_state_grouped_distribution 5D state sample below threshold; transparent fallback to B1, non-gating",
-      "B2_state_grouped_distribution 10D state sample below threshold; transparent fallback to B1, non-gating",
-      "B2_state_grouped_distribution 20D state sample below threshold; transparent fallback to B1, non-gating"
-    ],
-    "fallback_notes": [
-      {
-        "model": "B2_state_grouped_distribution",
-        "horizon": "5D",
-        "reason": "state_sample_size_lt_30",
-        "state_sample_size": 0,
-        "fallback_method": "B1_historical_distribution",
-        "gating": false,
-        "is_trade_signal": false
-      },
-      {
-        "model": "B2_state_grouped_distribution",
-        "horizon": "10D",
-        "reason": "state_sample_size_lt_30",
-        "state_sample_size": 0,
-        "fallback_method": "B1_historical_distribution",
-        "gating": false,
-        "is_trade_signal": false
-      },
-      {
-        "model": "B2_state_grouped_distribution",
-        "horizon": "20D",
-        "reason": "state_sample_size_lt_30",
-        "state_sample_size": 0,
-        "fallback_method": "B1_historical_distribution",
-        "gating": false,
-        "is_trade_signal": false
-      }
-    ]
+    "non_gating_warnings": [],
+    "fallback_notes": []
   },
   "current_state": {
     "latest_close": 36.14,
@@ -526,7 +476,7 @@
           "sample_size": 3834,
           "mean_return": -0.000987335249296184,
           "median_return": -0.0016117011631310314,
-          "std_return": 0.06676154588231704,
+          "std_return": 0.06676154588231703,
           "p05_return": -0.09922506917397507,
           "p10_return": -0.06889343917528092,
           "p25_return": -0.032993750474941616,
@@ -546,12 +496,12 @@
           "horizon": 10,
           "sample_size": 3829,
           "mean_return": -0.0020337569574533612,
-          "median_return": -0.0038486256612943375,
+          "median_return": -0.003848625661294338,
           "std_return": 0.09532749089918877,
           "p05_return": -0.1402207963967801,
-          "p10_return": -0.10127742844832813,
+          "p10_return": -0.10127742844832811,
           "p25_return": -0.04909874172014115,
-          "p50_return": -0.0038486256612943375,
+          "p50_return": -0.003848625661294338,
           "p75_return": 0.04759503025111784,
           "p90_return": 0.103507166751654,
           "p95_return": 0.14478783135029552,
@@ -588,60 +538,76 @@
     "B2_state_grouped_distribution": {
       "model_id": "B2_state_grouped_distribution",
       "state_key": "downtrend|normal_vol|mixed",
+      "state_columns": [
+        "trend_state",
+        "volatility_state",
+        "flow_strength_basic"
+      ],
+      "state_coverage": {
+        "has_state_columns": true,
+        "state_rows": 3839,
+        "usable_state_rows": 3790
+      },
       "horizons": {
         "5D": {
           "model_id": "B2_state_grouped_distribution",
           "horizon": 5,
           "state_key": "downtrend|normal_vol|mixed",
-          "state_sample_size": 0,
-          "fallback_used": true,
-          "fallback_reason": "state_sample_size_lt_30",
-          "mean_return": -0.000987335249296184,
-          "median_return": -0.0016117011631310314,
-          "p10_return": -0.06889343917528092,
-          "p50_return": -0.0016117011631310314,
-          "p90_return": 0.0716238667655733,
-          "positive_prob": 0.4835680751173709,
-          "expected_price": 36.10433531348876,
-          "p10_price": 33.73402075157696,
-          "p50_price": 36.081800033039926,
-          "p90_price": 38.82343860229234
+          "state_sample_size": 105,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "fallback_method": "",
+          "fallback_gating": false,
+          "mean_return": -0.008575417103446352,
+          "median_return": -0.009761322725256084,
+          "p10_return": -0.061988844061669574,
+          "p50_return": -0.009761322725256084,
+          "p90_return": 0.06401074206135099,
+          "positive_prob": 0.41904761904761906,
+          "expected_price": 35.83140946325108,
+          "p10_price": 33.967746468601064,
+          "p50_price": 35.78894197952218,
+          "p90_price": 38.52899316982626
         },
         "10D": {
           "model_id": "B2_state_grouped_distribution",
           "horizon": 10,
           "state_key": "downtrend|normal_vol|mixed",
-          "state_sample_size": 0,
-          "fallback_used": true,
-          "fallback_reason": "state_sample_size_lt_30",
-          "mean_return": -0.0020337569574533612,
-          "median_return": -0.0038486256612943375,
-          "p10_return": -0.10127742844832813,
-          "p50_return": -0.0038486256612943375,
-          "p90_return": 0.103507166751654,
-          "positive_prob": 0.4768869156437712,
-          "expected_price": 36.06657471345959,
-          "p10_price": 32.65907799421895,
-          "p50_price": 36.001177976952626,
-          "p90_price": 40.081202223206546
+          "state_sample_size": 105,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "fallback_method": "",
+          "fallback_gating": false,
+          "mean_return": -0.020541725284567998,
+          "median_return": -0.0036410963503709366,
+          "p10_return": -0.13127001979863878,
+          "p50_return": -0.0036410963503709366,
+          "p90_return": 0.0817896048869761,
+          "positive_prob": 0.47619047619047616,
+          "expected_price": 35.40519496793321,
+          "p10_price": 31.694091178851107,
+          "p50_price": 36.00865005192108,
+          "p90_price": 39.220120377458436
         },
         "20D": {
           "model_id": "B2_state_grouped_distribution",
           "horizon": 20,
           "state_key": "downtrend|normal_vol|mixed",
-          "state_sample_size": 0,
-          "fallback_used": true,
-          "fallback_reason": "state_sample_size_lt_30",
-          "mean_return": -0.003853849098320738,
-          "median_return": -0.0027598913562555207,
-          "p10_return": -0.14941463226688478,
-          "p50_return": -0.0027598913562555207,
-          "p90_return": 0.14307678932596643,
-          "positive_prob": 0.48939512961508247,
-          "expected_price": 36.00098992755772,
-          "p10_price": 31.124200039026444,
-          "p50_price": 36.04039503904456,
-          "p90_price": 41.69899694714065
+          "state_sample_size": 105,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "fallback_method": "",
+          "fallback_gating": false,
+          "mean_return": -0.006889764180816436,
+          "median_return": 0.015880351368989434,
+          "p10_return": -0.12335511538812034,
+          "p50_return": 0.015880351368989434,
+          "p90_return": 0.11990022365886166,
+          "positive_prob": 0.5333333333333333,
+          "expected_price": 35.89185971809539,
+          "p10_price": 31.94594225472446,
+          "p50_price": 36.71849710982659,
+          "p90_price": 40.74367075887093
         }
       }
     },
@@ -654,11 +620,11 @@
           "model_id": "B3_volatility_adjusted",
           "horizon": 5,
           "mean_return": -0.000987335249296184,
-          "adjusted_std": 0.04351850675212278,
+          "adjusted_std": 0.043518506752122765,
           "volatility_scale": 0.6518498961787733,
-          "p10_return": -0.0567585457076424,
+          "p10_return": -0.056758545707642376,
           "p50_return": -0.000987335249296184,
-          "p90_return": 0.05478387520905002,
+          "p90_return": 0.05478387520905,
           "p10_price": 34.14587333931514,
           "p50_price": 36.10433531348876,
           "p90_price": 38.17512633153159,

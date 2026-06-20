@@ -108,7 +108,7 @@ fetch("data/latest_baseline_model_report.json").then(r => r.json()).then(payload
   const checks = baselineQuality.checks || [];
   document.getElementById("qualityChecks").innerHTML = `<details><summary><div><div class="summary-title">质量检查明细</div><div class="chips">${chip("检查项", checks.length)}</div></div></summary>${table([["检查项","状态","说明"], ...checks.map(c => [c.name, fmt(c.status), c.detail])])}</details>`;
   const fallbackNotes = baselineQuality.fallback_notes || [];
-  document.getElementById("fallbackNotes").innerHTML = `<details open><summary><div><div class="summary-title">B2 透明回退记录</div><div class="chips">${chip("记录数", fallbackNotes.length)}${chip("是否影响交易动作", "NO", "", "ok")}</div></div></summary>${table([["模型","周期","原因","样本数","回退方法","gating"], ...fallbackNotes.map(n => [n.model, n.horizon, n.reason, fmt(n.state_sample_size), n.fallback_method, fmt(n.gating)])])}</details>`;
+  document.getElementById("fallbackNotes").innerHTML = `<details open><summary><div><div class="summary-title">B2 透明回退记录</div><div class="chips">${chip("记录数", fallbackNotes.length)}${chip("是否影响交易动作", "NO", "", "ok")}</div></div></summary>${table([["模型","周期","状态键","原因","状态样本数","可用状态行","回退方法","非阻断","覆盖建议"], ...fallbackNotes.map(n => [n.model, n.horizon, n.state_key, n.reason, fmt(n.state_sample_size), fmt((n.state_coverage || {}).usable_state_rows), n.fallback_method, fmt(n.non_blocking), n.next_coverage_action])])}</details>`;
   document.getElementById("currentState").innerHTML = [
     metric("最新收盘价", state.latest_close, "current_close"),
     metric("趋势状态", state.trend_state),
