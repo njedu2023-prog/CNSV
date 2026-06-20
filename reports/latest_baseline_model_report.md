@@ -1,0 +1,59 @@
+# CNSV V1.2 基准模型报告
+
+本报告仅展示 5D/10D/20D 终端收益分布基准模型，不生成交易动作。
+
+## CNSVdata 数据门禁
+- 状态: PASS
+- 就绪: YES
+- 允许继续: YES
+
+## 特征质量
+- 状态: PASS
+- FAIL 数量: 0
+- WARN 数量: 0
+
+## 基准模型质量
+- 状态: WARN
+- FAIL 数量: 0
+- WARN 数量: 3
+
+## 当前状态
+- 最新交易日: 2026-06-18
+- 最新收盘价: 36.1400
+- 趋势状态: downtrend
+- 波动率状态: normal_vol
+- 资金流强弱: mixed
+
+## 基准模型
+
+### B0_random_walk
+- 5D: p10=-0.0729, p50=0.0000, p90=0.0729, p10_price=33.6000, p50_price=36.1400, p90_price=38.8720, sample=3834, fallback=N/A
+- 10D: p10=-0.1031, p50=0.0000, p90=0.1031, p10_price=32.6010, p50_price=36.1400, p90_price=40.0632, sample=3829, fallback=N/A
+- 20D: p10=-0.1457, p50=0.0000, p90=0.1457, p10_price=31.2386, p50_price=36.1400, p90_price=41.8105, sample=3819, fallback=N/A
+
+### B1_historical_distribution
+- 5D: p10=-0.0689, p50=-0.0016, p90=0.0716, p10_price=33.7340, p50_price=36.0818, p90_price=38.8234, sample=3834, fallback=N/A
+- 10D: p10=-0.1013, p50=-0.0038, p90=0.1035, p10_price=32.6591, p50_price=36.0012, p90_price=40.0812, sample=3829, fallback=N/A
+- 20D: p10=-0.1494, p50=-0.0028, p90=0.1431, p10_price=31.1242, p50_price=36.0404, p90_price=41.6990, sample=3819, fallback=N/A
+
+### B2_state_grouped_distribution
+- 5D: p10=-0.0689, p50=-0.0016, p90=0.0716, p10_price=33.7340, p50_price=36.0818, p90_price=38.8234, sample=0, fallback=YES
+- 10D: p10=-0.1013, p50=-0.0038, p90=0.1035, p10_price=32.6591, p50_price=36.0012, p90_price=40.0812, sample=0, fallback=YES
+- 20D: p10=-0.1494, p50=-0.0028, p90=0.1431, p10_price=31.1242, p50_price=36.0404, p90_price=41.6990, sample=0, fallback=YES
+
+### B3_volatility_adjusted
+- 5D: p10=-0.0568, p50=-0.0010, p90=0.0548, p10_price=34.1459, p50_price=36.1043, p90_price=38.1751, sample=3834, fallback=N/A
+- 10D: p10=-0.0817, p50=-0.0020, p90=0.0776, p10_price=33.3058, p50_price=36.0666, p90_price=39.0562, sample=3829, fallback=N/A
+- 20D: p10=-0.1164, p50=-0.0039, p90=0.1087, p10_price=32.1702, p50_price=36.0010, p90_price=40.2879, sample=3819, fallback=N/A
+
+## 禁止动作
+- 正式交易动作生成
+- 自动下单
+- 券商接口
+
+## 下一阶段
+- V1.3 20D path distribution
+
+## 生成信息
+- generated_at: 2026-06-20T07:56:00.206952+00:00
+- 数据快照: cnsvdata-2026-06-18-1768851d648a
