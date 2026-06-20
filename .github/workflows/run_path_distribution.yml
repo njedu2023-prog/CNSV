@@ -37,18 +37,14 @@ jobs:
         run: python -m cnsv.cli.run_path_distribution
       - name: Generate path validation report
         run: python -m cnsv.cli.run_path_validation
-      - name: Commit path report updates
+      - name: Commit report updates
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/latest_path_distribution_report.json \
-            docs/data/latest_path_validation_report.json \
-            docs/data/path_distribution_registry.json \
-            reports/latest_path_distribution_report.md \
-            reports/latest_path_validation_report.md \
-            reports/archive/*_path_distribution_report.md \
-            reports/archive/*_path_validation_report.md \
-            docs/path.html \
-            docs/index.html
-          git diff --cached --quiet || git commit -m "report: update CNSV path distribution report"
+          git add docs reports
+          if git diff --cached --quiet; then
+            echo "No report changes to commit."
+            exit 0
+          fi
+          git commit -m "report: update CNSV path distribution report"
           git push || (git pull --rebase -X ours origin main && git push)
