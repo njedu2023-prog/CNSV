@@ -14,8 +14,16 @@
 
 ## 基准模型质量
 - 状态: PASS
-- FAIL 数量: 0
-- WARN 数量: 0
+- blocking_errors: 0
+- gating_warnings: 0
+- non_gating_warnings: 3
+- fallback_count: 3
+
+## 受控回退说明
+B2 状态分组样本不足时透明回退到 B1 历史分布基准；该回退不生成正式交易信号，也不影响 V1.2 基准模型层验收状态。
+- B2_state_grouped_distribution 5D: reason=state_sample_size_lt_30, state_sample_size=0, fallback_method=B1_historical_distribution, gating=NO
+- B2_state_grouped_distribution 10D: reason=state_sample_size_lt_30, state_sample_size=0, fallback_method=B1_historical_distribution, gating=NO
+- B2_state_grouped_distribution 20D: reason=state_sample_size_lt_30, state_sample_size=0, fallback_method=B1_historical_distribution, gating=NO
 
 ## 当前状态
 - 最新交易日: 2026-06-18
@@ -50,10 +58,12 @@
 - 正式交易动作生成
 - 自动下单
 - 券商接口
+- is_trade_signal: NO
+- can_generate_formal_signal: NO
 
 ## 下一阶段
 - V1.3 20D path distribution
 
 ## 生成信息
-- generated_at: 2026-06-20T08:48:00.668500+00:00
+- generated_at: 2026-06-20T08:48:57.945975+00:00
 - 数据快照: cnsvdata-2026-06-18-1768851d648a
