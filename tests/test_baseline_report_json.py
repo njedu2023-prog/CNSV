@@ -18,6 +18,7 @@ def test_baseline_report_json_has_required_sections():
     )
     assert payload["meta"]["report_type"] == "baseline_model_report"
     assert payload["meta"]["is_trade_signal"] is False
+    assert payload["meta"]["version"] == "1.2.1"
+    assert payload["meta"]["stage"] == "V1.2.1_state_grouped_baseline_fix"
     assert "baseline_models" in payload
-    assert payload["next_stage"] == "V1.3 20D path distribution"
-
+    assert payload["next_stage"] == "V1.2.2 baseline validation / walk-forward validation"
