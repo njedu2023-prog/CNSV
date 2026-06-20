@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 HORIZONS = (5, 10, 20)
-FORBIDDEN_FIELD_TOKENS = ("signal", "buy", "sell", "position")
+FORBIDDEN_FIELD_TOKENS = ("signal", "buy", "sell", "position", "stop_loss", "take_profit")
 FORBIDDEN_ACTIONS = ["formal_signal_generation", "auto_order", "broker_api"]
 
 
@@ -95,4 +95,3 @@ def current_state(features: dict[str, Any]) -> dict[str, Any]:
         "volatility_state": (features.get("volatility", {}) or {}).get("volatility_state"),
         "flow_strength_basic": moneyflow.get("flow_strength_basic") or moneyflow.get("moneyflow_strength_basic"),
     }
-
