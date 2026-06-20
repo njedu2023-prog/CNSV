@@ -24,7 +24,8 @@ def build_baseline_report_payload(
         {
             "meta": {
                 "system": "CNSV",
-                "version": "1.2.0",
+                "version": "1.2.1",
+                "stage": "V1.2.1_state_grouped_baseline_fix",
                 "report_type": "baseline_model_report",
                 "ts_code": "600150.SH",
                 "name": "中国船舶",
@@ -46,7 +47,7 @@ def build_baseline_report_payload(
             "baseline_models": baseline_run.get("models", {}),
             "baseline_registry": baseline_registry,
             "forbidden_actions": FORBIDDEN_ACTIONS,
-            "next_stage": "V1.3 20D path distribution",
+            "next_stage": "V1.2.2 baseline validation / walk-forward validation",
         }
     )
 
@@ -55,4 +56,3 @@ def write_baseline_report_json(payload: dict[str, Any], path: str | Path) -> Pat
     target = ensure_parent(path)
     target.write_text(json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     return target
-
