@@ -57,5 +57,13 @@ jobs:
             echo "No human decision support updates to commit"
           else
             git commit -m "report: update CNSV human decision support report"
-            git push
+            for attempt in 1 2 3; do
+              if git pull --rebase origin main && git push; then
+                break
+              fi
+              if [ "$attempt" = "3" ]; then
+                exit 1
+              fi
+              sleep 5
+            done
           fi
