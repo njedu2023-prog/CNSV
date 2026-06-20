@@ -1,0 +1,19 @@
+[
+  {
+    "stage": "V1.2.2_baseline_validation",
+    "validation_id": "walk_forward_distribution_validation",
+    "models": [
+      "B0_random_walk",
+      "B1_historical_distribution",
+      "B2_state_grouped_distribution",
+      "B3_volatility_adjusted"
+    ],
+    "horizons": [
+      5,
+      10,
+      20
+    ],
+    "purged_sample_mode": "every_horizon_step",
+    "is_trade_signal": false
+  }
+]
