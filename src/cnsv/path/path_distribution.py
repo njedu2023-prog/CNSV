@@ -8,11 +8,13 @@ import pandas as pd
 from cnsv.features.feature_bundle import build_feature_bundle
 from cnsv.models.baseline_schema import FORBIDDEN_ACTIONS, HORIZONS, clean_number, clean_payload, current_state, daily_log_return_std, latest_close, sorted_daily
 from cnsv.models.baseline_state_history import build_historical_state_daily, state_coverage
+from cnsv.path import PATH_MODEL_IDS
 from cnsv.path.path_evaluator import evaluate_path_quality
 from cnsv.path.path_metrics import summarize_path_samples
 from cnsv.path.path_replay import build_path_samples
 
 STAGE = "V1.3_path_distribution"
+VERSION = "1.3"
 P2_MIN_SAMPLE_SIZE = 30
 
 
@@ -36,10 +38,11 @@ def run_path_distribution_from_features(
     state = current_state(features)
     models = _build_models(daily, state_daily, close, features, state, horizons)
     quality = evaluate_path_quality(models, close, horizons)
+    stage_gate = _stage_gate(gate)
     payload = {
         "meta": {
             "system": "CNSV",
-            "version": "1.3.0",
+            "version": VERSION,
             "stage": STAGE,
             "report_type": "path_distribution_report",
             "ts_code": "600150.SH",
@@ -48,7 +51,7 @@ def run_path_distribution_from_features(
             "latest_trade_date": manifest.get("latest_trade_date", ""),
             "is_trade_signal": False,
         },
-        "cnsvdata_gate": gate,
+        "cnsvdata_gate": stage_gate,
         "path_quality": quality,
         "current_state": state,
         "state_coverage": state_coverage(state_daily),
@@ -58,6 +61,15 @@ def run_path_distribution_from_features(
         "next_stage": "V1.4 observation backtest after path validation acceptance",
     }
     return clean_payload(payload)
+
+
+def _stage_gate(gate: dict[str, Any]) -> dict[str, Any]:
+    """Expose V1.3 permissions without opening the V1.4 backtest stage early."""
+    stage_gate = dict(gate)
+    stage_gate["can_run_backtest"] = False
+    stage_gate["backtest_permission_stage"] = "V1.4"
+    stage_gate["stage_permission_note"] = "V1.3 only supports path distribution and path validation; observation backtest opens in V1.4."
+    return stage_gate
 
 
 def _build_models(
