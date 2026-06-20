@@ -1,0 +1,362 @@
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "1.1.0",
+    "report_type": "feature_report",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "generated_at": "2026-06-20T04:12:23.337756+00:00",
+    "latest_trade_date": "2026-06-18"
+  },
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": [
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
+    ]
+  },
+  "data_manifest": {
+    "snapshot_id": "cnsvdata-2026-06-18-1768851d648a",
+    "latest_trade_date": "2026-06-18",
+    "generated_at": "2026-06-19 23:38:46",
+    "file_count": 14
+  },
+  "feature_quality": {
+    "status": "PASS",
+    "failed_count": 0,
+    "warn_count": 0,
+    "checks": [
+      {
+        "name": "price_volume_non_empty",
+        "status": "PASS",
+        "detail": "price_volume features must not be empty"
+      },
+      {
+        "name": "minute_structure_non_empty",
+        "status": "PASS",
+        "detail": "minute_structure features must not be empty"
+      },
+      {
+        "name": "moneyflow_non_empty",
+        "status": "PASS",
+        "detail": "moneyflow features must not be empty"
+      },
+      {
+        "name": "trend_non_empty",
+        "status": "PASS",
+        "detail": "trend features must not be empty"
+      },
+      {
+        "name": "volatility_non_empty",
+        "status": "PASS",
+        "detail": "volatility features must not be empty"
+      },
+      {
+        "name": "price_volume.latest_close",
+        "status": "PASS",
+        "detail": "price_volume.latest_close is required"
+      },
+      {
+        "name": "price_volume.latest_amount",
+        "status": "PASS",
+        "detail": "price_volume.latest_amount is required"
+      },
+      {
+        "name": "price_volume.ret_1d",
+        "status": "PASS",
+        "detail": "price_volume.ret_1d is required"
+      },
+      {
+        "name": "minute_structure.latest_intraday_close",
+        "status": "PASS",
+        "detail": "minute_structure.latest_intraday_close is required"
+      },
+      {
+        "name": "minute_structure.intraday_range_pct",
+        "status": "PASS",
+        "detail": "minute_structure.intraday_range_pct is required"
+      },
+      {
+        "name": "moneyflow.net_mf_amount",
+        "status": "PASS",
+        "detail": "moneyflow.net_mf_amount is required"
+      },
+      {
+        "name": "moneyflow.main_force_net",
+        "status": "PASS",
+        "detail": "moneyflow.main_force_net is required"
+      },
+      {
+        "name": "moneyflow.flow_strength_score",
+        "status": "PASS",
+        "detail": "moneyflow.flow_strength_score is required"
+      },
+      {
+        "name": "trend.trend_state",
+        "status": "PASS",
+        "detail": "trend.trend_state is required"
+      },
+      {
+        "name": "volatility.volatility_state",
+        "status": "PASS",
+        "detail": "volatility.volatility_state is required"
+      },
+      {
+        "name": "moneyflow_strong_factor_gate",
+        "status": "PASS",
+        "detail": "moneyflow can be used as strong factor"
+      },
+      {
+        "name": "daily_row_count",
+        "status": "PASS",
+        "detail": "daily rows must be >= 60"
+      },
+      {
+        "name": "one_min_row_count",
+        "status": "PASS",
+        "detail": "one_min rows must be >= 60"
+      },
+      {
+        "name": "moneyflow_row_count",
+        "status": "PASS",
+        "detail": "moneyflow rows must be >= 10"
+      },
+      {
+        "name": "latest_trade_date_daily_vs_1min",
+        "status": "PASS",
+        "detail": "daily=2026-06-18, one_min=2026-06-18"
+      },
+      {
+        "name": "latest_trade_date_daily_vs_moneyflow",
+        "status": "PASS",
+        "detail": "daily=2026-06-18, moneyflow=2026-06-18"
+      }
+    ]
+  },
+  "features": {
+    "price_volume": {
+      "latest_trade_date": "2026-06-18",
+      "latest_open": 37.02,
+      "latest_high": 37.43,
+      "latest_low": 35.72,
+      "latest_close": 36.14,
+      "latest_pre_close": 37.15,
+      "latest_pct_chg": -2.7187,
+      "latest_volume": 1182191.19,
+      "latest_amount": 4313475.328,
+      "ma5": 36.016,
+      "ma10": 35.501999999999995,
+      "ma20": 36.49999999999999,
+      "ma60": 36.02283333333333,
+      "ret_1d": -0.02718707940780618,
+      "ret_3d": 0.006404901141743302,
+      "ret_5d": 0.049056603773584895,
+      "ret_10d": -0.020330712930333394,
+      "ret_20d": -0.05885416666666665,
+      "ret_60d": 0.09019607843137267,
+      "volume_ma5": 1060891.4300000002,
+      "volume_ma20": 902787.2265000001,
+      "volume_ratio_5d": 1.2478544833680014,
+      "volume_ratio_20d": 1.3069293150292616,
+      "amount_ma5": 3824186.1082,
+      "amount_ma20": 3304855.1599999997,
+      "amount_ratio_5d": 1.2744407792473547,
+      "amount_ratio_20d": 1.2955382364879384,
+      "price_position_20d": 0.3646864686468647,
+      "price_position_60d": 0.45752608047690013,
+      "new_high_20d": false,
+      "new_low_20d": false,
+      "new_high_60d": false,
+      "new_low_60d": false
+    },
+    "minute_structure": {
+      "latest_intraday_date": "2026-06-18",
+      "latest_intraday_open": 37.02,
+      "latest_intraday_high": 37.43,
+      "latest_intraday_low": 35.72,
+      "latest_intraday_close": 36.14,
+      "intraday_range_pct": 0.04731599335915885,
+      "close_position_in_day_range": 0.24561403508772017,
+      "morning_return": -0.02674230145867107,
+      "afternoon_return": 0.0030530113794060565,
+      "last_30min_return": -0.0024841291747169647,
+      "last_60min_return": -0.0024841291747169647,
+      "morning_volume_ratio": 0.6327600529657136,
+      "afternoon_volume_ratio": 0.3672399470342864,
+      "last_30min_volume_ratio": 0.11951319819935387,
+      "last_60min_volume_ratio": 0.18897935620717998,
+      "intraday_volume_sum": 118219119.0,
+      "intraday_amount_sum": 4313475325.0,
+      "late_session_strength": false,
+      "late_session_weakness": true,
+      "intraday_reversal_flag": true
+    },
+    "moneyflow": {
+      "net_mf_amount": -57131.22,
+      "net_mf_ratio": -0.013244823641193667,
+      "small_order_net": -6728.140000000014,
+      "medium_order_net": 744.7200000000012,
+      "large_order_net": -5713.25,
+      "extra_large_order_net": 11696.669999999998,
+      "main_force_net": 5983.419999999998,
+      "main_force_ratio": 0.0013871459890265074,
+      "main_force_available": true,
+      "moneyflow_latest_trade_date": "2026-06-18",
+      "moneyflow_lag_days": 0,
+      "moneyflow_strength_basic": "mixed",
+      "flow_strength_basic": "mixed",
+      "flow_strength_score": -11.857677652167158,
+      "flow_continuity_3d": -1,
+      "flow_continuity_5d": 1,
+      "flow_continuity_10d": -4,
+      "positive_flow_days_5d": 3,
+      "positive_flow_days_10d": 3,
+      "flow_reversal_1d": true,
+      "flow_reversal_3d": true,
+      "price_flow_confirm": true,
+      "price_flow_divergence": false,
+      "volume_flow_confirm": "outflow_confirmed",
+      "moneyflow_warning": "",
+      "can_use_as_strong_factor": true
+    },
+    "trend": {
+      "trend_ma5_ma20": -0.48399999999999466,
+      "trend_ma10_ma60": -0.5208333333333357,
+      "close_above_ma5": true,
+      "close_above_ma10": true,
+      "close_above_ma20": false,
+      "close_above_ma60": true,
+      "ma5_slope": 0.009473625203206382,
+      "ma10_slope": -0.002108103550046425,
+      "ma20_slope": -0.003086335454619893,
+      "trend_state": "downtrend"
+    },
+    "volatility": {
+      "realized_vol_5d": 0.3819021154423614,
+      "realized_vol_10d": 0.3687891914037565,
+      "realized_vol_20d": 0.297896693663731,
+      "atr_14d": 1.2549999999999994,
+      "intraday_range_ma5": 0.03405462451905096,
+      "intraday_range_ma20": 0.03566949741364149,
+      "volatility_state": "normal_vol"
+    }
+  },
+  "feature_registry": [
+    {
+      "feature_name": "latest_close",
+      "category": "price_volume",
+      "description": "最新收盘价",
+      "source": "daily",
+      "formula": "last(close)",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "ret_1d",
+      "category": "price_volume",
+      "description": "1日收益率",
+      "source": "daily",
+      "formula": "close / close.shift(1) - 1",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "price_position_20d",
+      "category": "price_volume",
+      "description": "20日价格区间位置",
+      "source": "daily",
+      "formula": "(close - rolling_low_20d) / (rolling_high_20d - rolling_low_20d)",
+      "required": false,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "latest_intraday_close",
+      "category": "minute_structure",
+      "description": "最新分钟收盘价",
+      "source": "one_min",
+      "formula": "last(close)",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "close_position_in_day_range",
+      "category": "minute_structure",
+      "description": "日内收盘位置",
+      "source": "one_min",
+      "formula": "(close - intraday_low) / (intraday_high - intraday_low)",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "net_mf_ratio",
+      "category": "moneyflow",
+      "description": "净流入占成交额比例",
+      "source": "moneyflow,daily",
+      "formula": "net_mf_amount / daily.amount",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "main_force_net",
+      "category": "moneyflow",
+      "description": "主力净流入",
+      "source": "moneyflow",
+      "formula": "(buy_lg_amount - sell_lg_amount) + (buy_elg_amount - sell_elg_amount)",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "flow_strength_score",
+      "category": "moneyflow",
+      "description": "资金流强弱分",
+      "source": "moneyflow,daily",
+      "formula": "50*clip(net_mf_ratio/0.05)+50*clip(main_force_ratio/0.05)",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "trend_state",
+      "category": "trend",
+      "description": "趋势状态",
+      "source": "daily",
+      "formula": "close and MA ordering rules",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "realized_vol_20d",
+      "category": "volatility",
+      "description": "20日实现波动率",
+      "source": "daily",
+      "formula": "std(pct_change(close), 20) * sqrt(252)",
+      "required": true,
+      "used_in_v1_1": true
+    },
+    {
+      "feature_name": "volatility_state",
+      "category": "volatility",
+      "description": "波动率状态",
+      "source": "daily",
+      "formula": "20D realized vol percentile over trailing year",
+      "required": true,
+      "used_in_v1_1": true
+    }
+  ],
+  "allowed_actions": {
+    "can_generate_formal_signal": false
+  },
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ],
+  "next_stage": "V1.2 baseline models"
+}
