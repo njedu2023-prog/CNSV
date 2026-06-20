@@ -2,7 +2,37 @@
 
 CNSV 是中国船舶 `600150.SH` 实盘人工量化波段系统的主程序仓库。
 
-## V1.2 当前阶段
+## V1.3 当前阶段
+
+当前阶段是路径分布层。V1.3 在 V1.2 基准终点分布与 V1.2.2 walk-forward 验证层之后，构建 5D/10D/20D 的观察级路径分布与路径验证。
+
+V1.3 新增：
+
+- `P0_historical_path_replay` 历史路径回放
+- `P1_volatility_adjusted_path` 波动率调整路径回放
+- `P2_state_conditional_path` 状态条件路径回放，样本不足时透明回退到 P1
+- Path Quality 检查
+- Path Validation / walk-forward 与 purged walk-forward 验证
+- `latest_path_distribution_report.json`、`latest_path_validation_report.json`
+- `path_distribution_registry.json`
+- `latest_path_distribution_report.md`、`latest_path_validation_report.md`
+- `docs/path.html` 路径分布与路径验证看板
+
+V1.3 仍然不做：
+
+- 不生成正式买卖信号
+- 不输出买入/卖出建议
+- 不输出目标仓位或目标股数
+- 不输出止盈止损
+- 不开发正式交易回测
+- 不连接券商接口
+- 不自动下单
+- 不配置或使用 `TUSHARE_TOKEN`
+- 不绕过 `CNSVdata`
+
+下一阶段是 `V1.4 observation backtest after path validation acceptance`。
+
+## V1.2 基准模型层
 
 当前阶段是基准模型层。V1.2 在 V1.1 特征层基础上，构建透明、可解释、可测试的 5D/10D/20D 终端收益分布基准模型。
 
@@ -116,6 +146,8 @@ python -m cnsv.cli.generate_data_report
 python -m cnsv.cli.generate_feature_report
 python -m cnsv.cli.run_baseline_models
 python -m cnsv.cli.run_baseline_validation
+python -m cnsv.cli.run_path_distribution
+python -m cnsv.cli.run_path_validation
 ```
 
 报告输出：
@@ -126,14 +158,22 @@ docs/data/latest_feature_report.json
 docs/data/feature_registry.json
 docs/data/latest_baseline_model_report.json
 docs/data/baseline_registry.json
+docs/data/latest_path_distribution_report.json
+docs/data/latest_path_validation_report.json
+docs/data/path_distribution_registry.json
 reports/latest_data_report.md
 reports/latest_feature_report.md
 reports/latest_baseline_model_report.md
+reports/latest_path_distribution_report.md
+reports/latest_path_validation_report.md
 reports/archive/YYYY-MM-DD_data_report.md
 reports/archive/YYYY-MM-DD_feature_report.md
 reports/archive/YYYY-MM-DD_baseline_model_report.md
+reports/archive/YYYY-MM-DD_path_distribution_report.md
+reports/archive/YYYY-MM-DD_path_validation_report.md
 docs/index.html
 docs/baseline.html
+docs/path.html
 ```
 
 ## GitHub Actions
@@ -167,3 +207,16 @@ python -m cnsv.cli.run_baseline_models
 ```
 
 随后提交 V1.2 Baseline Model Report、Baseline Registry 和 `docs/baseline.html`。
+
+`.github/workflows/run_path_distribution.yml` 会执行：
+
+```text
+pip install -r requirements.txt
+pytest
+python -m cnsv.cli.run_baseline_models
+python -m cnsv.cli.run_baseline_validation
+python -m cnsv.cli.run_path_distribution
+python -m cnsv.cli.run_path_validation
+```
+
+随后提交 V1.3 Path Distribution、Path Validation、Path Registry 和 `docs/path.html`。
