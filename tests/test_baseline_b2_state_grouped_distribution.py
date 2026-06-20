@@ -21,5 +21,19 @@ def test_b2_marks_fallback_for_small_state_sample():
     assert set(result["horizons"]) == {"5D", "10D", "20D"}
     for row in result["horizons"].values():
         assert row["fallback_used"] is True
-        assert row["fallback_reason"] == "state_sample_size_lt_30"
+        assert row["fallback_reason"] == "missing_historical_state_columns"
+        assert row["p10_price"] > 0
+
+
+def test_b2_uses_state_group_when_historical_state_sample_is_available():
+    daily = _daily(120)
+    daily["trend_state"] = "uptrend"
+    daily["volatility_state"] = "normal_vol"
+    daily["flow_strength_basic"] = "positive"
+    result = run_b2_state_grouped_distribution(daily, 31.9, _features())
+    assert result["state_coverage"]["usable_state_rows"] == 120
+    for row in result["horizons"].values():
+        assert row["fallback_used"] is False
+        assert row["fallback_reason"] == ""
+        assert row["state_sample_size"] >= 100
         assert row["p10_price"] > 0
