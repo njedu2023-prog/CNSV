@@ -57,6 +57,7 @@ HTML = """<!doctype html>
   <section><h2>CNSVdata 数据门禁</h2><div id="gate" class="chips"></div></section>
   <section><h2>特征质量</h2><div id="featureQuality" class="chips"></div></section>
   <section><h2>基准模型质量</h2><div id="baselineQuality" class="chips"></div><div id="qualityChecks"></div></section>
+  <section><h2>受控回退说明</h2><div id="fallbackNotes"></div></section>
   <section><h2>当前状态</h2><div id="currentState" class="grid"></div></section>
   <section><h2>基准模型分布</h2><div id="models"></div></section>
   <section><h2>模型登记表</h2><div id="registry"></div></section>
@@ -105,11 +106,15 @@ fetch("data/latest_baseline_model_report.json").then(r => r.json()).then(payload
   ].join("");
   document.getElementById("baselineQuality").innerHTML = [
     chip("状态", baselineQuality.status),
-    chip("FAIL 数量", baselineQuality.failed_count),
-    chip("WARN 数量", baselineQuality.warn_count)
+    chip("blocking_errors", baselineQuality.blocking_error_count ?? baselineQuality.failed_count),
+    chip("gating_warnings", baselineQuality.gating_warning_count ?? baselineQuality.warn_count),
+    chip("non_gating_warnings", baselineQuality.non_gating_warning_count),
+    chip("fallback_count", baselineQuality.fallback_count)
   ].join("");
   const checks = baselineQuality.checks || [];
   document.getElementById("qualityChecks").innerHTML = `<details><summary><div><div class="summary-title">质量检查明细</div><div class="chips">${chip("检查项", checks.length)}</div></div></summary>${table([["检查项","状态","说明"], ...checks.map(c => [c.name, fmt(c.status), c.detail])])}</details>`;
+  const fallbackNotes = baselineQuality.fallback_notes || [];
+  document.getElementById("fallbackNotes").innerHTML = `<details open><summary><div><div class="summary-title">B2 透明回退记录</div><div class="chips">${chip("记录数", fallbackNotes.length)}${chip("是否影响交易动作", "NO", "", "ok")}</div></div></summary>${table([["模型","周期","原因","样本数","回退方法","gating"], ...fallbackNotes.map(n => [n.model, n.horizon, n.reason, fmt(n.state_sample_size), n.fallback_method, fmt(n.gating)])])}</details>`;
   document.getElementById("currentState").innerHTML = [
     metric("最新收盘价", state.latest_close, "current_close"),
     metric("趋势状态", state.trend_state),
@@ -133,7 +138,11 @@ fetch("data/latest_baseline_model_report.json").then(r => r.json()).then(payload
     return `<details open><summary><div><div class="summary-title">${modelId}</div><div class="chips">${chip("模型", model.model_id || modelId)}${model.state_key ? chip("状态", model.state_key) : ""}${model.volatility_scale ? chip("波动率缩放", model.volatility_scale) : ""}</div></div></summary>${table(rows)}</details>`;
   }).join("");
   document.getElementById("registry").innerHTML = table([["模型 ID","模型名称","阶段","是否交易动作"], ...(payload.baseline_registry || []).map(item => [item.model_id, item.model_name, item.stage, fmt(item.is_trade_signal)])]);
-  document.getElementById("guardrails").innerHTML = (payload.forbidden_actions || []).map(item => chip("禁止", forbiddenText(item))).concat([chip("下一阶段", payload.next_stage)]).join("");
+  document.getElementById("guardrails").innerHTML = (payload.forbidden_actions || []).map(item => chip("禁止", forbiddenText(item))).concat([
+    chip("is_trade_signal", meta.is_trade_signal),
+    chip("can_generate_formal_signal", gate.can_generate_formal_signal),
+    chip("下一阶段", payload.next_stage)
+  ]).join("");
   document.getElementById("footer").textContent = `generated_at: ${fmt(meta.generated_at)} | 数据快照: ${fmt((payload.data_manifest || {}).snapshot_id)}`;
 }).catch(error => {
   document.getElementById("overview").innerHTML = `<span class="bad">加载失败：${error}</span>`;
