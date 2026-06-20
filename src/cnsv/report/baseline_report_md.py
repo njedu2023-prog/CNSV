@@ -40,6 +40,19 @@ def _model_lines(models: dict[str, Any]) -> list[str]:
     return lines
 
 
+def _fallback_lines(notes: list[dict[str, Any]]) -> list[str]:
+    if not notes:
+        return ["- 无"]
+    lines = []
+    for note in notes:
+        lines.append(
+            f"- {note.get('model')} {note.get('horizon')}: reason={_fmt(note.get('reason'))}, "
+            f"state_sample_size={_fmt(note.get('state_sample_size'))}, "
+            f"fallback_method={_fmt(note.get('fallback_method'))}, gating={_fmt(note.get('gating'))}"
+        )
+    return lines
+
+
 def build_baseline_report_md(payload: dict[str, Any]) -> str:
     meta = payload.get("meta", {})
     gate = payload.get("cnsvdata_gate", {})
@@ -64,8 +77,14 @@ def build_baseline_report_md(payload: dict[str, Any]) -> str:
         "",
         "## 基准模型质量",
         f"- 状态: {_fmt(baseline_quality.get('status'))}",
-        f"- FAIL 数量: {_fmt(baseline_quality.get('failed_count'))}",
-        f"- WARN 数量: {_fmt(baseline_quality.get('warn_count'))}",
+        f"- blocking_errors: {_fmt(baseline_quality.get('blocking_error_count', baseline_quality.get('failed_count')))}",
+        f"- gating_warnings: {_fmt(baseline_quality.get('gating_warning_count', baseline_quality.get('warn_count')))}",
+        f"- non_gating_warnings: {_fmt(baseline_quality.get('non_gating_warning_count'))}",
+        f"- fallback_count: {_fmt(baseline_quality.get('fallback_count'))}",
+        "",
+        "## 受控回退说明",
+        "B2 状态分组样本不足时透明回退到 B1 历史分布基准；该回退不生成正式交易信号，也不影响 V1.2 基准模型层验收状态。",
+        *_fallback_lines(baseline_quality.get("fallback_notes", [])),
         "",
         "## 当前状态",
         f"- 最新交易日: {_fmt(meta.get('latest_trade_date'))}",
@@ -79,6 +98,8 @@ def build_baseline_report_md(payload: dict[str, Any]) -> str:
         "",
         "## 禁止动作",
         *(f"- {_action(item)}" for item in forbidden),
+        f"- is_trade_signal: {_fmt(meta.get('is_trade_signal'))}",
+        f"- can_generate_formal_signal: {_fmt(gate.get('can_generate_formal_signal'))}",
         "",
         "## 下一阶段",
         f"- {_fmt(payload.get('next_stage'))}",
@@ -98,4 +119,3 @@ def write_baseline_report_md(payload: dict[str, Any], latest_path: str | Path, a
     archive = ensure_parent(Path(archive_dir) / f"{date.today().isoformat()}_baseline_model_report.md")
     archive.write_text(text, encoding="utf-8")
     return latest, archive
-
