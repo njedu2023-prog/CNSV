@@ -69,11 +69,14 @@ def actual_path_outcome(close_path: list[float], high_path: list[float], low_pat
         "actual_max_up_return": max_up,
         "actual_max_down_return": max_down,
         "actual_max_drawdown": drawdown,
+        "actual_path_volatility": float(np.std(close_ret, ddof=0)),
         "actual_positive_terminal": terminal > 0,
         "actual_touch_up_3pct": max_up >= 0.03,
         "actual_touch_up_5pct": max_up >= 0.05,
+        "actual_touch_up_8pct": max_up >= 0.08,
         "actual_touch_down_3pct": max_down <= -0.03,
         "actual_touch_down_5pct": max_down <= -0.05,
+        "actual_touch_down_8pct": max_down <= -0.08,
     }
 
 
@@ -88,8 +91,10 @@ def summarize_validation_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "drawdown_p10_p90_coverage": _mean_bool(_covered(rows, "actual_max_drawdown", "max_drawdown_p10", "max_drawdown_p90")),
         "touch_up_3pct_brier": _brier(rows, "touch_up_3pct_prob", "actual_touch_up_3pct"),
         "touch_up_5pct_brier": _brier(rows, "touch_up_5pct_prob", "actual_touch_up_5pct"),
+        "touch_up_8pct_brier": _brier(rows, "touch_up_8pct_prob", "actual_touch_up_8pct"),
         "touch_down_3pct_brier": _brier(rows, "touch_down_3pct_prob", "actual_touch_down_3pct"),
         "touch_down_5pct_brier": _brier(rows, "touch_down_5pct_prob", "actual_touch_down_5pct"),
+        "touch_down_8pct_brier": _brier(rows, "touch_down_8pct_prob", "actual_touch_down_8pct"),
         "positive_terminal_brier": _brier(rows, "positive_terminal_prob", "actual_positive_terminal"),
         "path_interval_coverage": _mean_bool(_covered(rows, "actual_terminal_return", "max_down_return_p10", "max_up_return_p90")),
         "path_mae_terminal": _mae(rows, "terminal_return_p50", "actual_terminal_return"),

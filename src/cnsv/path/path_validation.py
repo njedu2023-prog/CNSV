@@ -111,8 +111,11 @@ def run_path_walk_forward_validation(
                         "horizon_days": horizon,
                         "model_id": model_id,
                         "max_training_date": _max_training_date(train_bundle),
+                        "max_prediction_input_date": _max_training_date(train_bundle),
                         "state_date": as_of_date,
                         "fallback_used": bool(row.get("fallback_used", False)),
+                        "state_key": row.get("state_key"),
+                        "state_sample_size": row.get("state_sample_size"),
                         **{key: row.get(key) for key in _prediction_keys()},
                         **truth,
                     }
@@ -259,9 +262,13 @@ def _prediction_keys() -> list[str]:
         "max_drawdown_p90",
         "touch_up_3pct_prob",
         "touch_up_5pct_prob",
+        "touch_up_8pct_prob",
         "touch_down_3pct_prob",
         "touch_down_5pct_prob",
+        "touch_down_8pct_prob",
         "positive_terminal_prob",
+        "path_volatility_p50",
+        "path_volatility_p90",
     ]
 
 

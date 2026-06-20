@@ -1,0 +1,56 @@
+name: Run CNSV Observation Backtest
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "55 9 * * 1-5"
+
+concurrency:
+  group: cnsv-observation-backtest-main
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  run-observation-backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
+      - name: Generate data report
+        run: python -m cnsv.cli.generate_data_report
+      - name: Generate feature report
+        run: python -m cnsv.cli.generate_feature_report
+      - name: Generate baseline model report
+        run: python -m cnsv.cli.run_baseline_models
+      - name: Generate baseline validation report
+        run: python -m cnsv.cli.run_baseline_validation
+      - name: Generate path distribution report
+        run: python -m cnsv.cli.run_path_distribution
+      - name: Generate path validation report
+        run: python -m cnsv.cli.run_path_validation
+      - name: Generate observation backtest report
+        run: python -m cnsv.cli.run_observation_backtest
+      - name: Commit observation backtest updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs reports
+          if git diff --cached --quiet; then
+            echo "No report changes to commit."
+            exit 0
+          fi
+          git commit -m "report: update CNSV observation backtest report"
+          git push || (git pull --rebase -X ours origin main && git push)
