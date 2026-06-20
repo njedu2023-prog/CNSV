@@ -1,0 +1,773 @@
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "1.3.0",
+    "stage": "V1.3_path_validation",
+    "report_type": "path_validation_report",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "generated_at": "2026-06-20T14:09:28.552966+00:00",
+    "latest_trade_date": "2026-06-18",
+    "is_trade_signal": false
+  },
+  "path_validation_quality": {
+    "status": "PASS",
+    "failed_count": 0,
+    "warn_count": 0,
+    "blocking_error_count": 0,
+    "checks": [
+      {
+        "name": "validation_samples_present",
+        "status": "PASS",
+        "detail": "rows=648"
+      },
+      {
+        "name": "path_leakage_checks",
+        "status": "PASS",
+        "detail": "training <= as_of, truth T+1..T+h"
+      },
+      {
+        "name": "P0_historical_path_replay.standard_present",
+        "status": "PASS",
+        "detail": "P0_historical_path_replay standard metrics present"
+      },
+      {
+        "name": "P0_historical_path_replay.purged_present",
+        "status": "PASS",
+        "detail": "P0_historical_path_replay purged metrics present"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.75"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.7638888888888888"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.75"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.standard_present",
+        "status": "PASS",
+        "detail": "P1_volatility_adjusted_path standard metrics present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.purged_present",
+        "status": "PASS",
+        "detail": "P1_volatility_adjusted_path purged metrics present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.6944444444444444"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.6527777777777778"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.6666666666666666"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P2_state_conditional_path.standard_present",
+        "status": "PASS",
+        "detail": "P2_state_conditional_path standard metrics present"
+      },
+      {
+        "name": "P2_state_conditional_path.purged_present",
+        "status": "PASS",
+        "detail": "P2_state_conditional_path purged metrics present"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.7222222222222222"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.fallback_rate",
+        "status": "PASS",
+        "detail": "fallback_rate=0.3194444444444444"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.6944444444444444"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.fallback_rate",
+        "status": "PASS",
+        "detail": "fallback_rate=0.3194444444444444"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.sample_size",
+        "status": "PASS",
+        "detail": "sample_size=72"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.terminal_coverage",
+        "status": "PASS",
+        "detail": "coverage=0.6944444444444444"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.path_metrics",
+        "status": "PASS",
+        "detail": "path validation metrics present"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.fallback_rate",
+        "status": "PASS",
+        "detail": "fallback_rate=0.3194444444444444"
+      }
+    ]
+  },
+  "validation_scope": {
+    "horizons": [
+      5,
+      10,
+      20
+    ],
+    "models": [
+      "P0_historical_path_replay",
+      "P1_volatility_adjusted_path",
+      "P2_state_conditional_path"
+    ],
+    "walk_forward": true,
+    "validation_step": 50,
+    "purged_walk_forward": true,
+    "purged_sample_mode": "every_horizon_step"
+  },
+  "standard_walk_forward_metrics": {
+    "P0_historical_path_replay": {
+      "5D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.7916666666666666,
+        "max_down_p10_p90_coverage": 0.8472222222222222,
+        "drawdown_p10_p90_coverage": 0.8611111111111112,
+        "touch_up_3pct_brier": 0.25405230597581596,
+        "touch_up_5pct_brier": 0.22105220131466952,
+        "touch_down_3pct_brier": 0.2501973723117463,
+        "touch_down_5pct_brier": 0.18890727705189347,
+        "positive_terminal_brier": 0.2572653926614393,
+        "path_interval_coverage": 0.8611111111111112,
+        "path_mae_terminal": 0.05055186778948707,
+        "path_rmse_terminal": 0.07466011666751803,
+        "fallback_rate": 0.0
+      },
+      "10D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.7638888888888888,
+        "max_up_p10_p90_coverage": 0.7638888888888888,
+        "max_down_p10_p90_coverage": 0.8611111111111112,
+        "drawdown_p10_p90_coverage": 0.8194444444444444,
+        "touch_up_3pct_brier": 0.23034856081049332,
+        "touch_up_5pct_brier": 0.24945686533199365,
+        "touch_down_3pct_brier": 0.23848361938140383,
+        "touch_down_5pct_brier": 0.2503549580026559,
+        "positive_terminal_brier": 0.2504490182617469,
+        "path_interval_coverage": 0.875,
+        "path_mae_terminal": 0.07983412855454018,
+        "path_rmse_terminal": 0.11614253712301954,
+        "fallback_rate": 0.0
+      },
+      "20D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.7777777777777778,
+        "max_down_p10_p90_coverage": 0.7638888888888888,
+        "drawdown_p10_p90_coverage": 0.7777777777777778,
+        "touch_up_3pct_brier": 0.18625253906671446,
+        "touch_up_5pct_brier": 0.23509654719347647,
+        "touch_down_3pct_brier": 0.20427389606306864,
+        "touch_down_5pct_brier": 0.24650504931600528,
+        "positive_terminal_brier": 0.2576472380052947,
+        "path_interval_coverage": 0.875,
+        "path_mae_terminal": 0.10896159494216882,
+        "path_rmse_terminal": 0.13734633329174276,
+        "fallback_rate": 0.0
+      }
+    },
+    "P1_volatility_adjusted_path": {
+      "5D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.6944444444444444,
+        "max_up_p10_p90_coverage": 0.7222222222222222,
+        "max_down_p10_p90_coverage": 0.8055555555555556,
+        "drawdown_p10_p90_coverage": 0.8055555555555556,
+        "touch_up_3pct_brier": 0.2544402982785881,
+        "touch_up_5pct_brier": 0.2277566370277873,
+        "touch_down_3pct_brier": 0.24470969528703168,
+        "touch_down_5pct_brier": 0.1740265532410157,
+        "positive_terminal_brier": 0.2572653926614393,
+        "path_interval_coverage": 0.7916666666666666,
+        "path_mae_terminal": 0.05045645739684066,
+        "path_rmse_terminal": 0.07448758669992425,
+        "fallback_rate": 0.0
+      },
+      "10D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.6527777777777778,
+        "max_up_p10_p90_coverage": 0.7222222222222222,
+        "max_down_p10_p90_coverage": 0.8194444444444444,
+        "drawdown_p10_p90_coverage": 0.7777777777777778,
+        "touch_up_3pct_brier": 0.24321515804975535,
+        "touch_up_5pct_brier": 0.27273815361694365,
+        "touch_down_3pct_brier": 0.2374849647198681,
+        "touch_down_5pct_brier": 0.24482058803344733,
+        "positive_terminal_brier": 0.2504490182617469,
+        "path_interval_coverage": 0.7916666666666666,
+        "path_mae_terminal": 0.07963737676659267,
+        "path_rmse_terminal": 0.11573766367116009,
+        "fallback_rate": 0.0
+      },
+      "20D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.6666666666666666,
+        "max_up_p10_p90_coverage": 0.7222222222222222,
+        "max_down_p10_p90_coverage": 0.7638888888888888,
+        "drawdown_p10_p90_coverage": 0.7222222222222222,
+        "touch_up_3pct_brier": 0.20539323604371074,
+        "touch_up_5pct_brier": 0.26238032894381624,
+        "touch_down_3pct_brier": 0.2080810429249207,
+        "touch_down_5pct_brier": 0.2512521323499022,
+        "positive_terminal_brier": 0.2576472380052947,
+        "path_interval_coverage": 0.7916666666666666,
+        "path_mae_terminal": 0.1084940811943694,
+        "path_rmse_terminal": 0.1368133101635383,
+        "fallback_rate": 0.0
+      }
+    },
+    "P2_state_conditional_path": {
+      "5D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.7222222222222222,
+        "max_up_p10_p90_coverage": 0.7222222222222222,
+        "max_down_p10_p90_coverage": 0.8055555555555556,
+        "drawdown_p10_p90_coverage": 0.7777777777777778,
+        "touch_up_3pct_brier": 0.256053841632772,
+        "touch_up_5pct_brier": 0.23750535192808023,
+        "touch_down_3pct_brier": 0.2604988880571609,
+        "touch_down_5pct_brier": 0.1853117886967389,
+        "positive_terminal_brier": 0.2522770606215221,
+        "path_interval_coverage": 0.8055555555555556,
+        "path_mae_terminal": 0.050388407528322944,
+        "path_rmse_terminal": 0.07611365032150304,
+        "fallback_rate": 0.3194444444444444
+      },
+      "10D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.6944444444444444,
+        "max_up_p10_p90_coverage": 0.6944444444444444,
+        "max_down_p10_p90_coverage": 0.7916666666666666,
+        "drawdown_p10_p90_coverage": 0.7638888888888888,
+        "touch_up_3pct_brier": 0.23836977593358524,
+        "touch_up_5pct_brier": 0.2785159519379464,
+        "touch_down_3pct_brier": 0.23333102306777953,
+        "touch_down_5pct_brier": 0.22947298169433886,
+        "positive_terminal_brier": 0.2496912574515903,
+        "path_interval_coverage": 0.8055555555555556,
+        "path_mae_terminal": 0.07899786799196214,
+        "path_rmse_terminal": 0.11659964295528596,
+        "fallback_rate": 0.3194444444444444
+      },
+      "20D": {
+        "sample_size": 72,
+        "terminal_p10_p90_coverage": 0.6944444444444444,
+        "max_up_p10_p90_coverage": 0.6944444444444444,
+        "max_down_p10_p90_coverage": 0.7083333333333334,
+        "drawdown_p10_p90_coverage": 0.7083333333333334,
+        "touch_up_3pct_brier": 0.1979909404519974,
+        "touch_up_5pct_brier": 0.252655816346078,
+        "touch_down_3pct_brier": 0.20523713661535856,
+        "touch_down_5pct_brier": 0.23553577186607505,
+        "positive_terminal_brier": 0.26576445120547476,
+        "path_interval_coverage": 0.8194444444444444,
+        "path_mae_terminal": 0.10965046803014153,
+        "path_rmse_terminal": 0.13685477986625078,
+        "fallback_rate": 0.3194444444444444
+      }
+    }
+  },
+  "purged_walk_forward_metrics": {
+    "P0_historical_path_replay": {
+      "5D": {
+        "sample_size": 15,
+        "terminal_p10_p90_coverage": 0.7333333333333333,
+        "max_up_p10_p90_coverage": 0.8,
+        "max_down_p10_p90_coverage": 0.9333333333333333,
+        "drawdown_p10_p90_coverage": 0.8,
+        "touch_up_3pct_brier": 0.25989622747694374,
+        "touch_up_5pct_brier": 0.23277490430701395,
+        "touch_down_3pct_brier": 0.2691262201828514,
+        "touch_down_5pct_brier": 0.16430046726811665,
+        "positive_terminal_brier": 0.26295868099565356,
+        "path_interval_coverage": 0.8666666666666667,
+        "path_mae_terminal": 0.0548340937481421,
+        "path_rmse_terminal": 0.0764696142272933,
+        "fallback_rate": 0.0
+      },
+      "10D": {
+        "sample_size": 8,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.75,
+        "max_down_p10_p90_coverage": 1.0,
+        "drawdown_p10_p90_coverage": 1.0,
+        "touch_up_3pct_brier": 0.21444546923685676,
+        "touch_up_5pct_brier": 0.23857381854578294,
+        "touch_down_3pct_brier": 0.24072115681833228,
+        "touch_down_5pct_brier": 0.2725646274315376,
+        "positive_terminal_brier": 0.23730858259846704,
+        "path_interval_coverage": 0.875,
+        "path_mae_terminal": 0.06873258076755512,
+        "path_rmse_terminal": 0.0895128007360193,
+        "fallback_rate": 0.0
+      },
+      "20D": {
+        "sample_size": 4,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.75,
+        "max_down_p10_p90_coverage": 1.0,
+        "drawdown_p10_p90_coverage": 0.75,
+        "touch_up_3pct_brier": 0.06965302774354912,
+        "touch_up_5pct_brier": 0.1762382897575692,
+        "touch_down_3pct_brier": 0.3259601146076499,
+        "touch_down_5pct_brier": 0.2890561997215967,
+        "positive_terminal_brier": 0.2674003541097191,
+        "path_interval_coverage": 1.0,
+        "path_mae_terminal": 0.0962984583491503,
+        "path_rmse_terminal": 0.10966499217505454,
+        "fallback_rate": 0.0
+      }
+    },
+    "P1_volatility_adjusted_path": {
+      "5D": {
+        "sample_size": 15,
+        "terminal_p10_p90_coverage": 0.6,
+        "max_up_p10_p90_coverage": 0.8,
+        "max_down_p10_p90_coverage": 0.8,
+        "drawdown_p10_p90_coverage": 0.7333333333333333,
+        "touch_up_3pct_brier": 0.289162002471981,
+        "touch_up_5pct_brier": 0.23199161472861465,
+        "touch_down_3pct_brier": 0.21036296541321411,
+        "touch_down_5pct_brier": 0.17076570520825818,
+        "positive_terminal_brier": 0.26295868099565356,
+        "path_interval_coverage": 0.8,
+        "path_mae_terminal": 0.05450596974642673,
+        "path_rmse_terminal": 0.0762775031658059,
+        "fallback_rate": 0.0
+      },
+      "10D": {
+        "sample_size": 8,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.75,
+        "max_down_p10_p90_coverage": 0.875,
+        "drawdown_p10_p90_coverage": 0.75,
+        "touch_up_3pct_brier": 0.21695509861989726,
+        "touch_up_5pct_brier": 0.2668510155419602,
+        "touch_down_3pct_brier": 0.2377292346024966,
+        "touch_down_5pct_brier": 0.30680900154473595,
+        "positive_terminal_brier": 0.23730858259846704,
+        "path_interval_coverage": 0.875,
+        "path_mae_terminal": 0.06935021046372641,
+        "path_rmse_terminal": 0.09003684633995433,
+        "fallback_rate": 0.0
+      },
+      "20D": {
+        "sample_size": 4,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.75,
+        "max_down_p10_p90_coverage": 1.0,
+        "drawdown_p10_p90_coverage": 0.5,
+        "touch_up_3pct_brier": 0.10319088337896287,
+        "touch_up_5pct_brier": 0.2229189264919943,
+        "touch_down_3pct_brier": 0.3225157475285677,
+        "touch_down_5pct_brier": 0.3082124867652727,
+        "positive_terminal_brier": 0.2674003541097191,
+        "path_interval_coverage": 1.0,
+        "path_mae_terminal": 0.09601449479288796,
+        "path_rmse_terminal": 0.1098026940482863,
+        "fallback_rate": 0.0
+      }
+    },
+    "P2_state_conditional_path": {
+      "5D": {
+        "sample_size": 15,
+        "terminal_p10_p90_coverage": 0.7333333333333333,
+        "max_up_p10_p90_coverage": 0.7333333333333333,
+        "max_down_p10_p90_coverage": 0.8666666666666667,
+        "drawdown_p10_p90_coverage": 0.7333333333333333,
+        "touch_up_3pct_brier": 0.2425574169329271,
+        "touch_up_5pct_brier": 0.25258646933389706,
+        "touch_down_3pct_brier": 0.24020063100033087,
+        "touch_down_5pct_brier": 0.1670946805133292,
+        "positive_terminal_brier": 0.2613754330018732,
+        "path_interval_coverage": 0.8666666666666667,
+        "path_mae_terminal": 0.053828153804759825,
+        "path_rmse_terminal": 0.07631776295013752,
+        "fallback_rate": 0.2
+      },
+      "10D": {
+        "sample_size": 8,
+        "terminal_p10_p90_coverage": 0.75,
+        "max_up_p10_p90_coverage": 0.75,
+        "max_down_p10_p90_coverage": 0.875,
+        "drawdown_p10_p90_coverage": 0.875,
+        "touch_up_3pct_brier": 0.19201433291150347,
+        "touch_up_5pct_brier": 0.2619013751381587,
+        "touch_down_3pct_brier": 0.24160568234821175,
+        "touch_down_5pct_brier": 0.25406741324737625,
+        "positive_terminal_brier": 0.23630976493036157,
+        "path_interval_coverage": 0.875,
+        "path_mae_terminal": 0.06773563956862938,
+        "path_rmse_terminal": 0.0877724652565005,
+        "fallback_rate": 0.25
+      },
+      "20D": {
+        "sample_size": 4,
+        "terminal_p10_p90_coverage": 1.0,
+        "max_up_p10_p90_coverage": 0.75,
+        "max_down_p10_p90_coverage": 1.0,
+        "drawdown_p10_p90_coverage": 0.5,
+        "touch_up_3pct_brier": 0.054587406297768246,
+        "touch_up_5pct_brier": 0.14694569205771,
+        "touch_down_3pct_brier": 0.3223349516772861,
+        "touch_down_5pct_brier": 0.2710915323823028,
+        "positive_terminal_brier": 0.2664651590124493,
+        "path_interval_coverage": 1.0,
+        "path_mae_terminal": 0.10137335028397747,
+        "path_rmse_terminal": 0.11719156707794796,
+        "fallback_rate": 0.5
+      }
+    }
+  },
+  "p2_vs_p1": {
+    "standard_walk_forward_metrics": {
+      "5D": {
+        "P2_vs_P1_terminal_coverage_delta": 0.02777777777777779,
+        "P2_vs_P1_terminal_rmse_delta": 0.0016260636215787855,
+        "P2_vs_P1_fallback_rate": 0.3194444444444444,
+        "P2_vs_P1_conclusion": "P2 underperforms P1"
+      },
+      "10D": {
+        "P2_vs_P1_terminal_coverage_delta": 0.04166666666666663,
+        "P2_vs_P1_terminal_rmse_delta": 0.0008619792841258744,
+        "P2_vs_P1_fallback_rate": 0.3194444444444444,
+        "P2_vs_P1_conclusion": "neutral"
+      },
+      "20D": {
+        "P2_vs_P1_terminal_coverage_delta": 0.02777777777777779,
+        "P2_vs_P1_terminal_rmse_delta": 4.146970271248773e-05,
+        "P2_vs_P1_fallback_rate": 0.3194444444444444,
+        "P2_vs_P1_conclusion": "neutral"
+      }
+    },
+    "purged_walk_forward_metrics": {
+      "5D": {
+        "P2_vs_P1_terminal_coverage_delta": 0.1333333333333333,
+        "P2_vs_P1_terminal_rmse_delta": 4.0259784331628246e-05,
+        "P2_vs_P1_fallback_rate": 0.2,
+        "P2_vs_P1_conclusion": "neutral"
+      },
+      "10D": {
+        "P2_vs_P1_terminal_coverage_delta": 0.0,
+        "P2_vs_P1_terminal_rmse_delta": -0.002264381083453837,
+        "P2_vs_P1_fallback_rate": 0.25,
+        "P2_vs_P1_conclusion": "P2 improves P1"
+      },
+      "20D": {
+        "P2_vs_P1_terminal_coverage_delta": 0.25,
+        "P2_vs_P1_terminal_rmse_delta": 0.007388873029661666,
+        "P2_vs_P1_fallback_rate": 0.5,
+        "P2_vs_P1_conclusion": "P2 underperforms P1"
+      }
+    }
+  },
+  "path_leakage_checks": {
+    "status": "PASS",
+    "check_count": 72,
+    "failed_count": 0,
+    "checks": [
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2011-02-01",
+        "max_training_date": "2011-02-01",
+        "state_date": "2011-02-01",
+        "truth_start_date": "2011-02-09",
+        "truth_end_date": "2011-03-22"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2011-05-06",
+        "max_training_date": "2011-05-06",
+        "state_date": "2011-05-06",
+        "truth_start_date": "2011-05-09",
+        "truth_end_date": "2011-06-07"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2011-07-20",
+        "max_training_date": "2011-07-20",
+        "state_date": "2011-07-20",
+        "truth_start_date": "2011-07-21",
+        "truth_end_date": "2011-08-17"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2011-09-29",
+        "max_training_date": "2011-09-29",
+        "state_date": "2011-09-29",
+        "truth_start_date": "2011-09-30",
+        "truth_end_date": "2011-11-03"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2011-12-15",
+        "max_training_date": "2011-12-15",
+        "state_date": "2011-12-15",
+        "truth_start_date": "2011-12-16",
+        "truth_end_date": "2012-01-16"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2012-03-05",
+        "max_training_date": "2012-03-05",
+        "state_date": "2012-03-05",
+        "truth_start_date": "2012-03-06",
+        "truth_end_date": "2012-04-05"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2012-05-21",
+        "max_training_date": "2012-05-21",
+        "state_date": "2012-05-21",
+        "truth_start_date": "2012-05-22",
+        "truth_end_date": "2012-06-19"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2012-08-01",
+        "max_training_date": "2012-08-01",
+        "state_date": "2012-08-01",
+        "truth_start_date": "2012-08-02",
+        "truth_end_date": "2012-08-29"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2012-10-17",
+        "max_training_date": "2012-10-17",
+        "state_date": "2012-10-17",
+        "truth_start_date": "2012-10-18",
+        "truth_end_date": "2012-11-14"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2012-12-26",
+        "max_training_date": "2012-12-26",
+        "state_date": "2012-12-26",
+        "truth_start_date": "2012-12-27",
+        "truth_end_date": "2013-01-28"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2013-03-18",
+        "max_training_date": "2013-03-18",
+        "state_date": "2013-03-18",
+        "truth_start_date": "2013-03-19",
+        "truth_end_date": "2013-04-17"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2013-06-03",
+        "max_training_date": "2013-06-03",
+        "state_date": "2013-06-03",
+        "truth_start_date": "2013-06-04",
+        "truth_end_date": "2013-07-04"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2013-08-15",
+        "max_training_date": "2013-08-15",
+        "state_date": "2013-08-15",
+        "truth_start_date": "2013-08-16",
+        "truth_end_date": "2013-09-12"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2013-11-04",
+        "max_training_date": "2013-11-04",
+        "state_date": "2013-11-04",
+        "truth_start_date": "2013-11-05",
+        "truth_end_date": "2013-12-02"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2014-01-14",
+        "max_training_date": "2014-01-14",
+        "state_date": "2014-01-14",
+        "truth_start_date": "2014-01-15",
+        "truth_end_date": "2014-02-18"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2014-04-01",
+        "max_training_date": "2014-04-01",
+        "state_date": "2014-04-01",
+        "truth_start_date": "2014-04-02",
+        "truth_end_date": "2014-04-30"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2014-06-16",
+        "max_training_date": "2014-06-16",
+        "state_date": "2014-06-16",
+        "truth_start_date": "2014-06-17",
+        "truth_end_date": "2014-07-14"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2014-08-25",
+        "max_training_date": "2014-08-25",
+        "state_date": "2014-08-25",
+        "truth_start_date": "2014-08-26",
+        "truth_end_date": "2014-09-23"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2014-11-11",
+        "max_training_date": "2014-11-11",
+        "state_date": "2014-11-11",
+        "truth_start_date": "2014-11-12",
+        "truth_end_date": "2014-12-09"
+      },
+      {
+        "name": "path_training_window",
+        "status": "PASS",
+        "as_of_date": "2015-01-22",
+        "max_training_date": "2015-01-22",
+        "state_date": "2015-01-22",
+        "truth_start_date": "2015-01-23",
+        "truth_end_date": "2015-02-26"
+      }
+    ],
+    "purged_sample_mode": "every_horizon_step",
+    "rules": [
+      "每个 as_of_date 的训练数据最大日期 <= as_of_date",
+      "T 日状态只由 T 及以前数据构造",
+      "真实验证结果只来自 T+1 到 T+h",
+      "purged 模式按 horizon 间隔抽样降低重叠污染"
+    ]
+  },
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ],
+  "next_stage": "V1.4 observation backtest after path validation acceptance"
+}

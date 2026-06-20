@@ -1,0 +1,61 @@
+[
+  {
+    "model_id": "P0_historical_path_replay",
+    "model_name": "历史路径回放",
+    "stage": "V1.3_path_distribution",
+    "is_trade_signal": false,
+    "horizons": [
+      5,
+      10,
+      20
+    ],
+    "input_data": [
+      "daily.close",
+      "daily.high",
+      "daily.low"
+    ],
+    "output_fields": [
+      "terminal_return_p10",
+      "terminal_return_p50",
+      "terminal_return_p90",
+      "max_up_return_p90",
+      "max_down_return_p10",
+      "touch_up_5pct_prob",
+      "touch_down_5pct_prob"
+    ]
+  },
+  {
+    "model_id": "P1_volatility_adjusted_path",
+    "model_name": "波动率调整路径回放",
+    "stage": "V1.3_path_distribution",
+    "is_trade_signal": false,
+    "horizons": [
+      5,
+      10,
+      20
+    ],
+    "input_data": [
+      "daily.close",
+      "daily.high",
+      "daily.low",
+      "realized_vol_20d"
+    ]
+  },
+  {
+    "model_id": "P2_state_conditional_path",
+    "model_name": "状态条件路径回放",
+    "stage": "V1.3_path_distribution",
+    "is_trade_signal": false,
+    "horizons": [
+      5,
+      10,
+      20
+    ],
+    "input_data": [
+      "trend_state",
+      "volatility_state",
+      "flow_strength_basic"
+    ],
+    "role": "辅助状态层，不作为核心依赖"
+  }
+]

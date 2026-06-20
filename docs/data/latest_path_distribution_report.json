@@ -1,0 +1,947 @@
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "1.3.0",
+    "stage": "V1.3_path_distribution",
+    "report_type": "path_distribution_report",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "generated_at": "2026-06-20T14:08:15.201636+00:00",
+    "latest_trade_date": "2026-06-18",
+    "is_trade_signal": false
+  },
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": [
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
+    ]
+  },
+  "path_quality": {
+    "status": "PASS",
+    "failed_count": 0,
+    "warn_count": 0,
+    "blocking_error_count": 0,
+    "checks": [
+      {
+        "name": "latest_close_positive",
+        "status": "PASS",
+        "detail": "latest_close=36.14"
+      },
+      {
+        "name": "no_forbidden_trade_fields",
+        "status": "PASS",
+        "detail": "path payload must not contain trade action fields"
+      },
+      {
+        "name": "P0_historical_path_replay.present",
+        "status": "PASS",
+        "detail": "P0_historical_path_replay present"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.present",
+        "status": "PASS",
+        "detail": "P0_historical_path_replay 5D present"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.path_count",
+        "status": "PASS",
+        "detail": "path_count=3834"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P0_historical_path_replay.5D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.present",
+        "status": "PASS",
+        "detail": "P0_historical_path_replay 10D present"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.path_count",
+        "status": "PASS",
+        "detail": "path_count=3829"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P0_historical_path_replay.10D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.present",
+        "status": "PASS",
+        "detail": "P0_historical_path_replay 20D present"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.path_count",
+        "status": "PASS",
+        "detail": "path_count=3819"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P0_historical_path_replay.20D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.present",
+        "status": "PASS",
+        "detail": "P1_volatility_adjusted_path present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.present",
+        "status": "PASS",
+        "detail": "P1_volatility_adjusted_path 5D present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.path_count",
+        "status": "PASS",
+        "detail": "path_count=3834"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.5D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.present",
+        "status": "PASS",
+        "detail": "P1_volatility_adjusted_path 10D present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.path_count",
+        "status": "PASS",
+        "detail": "path_count=3829"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.10D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.present",
+        "status": "PASS",
+        "detail": "P1_volatility_adjusted_path 20D present"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.path_count",
+        "status": "PASS",
+        "detail": "path_count=3819"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P1_volatility_adjusted_path.20D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P2_state_conditional_path.present",
+        "status": "PASS",
+        "detail": "P2_state_conditional_path present"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.present",
+        "status": "PASS",
+        "detail": "P2_state_conditional_path 5D present"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.path_count",
+        "status": "PASS",
+        "detail": "path_count=105"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.state_sample_size",
+        "status": "PASS",
+        "detail": "state_sample_size=105"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.fallback_transparent",
+        "status": "PASS",
+        "detail": "source_model=state_matched_history"
+      },
+      {
+        "name": "P2_state_conditional_path.5D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.present",
+        "status": "PASS",
+        "detail": "P2_state_conditional_path 10D present"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.path_count",
+        "status": "PASS",
+        "detail": "path_count=105"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.state_sample_size",
+        "status": "PASS",
+        "detail": "state_sample_size=105"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.fallback_transparent",
+        "status": "PASS",
+        "detail": "source_model=state_matched_history"
+      },
+      {
+        "name": "P2_state_conditional_path.10D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.present",
+        "status": "PASS",
+        "detail": "P2_state_conditional_path 20D present"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.path_count",
+        "status": "PASS",
+        "detail": "path_count=105"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.quantile_order",
+        "status": "PASS",
+        "detail": "p10 <= p50 <= p90"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.price_positive",
+        "status": "PASS",
+        "detail": "price quantiles must be positive"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.probabilities",
+        "status": "PASS",
+        "detail": "probabilities must be in [0,1]"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.fallback_reason",
+        "status": "PASS",
+        "detail": "fallback_used=False"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.state_sample_size",
+        "status": "PASS",
+        "detail": "state_sample_size=105"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.fallback_transparent",
+        "status": "PASS",
+        "detail": "source_model=state_matched_history"
+      },
+      {
+        "name": "P2_state_conditional_path.20D.finite_values",
+        "status": "PASS",
+        "detail": "no NaN/inf"
+      }
+    ]
+  },
+  "current_state": {
+    "trend_state": "downtrend",
+    "volatility_state": "normal_vol",
+    "flow_strength_basic": "mixed"
+  },
+  "state_coverage": {
+    "has_state_columns": true,
+    "state_rows": 3839,
+    "usable_state_rows": 3790
+  },
+  "path_models": {
+    "P0_historical_path_replay": {
+      "model_id": "P0_historical_path_replay",
+      "model_name": "历史路径回放",
+      "is_trade_signal": false,
+      "horizons": {
+        "5D": {
+          "model_id": "P0_historical_path_replay",
+          "horizon": 5,
+          "sample_size": 3834,
+          "path_count": 3834,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "",
+          "dropped_count": 0,
+          "state_sample_size": 3834,
+          "skipped_reason": "",
+          "terminal_return_p10": -0.06657385592917835,
+          "terminal_return_p50": -0.0016104029397875919,
+          "terminal_return_p90": 0.07425120654683676,
+          "terminal_price_p10": 33.734020846719496,
+          "terminal_price_p50": 36.08180003775608,
+          "terminal_price_p90": 38.82343860460268,
+          "max_up_return_p10": 0.003422636350810793,
+          "max_up_return_p50": 0.03283898305084754,
+          "max_up_return_p90": 0.10934437103986816,
+          "max_up_price_p10": 36.2636940777183,
+          "max_up_price_p50": 37.32680084745763,
+          "max_up_price_p90": 40.091705569380835,
+          "max_down_return_p10": -0.0913269303339867,
+          "max_down_return_p50": -0.03134764527368772,
+          "max_down_return_p90": -0.005271089490099543,
+          "max_down_price_p10": 32.83944473772972,
+          "max_down_price_p50": 35.007096099808926,
+          "max_down_price_p90": 35.94950282582781,
+          "max_drawdown_p10": -0.0865614746187994,
+          "max_drawdown_p50": -0.030649721892728465,
+          "max_drawdown_p90": -0.0087878787878786,
+          "path_volatility_p50": 0.015832471776527468,
+          "path_volatility_p90": 0.039126839122758224,
+          "positive_terminal_prob": 0.4835680751173709,
+          "touch_up_3pct_prob": 0.5273865414710485,
+          "touch_down_3pct_prob": 0.51773604590506,
+          "touch_up_5pct_prob": 0.328377673448096,
+          "touch_down_5pct_prob": 0.297339593114241,
+          "touch_up_8pct_prob": 0.17892540427751696,
+          "touch_down_8pct_prob": 0.13275952008346376,
+          "end_above_start_prob": 0.4835680751173709,
+          "intraperiod_any_up_prob": 0.9324465310380803,
+          "intraperiod_any_down_prob": 0.9530516431924883
+        },
+        "10D": {
+          "model_id": "P0_historical_path_replay",
+          "horizon": 10,
+          "sample_size": 3829,
+          "path_count": 3829,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "",
+          "dropped_count": 0,
+          "state_sample_size": 3829,
+          "skipped_reason": "",
+          "terminal_return_p10": -0.09631770512234218,
+          "terminal_return_p50": -0.003841229193341844,
+          "terminal_return_p90": 0.10905374169472802,
+          "terminal_price_p10": 32.659078136878556,
+          "terminal_price_p50": 36.001177976952626,
+          "terminal_price_p90": 40.081202224847466,
+          "max_up_return_p10": 0.0064971741183962985,
+          "max_up_return_p50": 0.04661138118387198,
+          "max_up_return_p90": 0.15959002794215815,
+          "max_up_price_p10": 36.37480787263885,
+          "max_up_price_p50": 37.82453531598513,
+          "max_up_price_p90": 41.907583609829594,
+          "max_down_return_p10": -0.13107939831781873,
+          "max_down_return_p50": -0.04507971412864209,
+          "max_down_return_p90": -0.007949130613146501,
+          "max_down_price_p10": 31.402790544794033,
+          "max_down_price_p50": 34.510819131390875,
+          "max_down_price_p90": 35.85271841964089,
+          "max_drawdown_p10": -0.13059886611117674,
+          "max_drawdown_p50": -0.05482268288504355,
+          "max_drawdown_p90": -0.021748222501045578,
+          "path_volatility_p50": 0.023976623377924423,
+          "path_volatility_p90": 0.055033432371495196,
+          "positive_terminal_prob": 0.4768869156437712,
+          "touch_up_3pct_prob": 0.646382867589449,
+          "touch_down_3pct_prob": 0.6555236354139462,
+          "touch_up_5pct_prob": 0.47035779576913034,
+          "touch_down_5pct_prob": 0.4565160616348916,
+          "touch_up_8pct_prob": 0.3029511621833377,
+          "touch_down_8pct_prob": 0.2520240271611387,
+          "end_above_start_prob": 0.4768869156437712,
+          "intraperiod_any_up_prob": 0.9503786889527291,
+          "intraperiod_any_down_prob": 0.9652650822669104
+        },
+        "20D": {
+          "model_id": "P0_historical_path_replay",
+          "horizon": 20,
+          "sample_size": 3819,
+          "path_count": 3819,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "",
+          "dropped_count": 0,
+          "state_sample_size": 3819,
+          "skipped_reason": "",
+          "terminal_return_p10": -0.13878804455468896,
+          "terminal_return_p50": -0.002756086357372456,
+          "terminal_return_p90": 0.1538184032069749,
+          "terminal_price_p10": 31.12420006979354,
+          "terminal_price_p50": 36.04039503904456,
+          "terminal_price_p90": 41.698997091900075,
+          "max_up_return_p10": 0.010830893273923304,
+          "max_up_return_p50": 0.06925207756232687,
+          "max_up_return_p90": 0.2394408150304183,
+          "max_up_price_p10": 36.531428482919594,
+          "max_up_price_p50": 38.64277008310249,
+          "max_up_price_p90": 44.793391055199315,
+          "max_down_return_p10": -0.1820051291226814,
+          "max_down_return_p50": -0.06586077532305123,
+          "max_down_return_p90": -0.011545631522529333,
+          "max_down_price_p10": 29.562334633506293,
+          "max_down_price_p50": 33.75979157982493,
+          "max_down_price_p90": 35.722740876775795,
+          "max_drawdown_p10": -0.18991416309012887,
+          "max_drawdown_p50": -0.08520559559135232,
+          "max_drawdown_p90": -0.0397822445561139,
+          "path_volatility_p50": 0.03682039448054024,
+          "path_volatility_p90": 0.0811269146765463,
+          "positive_terminal_prob": 0.48939512961508247,
+          "touch_up_3pct_prob": 0.7501963864886095,
+          "touch_down_3pct_prob": 0.7549096622152396,
+          "touch_up_5pct_prob": 0.6035611416601204,
+          "touch_down_5pct_prob": 0.5980623199790521,
+          "touch_up_8pct_prob": 0.4545692589683163,
+          "touch_down_8pct_prob": 0.4137208693375229,
+          "end_above_start_prob": 0.48939512961508247,
+          "intraperiod_any_up_prob": 0.9604608536266038,
+          "intraperiod_any_down_prob": 0.9756480754124116
+        }
+      }
+    },
+    "P1_volatility_adjusted_path": {
+      "model_id": "P1_volatility_adjusted_path",
+      "model_name": "波动率调整路径回放",
+      "is_trade_signal": false,
+      "warnings": [],
+      "horizons": {
+        "5D": {
+          "model_id": "P1_volatility_adjusted_path",
+          "horizon": 5,
+          "sample_size": 3834,
+          "path_count": 3834,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "P0_historical_path_replay",
+          "dropped_count": 0,
+          "state_sample_size": 3834,
+          "skipped_reason": "",
+          "volatility_scale": 0.6518498961787733,
+          "volatility_scale_warnings": [],
+          "terminal_return_p10": -0.04339616107565552,
+          "terminal_return_p50": -0.0010497409891065332,
+          "terminal_return_p90": 0.048400641278704186,
+          "terminal_price_p10": 34.57166273872581,
+          "terminal_price_p50": 36.10206236065369,
+          "terminal_price_p90": 37.88919917581237,
+          "max_up_return_p10": 0.0022310451499337105,
+          "max_up_return_p50": 0.021406087692311462,
+          "max_up_return_p90": 0.07127611691007132,
+          "max_up_price_p10": 36.2206299717186,
+          "max_up_price_p50": 36.91361600920013,
+          "max_up_price_p90": 38.71591886512998,
+          "max_down_return_p10": -0.05953145005653529,
+          "max_down_return_p50": -0.020433959317102353,
+          "max_down_return_p90": -0.0034359591368704106,
+          "max_down_price_p10": 33.98853339495681,
+          "max_down_price_p50": 35.40151671027992,
+          "max_down_price_p90": 36.0158244367935,
+          "max_drawdown_p10": -0.056853565746063796,
+          "max_drawdown_p50": -0.02003956754473213,
+          "max_drawdown_p90": -0.0057491821732728815,
+          "path_volatility_p50": 0.010320395083782788,
+          "path_volatility_p90": 0.025504826019973514,
+          "positive_terminal_prob": 0.4835680751173709,
+          "touch_up_3pct_prob": 0.3604590505998957,
+          "touch_down_3pct_prob": 0.33098591549295775,
+          "touch_up_5pct_prob": 0.19222743870631195,
+          "touch_down_5pct_prob": 0.14632237871674492,
+          "touch_up_8pct_prob": 0.0782472613458529,
+          "touch_down_8pct_prob": 0.051382368283776736,
+          "end_above_start_prob": 0.4835680751173709,
+          "intraperiod_any_up_prob": 0.9324465310380803,
+          "intraperiod_any_down_prob": 0.9530516431924883
+        },
+        "10D": {
+          "model_id": "P1_volatility_adjusted_path",
+          "horizon": 10,
+          "sample_size": 3829,
+          "path_count": 3829,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "P0_historical_path_replay",
+          "dropped_count": 0,
+          "state_sample_size": 3829,
+          "skipped_reason": "",
+          "volatility_scale": 0.6518498961787733,
+          "volatility_scale_warnings": [],
+          "terminal_return_p10": -0.06278468608417645,
+          "terminal_return_p50": -0.002503904850878754,
+          "terminal_return_p90": 0.07108667020161523,
+          "terminal_price_p10": 33.87096144491786,
+          "terminal_price_p50": 36.049508878689245,
+          "terminal_price_p90": 38.709072261086376,
+          "max_up_return_p10": 0.00423518227453204,
+          "max_up_return_p50": 0.030383623985456177,
+          "max_up_return_p90": 0.10402874314526332,
+          "max_up_price_p10": 36.29305948740159,
+          "max_up_price_p50": 37.23806417083439,
+          "max_up_price_p90": 39.899598777269816,
+          "max_down_return_p10": -0.08544409218464621,
+          "max_down_return_p50": -0.029385206974524125,
+          "max_down_return_p90": -0.005181639964891055,
+          "max_down_price_p10": 33.05205050844689,
+          "max_down_price_p50": 35.0780186199407,
+          "max_down_price_p90": 35.952735531668836,
+          "max_drawdown_p10": -0.08649928853425372,
+          "max_drawdown_p50": -0.03642666435588071,
+          "max_drawdown_p90": -0.014352860381152906,
+          "path_volatility_p50": 0.015629159459617584,
+          "path_volatility_p90": 0.03587353717772068,
+          "positive_terminal_prob": 0.4768869156437712,
+          "touch_up_3pct_prob": 0.5024810655523635,
+          "touch_down_3pct_prob": 0.49151214416296685,
+          "touch_up_5pct_prob": 0.31862104988247586,
+          "touch_down_5pct_prob": 0.27213371637503264,
+          "touch_up_8pct_prob": 0.1687124575607208,
+          "touch_down_8pct_prob": 0.11595716897362236,
+          "end_above_start_prob": 0.4768869156437712,
+          "intraperiod_any_up_prob": 0.9503786889527291,
+          "intraperiod_any_down_prob": 0.9652650822669104
+        },
+        "20D": {
+          "model_id": "P1_volatility_adjusted_path",
+          "horizon": 20,
+          "sample_size": 3819,
+          "path_count": 3819,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "P0_historical_path_replay",
+          "dropped_count": 0,
+          "state_sample_size": 3819,
+          "skipped_reason": "",
+          "volatility_scale": 0.6518498961787733,
+          "volatility_scale_warnings": [],
+          "terminal_return_p10": -0.09046897243382897,
+          "terminal_return_p50": -0.0017965546059129688,
+          "terminal_return_p90": 0.1002665101608513,
+          "terminal_price_p10": 32.87045133624142,
+          "terminal_price_p50": 36.075072516542306,
+          "terminal_price_p90": 39.76363167721317,
+          "max_up_return_p10": 0.007060116656130279,
+          "max_up_return_p50": 0.04514195956916713,
+          "max_up_return_p90": 0.15607947041853903,
+          "max_up_price_p10": 36.39515261595255,
+          "max_up_price_p50": 37.7714304188297,
+          "max_up_price_p90": 41.780712060926,
+          "max_down_return_p10": -0.11864002452262411,
+          "max_down_return_p50": -0.042931339556584465,
+          "max_down_return_p90": -0.007526018709279118,
+          "max_down_price_p10": 31.852349513752365,
+          "max_down_price_p50": 34.58846138842504,
+          "max_down_price_p90": 35.86800968384665,
+          "max_drawdown_p10": -0.12642574660250513,
+          "max_drawdown_p50": -0.05669567924033836,
+          "max_drawdown_p90": -0.026429829122163684,
+          "path_volatility_p50": 0.02400137031940163,
+          "path_volatility_p90": 0.05288257090921091,
+          "positive_terminal_prob": 0.48939512961508247,
+          "touch_up_3pct_prob": 0.6286986122021472,
+          "touch_down_3pct_prob": 0.6294841581565855,
+          "touch_up_5pct_prob": 0.4684472374967269,
+          "touch_down_5pct_prob": 0.43309766954700185,
+          "touch_up_8pct_prob": 0.3178842628960461,
+          "touch_down_8pct_prob": 0.23121235925634984,
+          "end_above_start_prob": 0.48939512961508247,
+          "intraperiod_any_up_prob": 0.9604608536266038,
+          "intraperiod_any_down_prob": 0.9756480754124116
+        }
+      },
+      "volatility_scale": 0.6518498961787733
+    },
+    "P2_state_conditional_path": {
+      "model_id": "P2_state_conditional_path",
+      "model_name": "状态条件路径回放",
+      "is_trade_signal": false,
+      "role": "辅助状态层，不作为核心依赖",
+      "horizons": {
+        "5D": {
+          "model_id": "P2_state_conditional_path",
+          "horizon": 5,
+          "sample_size": 105,
+          "path_count": 105,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "state_matched_history",
+          "dropped_count": 0,
+          "state_sample_size": 105,
+          "skipped_reason": "",
+          "state_key": {
+            "trend_state": "downtrend",
+            "volatility_state": "normal_vol",
+            "flow_strength_basic": "mixed"
+          },
+          "fallback_gating": false,
+          "terminal_return_p10": -0.06010662486252634,
+          "terminal_return_p50": -0.009713835652402358,
+          "terminal_return_p90": 0.06610701207848294,
+          "terminal_price_p10": 33.9677465774683,
+          "terminal_price_p50": 35.78894197952218,
+          "terminal_price_p90": 38.529107416516375,
+          "max_up_return_p10": 0.0005282369165654279,
+          "max_up_return_p50": 0.024678393279075728,
+          "max_up_return_p90": 0.09027874415077623,
+          "max_up_price_p10": 36.15909048216467,
+          "max_up_price_p50": 37.031877133105795,
+          "max_up_price_p90": 39.402673813609056,
+          "max_down_return_p10": -0.07280866409866327,
+          "max_down_return_p50": -0.032516258129064446,
+          "max_down_return_p90": -0.008510229399574108,
+          "max_down_price_p10": 33.50869487947431,
+          "max_down_price_p50": 34.964862431215614,
+          "max_down_price_p90": 35.8324403094994,
+          "max_drawdown_p10": -0.06287321430613854,
+          "max_drawdown_p50": -0.03130059363194826,
+          "max_drawdown_p90": -0.008994180545560358,
+          "path_volatility_p50": 0.013615935934334935,
+          "path_volatility_p90": 0.0331828310211415,
+          "positive_terminal_prob": 0.41904761904761906,
+          "touch_up_3pct_prob": 0.4095238095238095,
+          "touch_down_3pct_prob": 0.5523809523809524,
+          "touch_up_5pct_prob": 0.2571428571428571,
+          "touch_down_5pct_prob": 0.2761904761904762,
+          "touch_up_8pct_prob": 0.12380952380952381,
+          "touch_down_8pct_prob": 0.0761904761904762,
+          "end_above_start_prob": 0.41904761904761906,
+          "intraperiod_any_up_prob": 0.9047619047619048,
+          "intraperiod_any_down_prob": 0.9619047619047619
+        },
+        "10D": {
+          "model_id": "P2_state_conditional_path",
+          "horizon": 10,
+          "sample_size": 105,
+          "path_count": 105,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "state_matched_history",
+          "dropped_count": 0,
+          "state_sample_size": 105,
+          "skipped_reason": "",
+          "state_key": {
+            "trend_state": "downtrend",
+            "volatility_state": "normal_vol",
+            "flow_strength_basic": "mixed"
+          },
+          "fallback_gating": false,
+          "terminal_return_p10": -0.12301743231121813,
+          "terminal_return_p50": -0.0036344755970924014,
+          "terminal_return_p90": 0.08522749217584079,
+          "terminal_price_p10": 31.694149996272575,
+          "terminal_price_p50": 36.00865005192108,
+          "terminal_price_p90": 39.22012156723489,
+          "max_up_return_p10": 0.003677997330258753,
+          "max_up_return_p50": 0.0365176745544844,
+          "max_up_return_p90": 0.12134396125517112,
+          "max_up_price_p10": 36.27292282351555,
+          "max_up_price_p50": 37.459748758399066,
+          "max_up_price_p90": 40.525370759761884,
+          "max_down_return_p10": -0.15166391184573005,
+          "max_down_return_p50": -0.04727587200922456,
+          "max_down_return_p90": -0.010597756049992045,
+          "max_down_price_p10": 30.658866225895316,
+          "max_down_price_p50": 34.431449985586625,
+          "max_down_price_p90": 35.75699709635329,
+          "max_drawdown_p10": -0.14974067154496862,
+          "max_drawdown_p50": -0.05482268288504355,
+          "max_drawdown_p90": -0.022242014979352152,
+          "path_volatility_p50": 0.023450639172537403,
+          "path_volatility_p90": 0.0513648902979868,
+          "positive_terminal_prob": 0.47619047619047616,
+          "touch_up_3pct_prob": 0.5523809523809524,
+          "touch_down_3pct_prob": 0.7142857142857143,
+          "touch_up_5pct_prob": 0.38095238095238093,
+          "touch_down_5pct_prob": 0.47619047619047616,
+          "touch_up_8pct_prob": 0.23809523809523808,
+          "touch_down_8pct_prob": 0.2857142857142857,
+          "end_above_start_prob": 0.47619047619047616,
+          "intraperiod_any_up_prob": 0.9238095238095239,
+          "intraperiod_any_down_prob": 0.9714285714285714
+        },
+        "20D": {
+          "model_id": "P2_state_conditional_path",
+          "horizon": 20,
+          "sample_size": 105,
+          "path_count": 105,
+          "latest_close": 36.14,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "source_model": "state_matched_history",
+          "dropped_count": 0,
+          "state_sample_size": 105,
+          "skipped_reason": "",
+          "state_key": {
+            "trend_state": "downtrend",
+            "volatility_state": "normal_vol",
+            "flow_strength_basic": "mixed"
+          },
+          "fallback_gating": false,
+          "terminal_return_p10": -0.11604747878512145,
+          "terminal_return_p50": 0.01600711427301027,
+          "terminal_return_p90": 0.1273848321275459,
+          "terminal_price_p10": 31.94604411670571,
+          "terminal_price_p50": 36.71849710982659,
+          "terminal_price_p90": 40.74368783308951,
+          "max_up_return_p10": 0.0055293367718925795,
+          "max_up_return_p50": 0.06536238328145849,
+          "max_up_return_p90": 0.16462378830206587,
+          "max_up_price_p10": 36.3398302309362,
+          "max_up_price_p50": 38.50219653179191,
+          "max_up_price_p90": 42.08950370923666,
+          "max_down_return_p10": -0.1802549311176814,
+          "max_down_return_p50": -0.06321685782875441,
+          "max_down_return_p90": -0.012306708584216888,
+          "max_down_price_p10": 29.62558678940699,
+          "max_down_price_p50": 33.855342758068815,
+          "max_down_price_p90": 35.6952355517664,
+          "max_drawdown_p10": -0.1577172369650463,
+          "max_drawdown_p50": -0.07420924574209264,
+          "max_drawdown_p90": -0.03252935594712105,
+          "path_volatility_p50": 0.03543616466618597,
+          "path_volatility_p90": 0.059838718296640545,
+          "positive_terminal_prob": 0.5333333333333333,
+          "touch_up_3pct_prob": 0.6761904761904762,
+          "touch_down_3pct_prob": 0.7619047619047619,
+          "touch_up_5pct_prob": 0.5523809523809524,
+          "touch_down_5pct_prob": 0.5523809523809524,
+          "touch_up_8pct_prob": 0.44761904761904764,
+          "touch_down_8pct_prob": 0.4380952380952381,
+          "end_above_start_prob": 0.5333333333333333,
+          "intraperiod_any_up_prob": 0.9428571428571428,
+          "intraperiod_any_down_prob": 0.9809523809523809
+        }
+      }
+    }
+  },
+  "path_registry": [
+    {
+      "model_id": "P0_historical_path_replay",
+      "model_name": "历史路径回放",
+      "stage": "V1.3_path_distribution",
+      "is_trade_signal": false,
+      "horizons": [
+        5,
+        10,
+        20
+      ],
+      "input_data": [
+        "daily.close",
+        "daily.high",
+        "daily.low"
+      ],
+      "output_fields": [
+        "terminal_return_p10",
+        "terminal_return_p50",
+        "terminal_return_p90",
+        "max_up_return_p90",
+        "max_down_return_p10",
+        "touch_up_5pct_prob",
+        "touch_down_5pct_prob"
+      ]
+    },
+    {
+      "model_id": "P1_volatility_adjusted_path",
+      "model_name": "波动率调整路径回放",
+      "stage": "V1.3_path_distribution",
+      "is_trade_signal": false,
+      "horizons": [
+        5,
+        10,
+        20
+      ],
+      "input_data": [
+        "daily.close",
+        "daily.high",
+        "daily.low",
+        "realized_vol_20d"
+      ]
+    },
+    {
+      "model_id": "P2_state_conditional_path",
+      "model_name": "状态条件路径回放",
+      "stage": "V1.3_path_distribution",
+      "is_trade_signal": false,
+      "horizons": [
+        5,
+        10,
+        20
+      ],
+      "input_data": [
+        "trend_state",
+        "volatility_state",
+        "flow_strength_basic"
+      ],
+      "role": "辅助状态层，不作为核心依赖"
+    }
+  ],
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ],
+  "next_stage": "V1.4 observation backtest after path validation acceptance"
+}
