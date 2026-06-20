@@ -1,0 +1,32 @@
+name: Run CNSV Baseline Models
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 9 * * 1-5"
+
+permissions:
+  contents: write
+
+jobs:
+  run-baseline-models:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
+      - name: Generate baseline model report
+        run: python -m cnsv.cli.run_baseline_models
+      - name: Commit report updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update baseline model report"
+          file_pattern: "docs reports"
+
