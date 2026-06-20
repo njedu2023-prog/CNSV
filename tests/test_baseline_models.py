@@ -47,7 +47,7 @@ def test_b2_falls_back_when_state_sample_is_too_small():
     result = run_b2_state_grouped_distribution(_daily(), 28.9, _features())
     row = result["horizons"]["10D"]
     assert row["fallback_used"] is True
-    assert row["fallback_reason"] == "state_sample_size_lt_30"
+    assert row["fallback_reason"] == "missing_historical_state_columns"
     assert row["p50_price"] > 0
 
 
@@ -57,4 +57,3 @@ def test_b3_volatility_adjusted_prices_are_positive():
     assert 0.5 <= row["volatility_scale"] <= 2.0
     assert row["p10_price"] > 0
     assert row["p90_price"] > 0
-
