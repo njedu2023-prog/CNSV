@@ -45,10 +45,15 @@ def _fallback_lines(notes: list[dict[str, Any]]) -> list[str]:
         return ["- 无"]
     lines = []
     for note in notes:
+        coverage = note.get("state_coverage") or {}
         lines.append(
-            f"- {note.get('model')} {note.get('horizon')}: reason={_fmt(note.get('reason'))}, "
+            f"- {note.get('model')} {note.get('horizon')}: state_key={_fmt(note.get('state_key'))}, "
+            f"reason={_fmt(note.get('reason'))}, "
             f"state_sample_size={_fmt(note.get('state_sample_size'))}, "
-            f"fallback_method={_fmt(note.get('fallback_method'))}, gating={_fmt(note.get('gating'))}"
+            f"usable_state_rows={_fmt(coverage.get('usable_state_rows'))}, "
+            f"fallback_method={_fmt(note.get('fallback_method'))}, gating={_fmt(note.get('gating'))}, "
+            f"non_blocking={_fmt(note.get('non_blocking'))}, "
+            f"next_coverage_action={_fmt(note.get('next_coverage_action'))}"
         )
     return lines
 
