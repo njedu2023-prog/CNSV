@@ -1,0 +1,50 @@
+name: Run CNSV Path Distribution
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "45 9 * * 1-5"
+
+permissions:
+  contents: write
+
+jobs:
+  run-path-distribution:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
+      - name: Generate baseline model report
+        run: python -m cnsv.cli.run_baseline_models
+      - name: Generate baseline validation report
+        run: python -m cnsv.cli.run_baseline_validation
+      - name: Generate path distribution report
+        run: python -m cnsv.cli.run_path_distribution
+      - name: Generate path validation report
+        run: python -m cnsv.cli.run_path_validation
+      - name: Commit path report updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/latest_path_distribution_report.json \
+            docs/data/latest_path_validation_report.json \
+            docs/data/path_distribution_registry.json \
+            reports/latest_path_distribution_report.md \
+            reports/latest_path_validation_report.md \
+            reports/archive/*_path_distribution_report.md \
+            reports/archive/*_path_validation_report.md \
+            docs/path.html \
+            docs/index.html
+          git diff --cached --quiet || git commit -m "report: update CNSV path distribution report"
+          git push
