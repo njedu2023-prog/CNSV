@@ -56,5 +56,5 @@ def test_run_baseline_models_cli_runs_with_mock_data(tmp_path, monkeypatch):
     assert (tmp_path / "docs/data/latest_baseline_model_report.json").exists()
     assert (tmp_path / "docs/data/baseline_registry.json").exists()
     assert (tmp_path / "docs/baseline.html").exists()
+    assert (tmp_path / "docs/index.html").exists()
     assert (tmp_path / "reports/latest_baseline_model_report.md").exists()
-
