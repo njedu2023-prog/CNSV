@@ -47,4 +47,5 @@ jobs:
             docs/path.html \
             docs/index.html
           git diff --cached --quiet || git commit -m "report: update CNSV path distribution report"
+          git pull --rebase origin main
           git push
