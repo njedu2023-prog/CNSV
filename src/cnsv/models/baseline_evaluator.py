@@ -92,11 +92,16 @@ def evaluate_baseline_models(models: dict[str, Any], horizons: tuple[int, ...] =
                     note = {
                         "model": model_id,
                         "horizon": key,
+                        "state_key": row.get("state_key") or model.get("state_key"),
                         "reason": reason,
                         "state_sample_size": sample_size,
-                        "fallback_method": "B1_historical_distribution",
+                        "state_coverage": model.get("state_coverage", {}),
+                        "fallback_method": row.get("fallback_method") or "B1_historical_distribution",
                         "gating": False,
+                        "non_blocking": True,
                         "is_trade_signal": False,
+                        "next_coverage_action": row.get("next_coverage_action")
+                        or "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic",
                     }
                     fallback_notes.append(note)
                     message = f"{model_id} {key} state sample below threshold; transparent fallback to B1, non-gating"
