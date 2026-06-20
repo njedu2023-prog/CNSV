@@ -1,0 +1,24 @@
+[
+  {
+    "registry_type": "observation_backtest",
+    "version": "1.4",
+    "stage": "V1.4_observation_backtest",
+    "models": [
+      "P0_historical_path_replay",
+      "P1_volatility_adjusted_path",
+      "P2_state_conditional_path"
+    ],
+    "horizons": [
+      5,
+      10,
+      20
+    ],
+    "backtest_type": "observation_only",
+    "is_trade_signal": false,
+    "forbidden": [
+      "formal_signal_generation",
+      "auto_order",
+      "broker_api"
+    ]
+  }
+]
