@@ -33,7 +33,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports docs
+          git add \
+            docs/data/latest_baseline_validation_report.json \
+            docs/data/baseline_validation_registry.json \
+            docs/validation.html \
+            docs/index.html \
+            reports/latest_baseline_validation_report.md \
+            reports/archive/*_baseline_validation_report.md
           if git diff --cached --quiet; then
             exit 0
           fi
