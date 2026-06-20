@@ -35,11 +35,23 @@ def main() -> int:
     write_baseline_report_md(payload, root / "reports/latest_baseline_model_report.md", root / "reports/archive")
     write_baseline_report_html(root / "docs/baseline.html")
     write_feature_report_html(root / "docs/index.html")
+    _ensure_validation_entry(root / "docs/index.html")
     print(
         f"baseline_quality={baseline_run['status']} "
         f"failed={baseline_run['failed_count']} warn={baseline_run['warn_count']}"
     )
     return 0 if baseline_run["status"] in {"PASS", "WARN"} else 1
+
+
+def _ensure_validation_entry(path) -> None:
+    text = path.read_text(encoding="utf-8")
+    if 'href="validation.html"' in text:
+        return
+    text = text.replace(
+        '<a href="baseline.html">V1.2 基准模型看板</a>',
+        '<a href="baseline.html">V1.2.1 基准模型看板</a><a href="validation.html">V1.2.2 验证看板</a>',
+    )
+    path.write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":
