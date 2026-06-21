@@ -12,7 +12,7 @@ HTML = """<!doctype html>
   <title>CNSV V3.0 主线决策网站</title>
   <style>
     :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--surface:#fff;--shadow:0 18px 42px rgba(0,0,0,.07)}
-    *{box-sizing:border-box}body{margin:0;background:#f5f5f7;-webkit-font-smoothing:antialiased}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(251,251,253,.82);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(0,0,0,.08)}.nav{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:10px 18px}.nav a{color:#1d1d1f;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;opacity:.82}.nav a:hover,.nav a.active{color:var(--blue);opacity:1}.nav a.active{font-weight:600}.shell{width:min(1280px,100%);margin:0 auto;padding:74px 20px 28px}.hero{text-align:center;padding:24px 0 20px}.eyebrow{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:.08em;margin:0 0 8px}h1{font-size:22px;line-height:1.2;margin:0}.subtitle{max-width:880px;margin:10px auto 0;color:var(--muted);font-size:13px;line-height:1.45}.quick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 8px}.quick a{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:7px 12px;font-size:12px}.frame-card{background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(0,0,0,.04)}.frame-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid #e8e8ed;color:var(--muted);font-size:12px}.frame-title{color:#1d1d1f;font-weight:600}iframe{display:block;width:100%;height:calc(100vh - 190px);min-height:640px;border:0;background:#fff}.note{color:var(--muted);font-size:12px;text-align:center;margin-top:12px}@media(max-width:760px){.nav{justify-content:flex-start}.shell{padding:66px 12px 20px}.hero{text-align:left;padding-top:18px}h1{font-size:20px}.quick{justify-content:flex-start}iframe{height:calc(100vh - 210px);min-height:560px}.frame-card{border-radius:18px}}
+    *{box-sizing:border-box}body{margin:0;background:#f5f5f7;-webkit-font-smoothing:antialiased}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(251,251,253,.82);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(0,0,0,.08)}.nav{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:10px 18px}.nav a{color:#1d1d1f;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;opacity:.82}.nav a:hover,.nav a.active{color:var(--blue);opacity:1}.nav a.active{font-weight:600}.shell{width:min(1280px,100%);margin:0 auto;padding:58px 20px 18px}.frame-card{background:var(--surface);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(0,0,0,.04)}.frame-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid #e8e8ed;color:var(--muted);font-size:12px}.frame-title{color:#1d1d1f;font-weight:600}iframe{display:block;width:100%;height:calc(100vh - 110px);min-height:680px;border:0;background:#fff}.note{color:var(--muted);font-size:12px;text-align:center;margin-top:10px}@media(max-width:760px){.nav{justify-content:flex-start}.shell{padding:54px 10px 14px}.frame-card{border-radius:16px}iframe{height:calc(100vh - 104px);min-height:600px}}
   </style>
 </head>
 <body>
@@ -31,21 +31,11 @@ HTML = """<!doctype html>
     </nav>
   </div>
   <main class="shell">
-    <header class="hero">
-      <p class="eyebrow">CNSV V3.0 主线决策网站</p>
-      <h1>中国船舶主线决策网站</h1>
-      <p class="subtitle">顶部全量菜单固定保留，点击后在当前内容区打开对应页面。页面用于展示 CNSVdata、核心特征、路径分布、观察级回测、风控解释、人工确认与 V3.0 交易决策；V3.0 显示交易参考，但不自动下单，不连接券商接口。</p>
-      <div class="quick">
-        <a href="data/latest_feature_report.json">特征 JSON</a>
-        <a href="data/latest_trading_decision_report.json">V3.0 JSON</a>
-        <a href="reports/latest_trading_decision_report.md">V3.0 Markdown</a>
-      </div>
-    </header>
     <section class="frame-card">
       <div class="frame-head"><span class="frame-title" id="frameTitle">V3.0 交易决策</span><span>当前页打开</span></div>
       <iframe id="contentFrame" title="CNSV 内容页" src="trading.html"></iframe>
     </section>
-    <p class="note">若浏览器缓存旧页面，请刷新或在 URL 后追加 ?v=site-20260621。</p>
+    <p class="note">若浏览器缓存旧页面，请刷新或在 URL 后追加 ?v=site-20260621b。</p>
   </main>
   <script>
     const links=[...document.querySelectorAll('.nav a')];
