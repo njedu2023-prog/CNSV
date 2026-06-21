@@ -15,8 +15,20 @@ def test_trading_report_payload_contains_required_sections():
     assert payload["model_performance"]["historical_stats"]["name"] == "历史统计线"
     assert payload["model_performance"]["live_stats"]["name"] == "实盘统计线"
     assert payload["model_performance"]["live_stats"]["start_date"] == "2026-06-21"
+    assert payload["decision_timeline"]["data_trade_date"] == payload["trade_date"]
+    assert payload["decision_timeline"]["signal_date"]
+    assert payload["decision_timeline"]["prediction_date"]
+    assert payload["decision_timeline"]["verify_date"]
+    assert payload["market_snapshot"]["latest_trade_date"]
+    assert payload["market_snapshot"]["latest_close"] is not None
+    assert set(payload["price_prediction_distribution"]) == {"5D", "10D", "20D"}
+    assert payload["price_prediction_distribution"]["5D"]["terminal_price_p50"] is not None
     assert payload["decision"]["signal"] in {"STRONG_BUY", "BUY", "HOLD", "WATCH", "REDUCE", "SELL", "STRONG_SELL", "BLOCKED"}
     assert "今日总决策" in markdown
+    assert "信号生成日" in markdown
+    assert "预测日" in markdown
+    assert "收盘价" in markdown
+    assert "5D / 10D / 20D 价格预测分布" in markdown
     assert "历史验证与回测" in markdown
     assert "模型表现追踪" in markdown
     assert "实盘统计线方向准确率" in markdown
