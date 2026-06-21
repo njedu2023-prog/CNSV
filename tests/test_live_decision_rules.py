@@ -1,0 +1,5 @@
+from cnsv.live.live_decision_rules import compute_manual_decision_status
+def test_live_decision_rules_evidence_incomplete(): assert compute_manual_decision_status({"missing_reports":["risk_explanation_report"]},{})["manual_decision_status"]=="evidence_incomplete"
+def test_live_decision_rules_risk_blocked(): assert compute_manual_decision_status({"missing_reports":[],"failed_quality_gates":[],"stale_evidence":[]},{"risk_explanation_quality":{"status":"FAIL"}})["manual_decision_status"]=="risk_blocked"
+def test_live_decision_rules_review_required(): assert compute_manual_decision_status({"missing_reports":[],"failed_quality_gates":[],"stale_evidence":[]},{"overall_risk_summary":{"overall_risk_level":"high","human_review_required":True}})["manual_decision_status"]=="review_required"
+def test_live_decision_rules_ready_for_manual_review(): assert compute_manual_decision_status({"missing_reports":[],"failed_quality_gates":[],"stale_evidence":[]},{"overall_risk_summary":{"overall_risk_level":"low","human_review_required":False}})["manual_decision_status"]=="ready_for_manual_review"
