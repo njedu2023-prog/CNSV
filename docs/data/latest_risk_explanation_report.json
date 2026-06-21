@@ -1,0 +1,763 @@
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "1.6",
+    "stage": "V1.6_risk_explanation",
+    "report_type": "risk_explanation_report",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "generated_at": "2026-06-21T04:17:03.356304+00:00",
+    "latest_trade_date": "2026-06-18",
+    "is_trade_signal": false
+  },
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": [
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
+    ],
+    "can_auto_order": false,
+    "can_connect_broker_api": false,
+    "risk_stage_permission": "V1.6 only explains risk evidence for human review."
+  },
+  "risk_evidence_availability": {
+    "all_required_available": true,
+    "available_reports": [
+      "data_report",
+      "feature_report",
+      "baseline_model_report",
+      "baseline_validation_report",
+      "path_distribution_report",
+      "path_validation_report",
+      "observation_backtest_report",
+      "human_decision_support_report"
+    ],
+    "missing_reports": [],
+    "reports": {
+      "data_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json"
+      },
+      "feature_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json"
+      },
+      "baseline_model_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json"
+      },
+      "baseline_validation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json"
+      },
+      "path_distribution_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json"
+      },
+      "path_validation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json"
+      },
+      "observation_backtest_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json"
+      },
+      "human_decision_support_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json"
+      }
+    }
+  },
+  "overall_risk_summary": {
+    "overall_risk_level": "high",
+    "risk_confidence": "medium",
+    "primary_risk_sources": [
+      "p2_auxiliary_risk",
+      "evidence_conflict_risk"
+    ],
+    "secondary_risk_sources": [
+      "data_risk",
+      "feature_risk",
+      "baseline_model_risk",
+      "path_distribution_risk",
+      "path_validation_risk",
+      "observation_backtest_risk",
+      "decision_support_risk",
+      "system_boundary_risk"
+    ],
+    "human_review_required": true,
+    "risk_reason": "风险等级由数据、特征、模型、路径、回测和人工辅助证据综合得到，仅用于人工复核。"
+  },
+  "risk_source_breakdown": {
+    "data_risk": {
+      "risk_type": "data_risk",
+      "risk_level": "low",
+      "risk_reason": "数据门禁、数据新鲜度与 manifest 一致性需要人工确认。",
+      "risk_evidence": [
+        "latest_data_report.json"
+      ],
+      "source_reports": [
+        "latest_data_report.json"
+      ],
+      "human_review_required": false
+    },
+    "feature_risk": {
+      "risk_type": "feature_risk",
+      "risk_level": "low",
+      "risk_reason": "趋势、波动率、资金流状态共同决定特征风险；unknown 状态需要降级复核。",
+      "risk_evidence": [
+        "latest_feature_report.json",
+        "latest_human_decision_support_report.json"
+      ],
+      "source_reports": [
+        "latest_feature_report.json",
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": false
+    },
+    "baseline_model_risk": {
+      "risk_type": "baseline_model_risk",
+      "risk_level": "medium",
+      "risk_reason": "基准模型分布与验证结果用于识别 B 模型之间的方向分歧。",
+      "risk_evidence": [
+        "latest_baseline_model_report.json",
+        "latest_baseline_validation_report.json"
+      ],
+      "source_reports": [
+        "latest_baseline_model_report.json",
+        "latest_baseline_validation_report.json"
+      ],
+      "human_review_required": true
+    },
+    "path_distribution_risk": {
+      "risk_type": "path_distribution_risk",
+      "risk_level": "medium",
+      "risk_reason": "路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json",
+        "latest_path_validation_report.json"
+      ],
+      "source_reports": [
+        "latest_path_distribution_report.json",
+        "latest_path_validation_report.json"
+      ],
+      "human_review_required": true
+    },
+    "path_validation_risk": {
+      "risk_type": "path_validation_risk",
+      "risk_level": "low",
+      "risk_reason": "路径验证质量用于判断路径分布证据是否需要降级。",
+      "risk_evidence": [
+        "latest_path_validation_report.json"
+      ],
+      "source_reports": [
+        "latest_path_validation_report.json"
+      ],
+      "human_review_required": false
+    },
+    "observation_backtest_risk": {
+      "risk_type": "observation_backtest_risk",
+      "risk_level": "medium",
+      "risk_reason": "观察级回测只提供历史观察证据，purged 样本偏少时需要提高复核强度。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "source_reports": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "decision_support_risk": {
+      "risk_type": "decision_support_risk",
+      "risk_level": "medium",
+      "risk_reason": "V1.5 WARN 代表人工复核要求，不是阻断错误，但需要在 V1.6 明确解释。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "source_reports": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "p2_auxiliary_risk": {
+      "risk_type": "p2_auxiliary_risk",
+      "risk_level": "high",
+      "risk_reason": "P2 是辅助状态层，状态样本空间可能碎片化，不能作为核心依赖。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json",
+        "latest_observation_backtest_report.json"
+      ],
+      "source_reports": [
+        "latest_path_distribution_report.json",
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "evidence_conflict_risk": {
+      "risk_type": "evidence_conflict_risk",
+      "risk_level": "high",
+      "risk_reason": "多模型证据存在方向差异时必须人工复核，不得转化为交易动作。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "source_reports": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "system_boundary_risk": {
+      "risk_type": "system_boundary_risk",
+      "risk_level": "low",
+      "risk_reason": "当前阶段仅允许风险解释，禁止正式交易信号、自动交易和外部执行接口。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "source_reports": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "data_risk_explanation": {
+    "risk_level": "low",
+    "data_freshness_risk": {
+      "risk_level": "medium",
+      "risk_reason": "需要确认最新交易日是否仍然有效。",
+      "risk_evidence": [
+        "latest_data_report.json"
+      ],
+      "human_review_required": true
+    },
+    "data_gate_risk": {
+      "risk_level": "low",
+      "risk_reason": "CNSVdata gate 必须保持可用。",
+      "risk_evidence": [
+        "latest_data_report.json"
+      ],
+      "human_review_required": true
+    },
+    "missing_data_risk": {
+      "risk_level": "low",
+      "risk_reason": "缺失报告会导致 V1.6 降级解释。",
+      "risk_evidence": [
+        "无缺失"
+      ],
+      "human_review_required": true
+    },
+    "quality_check_risk": {
+      "risk_level": "low",
+      "risk_reason": "数据质量检查用于确认基础输入完整性。",
+      "risk_evidence": [
+        "latest_data_report.json"
+      ],
+      "human_review_required": true
+    },
+    "manifest_consistency_risk": {
+      "risk_level": "low",
+      "risk_reason": "manifest 与报告快照需人工抽查。",
+      "risk_evidence": [
+        "latest_data_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "feature_risk_explanation": {
+    "risk_level": "medium",
+    "trend_state_risk": {
+      "risk_level": "medium",
+      "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
+      "risk_evidence": [
+        "latest_feature_report.json"
+      ],
+      "human_review_required": true
+    },
+    "volatility_state_risk": {
+      "risk_level": "low",
+      "risk_reason": "波动率状态为 normal_vol。",
+      "risk_evidence": [
+        "latest_feature_report.json"
+      ],
+      "human_review_required": true
+    },
+    "flow_strength_basic_risk": {
+      "risk_level": "medium",
+      "risk_reason": "资金流强弱状态为 mixed。",
+      "risk_evidence": [
+        "latest_feature_report.json"
+      ],
+      "human_review_required": true
+    },
+    "moneyflow_reliability_risk": {
+      "risk_level": "medium",
+      "risk_reason": "moneyflow 只能作为强因子观察，不是单独结论。",
+      "risk_evidence": [
+        "latest_feature_report.json"
+      ],
+      "human_review_required": true
+    },
+    "feature_unknown_risk": {
+      "risk_level": "low",
+      "risk_reason": "unknown 状态会降低风险解释置信度。",
+      "risk_evidence": [
+        "latest_feature_report.json"
+      ],
+      "human_review_required": true
+    },
+    "feature_conflict_risk": {
+      "risk_level": "medium",
+      "risk_reason": "趋势与资金流可能出现解释冲突。",
+      "risk_evidence": [
+        "latest_feature_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "baseline_model_risk_explanation": {
+    "risk_level": "medium",
+    "baseline_distribution_risk": {
+      "risk_level": "medium",
+      "risk_reason": "基准分布仅为历史/状态分布观察。",
+      "risk_evidence": [
+        "latest_baseline_model_report.json"
+      ],
+      "human_review_required": true
+    },
+    "B1_B3_conflict_risk": {
+      "risk_level": "medium",
+      "risk_reason": "B1 与 B3 分布方向差异需要人工复核。",
+      "risk_evidence": [
+        "B1 与 B3 的 20D 中位收益方向不一致，需要人工复核。"
+      ],
+      "human_review_required": true
+    },
+    "B2_state_sample_risk": {
+      "risk_level": "medium",
+      "risk_reason": "B2 最小状态样本数为 105。",
+      "risk_evidence": [
+        "latest_baseline_model_report.json"
+      ],
+      "human_review_required": true
+    },
+    "positive_prob_calibration_risk": {
+      "risk_level": "medium",
+      "risk_reason": "正向概率校准只能用于观察，不代表确定结果。",
+      "risk_evidence": [
+        "latest_baseline_validation_report.json"
+      ],
+      "human_review_required": true
+    },
+    "quantile_coverage_risk": {
+      "risk_level": "low",
+      "risk_reason": "分位覆盖需要结合验证层。",
+      "risk_evidence": [
+        "latest_baseline_validation_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "path_distribution_risk_explanation": {
+    "risk_level": "medium",
+    "downside_path_risk": {
+      "risk_level": "medium",
+      "risk_reason": "20D 下行路径概率需要人工复核。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json"
+      ],
+      "human_review_required": true
+    },
+    "touch_down_risk": {
+      "risk_level": "medium",
+      "risk_reason": "20D touch_down_5pct_prob=0.4331。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json"
+      ],
+      "human_review_required": true
+    },
+    "max_drawdown_risk": {
+      "risk_level": "medium",
+      "risk_reason": "20D max_drawdown_p50=-0.0567。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json"
+      ],
+      "human_review_required": true
+    },
+    "path_volatility_risk": {
+      "risk_level": "medium",
+      "risk_reason": "路径波动率放大时需要额外复核。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json"
+      ],
+      "human_review_required": true
+    },
+    "terminal_distribution_risk": {
+      "risk_level": "medium",
+      "risk_reason": "终端分布为历史路径观察，不代表未来承诺。",
+      "risk_evidence": [
+        "latest_path_validation_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "observation_backtest_risk_explanation": {
+    "risk_level": "medium",
+    "observation_backtest_evidence_risk": {
+      "risk_level": "medium",
+      "risk_reason": "观察级回测不是正式回测引擎。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "bucket_stability_risk": {
+      "risk_level": "medium",
+      "risk_reason": "分桶稳定性需要结合 condition quality。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "purged_sample_risk": {
+      "risk_level": "medium",
+      "risk_reason": "purged_sample_size=81。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "condition_effectiveness_risk": {
+      "risk_level": "medium",
+      "risk_reason": "条件有效性仅支持观察复核。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "P1_vs_P0_risk": {
+      "risk_level": "medium",
+      "risk_reason": "P1 相对 P0 表现偏弱时需要复核。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "P2_vs_P1_risk": {
+      "risk_level": "medium",
+      "risk_reason": "P2 为辅助层，不作为核心比较结论。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "decision_support_risk_explanation": {
+    "risk_level": "high",
+    "evidence_strength_risk": {
+      "risk_level": "medium",
+      "risk_reason": "evidence_strength=moderate",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "model_consistency_risk": {
+      "risk_level": "medium",
+      "risk_reason": "model_consistency_level=mostly_consistent",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "evidence_conflict_risk": {
+      "risk_level": "high",
+      "risk_reason": "V1.5 证据冲突必须进入风险解释。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "human_review_required_risk": {
+      "risk_level": "medium",
+      "risk_reason": "人工复核为风险控制要求。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "attention_item_risk": {
+      "risk_level": "medium",
+      "risk_reason": "人工关注点需要逐条复核。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    }
+  },
+  "p2_auxiliary_risk_explanation": {
+    "p2_auxiliary_risk_level": "high",
+    "p2_fallback_risk": {
+      "risk_level": "high",
+      "risk_reason": "P2 max_fallback_rate=0.3194。",
+      "risk_evidence": [
+        "latest_observation_backtest_report.json"
+      ],
+      "human_review_required": true
+    },
+    "p2_state_sample_risk": {
+      "risk_level": "medium",
+      "risk_reason": "P2 min_state_sample_size=105。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json"
+      ],
+      "human_review_required": true
+    },
+    "p2_state_space_fragmentation_risk": {
+      "risk_level": "medium",
+      "risk_reason": "状态空间分组容易碎片化，需要避免核心依赖。",
+      "risk_evidence": [
+        "latest_path_distribution_report.json"
+      ],
+      "human_review_required": true
+    },
+    "p2_core_dependency_forbidden": true,
+    "p2_role": "辅助状态层，不作为核心决策依赖"
+  },
+  "evidence_conflict_risk_explanation": {
+    "risk_level": "high",
+    "evidence_conflict": true,
+    "risk_reason": "证据冲突需要人工复核，不得转化为交易动作。",
+    "risk_evidence": [
+      "20D P1 相对 P0 表现偏弱。",
+      "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+    ],
+    "source_reports": [
+      "latest_human_decision_support_report.json"
+    ],
+    "human_review_required": true
+  },
+  "risk_scenario_cards": [
+    {
+      "scenario_id": "downside_touch_risk_card",
+      "scenario_name": "下穿路径风险",
+      "risk_level": "medium",
+      "trigger_evidence": [
+        "touch_down_5pct_prob"
+      ],
+      "risk_explanation": "下穿概率升高时，风险解释层要求人工复核路径尾部。",
+      "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+      "human_review_items": [
+        "人工复核证据来源",
+        "确认风险解释未被用作交易动作"
+      ],
+      "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+    },
+    {
+      "scenario_id": "max_drawdown_risk_card",
+      "scenario_name": "最大回撤风险",
+      "risk_level": "medium",
+      "trigger_evidence": [
+        "max_drawdown_p50",
+        "max_drawdown_p90"
+      ],
+      "risk_explanation": "历史路径回撤仅表示观察风险，不构成执行参数。",
+      "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+      "human_review_items": [
+        "人工复核证据来源",
+        "确认风险解释未被用作交易动作"
+      ],
+      "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+    },
+    {
+      "scenario_id": "model_conflict_risk_card",
+      "scenario_name": "模型分歧风险",
+      "risk_level": "high",
+      "trigger_evidence": [
+        "20D P1 相对 P0 表现偏弱。",
+        "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+      ],
+      "risk_explanation": "模型分歧表示证据不一致，需要人工复核。",
+      "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+      "human_review_items": [
+        "人工复核证据来源",
+        "确认风险解释未被用作交易动作"
+      ],
+      "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+    },
+    {
+      "scenario_id": "p2_instability_risk_card",
+      "scenario_name": "P2 辅助层不稳定风险",
+      "risk_level": "high",
+      "trigger_evidence": [
+        "P2 fallback_rate",
+        "state_sample_size"
+      ],
+      "risk_explanation": "P2 只作为辅助状态层，禁止作为核心依赖。",
+      "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+      "human_review_items": [
+        "人工复核证据来源",
+        "确认风险解释未被用作交易动作"
+      ],
+      "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+    },
+    {
+      "scenario_id": "data_quality_risk_card",
+      "scenario_name": "数据质量风险",
+      "risk_level": "low",
+      "trigger_evidence": [],
+      "risk_explanation": "数据缺失或门禁异常时，风险解释必须降级。",
+      "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+      "human_review_items": [
+        "人工复核证据来源",
+        "确认风险解释未被用作交易动作"
+      ],
+      "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+    },
+    {
+      "scenario_id": "evidence_insufficiency_risk_card",
+      "scenario_name": "证据不足风险",
+      "risk_level": "low",
+      "trigger_evidence": [],
+      "risk_explanation": "上游证据缺失时不得输出高置信解释。",
+      "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+      "human_review_items": [
+        "人工复核证据来源",
+        "确认风险解释未被用作交易动作"
+      ],
+      "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+    }
+  ],
+  "risk_review_checklist": [
+    {
+      "id": "check_data_freshness",
+      "text": "确认 latest_trade_date 与人工复核日期是否匹配。"
+    },
+    {
+      "id": "check_feature_unknown",
+      "text": "复核趋势、波动率、资金流状态是否存在 unknown 或降级。"
+    },
+    {
+      "id": "check_model_conflict",
+      "text": "复核 B1/B3、P0/P1/P2 之间的方向差异。"
+    },
+    {
+      "id": "check_path_downside",
+      "text": "复核 20D 下穿概率与路径尾部风险。"
+    },
+    {
+      "id": "check_drawdown_exposure",
+      "text": "复核历史最大回撤分布与当前波动状态。"
+    },
+    {
+      "id": "check_touch_down_risk",
+      "text": "复核 touch_down 概率在观察级回测中的有效性。"
+    },
+    {
+      "id": "check_p2_fallback",
+      "text": "复核 P2 fallback_rate 与状态样本覆盖。"
+    },
+    {
+      "id": "check_purged_sample_size",
+      "text": "复核 purged 样本量是否足以支撑观察结论。"
+    },
+    {
+      "id": "check_evidence_conflict",
+      "text": "复核证据冲突来源，不得转化为操作动作。"
+    },
+    {
+      "id": "check_human_review_required",
+      "text": "确认所有人工复核项已逐条记录。"
+    }
+  ],
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ],
+  "next_stage": "V2.0 live manual decision system",
+  "v2_readiness": "allowed_for_preparation_only_after_human_review",
+  "risk_explanation_quality": {
+    "status": "WARN",
+    "failed_count": 0,
+    "warn_count": 2,
+    "blocking_error_count": 0,
+    "checks": [
+      {
+        "name": "version_is_1_6",
+        "status": "PASS",
+        "detail": "version=1.6"
+      },
+      {
+        "name": "stage_is_risk_explanation",
+        "status": "PASS",
+        "detail": "stage=V1.6_risk_explanation"
+      },
+      {
+        "name": "is_trade_signal_false",
+        "status": "PASS",
+        "detail": "risk explanation only"
+      },
+      {
+        "name": "forbidden_actions_present",
+        "status": "PASS",
+        "detail": "required forbidden actions present"
+      },
+      {
+        "name": "no_forbidden_trade_fields",
+        "status": "PASS",
+        "detail": "no forbidden trading field names"
+      },
+      {
+        "name": "finite_payload",
+        "status": "PASS",
+        "detail": "no NaN/inf values"
+      },
+      {
+        "name": "human_support_available",
+        "status": "PASS",
+        "detail": "V1.5 evidence required"
+      },
+      {
+        "name": "required_sections_present",
+        "status": "PASS",
+        "detail": "all V1.6 sections exist"
+      },
+      {
+        "name": "p2_core_dependency_forbidden",
+        "status": "PASS",
+        "detail": "P2 remains auxiliary"
+      },
+      {
+        "name": "not_report_named_signal",
+        "status": "PASS",
+        "detail": "report_type=risk_explanation_report"
+      },
+      {
+        "name": "missing_reports_degraded",
+        "status": "PASS",
+        "detail": "missing_reports=[]"
+      },
+      {
+        "name": "support_warn_explained",
+        "status": "PASS",
+        "detail": "V1.5 review risk is explained"
+      },
+      {
+        "name": "evidence_conflict_explained",
+        "status": "WARN",
+        "detail": "evidence conflict requires review"
+      },
+      {
+        "name": "risk_level_review",
+        "status": "WARN",
+        "detail": "overall_risk_level=high"
+      }
+    ]
+  }
+}

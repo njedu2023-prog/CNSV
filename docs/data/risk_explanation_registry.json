@@ -1,0 +1,29 @@
+[
+  {
+    "registry_type": "risk_explanation",
+    "version": "1.6",
+    "stage": "V1.6_risk_explanation",
+    "inputs": [
+      "latest_data_report.json",
+      "latest_feature_report.json",
+      "latest_baseline_model_report.json",
+      "latest_baseline_validation_report.json",
+      "latest_path_distribution_report.json",
+      "latest_path_validation_report.json",
+      "latest_observation_backtest_report.json",
+      "latest_human_decision_support_report.json"
+    ],
+    "outputs": [
+      "latest_risk_explanation_report.json",
+      "latest_risk_explanation_report.md",
+      "risk.html"
+    ],
+    "is_trade_signal": false,
+    "forbidden": [
+      "formal_signal_generation",
+      "auto_order",
+      "broker_api"
+    ],
+    "next_stage": "V2.0 live manual decision system"
+  }
+]
