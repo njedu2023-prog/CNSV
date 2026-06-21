@@ -1,0 +1,46 @@
+from __future__ import annotations
+
+from cnsv.cli.run_live_manual_decision import main as run_live_manual_decision_main
+from cnsv.trading.evidence_loader import load_trading_evidence
+from cnsv.trading.fusion import build_trading_decision_payload
+from cnsv.trading.report import write_trading_html, write_trading_json, write_trading_markdown, write_trading_registry
+from cnsv.utils.io import repo_root
+
+
+def main() -> int:
+    root = repo_root()
+    if not (root / "docs/data/latest_live_manual_decision_report.json").exists():
+        code = run_live_manual_decision_main()
+        if code != 0:
+            raise RuntimeError("failed to generate V2.0 live manual decision evidence")
+    evidence = load_trading_evidence(root)
+    payload = build_trading_decision_payload(evidence)
+    write_trading_json(payload, root / "docs/data/latest_trading_decision_report.json")
+    write_trading_registry(root / "docs/data/trading_decision_registry.json")
+    write_trading_markdown(payload, root / "reports/latest_trading_decision_report.md", root / "reports/archive")
+    write_trading_html(payload, root / "docs/trading.html")
+    _ensure_trading_entry(root / "docs/index.html")
+    decision = payload["decision"]
+    risk = payload["risk"]
+    print(
+        "trading_decision="
+        f"{decision['signal']} position={decision['position_range']} risk={risk['risk_level']} "
+        f"auto_order={payload['auto_order_enabled']} broker_api={payload['broker_api_enabled']}"
+    )
+    return 0
+
+
+def _ensure_trading_entry(path):
+    if not path.exists():
+        return
+    text = path.read_text(encoding="utf-8")
+    if 'href="trading.html"' not in text:
+        text = text.replace("</nav>", '<a href="trading.html">V3.0 交易决策</a></nav>', 1)
+    text = text.replace("CNSV V2.0 主线看板", "CNSV V3.0 主线看板")
+    text = text.replace("中国船舶主线看板", "中国船舶主线决策看板")
+    text = text.replace("V2.0 实盘人工决策入口。页面不生成交易动作。", "V2.0 实盘人工决策入口与 V3.0 人工交易决策参考。页面不自动下单。")
+    path.write_text(text, encoding="utf-8")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

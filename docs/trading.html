@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CNSV V3.0 交易决策系统</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--amber:#8a5a00;--shadow:0 24px 70px rgba(0,0,0,.08)}*{box-sizing:border-box}body{margin:0;background:#f5f5f7}main{width:min(1180px,100%);margin:auto;padding:34px 20px 48px}.hero{min-height:390px;display:grid;align-items:center;text-align:center;padding:34px 0 48px}.eyebrow{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:.08em}h1{font-size:34px;margin:8px 0 12px}.subtitle{color:var(--muted);font-size:14px}.decision{background:#fff;border-radius:28px;box-shadow:var(--shadow);padding:30px;margin-top:28px}.signal{font-size:72px;line-height:.95;font-weight:800;letter-spacing:0}.buy{color:var(--red)}.sell,.blocked{color:var(--green)}.watch{color:#1d1d1f}.decision-text{font-size:22px;font-weight:700;margin-top:12px}.hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:24px}.metric{border:1px solid var(--line);border-radius:18px;background:#fbfbfd;padding:15px;text-align:left}.label{color:var(--muted);font-size:12px}.value{font-size:20px;font-weight:700;margin-top:7px}section{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:24px;margin:18px 0}h2{font-size:18px;margin:0 0 16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.note{color:var(--muted);font-size:13px;line-height:1.55}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:8px 12px;margin:4px;background:#fbfbfd;font-size:13px}.pill strong{margin-left:6px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px}nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}nav a{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:7px 12px;font-size:12px}@media(max-width:760px){main{padding:22px 14px}h1{font-size:25px}.signal{font-size:50px}.hero-grid{grid-template-columns:1fr 1fr}.decision{padding:22px}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">CNSV V3.0 交易决策系统</div>
+      <h1>中国船舶 600150.SH</h1>
+      <p class="subtitle">人工执行量化交易决策参考。不自动下单，不连接券商接口。</p>
+      <nav><a href="index.html">主线看板</a><a href="live.html">V2.0 人工决策</a><a href="data/latest_trading_decision_report.json">原始 JSON</a></nav>
+      <div class="decision">
+        <div class="label">今日决策</div>
+        <div class="signal sell">SELL</div>
+        <div class="decision-text">建议卖出 · 降低至低仓位或退出</div>
+        <p class="note">下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。</p>
+        <div class="hero-grid">
+          <div class="metric"><div class="label">建议仓位</div><div class="value">降至 0%~10%</div></div>
+          <div class="metric"><div class="label">次日上涨概率</div><div class="value">37.96%</div></div>
+          <div class="metric"><div class="label">风险调整 EV</div><div class="value">-0.59%</div></div>
+          <div class="metric"><div class="label">风险等级</div><div class="value">中低风险</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section><h2>概率判断</h2><div class="grid">
+    <div class="metric"><div class="label">明天上涨概率</div><div class="value">37.96%</div></div>
+    <div class="metric"><div class="label">明天下跌概率</div><div class="value">58.04%</div></div>
+    <div class="metric"><div class="label">大涨概率</div><div class="value">0.93%</div></div>
+    <div class="metric"><div class="label">大跌概率</div><div class="value">1.40%</div></div>
+  </div></section>
+  <section><h2>EV 与性价比</h2><div class="grid">
+    <div class="metric"><div class="label">原始 EV</div><div class="value">-0.18%</div></div>
+    <div class="metric"><div class="label">成本调整 EV</div><div class="value">-0.33%</div></div>
+    <div class="metric"><div class="label">风险调整 EV</div><div class="value">-0.59%</div></div>
+    <div class="metric"><div class="label">交易性价比</div><div class="value">负期望</div></div>
+  </div><p class="note">EV 为长期重复同类交易时的期望收益，单次交易仍可能亏损。</p></section>
+  <section><h2>风控状态</h2><div class="grid">
+    <div class="metric"><div class="label">当前风险</div><div class="value">中低风险</div></div>
+    <div class="metric"><div class="label">风控状态</div><div class="value">已拦截</div></div>
+    <div class="metric"><div class="label">主要风险</div><div class="value">风险调整 EV 为负</div></div>
+  </div><p class="note">风险调整 EV 为负，因此需要风控降级或拦截。</p></section>
+  <section><h2>仓位与退出</h2><div class="grid">
+    <div class="metric"><div class="label">建议仓位</div><div class="value">降至 0%~10%</div><p class="note">不建议满仓，不建议加杠杆。</p></div>
+    <div class="metric"><div class="label">止盈参考</div><div class="value">+6.3%~+8.5%</div></div>
+    <div class="metric"><div class="label">止损参考</div><div class="value">-2.8%</div></div>
+    <div class="metric"><div class="label">时间退出</div><div class="value">10 个交易日</div></div>
+  </div></section>
+  <section><h2>人工执行说明</h2>
+    <span class="pill">自动下单 <strong>关闭</strong></span>
+    <span class="pill">券商接口 <strong>关闭</strong></span>
+    <span class="pill">人工参考 <strong>是</strong></span>
+    <p class="note">所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。</p>
+  </section>
+  <div class="footer">生成时间：2026-06-21T07:40:42.055810+00:00 · 数据日期：2026-06-18</div>
+</main>
+</body>
+</html>

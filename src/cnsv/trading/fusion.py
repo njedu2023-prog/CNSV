@@ -1,0 +1,100 @@
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from typing import Any
+
+from cnsv.trading import FORBIDDEN_TRADING_AUTOMATION, TRADING_REPORT_TYPE, TRADING_STAGE, TRADING_VERSION
+from cnsv.trading.ev_engine import compute_ev
+from cnsv.trading.exit_engine import compute_exit_plan
+from cnsv.trading.position_engine import compute_position
+from cnsv.trading.probability import compute_next_day_probability
+from cnsv.trading.return_distribution import compute_return_distribution
+from cnsv.trading.risk_control import evaluate_trading_risk
+from cnsv.trading.signal_engine import decide_signal
+from cnsv.trading.utils import pct, probability_pct
+
+
+def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str, Any]:
+    reports = evidence_bundle["reports"]
+    probability = compute_next_day_probability(reports)
+    distribution = compute_return_distribution(reports, probability)
+    ev = compute_ev(distribution)
+    risk = evaluate_trading_risk(reports, probability, distribution, ev)
+    signal = decide_signal(probability, distribution, ev, risk)
+    position = compute_position(signal, probability, ev, risk)
+    exit_plan = compute_exit_plan(reports, distribution, risk)
+    data_report = reports.get("data_report") or {}
+    feature_report = reports.get("feature_report") or {}
+    meta = feature_report.get("meta") or data_report.get("meta") or {}
+    trade_date = meta.get("latest_trade_date") or (data_report.get("data_manifest") or {}).get("latest_trade_date") or "N/A"
+    decision = {
+        **signal,
+        **position,
+    }
+    payload = {
+        "version": TRADING_VERSION,
+        "stage": TRADING_STAGE,
+        "report_type": TRADING_REPORT_TYPE,
+        "symbol": "600150.SH",
+        "name": "中国船舶",
+        "trade_date": trade_date,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "data_status": ((data_report.get("cnsvdata_gate") or {}).get("status") or "N/A"),
+        "is_trade_signal": signal["signal"] not in {"BLOCKED", "WATCH"},
+        "manual_reference_only": True,
+        "auto_order_enabled": False,
+        "broker_api_enabled": False,
+        "direct_execution_enabled": False,
+        "forbidden_actions": FORBIDDEN_TRADING_AUTOMATION,
+        "cnsvdata_gate": data_report.get("cnsvdata_gate") or {},
+        "decision": decision,
+        "probability": probability,
+        "return_distribution": distribution,
+        "ev": ev,
+        "risk": risk,
+        "exit": exit_plan,
+        "human_explanation": _human_explanation(decision, probability, ev, risk),
+        "model_sources": _model_sources(reports),
+        "missing_reports": evidence_bundle.get("missing_reports", []),
+    }
+    if evidence_bundle.get("missing_reports"):
+        payload["decision"]["signal"] = "BLOCKED"
+        payload["decision"]["signal_cn"] = "风控阻断"
+        payload["decision"]["suggested_action"] = "缺少上游证据，不允许输出买卖建议"
+        payload["decision"]["suggested_position_pct"] = 0.0
+        payload["decision"]["position_range"] = "0%"
+        payload["risk"]["blocked"] = True
+        payload["risk"]["risk_passed"] = False
+        payload["risk"]["block_reasons"] = payload["risk"].get("block_reasons", []) + ["缺少上游报告"]
+        payload["is_trade_signal"] = False
+    return payload
+
+
+def _human_explanation(decision: dict[str, Any], probability: dict[str, Any], ev: dict[str, Any], risk: dict[str, Any]) -> dict[str, str]:
+    signal = decision["signal"]
+    if signal == "BLOCKED":
+        summary = "当前数据或模型条件不满足交易决策要求，不允许输出买卖建议。"
+    elif signal in {"BUY", "STRONG_BUY"}:
+        summary = f"模型认为次日上涨概率为 {probability_pct(probability['prob_up_1d'])}，风险调整 EV 为 {pct(ev['risk_adjusted_ev'])}，可作为人工轻仓参与参考。"
+    elif signal in {"SELL", "STRONG_SELL"}:
+        summary = "下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。"
+    elif signal == "REDUCE":
+        summary = "风险收益比转弱，继续满仓持有的性价比下降。"
+    elif signal == "HOLD":
+        summary = "当前信号未触发卖出，持仓可继续观察。"
+    else:
+        summary = "信号强度不足，建议继续观察，不建议主动买入。"
+    return {
+        "summary": summary,
+        "risk_note": risk.get("human_risk_explanation") or "单次交易仍可能亏损，禁止满仓和加杠杆。",
+        "execution_note": "所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。",
+    }
+
+
+def _model_sources(reports: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "baseline_models": list(((reports.get("baseline_model_report") or {}).get("baseline_models") or {}).keys()),
+        "path_models": list(((reports.get("path_distribution_report") or {}).get("path_models") or {}).keys()),
+        "risk_report_stage": ((reports.get("risk_explanation_report") or {}).get("meta") or {}).get("stage"),
+        "live_report_stage": ((reports.get("live_manual_decision_report") or {}).get("meta") or {}).get("stage"),
+    }

@@ -1,0 +1,13 @@
+[
+  {
+    "registry_type": "trading_decision",
+    "version": "3.0",
+    "stage": "V3.0_trading_decision_system",
+    "outputs": [
+      "latest_trading_decision_report.json",
+      "trading_decision_registry.json",
+      "latest_trading_decision_report.md",
+      "trading.html"
+    ]
+  }
+]

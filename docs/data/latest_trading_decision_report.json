@@ -1,0 +1,132 @@
+{
+  "version": "CNSV_V3.0",
+  "stage": "V3.0_trading_decision_system",
+  "report_type": "trading_decision_report",
+  "symbol": "600150.SH",
+  "name": "中国船舶",
+  "trade_date": "2026-06-18",
+  "generated_at": "2026-06-21T07:40:42.055810+00:00",
+  "data_status": "PASS",
+  "is_trade_signal": true,
+  "manual_reference_only": true,
+  "auto_order_enabled": false,
+  "broker_api_enabled": false,
+  "direct_execution_enabled": false,
+  "forbidden_actions": [
+    "auto_order",
+    "broker_api",
+    "direct_execution"
+  ],
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": [
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
+    ]
+  },
+  "decision": {
+    "signal": "SELL",
+    "signal_cn": "建议卖出",
+    "suggested_action": "降低至低仓位或退出",
+    "decision_reasons": [
+      "下跌概率、EV 或尾部风险触发卖出条件"
+    ],
+    "position_action": "EXIT_OR_REDUCE",
+    "suggested_position_pct": 0.0,
+    "position_range": "降至 0%~10%",
+    "position_reason": "风险收益比转弱，建议降低风险暴露。",
+    "manual_reference_only": true
+  },
+  "probability": {
+    "prob_up_1d": 0.3795965552786388,
+    "prob_down_1d": 0.5804034447213612,
+    "prob_flat_1d": 0.040000000000000036,
+    "direction_confidence": 0.69459577819537,
+    "primary_model": "B2_state_grouped_distribution+P2_state_conditional_path",
+    "fallback_used": false,
+    "fallback_reason": null,
+    "inputs": {
+      "b1_positive_prob_5d": 0.4835680751173709,
+      "b2_positive_prob_5d": 0.41904761904761906,
+      "p2_positive_terminal_prob_5d": 0.41904761904761906,
+      "ret_1d": -0.02718707940780618,
+      "flow_strength_score": -11.857677652167158,
+      "main_force_net": 5983.419999999998
+    }
+  },
+  "return_distribution": {
+    "return_bins_1d": {
+      "gt_5pct": 0.009330353169946681,
+      "plus_2_to_5pct": 0.15231892149539505,
+      "zero_to_plus_2pct": 0.30726081306291575,
+      "zero_to_minus_2pct": 0.32829577297143275,
+      "minus_2_to_5pct": 0.18875606310307752,
+      "lt_minus_5pct": 0.014038076197232241
+    },
+    "expected_return_1d": -0.001791651552127618,
+    "median_return_1d": -0.0019522645450512168,
+    "p10_return_1d": -0.027722253833705465,
+    "p90_return_1d": 0.028626474107877165,
+    "distribution_source": "B2_state_grouped_distribution_5D_scaled_to_1D"
+  },
+  "ev": {
+    "raw_ev": -0.001791651552127618,
+    "transaction_cost": 0.0015,
+    "risk_penalty": 0.0025687322116272433,
+    "cost_adjusted_ev": -0.003291651552127618,
+    "risk_adjusted_ev": -0.005860383763754862,
+    "ev_rating": "negative",
+    "ev_rating_cn": "负期望"
+  },
+  "risk": {
+    "risk_level": "MEDIUM_LOW",
+    "risk_level_cn": "中低风险",
+    "risk_passed": true,
+    "blocked": false,
+    "block_reasons": [],
+    "buy_blocked": true,
+    "buy_block_reasons": [
+      "风险调整 EV 为负"
+    ],
+    "warnings": [],
+    "downside_tail_prob": 0.014038076197232241,
+    "p10_return_1d": -0.027722253833705465,
+    "human_risk_explanation": "风险调整 EV 为负，因此需要风控降级或拦截。"
+  },
+  "exit": {
+    "take_profit_range": "+6.3%~+8.5%",
+    "stop_loss_reference": "-2.8%",
+    "time_exit_days": 10,
+    "signal_exit_rule": "若信号降级为 SELL 或 STRONG_SELL，应重新评估并降低仓位。",
+    "risk_exit_rule": "若风控转为高风险或大跌概率显著上升，应优先保护本金。"
+  },
+  "human_explanation": {
+    "summary": "下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。",
+    "risk_note": "风险调整 EV 为负，因此需要风控降级或拦截。",
+    "execution_note": "所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。"
+  },
+  "model_sources": {
+    "baseline_models": [
+      "B0_random_walk",
+      "B1_historical_distribution",
+      "B2_state_grouped_distribution",
+      "B3_volatility_adjusted"
+    ],
+    "path_models": [
+      "P0_historical_path_replay",
+      "P1_volatility_adjusted_path",
+      "P2_state_conditional_path"
+    ],
+    "risk_report_stage": "V1.6_risk_explanation",
+    "live_report_stage": "V2.0_live_manual_decision_system"
+  },
+  "missing_reports": []
+}
