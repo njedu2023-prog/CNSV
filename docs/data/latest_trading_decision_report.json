@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-18",
-  "generated_at": "2026-06-21T12:08:05.421237+00:00",
+  "generated_at": "2026-06-21T11:58:17.914009+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -71,17 +71,17 @@
       "minus_2_to_5pct": 0.18875606310307752,
       "lt_minus_5pct": 0.014038076197232241
     },
-    "expected_return_1d": -0.0017916515521276184,
+    "expected_return_1d": -0.001791651552127618,
     "median_return_1d": -0.0019522645450512168,
     "p10_return_1d": -0.027722253833705465,
     "p90_return_1d": 0.028626474107877165,
     "distribution_source": "B2_state_grouped_distribution_5D_scaled_to_1D"
   },
   "ev": {
-    "raw_ev": -0.0017916515521276184,
+    "raw_ev": -0.001791651552127618,
     "transaction_cost": 0.0015,
     "risk_penalty": 0.0025687322116272433,
-    "cost_adjusted_ev": -0.0032916515521276184,
+    "cost_adjusted_ev": -0.003291651552127618,
     "risk_adjusted_ev": -0.005860383763754862,
     "ev_rating": "negative",
     "ev_rating_cn": "负期望"
