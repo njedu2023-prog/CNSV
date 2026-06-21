@@ -3,63 +3,74 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CNSV V2.0 主线看板</title>
+  <title>CNSV V3.0 主线决策看板</title>
   <style>
-    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;--page:#f5f5f7;--surface:#fff;--soft:#fbfbfd;--text:#1d1d1f;--muted:#6e6e73;--line:#d2d2d7;--blue:#06c;--green:#0b8f45;--red:#d70015;--amber:#8a5a00;--shadow:0 18px 44px rgba(0,0,0,.06)}
-    *{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--text)}main{width:min(100%,1180px);margin:auto;padding:38px 24px 48px}header{text-align:center;padding:18px 0 28px}.eyebrow{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:.08em;margin:0 0 8px}h1{font-size:18px;margin:0}.subtitle{max-width:780px;margin:12px auto 0;color:var(--muted);font-size:13px;line-height:1.45}nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}nav a{border:1px solid var(--line);border-radius:999px;color:var(--blue);text-decoration:none;padding:6px 11px;font-size:12px;background:#fff}section{background:var(--surface);border-radius:20px;padding:22px 26px;margin:16px 0;box-shadow:var(--shadow);overflow:hidden}.section-head{display:flex;justify-content:space-between;gap:14px;align-items:baseline;margin-bottom:14px}h2{font-size:14px;margin:0}.section-note{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:10px}.metric{border:1px solid rgba(210,210,215,.9);border-radius:14px;padding:12px 14px;background:var(--soft);min-width:0}.label{color:var(--muted);font-size:12px;line-height:1.35}.value{font-size:13px;font-weight:700;margin-top:7px;overflow-wrap:anywhere;line-height:1.28}.ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}.panel{border:1px solid rgba(210,210,215,.9);border-radius:16px;background:var(--soft);overflow:hidden;margin-top:10px}.panel-title{padding:13px 14px 0;font-size:13px;font-weight:700}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;min-width:520px}th,td{text-align:left;border-top:1px solid #e8e8ed;padding:9px 11px;vertical-align:top;line-height:1.35}th{color:var(--muted);width:34%;font-weight:600}.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px 0 4px}.error{color:var(--red);font-size:13px}@media(max-width:640px){main{padding:22px 14px 36px}header{text-align:left}nav{justify-content:flex-start}section{border-radius:18px;padding:18px}.section-head{display:block}.section-note{margin-top:6px}table{min-width:0}th,td{display:block;width:100%;padding:8px 10px}td{border-top:0;padding-top:0}}
+    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;--page:#f5f5f7;--surface:#fff;--soft:#fbfbfd;--text:#1d1d1f;--muted:#6e6e73;--line:#d2d2d7;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 24px 70px rgba(0,0,0,.08)}*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--text)}main{width:min(1120px,100%);margin:auto;padding:36px 20px 48px}.hero{text-align:center;padding:34px 0 44px}.eyebrow{color:var(--blue);font-size:13px;font-weight:800;letter-spacing:.08em;margin:0 0 10px}h1{font-size:28px;margin:0}.subtitle{color:var(--muted);font-size:14px;line-height:1.55;max-width:760px;margin:14px auto 0}nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}a{color:var(--blue);text-decoration:none}.nav a,.pill{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 12px;font-size:12px}.decision{background:#fff;border-radius:28px;box-shadow:var(--shadow);padding:28px;margin:20px 0}.decision-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:stretch}.signal{font-size:70px;line-height:.95;font-weight:850;color:var(--green);letter-spacing:0}.signal-cn{font-size:22px;font-weight:800;margin-top:10px}.note{color:var(--muted);font-size:13px;line-height:1.55}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.metric{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:14px}.label{font-size:12px;color:var(--muted)}.value{font-size:18px;font-weight:800;margin-top:7px;overflow-wrap:anywhere}.red{color:var(--red)}.green{color:var(--green)}section{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:22px;margin:16px 0}h2{font-size:16px;margin:0 0 14px}.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.link-card{display:block;border:1px solid var(--line);border-radius:18px;background:var(--soft);padding:14px}.link-card strong{display:block;color:var(--text);font-size:14px;margin-bottom:6px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}@media(max-width:760px){main{padding:24px 14px 38px}.hero{text-align:left}.nav{justify-content:flex-start}.decision-grid{grid-template-columns:1fr}.signal{font-size:52px}h1{font-size:24px}}
   </style>
 </head>
 <body>
 <main>
-  <header>
-    <p class="eyebrow">CNSV V2.0 主线看板</p>
-    <h1>中国船舶主线看板</h1>
-    <p class="subtitle">展示 CNSVdata 准入、数据覆盖、特征质量、路径分布、观察级回测、V1.6 风控解释与 V2.0 实盘人工决策入口。页面不生成交易动作。</p>
-    <nav><a href="#coverage">数据状态</a><a href="#price">量价</a><a href="#moneyflow">资金流</a><a href="baseline.html">V1.2 基准模型</a><a href="validation.html">V1.2.2 验证</a><a href="path.html">V1.3 路径分布</a><a href="backtest.html">V1.4 观察级回测</a><a href="decision_support.html">V1.5 人工决策辅助</a><a href="risk.html">V1.6 风控解释</a><a href="live.html">V2.0 实盘人工决策</a></nav>
+  <header class="hero">
+    <p class="eyebrow">CNSV V3.0 TRADING DECISION</p>
+    <h1>中国船舶主线决策看板</h1>
+    <p class="subtitle">展示 V3.0 人工交易决策参考、上游数据与模型阶段入口。页面可呈现交易信号、买卖建议、仓位参考和风控约束，但不自动下单，不连接券商接口。</p>
+    <nav class="nav"><a href="trading.html">V3.0 交易决策</a><a href="live.html">V2.0 人工确认</a><a href="risk.html">V1.6 风控解释</a><a href="data/latest_trading_decision_report.json">V3.0 JSON</a></nav>
   </header>
-  <section><div class="section-head"><h2>看板总览</h2><span class="section-note">来自数据与特征 JSON</span></div><div id="overview" class="grid"></div></section>
-  <section><div class="section-head"><h2>CNSVdata 数据门禁</h2><span class="section-note">数据准入与允许范围</span></div><div id="gate" class="grid"></div></section>
-  <section><div class="section-head"><h2>特征质量</h2><span class="section-note">质量检查状态</span></div><div id="quality" class="grid"></div><div id="checks"></div></section>
-  <section id="coverage"><div class="section-head"><h2>数据覆盖</h2><span class="section-note">最新交易日与行数</span></div><div id="coverageGrid" class="grid"></div></section>
-  <section id="price"><div class="section-head"><h2>量价核心摘要</h2><span class="section-note">日线特征</span></div><div id="priceGrid" class="grid"></div><div id="priceTable"></div></section>
-  <section id="moneyflow"><div class="section-head"><h2>资金流核心摘要</h2><span class="section-note">主力资金与确认字段</span></div><div id="moneyflowGrid" class="grid"></div><div id="moneyflowTable"></div></section>
-  <section><div class="section-head"><h2>分钟结构摘要</h2><span class="section-note">1分钟日内结构</span></div><div id="minuteGrid" class="grid"></div><div id="minuteTable"></div></section>
-  <section><div class="section-head"><h2>趋势摘要</h2><span class="section-note">均线与趋势状态</span></div><div id="trendGrid" class="grid"></div></section>
-  <section><div class="section-head"><h2>波动率摘要</h2><span class="section-note">波动率与 ATR</span></div><div id="volGrid" class="grid"></div></section>
-  <section><div class="section-head"><h2>禁止动作与下一阶段</h2><span class="section-note">阶段边界</span></div><div id="guard" class="grid"></div></section>
-  <div id="footer" class="footer"></div>
+
+  <section class="decision">
+    <div class="decision-grid">
+      <div>
+        <div class="label">当前决策</div>
+        <div id="signal" class="signal">读取中</div>
+        <div id="signalCn" class="signal-cn">等待 latest_trading_decision_report.json</div>
+        <p id="summary" class="note">如果数据暂未刷新，请先查看 V3.0 交易决策页。</p>
+      </div>
+      <div class="grid">
+        <div class="metric"><div class="label">建议仓位</div><div id="position" class="value">N/A</div></div>
+        <div class="metric"><div class="label">次日上涨概率</div><div id="probUp" class="value">N/A</div></div>
+        <div class="metric"><div class="label">风险调整 EV</div><div id="ev" class="value">N/A</div></div>
+        <div class="metric"><div class="label">风控状态</div><div id="risk" class="value">N/A</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>安全边界</h2>
+    <span class="pill">自动下单：关闭</span>
+    <span class="pill">券商接口：关闭</span>
+    <span class="pill">直接执行：关闭</span>
+    <span class="pill">人工参考：开启</span>
+  </section>
+
+  <section>
+    <h2>阶段入口</h2>
+    <div class="links">
+      <a class="link-card" href="trading.html"><strong>V3.0 交易决策</strong><span class="note">交易信号、买卖建议、仓位参考、止盈止损参考。</span></a>
+      <a class="link-card" href="live.html"><strong>V2.0 人工确认</strong><span class="note">人工确认与实盘前证据汇总。</span></a>
+      <a class="link-card" href="risk.html"><strong>V1.6 风控解释</strong><span class="note">风险来源、风控拆解与禁止自动交易声明。</span></a>
+      <a class="link-card" href="decision_support.html"><strong>V1.5 决策辅助</strong><span class="note">人工决策辅助证据层。</span></a>
+      <a class="link-card" href="backtest.html"><strong>V1.4 观察级回测</strong><span class="note">仅观察，不等同正式回测交易系统。</span></a>
+      <a class="link-card" href="path.html"><strong>V1.3 路径分布</strong><span class="note">路径分布与路径验证。</span></a>
+      <a class="link-card" href="baseline.html"><strong>V1.2 基准模型</strong><span class="note">B0/B1/B2/B3 基准模型层。</span></a>
+      <a class="link-card" href="validation.html"><strong>V1.2.2 验证</strong><span class="note">基准模型验证与质量检查。</span></a>
+    </div>
+  </section>
+
+  <div id="footer" class="footer">CNSV V3.0 主线决策看板</div>
 </main>
 <script>
-const NA="N/A";
-const has=v=>v!==null&&v!==undefined&&v!=="";
-const yn=v=>v===true?"YES":v===false?"NO":NA;
-const tone=v=>v==="PASS"||v===true?"ok":v==="FAIL"||v===false?"bad":v==="WARN"?"warn":"";
-const status=v=>({PASS:"通过",WARN:"警告",FAIL:"失败"}[v]||v);
-const moneyKeys=new Set(["latest_amount","amount_ma5","amount_ma20","intraday_amount_sum","net_mf_amount","small_order_net","medium_order_net","large_order_net","extra_large_order_net","main_force_net"]);
-const pctKeys=new Set(["ret_1d","ret_3d","ret_5d","ret_10d","ret_20d","ret_60d","net_mf_ratio","main_force_ratio","intraday_range_pct","close_position_in_day_range","morning_return","afternoon_return","last_30min_return","last_60min_return","realized_vol_5d","realized_vol_10d","realized_vol_20d","price_position_20d","price_position_60d"]);
-const fmt=(v,k="")=>{if(!has(v))return NA;if(typeof v==="boolean")return yn(v);if(v==="PASS"||v==="WARN"||v==="FAIL")return status(v);if(typeof v==="number"){if(pctKeys.has(k))return (v*100).toLocaleString("zh-CN",{maximumFractionDigits:2,minimumFractionDigits:2})+"%";if(k==="latest_pct_chg")return v.toLocaleString("zh-CN",{maximumFractionDigits:2,minimumFractionDigits:2})+"%";if(moneyKeys.has(k))return v.toLocaleString("zh-CN",{maximumFractionDigits:2,minimumFractionDigits:2});return Number.isInteger(v)?v.toLocaleString("zh-CN"):v.toLocaleString("zh-CN",{maximumFractionDigits:4,minimumFractionDigits:4})}return String(v)};
-const metric=(l,v,k="")=>`<div class="metric"><div class="label">${l}</div><div class="value ${tone(v)}">${fmt(v,k)}</div></div>`;
-const table=(obj)=>`<div class="panel"><div class="panel-title">完整字段</div><div class="table-wrap"><table><tbody>${Object.entries(obj||{}).map(([k,v])=>`<tr><th>${k}</th><td>${fmt(v,k)}</td></tr>`).join("")}</tbody></table></div></div>`;
-const pick=(obj,items)=>items.map(([k,l])=>metric(l,obj?obj[k]:undefined,k)).join("");
-Promise.all([
- fetch("data/latest_data_report.json").then(r=>r.ok?r.json():{}).catch(()=>({})),
- fetch("data/latest_feature_report.json").then(r=>r.ok?r.json():{}).catch(()=>({}))
-]).then(([d,f])=>{
- const meta=f.meta||d.meta||{}, manifest=f.data_manifest||d.data_manifest||{}, summary=d.loaded_data_summary||{}, gate=f.cnsvdata_gate||d.cnsvdata_gate||{}, q=f.feature_quality||{}, fs=f.features||d.features||{};
- const price=fs.price_volume||{}, mf=fs.moneyflow||{}, minute=fs.minute_structure||{}, trend=fs.trend||{}, vol=fs.volatility||{};
- overview.innerHTML=[metric("系统",meta.system),metric("版本",meta.version),metric("标的",`${meta.ts_code||NA} ${meta.name||""}`.trim()),metric("最新交易日",meta.latest_trade_date||summary.latest_trade_date||manifest.latest_trade_date),metric("数据快照",manifest.snapshot_id),metric("下一阶段",f.next_stage)].join("");
- gate.innerHTML=[metric("CNSVdata 就绪",gate.ready),metric("门禁状态",gate.status),metric("允许继续",gate.can_continue),metric("允许开发",gate.can_develop),metric("允许回测",gate.can_run_backtest),metric("允许资金流强因子",gate.can_use_moneyflow_as_strong_factor)].join("");
- quality.innerHTML=[metric("特征质量",q.status),metric("失败数量",q.failed_count),metric("警告数量",q.warn_count),metric("检查项",(q.checks||[]).length)].join("");
- checks.innerHTML=table((q.checks||[]).reduce((acc,x)=>{acc[x.name||"check"]=`${status(x.status)} - ${x.detail||""}`;return acc},{}));
- coverageGrid.innerHTML=[metric("最新交易日",summary.latest_trade_date||manifest.latest_trade_date),metric("日线行数",summary.daily_rows),metric("1分钟行数",summary.one_min_rows),metric("资金流行数",summary.moneyflow_rows),metric("文件数量",manifest.file_count),metric("数据生成时间",manifest.generated_at)].join("");
- priceGrid.innerHTML=pick(price,[["latest_close","最新收盘价"],["latest_pct_chg","最新涨跌幅"],["ma5","MA5"],["ma20","MA20"],["ret_20d","20D 收益"],["amount_ratio_20d","20D 成交额比"]]); priceTable.innerHTML=table(price);
- moneyflowGrid.innerHTML=pick(mf,[["main_force_net","主力净流入"],["net_mf_ratio","净流入占比"],["flow_strength_score","资金流强弱分"],["price_flow_confirm","价量资金确认"],["price_flow_divergence","价量资金背离"],["volume_flow_confirm","量能资金确认"]]); moneyflowTable.innerHTML=table(mf);
- minuteGrid.innerHTML=pick(minute,[["latest_intraday_close","日内收盘价"],["intraday_range_pct","日内振幅"],["close_position_in_day_range","日内收盘位置"],["last_30min_return","最后30min收益"],["late_session_weakness","尾盘弱势"],["intraday_reversal_flag","日内反转"]]); minuteTable.innerHTML=table(minute);
- trendGrid.innerHTML=pick(trend,[["trend_state","趋势状态"],["trend_ma5_ma20","MA5-MA20"],["trend_ma10_ma60","MA10-MA60"],["close_above_ma20","收盘在MA20上方"]]);
- volGrid.innerHTML=pick(vol,[["volatility_state","波动率状态"],["realized_vol_5d","5D实现波动率"],["realized_vol_20d","20D实现波动率"],["atr_14d","ATR 14D"]]);
- guard.innerHTML=(f.forbidden_actions||d.forbidden_actions||[]).map(x=>metric(x,"禁止")).join("")+metric("下一阶段",f.next_stage);
- footer.textContent=`generated_at: ${fmt(meta.generated_at)} | data snapshot: ${fmt(manifest.snapshot_id)} | data generated_at: ${fmt(manifest.generated_at)}`;
-}).catch(err=>{overview.innerHTML=`<p class="error">看板加载失败：${err}</p>`});
+const pct=v=>typeof v==='number'?(v*100).toFixed(2)+'%':'N/A';
+fetch('data/latest_trading_decision_report.json?ts='+Date.now()).then(r=>r.json()).then(d=>{
+  const dec=d.decision||{}, p=d.probability||{}, ev=d.ev||{}, risk=d.risk||{}, human=d.human_explanation||{};
+  signal.textContent=dec.signal||'N/A';
+  signalCn.textContent=((dec.signal_cn||'')+' · '+(dec.suggested_action||'')).replace(/^ · /,'');
+  summary.textContent=human.summary||'N/A';
+  position.textContent=dec.position_range||'N/A';
+  probUp.textContent=pct(p.prob_up_1d);
+  document.getElementById('ev').textContent=pct(ev.risk_adjusted_ev);
+  document.getElementById('risk').textContent=(risk.buy_blocked?'已拦截':'通过')+' / '+(risk.risk_level_cn||'N/A');
+  footer.textContent='生成时间：'+(d.generated_at||'N/A')+' · 数据日期：'+(d.trade_date||'N/A');
+}).catch(()=>{signal.textContent='N/A';signalCn.textContent='无法读取 V3.0 JSON';});
 </script>
 </body>
 </html>
