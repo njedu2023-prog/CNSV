@@ -12,7 +12,12 @@ def test_trading_report_payload_contains_required_sections():
     assert payload["auto_order_enabled"] is False
     assert payload["broker_api_enabled"] is False
     assert payload["historical_validation"]["baseline_directional_accuracy"]["standard"]["directional_accuracy"] is not None
+    assert payload["model_performance"]["historical_stats"]["name"] == "历史统计线"
+    assert payload["model_performance"]["live_stats"]["name"] == "实盘统计线"
+    assert payload["model_performance"]["live_stats"]["start_date"] == "2026-06-21"
     assert payload["decision"]["signal"] in {"STRONG_BUY", "BUY", "HOLD", "WATCH", "REDUCE", "SELL", "STRONG_SELL", "BLOCKED"}
     assert "今日总决策" in markdown
     assert "历史验证与回测" in markdown
+    assert "模型表现追踪" in markdown
+    assert "实盘统计线方向准确率" in markdown
     assert "人工交易决策参考" in markdown
