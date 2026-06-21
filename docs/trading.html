@@ -24,6 +24,7 @@
         <div class="hero-grid">
           <div class="metric"><div class="label">建议仓位</div><div class="value">降至 0%~10%</div></div>
           <div class="metric"><div class="label">次日上涨概率</div><div class="value">37.96%</div></div>
+          <div class="metric"><div class="label">历史方向准确率</div><div class="value">50.70%</div></div>
           <div class="metric"><div class="label">风险调整 EV</div><div class="value">-0.59%</div></div>
           <div class="metric"><div class="label">风险等级</div><div class="value">中低风险</div></div>
         </div>
@@ -36,6 +37,12 @@
     <div class="metric"><div class="label">大涨概率</div><div class="value">0.93%</div></div>
     <div class="metric"><div class="label">大跌概率</div><div class="value">1.40%</div></div>
   </div></section>
+  <section><h2>历史验证与回测</h2><div class="grid">
+    <div class="metric"><div class="label">B2 5D 标准方向准确率</div><div class="value">50.70%</div><p class="note">样本数：712</p></div>
+    <div class="metric"><div class="label">B2 5D purged 方向准确率</div><div class="value">50.35%</div><p class="note">样本数：143</p></div>
+    <div class="metric"><div class="label">P2 5D 标准区间覆盖率</div><div class="value">72.22%</div><p class="note">Brier：0.2523</p></div>
+    <div class="metric"><div class="label">P2 5D purged 区间覆盖率</div><div class="value">73.33%</div><p class="note">Brier：0.2614</p></div>
+  </div><p class="note">方向准确率来自 B2 5D walk-forward；路径概率使用 Brier 分数和区间覆盖率衡量，Brier 越低越好。</p></section>
   <section><h2>EV 与性价比</h2><div class="grid">
     <div class="metric"><div class="label">原始 EV</div><div class="value">-0.18%</div></div>
     <div class="metric"><div class="label">成本调整 EV</div><div class="value">-0.33%</div></div>
@@ -59,7 +66,7 @@
     <span class="pill">人工参考 <strong>是</strong></span>
     <p class="note">所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。</p>
   </section>
-  <div class="footer">生成时间：2026-06-21T08:27:13.437708+00:00 · 数据日期：2026-06-18</div>
+  <div class="footer">生成时间：2026-06-21T08:49:47.145543+00:00 · 数据日期：2026-06-18</div>
 </main>
 </body>
 </html>

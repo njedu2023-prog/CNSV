@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-18",
-  "generated_at": "2026-06-21T08:27:13.437708+00:00",
+  "generated_at": "2026-06-21T08:49:47.145543+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -71,17 +71,17 @@
       "minus_2_to_5pct": 0.18875606310307752,
       "lt_minus_5pct": 0.014038076197232241
     },
-    "expected_return_1d": -0.0017916515521276184,
+    "expected_return_1d": -0.001791651552127618,
     "median_return_1d": -0.0019522645450512168,
     "p10_return_1d": -0.027722253833705465,
     "p90_return_1d": 0.028626474107877165,
     "distribution_source": "B2_state_grouped_distribution_5D_scaled_to_1D"
   },
   "ev": {
-    "raw_ev": -0.0017916515521276184,
+    "raw_ev": -0.001791651552127618,
     "transaction_cost": 0.0015,
     "risk_penalty": 0.0025687322116272433,
-    "cost_adjusted_ev": -0.0032916515521276184,
+    "cost_adjusted_ev": -0.003291651552127618,
     "risk_adjusted_ev": -0.005860383763754862,
     "ev_rating": "negative",
     "ev_rating_cn": "负期望"
@@ -107,6 +107,60 @@
     "time_exit_days": 10,
     "signal_exit_rule": "若信号降级为 SELL 或 STRONG_SELL，应重新评估并降低仓位。",
     "risk_exit_rule": "若风控转为高风险或大跌概率显著上升，应优先保护本金。"
+  },
+  "historical_validation": {
+    "scope": "5D walk-forward validation; used as V3.0 probability evidence, not profit guarantee",
+    "baseline_directional_accuracy": {
+      "model": "B2_state_grouped_distribution",
+      "horizon": "5D",
+      "standard": {
+        "sample_size": 712,
+        "directional_accuracy": 0.5070224719101124,
+        "positive_prob_brier": 0.250657885453114,
+        "p10_p90_interval_coverage": 0.7808988764044944
+      },
+      "purged": {
+        "sample_size": 143,
+        "directional_accuracy": 0.5034965034965035,
+        "positive_prob_brier": 0.25271721663639435,
+        "p10_p90_interval_coverage": 0.7762237762237763
+      }
+    },
+    "path_probability_validation": {
+      "model": "P2_state_conditional_path",
+      "horizon": "5D",
+      "standard": {
+        "sample_size": 72,
+        "positive_terminal_brier": 0.2522770606215221,
+        "terminal_p10_p90_coverage": 0.7222222222222222,
+        "path_interval_coverage": 0.8055555555555556
+      },
+      "purged": {
+        "sample_size": 15,
+        "positive_terminal_brier": 0.2613754330018732,
+        "terminal_p10_p90_coverage": 0.7333333333333333,
+        "path_interval_coverage": 0.8666666666666667
+      }
+    },
+    "observation_backtest": {
+      "model": "P2_state_conditional_path",
+      "horizon": "5D",
+      "standard": {
+        "sample_size": null,
+        "actual_positive_terminal_rate": null,
+        "positive_terminal_brier": null,
+        "terminal_p10_p90_coverage": null,
+        "model_coverage_rate": null
+      },
+      "purged": {
+        "sample_size": null,
+        "actual_positive_terminal_rate": null,
+        "positive_terminal_brier": null,
+        "terminal_p10_p90_coverage": null,
+        "model_coverage_rate": null
+      }
+    },
+    "interpretation": "方向准确率来自 B2 5D walk-forward；路径概率使用 Brier 分数和区间覆盖率衡量，Brier 越低越好。"
   },
   "human_explanation": {
     "summary": "下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。",
