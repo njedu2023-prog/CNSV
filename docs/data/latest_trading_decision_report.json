@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-18",
-  "generated_at": "2026-06-21T12:29:57.512731+00:00",
+  "generated_at": "2026-06-21T15:17:28.157165+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -44,6 +44,71 @@
     "position_range": "降至 0%~10%",
     "position_reason": "风险收益比转弱，建议降低风险暴露。",
     "manual_reference_only": true
+  },
+  "decision_timeline": {
+    "data_trade_date": "2026-06-18",
+    "signal_date": "2026-06-21",
+    "prediction_date": "2026-06-22",
+    "verify_date": "2026-06-22",
+    "predicted_direction": "DOWN"
+  },
+  "market_snapshot": {
+    "latest_trade_date": "2026-06-18",
+    "latest_close": 36.14,
+    "latest_pct_chg": -2.7187,
+    "latest_amount": 4313475.328,
+    "ma5": 36.016,
+    "ma20": 36.49999999999999
+  },
+  "price_prediction_distribution": {
+    "5D": {
+      "model_id": "P2_state_conditional_path",
+      "source_model": "state_matched_history",
+      "latest_close": 36.14,
+      "terminal_price_p10": 33.9677465774683,
+      "terminal_price_p50": 35.78894197952218,
+      "terminal_price_p90": 38.529107416516375,
+      "terminal_return_p10": -0.06010662486252634,
+      "terminal_return_p50": -0.009713835652402358,
+      "terminal_return_p90": 0.06610701207848294,
+      "positive_terminal_prob": 0.41904761904761906,
+      "sample_size": 105,
+      "state_sample_size": 105,
+      "fallback_used": false,
+      "fallback_reason": ""
+    },
+    "10D": {
+      "model_id": "P2_state_conditional_path",
+      "source_model": "state_matched_history",
+      "latest_close": 36.14,
+      "terminal_price_p10": 31.694149996272575,
+      "terminal_price_p50": 36.00865005192108,
+      "terminal_price_p90": 39.22012156723489,
+      "terminal_return_p10": -0.12301743231121813,
+      "terminal_return_p50": -0.0036344755970924014,
+      "terminal_return_p90": 0.08522749217584079,
+      "positive_terminal_prob": 0.47619047619047616,
+      "sample_size": 105,
+      "state_sample_size": 105,
+      "fallback_used": false,
+      "fallback_reason": ""
+    },
+    "20D": {
+      "model_id": "P2_state_conditional_path",
+      "source_model": "state_matched_history",
+      "latest_close": 36.14,
+      "terminal_price_p10": 31.94604411670571,
+      "terminal_price_p50": 36.71849710982659,
+      "terminal_price_p90": 40.74368783308951,
+      "terminal_return_p10": -0.11604747878512145,
+      "terminal_return_p50": 0.01600711427301027,
+      "terminal_return_p90": 0.1273848321275459,
+      "positive_terminal_prob": 0.5333333333333333,
+      "sample_size": 105,
+      "state_sample_size": 105,
+      "fallback_used": false,
+      "fallback_reason": ""
+    }
   },
   "probability": {
     "prob_up_1d": 0.3795965552786388,
