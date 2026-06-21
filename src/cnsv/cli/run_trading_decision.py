@@ -3,6 +3,7 @@ from __future__ import annotations
 from cnsv.cli.run_live_manual_decision import main as run_live_manual_decision_main
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
+from cnsv.trading.live_stats import build_model_performance, update_live_stats_registry
 from cnsv.trading.report import write_trading_html, write_trading_json, write_trading_markdown, write_trading_registry
 from cnsv.utils.io import repo_root
 
@@ -15,6 +16,12 @@ def main() -> int:
             raise RuntimeError("failed to generate V2.0 live manual decision evidence")
     evidence = load_trading_evidence(root)
     payload = build_trading_decision_payload(evidence)
+    live_registry = update_live_stats_registry(
+        payload,
+        root / "docs/data/live_stats_registry.json",
+        evidence["reports"],
+    )
+    payload["model_performance"] = build_model_performance(payload["historical_validation"], live_registry)
     write_trading_json(payload, root / "docs/data/latest_trading_decision_report.json")
     write_trading_registry(root / "docs/data/trading_decision_registry.json")
     write_trading_markdown(payload, root / "reports/latest_trading_decision_report.md", root / "reports/archive")
