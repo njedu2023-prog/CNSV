@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-18",
-  "generated_at": "2026-06-21T10:00:11.949894+00:00",
+  "generated_at": "2026-06-21T12:08:05.421237+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -161,6 +161,23 @@
       }
     },
     "interpretation": "方向准确率来自 B2 5D walk-forward；路径概率使用 Brier 分数和区间覆盖率衡量，Brier 越低越好。"
+  },
+  "model_performance": {
+    "historical_stats": {
+      "name": "历史统计线",
+      "direction_accuracy": 0.5070224719101124,
+      "sample_count": 712,
+      "description": "包含历史验证样本、walk-forward、purged walk-forward 等历史统计结果。"
+    },
+    "live_stats": {
+      "name": "实盘统计线",
+      "start_date": "2026-06-21",
+      "direction_accuracy": null,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "sample_count": 0,
+      "description": "从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。"
+    }
   },
   "human_explanation": {
     "summary": "下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。",
