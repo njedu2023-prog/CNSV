@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CNSV V3.0 交易决策系统</title>
+  <title>CNSV V1.2 基准模型看板</title>
   <style>
     :root { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; --page:#f5f5f7; --surface:#fff; --soft:#fbfbfd; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --blue:#0066cc; --green:#10b64b; --red:#f51505; --amber:#b26a00; --shadow:0 18px 44px rgba(0,0,0,.06); }
     * { box-sizing: border-box; }
@@ -37,28 +37,15 @@
     th { color:var(--muted); font-weight:600; }
     .footer { color:var(--muted); font-size:12px; text-align:center; padding:18px 0 4px; }
     @media (max-width:640px){ main{padding:22px 14px 36px} header{text-align:left;padding:8px 0 18px} nav{justify-content:flex-start} section{border-radius:18px;padding:18px} table{min-width:680px} }
-    .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(0,0,0,.88); backdrop-filter: saturate(180%) blur(18px); border-bottom: 1px solid rgba(255,255,255,.16); }
-    .topnav { display: flex; justify-content: center; gap: 2px; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; padding: 9px 18px; -webkit-overflow-scrolling: touch; }
-    .topnav a { border: 0; border-radius: 999px; background: transparent; color: #fff; text-decoration: none; padding: 4px 10px; font-size: 12px; line-height: 1.2; white-space: nowrap; opacity: .78; }
-    .topnav a:hover, .topnav a.active { color: #fff; opacity: 1; }
-    .topnav a.active { font-weight: 600; background: rgba(255,255,255,.12); }
-    .global-nav, header nav { display: none !important; }
-    body { padding-top: 48px; }
-    main { padding-top: 26px !important; }
-    header { text-align: center !important; padding: 16px 0 20px !important; }
-    header .eyebrow, .hero .eyebrow { color: #d70015 !important; font-size: 12px !important; font-weight: 700 !important; letter-spacing: .08em !important; margin: 0 0 8px !important; }
-    header h1, h1 { font-size: clamp(30px, 4vw, 52px) !important; letter-spacing: 0 !important; margin: 5px 0 8px !important; line-height: 1.08 !important; }
-    header .subtitle { display: none !important; }
-    @media (max-width: 760px) { body { padding-top: 50px; } .topnav { justify-content: flex-start; } header h1, h1 { font-size: 30px !important; } }
-
   </style>
 </head>
 <body>
-<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html">交易决策</a><a href="index.html#coverage">数据状态</a><a href="index.html#priceVolumeCards">核心特征</a><a href="baseline.html" class="active">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
 <main>
   <header>
-    <p class="eyebrow">CNSV V3.0 交易决策系统</p>
-    <h1>中国船舶 600150.SH</h1>
+    <p class="eyebrow">CNSV V1.2 基准模型看板</p>
+    <h1>中国船舶基准模型看板</h1>
+    <p class="subtitle">展示 5D/10D/20D 终端收益分布基准模型，仅用于模型层开发验收，不生成交易动作。</p>
+    <nav><a href="index.html">特征看板</a><a href="data/latest_baseline_model_report.json">JSON 数据</a></nav>
   </header>
   <section><h2>状态总览</h2><div id="overview" class="chips"></div></section>
   <section><h2>CNSVdata 数据门禁</h2><div id="gate" class="chips"></div></section>
