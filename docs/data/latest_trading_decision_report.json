@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-18",
-  "generated_at": "2026-06-21T18:15:29.027637+00:00",
+  "generated_at": "2026-06-21T18:31:59.751327+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -47,13 +47,13 @@
   },
   "decision_timeline": {
     "data_trade_date": "2026-06-18",
-    "signal_date": "2026-06-22",
+    "signal_date": "2026-06-21",
     "prediction_date": "2026-06-22",
     "verify_date": "2026-06-23",
     "predicted_direction": "DOWN",
-    "calendar_source": "fallback_cn_market_holiday_business_day",
-    "prediction_date_source": "fallback_cn_market_holiday_business_day",
-    "verify_date_source": "fallback_cn_market_holiday_business_day"
+    "calendar_source": "CNSVdata trade_calendar",
+    "prediction_date_source": "trade_calendar",
+    "verify_date_source": "trade_calendar"
   },
   "market_snapshot": {
     "latest_trade_date": "2026-06-18",
@@ -139,17 +139,17 @@
       "minus_2_to_5pct": 0.18875606310307752,
       "lt_minus_5pct": 0.014038076197232241
     },
-    "expected_return_1d": -0.001791651552127618,
+    "expected_return_1d": -0.0017916515521276184,
     "median_return_1d": -0.0019522645450512168,
     "p10_return_1d": -0.027722253833705465,
     "p90_return_1d": 0.028626474107877165,
     "distribution_source": "B2_state_grouped_distribution_5D_scaled_to_1D"
   },
   "ev": {
-    "raw_ev": -0.001791651552127618,
+    "raw_ev": -0.0017916515521276184,
     "transaction_cost": 0.0015,
     "risk_penalty": 0.0025687322116272433,
-    "cost_adjusted_ev": -0.003291651552127618,
+    "cost_adjusted_ev": -0.0032916515521276184,
     "risk_adjusted_ev": -0.005860383763754862,
     "ev_rating": "negative",
     "ev_rating_cn": "负期望"
