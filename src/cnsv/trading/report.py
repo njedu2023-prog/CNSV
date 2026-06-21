@@ -36,6 +36,9 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
     performance = payload.get("model_performance") or {}
     historical_stats = performance.get("historical_stats") or {}
     live_stats = performance.get("live_stats") or {}
+    timeline = payload.get("decision_timeline") or {}
+    market = payload.get("market_snapshot") or {}
+    price_paths = payload.get("price_prediction_distribution") or {}
     b2_std = ((hist.get("baseline_directional_accuracy") or {}).get("standard") or {})
     b2_purged = ((hist.get("baseline_directional_accuracy") or {}).get("purged") or {})
     p2_std = ((hist.get("path_probability_validation") or {}).get("standard") or {})
@@ -50,6 +53,13 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
         f"- 信号: {d['signal']} / {d['signal_cn']}",
         f"- 动作: {d['suggested_action']}",
         f"- 建议仓位: {d['position_range']}",
+        f"- 数据交易日: {timeline.get('data_trade_date', payload['trade_date'])}",
+        f"- 信号生成日: {timeline.get('signal_date', 'N/A')}",
+        f"- 预测日: {timeline.get('prediction_date', 'N/A')}",
+        f"- 验证日: {timeline.get('verify_date', 'N/A')}",
+        f"- 收盘价: {fmt_number(market.get('latest_close'))}",
+        f"- 收盘涨跌幅: {fmt_pct_points(market.get('latest_pct_chg'))}",
+        f"- 成交额: {fmt_amount(market.get('latest_amount'))}",
         "",
         "## 次日涨跌概率",
         f"- 上涨概率: {probability_pct(p['prob_up_1d'])}",
@@ -98,6 +108,9 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
         f"- 止损参考: {exit_plan['stop_loss_reference']}",
         f"- 时间退出: {exit_plan['time_exit_days']} 个交易日后重新评估",
         "",
+        "## 5D / 10D / 20D 价格预测分布",
+        *_price_distribution_markdown(price_paths),
+        "",
         "## 模型来源",
         f"- 基准模型: {', '.join(payload['model_sources']['baseline_models'])}",
         f"- 路径模型: {', '.join(payload['model_sources']['path_models'])}",
@@ -127,6 +140,9 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     performance = payload.get("model_performance") or {}
     historical_stats = performance.get("historical_stats") or {}
     live_stats = performance.get("live_stats") or {}
+    timeline = payload.get("decision_timeline") or {}
+    market = payload.get("market_snapshot") or {}
+    price_paths = payload.get("price_prediction_distribution") or {}
     b2_std = ((hist.get("baseline_directional_accuracy") or {}).get("standard") or {})
     b2_purged = ((hist.get("baseline_directional_accuracy") or {}).get("purged") or {})
     p2_std = ((hist.get("path_probability_validation") or {}).get("standard") or {})
@@ -143,19 +159,29 @@ def build_trading_html(payload: dict[str, Any]) -> str:
   </style>
 </head>
 <body>
-<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html" class="active">V3.0 交易决策</a><a href="data/latest_data_report.json">数据状态</a><a href="data/latest_feature_report.json">核心特征</a><a href="baseline.html">V1.2 基准模型</a><a href="validation.html">V1.2.2 验证</a><a href="path.html">V1.3 路径分布</a><a href="backtest.html">V1.4 观察级回测</a><a href="decision_support.html">V1.5 人工决策辅助</a><a href="risk.html">V1.6 风控解释</a><a href="live.html">V2.0 实盘人工决策</a></nav></div>
+<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html" class="active">交易决策</a><a href="index.html#coverage">数据状态</a><a href="index.html#priceVolumeCards">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
 <main>
   <div class="hero">
     <div>
       <div class="eyebrow">CNSV V3.0 交易决策系统</div>
       <h1>中国船舶 600150.SH</h1>
-      <p class="subtitle">人工执行量化交易决策参考。不自动下单，不连接券商接口。</p>
-      <div class="quick"><a href="index.html">主线看板</a><a href="live.html">V2.0 人工决策</a><a href="data/latest_trading_decision_report.json">原始 JSON</a></div>
       <div class="decision">
         <div class="label">今日决策</div>
+        <div class="hero-grid">
+          <div class="metric"><div class="label">信号生成日</div><div class="value">{timeline.get('signal_date', 'N/A')}</div></div>
+          <div class="metric"><div class="label">预测日</div><div class="value">{timeline.get('prediction_date', 'N/A')}</div></div>
+          <div class="metric"><div class="label">验证日</div><div class="value">{timeline.get('verify_date', 'N/A')}</div></div>
+          <div class="metric"><div class="label">数据交易日</div><div class="value">{timeline.get('data_trade_date', payload['trade_date'])}</div></div>
+        </div>
         <div class="signal {signal_class}">{d['signal']}</div>
         <div class="decision-text">{d['signal_cn']} · {d['suggested_action']}</div>
-        <p class="note">{payload['human_explanation']['summary']}</p>
+        <div class="hero-grid">
+          <div class="metric"><div class="label">收盘数据日</div><div class="value">{market.get('latest_trade_date', timeline.get('data_trade_date', payload['trade_date']))}</div></div>
+          <div class="metric"><div class="label">最新收盘价</div><div class="value">{fmt_number(market.get('latest_close'))}</div></div>
+          <div class="metric"><div class="label">收盘涨跌幅</div><div class="value">{fmt_pct_points(market.get('latest_pct_chg'))}</div></div>
+          <div class="metric"><div class="label">成交额</div><div class="value">{fmt_amount(market.get('latest_amount'))}</div></div>
+          <div class="metric"><div class="label">MA20</div><div class="value">{fmt_number(market.get('ma20'))}</div></div>
+        </div>
         <div class="hero-grid">
           <div class="metric"><div class="label">建议仓位</div><div class="value">{d['position_range']}</div></div>
           <div class="metric"><div class="label">次日上涨概率</div><div class="value">{probability_pct(p['prob_up_1d'])}</div></div>
@@ -189,6 +215,9 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     <div class="metric"><div class="label">止损参考</div><div class="value">{exit_plan['stop_loss_reference']}</div></div>
     <div class="metric"><div class="label">时间退出</div><div class="value">{exit_plan['time_exit_days']} 个交易日</div></div>
   </div></section>
+  <section><h2>5D / 10D / 20D 价格预测分布</h2><div class="grid">
+    {_price_distribution_cards(price_paths)}
+  </div><p class="note">来自 V1.3 路径分布层的 P2 状态条件路径；只展示价格分布参考，不代表确定收益。</p></section>
   <section><h2>模型表现追踪</h2><div class="grid">
     <div class="metric"><div class="label">{historical_stats.get('name', '历史统计线')}</div><div class="value">方向准确率：{probability_pct(historical_stats.get('direction_accuracy'))}</div><p class="note">样本数：{fmt_count(historical_stats.get('sample_count'))}</p><p class="note">{historical_stats.get('description', '包含历史验证、walk-forward、purged walk-forward 等历史样本。')}</p></div>
     <div class="metric"><div class="label">{live_stats.get('name', '实盘统计线')}</div><div class="value">方向准确率：{_live_accuracy_text(live_stats)}</div><p class="note">起始日期：{live_stats.get('start_date', '2026-06-21')} · 样本数：{live_stats.get('sample_count', 0)}</p><p class="note">正确次数：{live_stats.get('correct_count', 0)} · 错误次数：{live_stats.get('wrong_count', 0)}</p><p class="note">{live_stats.get('description', '只统计 V3.0 正式运行后的真实表现。')}</p></div>
@@ -234,6 +263,24 @@ def fmt_number(value: Any, digits: int = 4) -> str:
         return "N/A"
 
 
+def fmt_pct_points(value: Any, digits: int = 2) -> str:
+    if value is None:
+        return "N/A"
+    try:
+        return f"{float(value):.{digits}f}%"
+    except (TypeError, ValueError):
+        return "N/A"
+
+
+def fmt_amount(value: Any) -> str:
+    if value is None:
+        return "N/A"
+    try:
+        return f"{float(value):,.2f}"
+    except (TypeError, ValueError):
+        return "N/A"
+
+
 def fmt_count(value: Any) -> str:
     if value is None:
         return "--"
@@ -247,3 +294,26 @@ def _live_accuracy_text(live_stats: dict[str, Any]) -> str:
     if not live_stats.get("sample_count"):
         return "暂无样本"
     return probability_pct(live_stats.get("direction_accuracy"))
+
+
+def _price_distribution_markdown(price_paths: dict[str, Any]) -> list[str]:
+    lines: list[str] = []
+    for horizon in ("5D", "10D", "20D"):
+        node = price_paths.get(horizon) or {}
+        lines.extend(
+            [
+                f"- {horizon}: P10 {fmt_number(node.get('terminal_price_p10'))} / P50 {fmt_number(node.get('terminal_price_p50'))} / P90 {fmt_number(node.get('terminal_price_p90'))}",
+                f"  - 期末上涨概率: {probability_pct(node.get('positive_terminal_prob'))}; 样本数: {fmt_count(node.get('sample_size'))}",
+            ]
+        )
+    return lines
+
+
+def _price_distribution_cards(price_paths: dict[str, Any]) -> str:
+    cards = []
+    for horizon in ("5D", "10D", "20D"):
+        node = price_paths.get(horizon) or {}
+        cards.append(
+            f"""<div class="metric"><div class="label">{horizon} 预测分布</div><div class="value">P50 {fmt_number(node.get('terminal_price_p50'))}</div><p class="note">P10-P90：{fmt_number(node.get('terminal_price_p10'))} ~ {fmt_number(node.get('terminal_price_p90'))}</p><p class="note">期末上涨概率：{probability_pct(node.get('positive_terminal_prob'))} · 样本数：{fmt_count(node.get('sample_size'))}</p></div>"""
+        )
+    return "\n    ".join(cards)
