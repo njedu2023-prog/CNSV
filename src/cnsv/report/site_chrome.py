@@ -4,6 +4,7 @@ import re
 
 
 GLOBAL_NAV_ITEMS = [
+    ("trading.html", "交易决策", "trading"),
     ("index.html#coverage", "数据状态", "index"),
     ("index.html#priceVolumeCards", "核心特征", "index"),
     ("baseline.html", "基准模型", "baseline"),
@@ -13,18 +14,17 @@ GLOBAL_NAV_ITEMS = [
     ("decision_support.html", "人工辅助", "decision_support"),
     ("risk.html", "风控解释", "risk"),
     ("live.html", "人工确认", "live"),
-    ("trading.html", "交易决策", "trading"),
 ]
 
 PAGE_EYEBROWS = {
-    "index": "CNSV V3.0 主线决策看板",
-    "baseline": "CNSV V1.2 基准模型",
-    "validation": "CNSV V1.2.2 基准验证",
-    "path": "CNSV V1.3 路径分布",
-    "backtest": "CNSV V1.4 观察回测",
-    "decision_support": "CNSV V1.5 人工辅助",
-    "risk": "CNSV V1.6 风控解释",
-    "live": "CNSV V2.0 人工确认",
+    "index": "CNSV V3.0 交易决策系统",
+    "baseline": "CNSV V3.0 交易决策系统",
+    "validation": "CNSV V3.0 交易决策系统",
+    "path": "CNSV V3.0 交易决策系统",
+    "backtest": "CNSV V3.0 交易决策系统",
+    "decision_support": "CNSV V3.0 交易决策系统",
+    "risk": "CNSV V3.0 交易决策系统",
+    "live": "CNSV V3.0 交易决策系统",
     "trading": "CNSV V3.0 交易决策系统",
 }
 
@@ -107,6 +107,13 @@ def _normalize_header(html: str, active: str) -> str:
 
 
 def apply_site_chrome(html: str, active: str) -> str:
+    html = re.sub(
+        r"<title>.*?</title>",
+        "<title>CNSV V3.0 交易决策系统</title>",
+        html,
+        count=1,
+        flags=re.S,
+    )
     html = re.sub(r"\s*<nav class=\"global-nav\">.*?</nav>", "", html, count=1, flags=re.S)
     html = re.sub(r"\s*<div class=\"topbar\">.*?</div>", "", html, count=1, flags=re.S)
     html = html.replace("<body>", f"<body>\n{site_nav(active)}", 1)
