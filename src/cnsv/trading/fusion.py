@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
+import pandas as pd
+
 from cnsv.trading import FORBIDDEN_TRADING_AUTOMATION, TRADING_REPORT_TYPE, TRADING_STAGE, TRADING_VERSION
 from cnsv.trading.ev_engine import compute_ev
 from cnsv.trading.exit_engine import compute_exit_plan
@@ -13,6 +15,27 @@ from cnsv.trading.return_distribution import compute_return_distribution
 from cnsv.trading.risk_control import evaluate_trading_risk
 from cnsv.trading.signal_engine import decide_signal
 from cnsv.trading.utils import pct
+
+CN_MARKET_HOLIDAY_FALLBACK = {
+    "2026-01-01",
+    "2026-02-16",
+    "2026-02-17",
+    "2026-02-18",
+    "2026-02-19",
+    "2026-02-20",
+    "2026-02-23",
+    "2026-04-06",
+    "2026-05-01",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-06-19",
+    "2026-09-25",
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+}
 
 
 def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str, Any]:
@@ -31,19 +54,11 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     features = feature_report.get("features") or {}
     price_volume = features.get("price_volume") or {}
     trade_date = meta.get("latest_trade_date") or (data_report.get("data_manifest") or {}).get("latest_trade_date") or "N/A"
-    signal_date = date.today().isoformat()
-    prediction_date = (date.today() + timedelta(days=1)).isoformat()
     decision = {
         **signal,
         **position,
     }
-    timeline = {
-        "data_trade_date": trade_date,
-        "signal_date": signal_date,
-        "prediction_date": prediction_date,
-        "verify_date": prediction_date,
-        "predicted_direction": predicted_direction({"decision": decision}),
-    }
+    timeline = _decision_timeline(trade_date, decision, evidence_bundle)
     market_snapshot = {
         "latest_trade_date": price_volume.get("latest_trade_date") or trade_date,
         "latest_close": price_volume.get("latest_close"),
@@ -94,6 +109,77 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         payload["risk"]["block_reasons"] = payload["risk"].get("block_reasons", []) + ["缺少上游报告"]
         payload["is_trade_signal"] = False
     return payload
+
+
+def _decision_timeline(trade_date: str, decision: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
+    signal_date = date.today().isoformat()
+    calendar_dates = _open_trade_dates(evidence_bundle.get("trade_calendar"))
+    prediction_date, prediction_source = _next_trade_date(trade_date, calendar_dates)
+    verify_date, verify_source = _next_trade_date(prediction_date, calendar_dates)
+    calendar_source = evidence_bundle.get("trade_calendar_source")
+    if not calendar_source:
+        calendar_source = "CNSVdata trade_calendar" if calendar_dates else "fallback_cn_market_holiday_business_day"
+    return {
+        "data_trade_date": trade_date,
+        "signal_date": signal_date,
+        "prediction_date": prediction_date,
+        "verify_date": verify_date,
+        "predicted_direction": predicted_direction({"decision": decision}),
+        "calendar_source": calendar_source,
+        "prediction_date_source": prediction_source,
+        "verify_date_source": verify_source,
+    }
+
+
+def _open_trade_dates(calendar: Any) -> list[str]:
+    if calendar is None:
+        return []
+    if isinstance(calendar, pd.DataFrame):
+        if calendar.empty:
+            return []
+        frame = calendar.copy()
+        date_col = "trade_date" if "trade_date" in frame.columns else "cal_date" if "cal_date" in frame.columns else frame.columns[0]
+        if "is_open" in frame.columns:
+            frame = frame[frame["is_open"].astype(int) == 1]
+        dates = frame[date_col].astype(str).map(_date_text).dropna().tolist()
+        return sorted(set(dates))
+    if isinstance(calendar, dict):
+        values = calendar.get("open_dates") or calendar.get("trade_dates") or calendar.get("dates") or []
+    else:
+        values = calendar
+    if isinstance(values, (list, tuple, set)):
+        dates = [_date_text(value) for value in values]
+        return sorted({value for value in dates if value})
+    return []
+
+
+def _next_trade_date(current: str, open_dates: list[str]) -> tuple[str, str]:
+    current_date = _date_text(current)
+    if open_dates and current_date:
+        for item in open_dates:
+            if item > current_date:
+                return item, "trade_calendar"
+    return _next_business_day(current_date), "fallback_cn_market_holiday_business_day"
+
+
+def _next_business_day(current: str) -> str:
+    try:
+        day = date.fromisoformat(current)
+    except (TypeError, ValueError):
+        day = date.today()
+    day += timedelta(days=1)
+    while day.weekday() >= 5 or day.isoformat() in CN_MARKET_HOLIDAY_FALLBACK:
+        day += timedelta(days=1)
+    return day.isoformat()
+
+
+def _date_text(value: Any) -> str:
+    if value is None:
+        return ""
+    text = str(value)[:10]
+    if len(text) == 8 and text.isdigit():
+        return f"{text[:4]}-{text[4:6]}-{text[6:8]}"
+    return text
 
 
 def _historical_validation(reports: dict[str, Any]) -> dict[str, Any]:
