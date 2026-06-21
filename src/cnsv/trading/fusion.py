@@ -6,6 +6,7 @@ from typing import Any
 from cnsv.trading import FORBIDDEN_TRADING_AUTOMATION, TRADING_REPORT_TYPE, TRADING_STAGE, TRADING_VERSION
 from cnsv.trading.ev_engine import compute_ev
 from cnsv.trading.exit_engine import compute_exit_plan
+from cnsv.trading.live_stats import build_model_performance
 from cnsv.trading.position_engine import compute_position
 from cnsv.trading.probability import compute_next_day_probability
 from cnsv.trading.return_distribution import compute_return_distribution
@@ -55,6 +56,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "risk": risk,
         "exit": exit_plan,
         "historical_validation": historical_validation,
+        "model_performance": build_model_performance(historical_validation),
         "human_explanation": _human_explanation(decision, probability, ev, risk),
         "model_sources": _model_sources(reports),
         "missing_reports": evidence_bundle.get("missing_reports", []),
