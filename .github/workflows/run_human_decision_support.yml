@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -55,6 +53,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          tmpdir="$(mktemp -d)"
           report_paths=(
             docs/data/latest_human_decision_support_report.json
             docs/data/human_decision_support_registry.json
@@ -63,15 +62,26 @@ jobs:
             docs/decision_support.html
             docs/index.html
           )
-          if git diff --quiet -- "${report_paths[@]}"; then
+          actual_paths=()
+          for path in "${report_paths[@]}"; do
+            for file in $path; do
+              if [ -e "$file" ]; then
+                actual_paths+=("$file")
+              fi
+            done
+          done
+          if [ "${#actual_paths[@]}" -eq 0 ] || git diff --quiet -- "${actual_paths[@]}"; then
             echo "No human decision support updates to commit"
             exit 0
           fi
-          git stash push --include-untracked --message human-decision-support-updates -- "${report_paths[@]}"
+          for file in "${actual_paths[@]}"; do
+            mkdir -p "$tmpdir/$(dirname "$file")"
+            cp "$file" "$tmpdir/$file"
+          done
           git fetch origin main
           git reset --hard origin/main
-          git stash pop
-          git add "${report_paths[@]}"
+          cp -R "$tmpdir"/. .
+          git add "${actual_paths[@]}"
           if git diff --cached --quiet; then
             echo "No human decision support updates after sync"
             exit 0
