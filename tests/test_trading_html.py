@@ -13,13 +13,16 @@ def test_trading_html_is_chinese_dashboard():
     assert "信号生成日" in html
     assert "预测日" in html
     assert "数据交易日" in html
+    assert 'aria-label="交易决策日期表"' in html
     assert "收盘数据日" in html
     assert "最新收盘价" in html
     assert "收盘涨跌幅" in html
+    assert 'aria-label="收盘数据表"' in html
     assert "5D / 10D / 20D 价格预测分布" in html
     assert "5D 预测分布" in html
     assert "10D 预测分布" in html
     assert "20D 预测分布" in html
+    assert html.index("今日决策") < html.index("5D / 10D / 20D 价格预测分布") < html.index("概率判断")
     assert "交易决策" in nav
     assert "V3.0 交易决策" not in nav
     assert "V1.2" not in nav
