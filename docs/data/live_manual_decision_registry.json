@@ -1,0 +1,35 @@
+[
+  {
+    "registry_type": "live_manual_decision",
+    "version": "2.0",
+    "stage": "V2.0_live_manual_decision_system",
+    "inputs": [
+      "latest_data_report.json",
+      "latest_feature_report.json",
+      "latest_baseline_model_report.json",
+      "latest_baseline_validation_report.json",
+      "latest_path_distribution_report.json",
+      "latest_path_validation_report.json",
+      "latest_observation_backtest_report.json",
+      "latest_human_decision_support_report.json",
+      "latest_risk_explanation_report.json"
+    ],
+    "outputs": [
+      "latest_live_manual_decision_report.json",
+      "live_manual_decision_registry.json",
+      "latest_live_manual_decision_report.md",
+      "live.html",
+      "manual_logs"
+    ],
+    "is_trade_signal": false,
+    "auto_order_enabled": false,
+    "broker_api_enabled": false,
+    "formal_signal_enabled": false,
+    "forbidden": [
+      "formal_signal_generation",
+      "auto_order",
+      "broker_api"
+    ],
+    "next_stage": "V2.0 acceptance and daily manual operation"
+  }
+]

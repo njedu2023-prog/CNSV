@@ -1,0 +1,1296 @@
+{
+  "meta": {
+    "system": "CNSV",
+    "version": "2.0",
+    "stage": "V2.0_live_manual_decision_system",
+    "report_type": "live_manual_decision_report",
+    "ts_code": "600150.SH",
+    "name": "中国船舶",
+    "generated_at": "2026-06-21T05:22:57.503991+00:00",
+    "latest_trade_date": "2026-06-18",
+    "is_trade_signal": false
+  },
+  "cnsvdata_gate": {
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
+    "can_generate_formal_signal": false,
+    "blocking_reason": null,
+    "warnings": [
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
+    ],
+    "can_auto_order": false,
+    "can_connect_broker_api": false,
+    "live_stage_permission": "V2.0 supports manual review only."
+  },
+  "live_decision_evidence_availability": {
+    "all_required_available": true,
+    "available_reports": [
+      "data_report",
+      "feature_report",
+      "baseline_model_report",
+      "baseline_validation_report",
+      "path_distribution_report",
+      "path_validation_report",
+      "observation_backtest_report",
+      "human_decision_support_report",
+      "risk_explanation_report"
+    ],
+    "missing_reports": [],
+    "failed_quality_gates": [],
+    "warning_quality_gates": [
+      {
+        "report": "human_decision_support_report",
+        "quality_key": "human_decision_support_quality",
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json"
+      },
+      {
+        "report": "risk_explanation_report",
+        "quality_key": "risk_explanation_quality",
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json"
+      }
+    ],
+    "stale_evidence": [],
+    "reports": {
+      "data_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
+        "quality_status": "PASS",
+        "latest_trade_date": "2026-06-18"
+      },
+      "feature_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json",
+        "quality_status": "PASS",
+        "latest_trade_date": "2026-06-18"
+      },
+      "baseline_model_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json",
+        "quality_status": "PASS",
+        "latest_trade_date": "2026-06-18"
+      },
+      "baseline_validation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json",
+        "quality_status": "N/A",
+        "latest_trade_date": "2026-06-18"
+      },
+      "path_distribution_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json",
+        "quality_status": "PASS",
+        "latest_trade_date": "2026-06-18"
+      },
+      "path_validation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json",
+        "quality_status": "PASS",
+        "latest_trade_date": "2026-06-18"
+      },
+      "observation_backtest_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json",
+        "quality_status": "PASS",
+        "latest_trade_date": "2026-06-18"
+      },
+      "human_decision_support_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json",
+        "quality_status": "WARN",
+        "latest_trade_date": "2026-06-18"
+      },
+      "risk_explanation_report": {
+        "available": true,
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json",
+        "quality_status": "WARN",
+        "latest_trade_date": "2026-06-18"
+      }
+    }
+  },
+  "live_state_overview": {
+    "latest_trade_date": "2026-06-18",
+    "latest_close": 36.14,
+    "data_status": "PASS",
+    "feature_status": "PASS",
+    "baseline_status": "PASS",
+    "baseline_validation_status": "N/A",
+    "path_status": "PASS",
+    "path_validation_status": "PASS",
+    "backtest_status": "PASS",
+    "support_status": "WARN",
+    "risk_status": "WARN",
+    "overall_system_status": "ready_for_manual_review",
+    "manual_decision_status": "review_required",
+    "manual_review_required": true,
+    "status_reasons": [
+      "high risk or evidence conflict requires manual review"
+    ]
+  },
+  "evidence_dashboard": {
+    "evidence_availability": {
+      "all_required_available": true,
+      "available_reports": [
+        "data_report",
+        "feature_report",
+        "baseline_model_report",
+        "baseline_validation_report",
+        "path_distribution_report",
+        "path_validation_report",
+        "observation_backtest_report",
+        "human_decision_support_report",
+        "risk_explanation_report"
+      ],
+      "missing_reports": [],
+      "failed_quality_gates": [],
+      "warning_quality_gates": [
+        {
+          "report": "human_decision_support_report",
+          "quality_key": "human_decision_support_quality",
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json"
+        },
+        {
+          "report": "risk_explanation_report",
+          "quality_key": "risk_explanation_quality",
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json"
+        }
+      ],
+      "stale_evidence": [],
+      "reports": {
+        "data_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
+          "quality_status": "PASS",
+          "latest_trade_date": "2026-06-18"
+        },
+        "feature_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json",
+          "quality_status": "PASS",
+          "latest_trade_date": "2026-06-18"
+        },
+        "baseline_model_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json",
+          "quality_status": "PASS",
+          "latest_trade_date": "2026-06-18"
+        },
+        "baseline_validation_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json",
+          "quality_status": "N/A",
+          "latest_trade_date": "2026-06-18"
+        },
+        "path_distribution_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json",
+          "quality_status": "PASS",
+          "latest_trade_date": "2026-06-18"
+        },
+        "path_validation_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json",
+          "quality_status": "PASS",
+          "latest_trade_date": "2026-06-18"
+        },
+        "observation_backtest_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json",
+          "quality_status": "PASS",
+          "latest_trade_date": "2026-06-18"
+        },
+        "human_decision_support_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json",
+          "quality_status": "WARN",
+          "latest_trade_date": "2026-06-18"
+        },
+        "risk_explanation_report": {
+          "available": true,
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json",
+          "quality_status": "WARN",
+          "latest_trade_date": "2026-06-18"
+        }
+      }
+    },
+    "missing_evidence": [],
+    "stale_evidence": [],
+    "failed_quality_gates": [],
+    "warning_quality_gates": [
+      {
+        "report": "human_decision_support_report",
+        "quality_key": "human_decision_support_quality",
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json"
+      },
+      {
+        "report": "risk_explanation_report",
+        "quality_key": "risk_explanation_quality",
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json"
+      }
+    ]
+  },
+  "current_state_card": {
+    "current_price_context": {
+      "latest_close": 36.14,
+      "latest_pct_chg": -2.7187,
+      "ma5": 36.016,
+      "ma20": 36.49999999999999
+    },
+    "trend_state_context": {
+      "trend_state": "downtrend",
+      "ma5_minus_ma20": null,
+      "close_above_ma20": false
+    },
+    "volatility_state_context": {
+      "volatility_state": "normal_vol",
+      "realized_vol_20d": 0.297896693663731,
+      "atr_14d": 1.2549999999999994
+    },
+    "flow_strength_context": {
+      "flow_strength_basic": "mixed",
+      "main_force_net": 5983.419999999998,
+      "net_mf_ratio": -0.013244823641193667,
+      "flow_strength_score": -11.857677652167158,
+      "price_flow_confirm": true,
+      "price_flow_divergence": false,
+      "volume_flow_confirm": "outflow_confirmed"
+    },
+    "minute_structure_context": {
+      "latest_intraday_close": 36.14,
+      "intraday_range_pct": 0.04731599335915885,
+      "close_position_in_day_range": 0.24561403508772017
+    },
+    "state_sample_context": {
+      "B2_state_sample_size": {
+        "5D": 105,
+        "10D": 105,
+        "20D": 105
+      },
+      "P2_state_sample_size": {
+        "5D": 105,
+        "10D": 105,
+        "20D": 105
+      },
+      "P2_role": "auxiliary_only"
+    }
+  },
+  "path_observation_card": {
+    "terminal_distribution_summary": {},
+    "touch_up_summary": {
+      "5D": {
+        "touch_up_5pct_prob": 0.19222743870631195
+      },
+      "10D": {
+        "touch_up_5pct_prob": 0.31862104988247586
+      },
+      "20D": {
+        "touch_up_5pct_prob": 0.4684472374967269
+      }
+    },
+    "touch_down_summary": {
+      "5D": {
+        "touch_down_5pct_prob": 0.14632237871674492
+      },
+      "10D": {
+        "touch_down_5pct_prob": 0.27213371637503264
+      },
+      "20D": {
+        "touch_down_5pct_prob": 0.43309766954700185
+      }
+    },
+    "drawdown_summary": {
+      "5D": {
+        "max_drawdown_p50": -0.02003956754473213,
+        "max_drawdown_p90": -0.0057491821732728815
+      },
+      "10D": {
+        "max_drawdown_p50": -0.03642666435588071,
+        "max_drawdown_p90": -0.014352860381152906
+      },
+      "20D": {
+        "max_drawdown_p50": -0.05669567924033836,
+        "max_drawdown_p90": -0.026429829122163684
+      }
+    },
+    "path_validation_summary": {
+      "status": "PASS",
+      "failed_count": 0,
+      "warn_count": 0,
+      "blocking_error_count": 0,
+      "checks": [
+        {
+          "name": "validation_samples_present",
+          "status": "PASS",
+          "detail": "rows=648"
+        },
+        {
+          "name": "path_leakage_checks",
+          "status": "PASS",
+          "detail": "training <= as_of, truth T+1..T+h"
+        },
+        {
+          "name": "P0_historical_path_replay.standard_present",
+          "status": "PASS",
+          "detail": "P0_historical_path_replay standard metrics present"
+        },
+        {
+          "name": "P0_historical_path_replay.purged_present",
+          "status": "PASS",
+          "detail": "P0_historical_path_replay purged metrics present"
+        },
+        {
+          "name": "P0_historical_path_replay.5D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P0_historical_path_replay.5D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.75"
+        },
+        {
+          "name": "P0_historical_path_replay.5D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P0_historical_path_replay.10D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P0_historical_path_replay.10D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.7638888888888888"
+        },
+        {
+          "name": "P0_historical_path_replay.10D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P0_historical_path_replay.20D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P0_historical_path_replay.20D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.75"
+        },
+        {
+          "name": "P0_historical_path_replay.20D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.standard_present",
+          "status": "PASS",
+          "detail": "P1_volatility_adjusted_path standard metrics present"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.purged_present",
+          "status": "PASS",
+          "detail": "P1_volatility_adjusted_path purged metrics present"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.5D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.5D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.6944444444444444"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.5D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.10D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.10D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.6527777777777778"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.10D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.20D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.20D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.6666666666666666"
+        },
+        {
+          "name": "P1_volatility_adjusted_path.20D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P2_state_conditional_path.standard_present",
+          "status": "PASS",
+          "detail": "P2_state_conditional_path standard metrics present"
+        },
+        {
+          "name": "P2_state_conditional_path.purged_present",
+          "status": "PASS",
+          "detail": "P2_state_conditional_path purged metrics present"
+        },
+        {
+          "name": "P2_state_conditional_path.5D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P2_state_conditional_path.5D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.7222222222222222"
+        },
+        {
+          "name": "P2_state_conditional_path.5D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P2_state_conditional_path.5D.fallback_rate",
+          "status": "PASS",
+          "detail": "fallback_rate=0.3194444444444444"
+        },
+        {
+          "name": "P2_state_conditional_path.10D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P2_state_conditional_path.10D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.6944444444444444"
+        },
+        {
+          "name": "P2_state_conditional_path.10D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P2_state_conditional_path.10D.fallback_rate",
+          "status": "PASS",
+          "detail": "fallback_rate=0.3194444444444444"
+        },
+        {
+          "name": "P2_state_conditional_path.20D.sample_size",
+          "status": "PASS",
+          "detail": "sample_size=72"
+        },
+        {
+          "name": "P2_state_conditional_path.20D.terminal_coverage",
+          "status": "PASS",
+          "detail": "coverage=0.6944444444444444"
+        },
+        {
+          "name": "P2_state_conditional_path.20D.path_metrics",
+          "status": "PASS",
+          "detail": "path validation metrics present"
+        },
+        {
+          "name": "P2_state_conditional_path.20D.fallback_rate",
+          "status": "PASS",
+          "detail": "fallback_rate=0.3194444444444444"
+        }
+      ]
+    },
+    "observation_backtest_support": {
+      "quality": {
+        "status": "PASS",
+        "failed_count": 0,
+        "warn_count": 0,
+        "blocking_error_count": 0,
+        "checks": [
+          {
+            "name": "is_trade_signal_false",
+            "status": "PASS",
+            "detail": "observation backtest is not a trade signal"
+          },
+          {
+            "name": "no_forbidden_trade_fields",
+            "status": "PASS",
+            "detail": "no buy/sell/position/target fields"
+          },
+          {
+            "name": "forbidden_actions_present",
+            "status": "PASS",
+            "detail": "formal_signal_generation, auto_order, broker_api required"
+          },
+          {
+            "name": "leakage_checks_pass",
+            "status": "PASS",
+            "detail": "leakage=PASS"
+          },
+          {
+            "name": "standard_samples_present",
+            "status": "PASS",
+            "detail": "standard_sample_size=648"
+          },
+          {
+            "name": "purged_samples_present",
+            "status": "PASS",
+            "detail": "purged_sample_size=81"
+          },
+          {
+            "name": "P0_historical_path_replay.standard_present",
+            "status": "PASS",
+            "detail": "P0_historical_path_replay standard metrics"
+          },
+          {
+            "name": "P0_historical_path_replay.purged_present",
+            "status": "PASS",
+            "detail": "P0_historical_path_replay purged metrics"
+          },
+          {
+            "name": "P0_historical_path_replay.5D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P0_historical_path_replay.5D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P0_historical_path_replay.5D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P0_historical_path_replay.10D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P0_historical_path_replay.10D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P0_historical_path_replay.10D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P0_historical_path_replay.20D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P0_historical_path_replay.20D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P0_historical_path_replay.20D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.standard_present",
+            "status": "PASS",
+            "detail": "P1_volatility_adjusted_path standard metrics"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.purged_present",
+            "status": "PASS",
+            "detail": "P1_volatility_adjusted_path purged metrics"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.5D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.5D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.5D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.10D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.10D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.10D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.20D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.20D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P1_volatility_adjusted_path.20D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P2_state_conditional_path.standard_present",
+            "status": "PASS",
+            "detail": "P2_state_conditional_path standard metrics"
+          },
+          {
+            "name": "P2_state_conditional_path.purged_present",
+            "status": "PASS",
+            "detail": "P2_state_conditional_path purged metrics"
+          },
+          {
+            "name": "P2_state_conditional_path.5D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P2_state_conditional_path.5D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P2_state_conditional_path.5D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P2_state_conditional_path.10D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P2_state_conditional_path.10D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P2_state_conditional_path.10D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "P2_state_conditional_path.20D.sample_size",
+            "status": "PASS",
+            "detail": "sample_size=72"
+          },
+          {
+            "name": "P2_state_conditional_path.20D.probabilities",
+            "status": "PASS",
+            "detail": "probabilities and rates in [0,1]"
+          },
+          {
+            "name": "P2_state_conditional_path.20D.finite",
+            "status": "PASS",
+            "detail": "no NaN/inf"
+          },
+          {
+            "name": "touch_probability_groups",
+            "status": "PASS",
+            "detail": "touch probability buckets exist"
+          },
+          {
+            "name": "drawdown_risk_groups",
+            "status": "PASS",
+            "detail": "drawdown risk buckets exist"
+          },
+          {
+            "name": "upside_path_groups",
+            "status": "PASS",
+            "detail": "upside path buckets exist"
+          },
+          {
+            "name": "model_comparison",
+            "status": "PASS",
+            "detail": "P0/P1/P2 comparison exists"
+          },
+          {
+            "name": "condition_quality",
+            "status": "PASS",
+            "detail": "condition quality exists"
+          }
+        ]
+      },
+      "scope": {
+        "horizons": [
+          5,
+          10,
+          20
+        ],
+        "models": [
+          "P0_historical_path_replay",
+          "P1_volatility_adjusted_path",
+          "P2_state_conditional_path"
+        ],
+        "standard_walk_forward": true,
+        "purged_walk_forward": true,
+        "standard_sample_size": 648,
+        "purged_sample_size": 81,
+        "validation_step": 50,
+        "backtest_type": "observation_only"
+      },
+      "model_comparison": {
+        "standard_walk_forward": {
+          "5D": {
+            "P1_vs_P0_terminal_coverage_delta": -0.05555555555555558,
+            "P1_vs_P0_touch_brier_delta": -0.0027254293659199347,
+            "P1_vs_P0_drawdown_coverage_delta": -0.05555555555555558,
+            "P1_vs_P0_conclusion": "P1 is neutral versus P0",
+            "P2_vs_P1_terminal_coverage_delta": 0.02777777777777779,
+            "P2_vs_P1_touch_brier_delta": 0.005348539438699618,
+            "P2_vs_P1_drawdown_coverage_delta": -0.02777777777777779,
+            "P2_vs_P1_fallback_rate_delta": 0.3194444444444444,
+            "P2_vs_P1_conclusion": "P2 is neutral versus P1",
+            "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
+          },
+          "10D": {
+            "P1_vs_P0_terminal_coverage_delta": -0.11111111111111105,
+            "P1_vs_P0_touch_brier_delta": 0.005915639438580478,
+            "P1_vs_P0_drawdown_coverage_delta": -0.04166666666666663,
+            "P1_vs_P0_conclusion": "P1 is neutral versus P0",
+            "P2_vs_P1_terminal_coverage_delta": 0.04166666666666663,
+            "P2_vs_P1_touch_brier_delta": -0.0034425229427541004,
+            "P2_vs_P1_drawdown_coverage_delta": -0.01388888888888895,
+            "P2_vs_P1_fallback_rate_delta": 0.3194444444444444,
+            "P2_vs_P1_conclusion": "P2 is neutral versus P1",
+            "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
+          },
+          "20D": {
+            "P1_vs_P0_terminal_coverage_delta": -0.08333333333333337,
+            "P1_vs_P0_touch_brier_delta": 0.010676954928078908,
+            "P1_vs_P0_drawdown_coverage_delta": -0.05555555555555558,
+            "P1_vs_P0_conclusion": "P1 underperforms P0",
+            "P2_vs_P1_terminal_coverage_delta": 0.02777777777777779,
+            "P2_vs_P1_touch_brier_delta": -0.0057745532937951705,
+            "P2_vs_P1_drawdown_coverage_delta": -0.01388888888888884,
+            "P2_vs_P1_fallback_rate_delta": 0.3194444444444444,
+            "P2_vs_P1_conclusion": "P2 is neutral versus P1",
+            "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
+          }
+        },
+        "purged_walk_forward": {
+          "5D": {
+            "P1_vs_P0_terminal_coverage_delta": -0.1333333333333333,
+            "P1_vs_P0_touch_brier_delta": 0.0018939827872473947,
+            "P1_vs_P0_drawdown_coverage_delta": -0.06666666666666676,
+            "P1_vs_P0_conclusion": "P1 is neutral versus P0",
+            "P2_vs_P1_terminal_coverage_delta": 0.1333333333333333,
+            "P2_vs_P1_touch_brier_delta": 0.00511352730552439,
+            "P2_vs_P1_drawdown_coverage_delta": 0.0,
+            "P2_vs_P1_fallback_rate_delta": 0.2,
+            "P2_vs_P1_conclusion": "P2 is neutral versus P1",
+            "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
+          },
+          "10D": {
+            "P1_vs_P0_terminal_coverage_delta": 0.0,
+            "P1_vs_P0_touch_brier_delta": 0.020840523703125197,
+            "P1_vs_P0_drawdown_coverage_delta": -0.25,
+            "P1_vs_P0_conclusion": "P1 underperforms P0",
+            "P2_vs_P1_terminal_coverage_delta": 0.0,
+            "P2_vs_P1_touch_brier_delta": -0.01956334878975552,
+            "P2_vs_P1_drawdown_coverage_delta": 0.125,
+            "P2_vs_P1_fallback_rate_delta": 0.25,
+            "P2_vs_P1_conclusion": "P2 improves over P1",
+            "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
+          },
+          "20D": {
+            "P1_vs_P0_terminal_coverage_delta": 0.0,
+            "P1_vs_P0_touch_brier_delta": 0.02194564125936707,
+            "P1_vs_P0_drawdown_coverage_delta": -0.25,
+            "P1_vs_P0_conclusion": "P1 underperforms P0",
+            "P2_vs_P1_terminal_coverage_delta": 0.25,
+            "P2_vs_P1_touch_brier_delta": -0.03800979463817464,
+            "P2_vs_P1_drawdown_coverage_delta": 0.0,
+            "P2_vs_P1_fallback_rate_delta": 0.5,
+            "P2_vs_P1_conclusion": "P2 improves over P1",
+            "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
+          }
+        }
+      }
+    }
+  },
+  "risk_explanation_card": {
+    "overall_risk_level": "high",
+    "risk_confidence": "medium",
+    "primary_risk_sources": [
+      "p2_auxiliary_risk",
+      "evidence_conflict_risk"
+    ],
+    "secondary_risk_sources": [
+      "data_risk",
+      "feature_risk",
+      "baseline_model_risk",
+      "path_distribution_risk",
+      "path_validation_risk",
+      "observation_backtest_risk",
+      "decision_support_risk",
+      "system_boundary_risk"
+    ],
+    "risk_scenario_cards": [
+      {
+        "scenario_id": "downside_touch_risk_card",
+        "scenario_name": "下穿路径风险",
+        "risk_level": "medium",
+        "trigger_evidence": [
+          "touch_down_5pct_prob"
+        ],
+        "risk_explanation": "下穿概率升高时，风险解释层要求人工复核路径尾部。",
+        "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+        "human_review_items": [
+          "人工复核证据来源",
+          "确认风险解释未被用作交易动作"
+        ],
+        "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+      },
+      {
+        "scenario_id": "max_drawdown_risk_card",
+        "scenario_name": "最大回撤风险",
+        "risk_level": "medium",
+        "trigger_evidence": [
+          "max_drawdown_p50",
+          "max_drawdown_p90"
+        ],
+        "risk_explanation": "历史路径回撤仅表示观察风险，不构成执行参数。",
+        "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+        "human_review_items": [
+          "人工复核证据来源",
+          "确认风险解释未被用作交易动作"
+        ],
+        "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+      },
+      {
+        "scenario_id": "model_conflict_risk_card",
+        "scenario_name": "模型分歧风险",
+        "risk_level": "high",
+        "trigger_evidence": [
+          "20D P1 相对 P0 表现偏弱。",
+          "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+        ],
+        "risk_explanation": "模型分歧表示证据不一致，需要人工复核。",
+        "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+        "human_review_items": [
+          "人工复核证据来源",
+          "确认风险解释未被用作交易动作"
+        ],
+        "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+      },
+      {
+        "scenario_id": "p2_instability_risk_card",
+        "scenario_name": "P2 辅助层不稳定风险",
+        "risk_level": "high",
+        "trigger_evidence": [
+          "P2 fallback_rate",
+          "state_sample_size"
+        ],
+        "risk_explanation": "P2 只作为辅助状态层，禁止作为核心依赖。",
+        "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+        "human_review_items": [
+          "人工复核证据来源",
+          "确认风险解释未被用作交易动作"
+        ],
+        "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+      },
+      {
+        "scenario_id": "data_quality_risk_card",
+        "scenario_name": "数据质量风险",
+        "risk_level": "low",
+        "trigger_evidence": [],
+        "risk_explanation": "数据缺失或门禁异常时，风险解释必须降级。",
+        "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+        "human_review_items": [
+          "人工复核证据来源",
+          "确认风险解释未被用作交易动作"
+        ],
+        "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+      },
+      {
+        "scenario_id": "evidence_insufficiency_risk_card",
+        "scenario_name": "证据不足风险",
+        "risk_level": "low",
+        "trigger_evidence": [],
+        "risk_explanation": "上游证据缺失时不得输出高置信解释。",
+        "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
+        "human_review_items": [
+          "人工复核证据来源",
+          "确认风险解释未被用作交易动作"
+        ],
+        "not_trade_signal_statement": "本卡片是风险解释，不是交易信号。"
+      }
+    ],
+    "risk_review_checklist": [
+      {
+        "id": "check_data_freshness",
+        "text": "确认 latest_trade_date 与人工复核日期是否匹配。"
+      },
+      {
+        "id": "check_feature_unknown",
+        "text": "复核趋势、波动率、资金流状态是否存在 unknown 或降级。"
+      },
+      {
+        "id": "check_model_conflict",
+        "text": "复核 B1/B3、P0/P1/P2 之间的方向差异。"
+      },
+      {
+        "id": "check_path_downside",
+        "text": "复核 20D 下穿概率与路径尾部风险。"
+      },
+      {
+        "id": "check_drawdown_exposure",
+        "text": "复核历史最大回撤分布与当前波动状态。"
+      },
+      {
+        "id": "check_touch_down_risk",
+        "text": "复核 touch_down 概率在观察级回测中的有效性。"
+      },
+      {
+        "id": "check_p2_fallback",
+        "text": "复核 P2 fallback_rate 与状态样本覆盖。"
+      },
+      {
+        "id": "check_purged_sample_size",
+        "text": "复核 purged 样本量是否足以支撑观察结论。"
+      },
+      {
+        "id": "check_evidence_conflict",
+        "text": "复核证据冲突来源，不得转化为操作动作。"
+      },
+      {
+        "id": "check_human_review_required",
+        "text": "确认所有人工复核项已逐条记录。"
+      }
+    ]
+  },
+  "evidence_conflict_card": {
+    "evidence_conflict": true,
+    "conflict_reasons": [
+      "20D P1 相对 P0 表现偏弱。",
+      "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+    ],
+    "model_disagreement_points": [
+      "B1 与 B3 的 20D 中位收益方向不一致，需要人工复核。"
+    ],
+    "risk_conflict_points": {
+      "risk_type": "evidence_conflict_risk",
+      "risk_level": "high",
+      "risk_reason": "多模型证据存在方向差异时必须人工复核，不得转化为交易动作。",
+      "risk_evidence": [
+        "latest_human_decision_support_report.json"
+      ],
+      "source_reports": [
+        "latest_human_decision_support_report.json"
+      ],
+      "human_review_required": true
+    },
+    "manual_confirmation_required": true
+  },
+  "manual_review_checklist": [
+    {
+      "id": "check_data_freshness",
+      "text": "确认数据新鲜度与最新交易日。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_latest_trade_date",
+      "text": "确认所有上游报告 latest_trade_date 一致。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_path_downside",
+      "text": "复核路径下穿概率与尾部路径风险。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_drawdown_exposure",
+      "text": "复核最大回撤分布与当前波动状态。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_model_conflict",
+      "text": "复核 B/P 模型之间的证据分歧。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_p2_fallback",
+      "text": "确认 P2 仅为辅助层并复核 fallback 风险。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_evidence_conflict",
+      "text": "复核证据冲突原因。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_risk_level",
+      "text": "确认总体风险等级与主要风险来源。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_manual_notes",
+      "text": "填写人工复核备注。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "confirm_no_auto_order",
+      "text": "确认系统不执行自动交易动作。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_feature_unknown",
+      "text": "复核趋势、波动率、资金流状态是否存在 unknown 或降级。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_touch_down_risk",
+      "text": "复核 touch_down 概率在观察级回测中的有效性。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_purged_sample_size",
+      "text": "复核 purged 样本量是否足以支撑观察结论。",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "id": "check_human_review_required",
+      "text": "确认所有人工复核项已逐条记录。",
+      "required": true,
+      "status": "pending"
+    }
+  ],
+  "manual_confirmation_panel": {
+    "operator_name": "N/A",
+    "decision_session_id": "manual-2026-06-18-20260621052257",
+    "decision_snapshot_id": "live-2026-06-18-9reports",
+    "manual_review_timestamp": "2026-06-21T05:22:57.503974+00:00",
+    "manual_review_status": "not_started",
+    "operator_notes": "",
+    "manual_confirmation_items": [
+      {
+        "id": "check_data_freshness",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_latest_trade_date",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_path_downside",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_drawdown_exposure",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_model_conflict",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_p2_fallback",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_evidence_conflict",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_risk_level",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_manual_notes",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "confirm_no_auto_order",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_feature_unknown",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_touch_down_risk",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_purged_sample_size",
+        "confirmed": false,
+        "required": true
+      },
+      {
+        "id": "check_human_review_required",
+        "confirmed": false,
+        "required": true
+      }
+    ],
+    "manual_decision_status": "review_required"
+  },
+  "manual_decision_status": "review_required",
+  "manual_review_required": true,
+  "auto_order_enabled": false,
+  "broker_api_enabled": false,
+  "formal_signal_enabled": false,
+  "forbidden_actions": [
+    "formal_signal_generation",
+    "auto_order",
+    "broker_api"
+  ],
+  "next_stage": "V2.0 acceptance and daily manual operation",
+  "manual_action_log": {
+    "decision_session_id": "manual-2026-06-18-20260621052257",
+    "decision_snapshot_id": "live-2026-06-18-9reports",
+    "manual_review_status": "not_started",
+    "execution_action_recorded": false
+  },
+  "live_manual_decision_quality": {
+    "status": "WARN",
+    "failed_count": 0,
+    "warn_count": 4,
+    "blocking_error_count": 0,
+    "checks": [
+      {
+        "name": "version_is_2_0",
+        "status": "PASS",
+        "detail": "version=2.0"
+      },
+      {
+        "name": "stage_is_live_manual_decision",
+        "status": "PASS",
+        "detail": "stage=V2.0_live_manual_decision_system"
+      },
+      {
+        "name": "is_trade_signal_false",
+        "status": "PASS",
+        "detail": "manual cockpit only"
+      },
+      {
+        "name": "automation_disabled",
+        "status": "PASS",
+        "detail": "execution switches disabled"
+      },
+      {
+        "name": "forbidden_actions_present",
+        "status": "PASS",
+        "detail": "required forbidden actions present"
+      },
+      {
+        "name": "no_forbidden_live_fields",
+        "status": "PASS",
+        "detail": "no direct trading command fields"
+      },
+      {
+        "name": "finite_payload",
+        "status": "PASS",
+        "detail": "no NaN/inf values"
+      },
+      {
+        "name": "risk_explanation_available",
+        "status": "PASS",
+        "detail": "V1.6 evidence required"
+      },
+      {
+        "name": "no_failed_upstream_unblocked",
+        "status": "PASS",
+        "detail": "failed upstream gates must block or degrade"
+      },
+      {
+        "name": "manual_decision_status_allowed",
+        "status": "PASS",
+        "detail": "manual_decision_status=review_required"
+      },
+      {
+        "name": "manual_review_status_allowed",
+        "status": "PASS",
+        "detail": "manual_review_status=not_started"
+      },
+      {
+        "name": "manual_log_safe",
+        "status": "PASS",
+        "detail": "manual log has no execution action"
+      },
+      {
+        "name": "missing_reports_warn",
+        "status": "PASS",
+        "detail": "missing_reports=[]"
+      },
+      {
+        "name": "quality_warnings_warn",
+        "status": "WARN",
+        "detail": "warning_quality_gates=2"
+      },
+      {
+        "name": "risk_review_warn",
+        "status": "WARN",
+        "detail": "manual_review_required=True"
+      },
+      {
+        "name": "evidence_conflict_warn",
+        "status": "WARN",
+        "detail": "evidence conflict requires manual confirmation"
+      },
+      {
+        "name": "high_risk_warn",
+        "status": "WARN",
+        "detail": "overall_risk_level=high"
+      }
+    ]
+  }
+}
