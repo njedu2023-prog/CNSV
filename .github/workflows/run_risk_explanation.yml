@@ -1,0 +1,90 @@
+name: Run CNSV Risk Explanation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "config/**"
+      - "docs/data/**"
+      - ".github/workflows/run_risk_explanation.yml"
+
+concurrency:
+  group: cnsv-risk-explanation-main
+  cancel-in-progress: true
+
+jobs:
+  run-risk-explanation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
+      - name: Generate data report
+        run: python -m cnsv.cli.generate_data_report
+      - name: Generate feature report
+        run: python -m cnsv.cli.generate_feature_report
+      - name: Generate baseline model report
+        run: python -m cnsv.cli.run_baseline_models
+      - name: Generate baseline validation report
+        run: python -m cnsv.cli.run_baseline_validation
+      - name: Generate path distribution report
+        run: python -m cnsv.cli.run_path_distribution
+      - name: Generate path validation report
+        run: python -m cnsv.cli.run_path_validation
+      - name: Generate observation backtest report
+        run: python -m cnsv.cli.run_observation_backtest
+      - name: Generate human decision support report
+        run: python -m cnsv.cli.run_human_decision_support
+      - name: Generate risk explanation report
+        run: python -m cnsv.cli.run_risk_explanation
+      - name: Commit risk explanation updates
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          report_paths=(
+            docs/data/latest_risk_explanation_report.json
+            docs/data/risk_explanation_registry.json
+            reports/latest_risk_explanation_report.md
+            reports/archive/*_risk_explanation_report.md
+            docs/risk.html
+            docs/index.html
+          )
+          if git diff --quiet -- "${report_paths[@]}"; then
+            echo "No risk explanation updates to commit"
+            exit 0
+          fi
+          git stash push --include-untracked --message risk-explanation-updates -- "${report_paths[@]}"
+          git fetch origin main
+          git reset --hard origin/main
+          git stash pop
+          git add "${report_paths[@]}"
+          if git diff --cached --quiet; then
+            echo "No risk explanation updates after sync"
+            exit 0
+          fi
+          git commit -m "report: update CNSV risk explanation report"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              break
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            sleep 5
+          done
