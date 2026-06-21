@@ -18,6 +18,9 @@ def test_trading_html_is_chinese_dashboard():
     assert "最新收盘价" in html
     assert "收盘涨跌幅" in html
     assert 'aria-label="收盘数据表"' in html
+    assert "43.13 亿" in html
+    assert ".eyebrow{color:var(--red)" in html
+    assert 'aria-label="概率判断表"' in html
     assert "5D / 10D / 20D 价格预测分布" in html
     assert "5D 预测分布" in html
     assert "10D 预测分布" in html
