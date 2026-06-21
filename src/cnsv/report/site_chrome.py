@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 
+# Shared static page chrome. Keep generated report pages visually consistent.
 GLOBAL_NAV_ITEMS = [
     ("trading.html", "交易决策", "trading"),
     ("index.html#coverage", "数据状态", "index"),
