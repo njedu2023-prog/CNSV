@@ -11,6 +11,9 @@ def test_trading_html_is_chinese_dashboard():
     assert "今日决策" in html
     assert "建议仓位" in html
     assert "风险调整 EV" in html
-    assert "历史验证与回测" in html
-    assert "历史方向准确率" in html
+    assert "模型表现追踪" in html
+    assert "历史统计线" in html
+    assert "实盘统计线" in html
+    assert "暂无样本" in html
+    assert "实盘统计线样本仍然较少" in html
     assert "不自动下单" in html
