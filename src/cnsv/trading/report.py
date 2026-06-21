@@ -69,7 +69,6 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
         f"- 实盘统计线起始日期: {live_stats.get('start_date', '2026-06-21')}",
         f"- 实盘统计线方向准确率: {_live_accuracy_text(live_stats)}",
         f"- 实盘统计线正确/错误/样本数: {live_stats.get('correct_count', 0)} / {live_stats.get('wrong_count', 0)} / {live_stats.get('sample_count', 0)}",
-        "- 样本不足提示: 实盘统计线样本仍然较少，暂不建议单独依赖该准确率判断系统有效性。" if (live_stats.get("sample_count") or 0) < 20 else "",
         "",
         "## 次日涨跌幅分布",
         f"- 预期收益: {pct(dist['expected_return_1d'])}",
@@ -132,12 +131,6 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     b2_purged = ((hist.get("baseline_directional_accuracy") or {}).get("purged") or {})
     p2_std = ((hist.get("path_probability_validation") or {}).get("standard") or {})
     p2_purged = ((hist.get("path_probability_validation") or {}).get("purged") or {})
-    live_sample_count = live_stats.get("sample_count") or 0
-    live_sample_note = (
-        "<p class=\"note warn\">实盘统计线样本仍然较少，暂不建议单独依赖该准确率判断系统有效性。</p>"
-        if live_sample_count < 20
-        else ""
-    )
     signal_class = "buy" if d["signal"] in {"BUY", "STRONG_BUY"} else "sell" if d["signal"] in {"SELL", "STRONG_SELL", "REDUCE"} else "blocked" if d["signal"] == "BLOCKED" else "watch"
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -200,7 +193,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     <div class="metric"><div class="label">{historical_stats.get('name', '历史统计线')}</div><div class="value">方向准确率：{probability_pct(historical_stats.get('direction_accuracy'))}</div><p class="note">样本数：{fmt_count(historical_stats.get('sample_count'))}</p><p class="note">{historical_stats.get('description', '包含历史验证、walk-forward、purged walk-forward 等历史样本。')}</p></div>
     <div class="metric"><div class="label">{live_stats.get('name', '实盘统计线')}</div><div class="value">方向准确率：{_live_accuracy_text(live_stats)}</div><p class="note">起始日期：{live_stats.get('start_date', '2026-06-21')} · 样本数：{live_stats.get('sample_count', 0)}</p><p class="note">正确次数：{live_stats.get('correct_count', 0)} · 错误次数：{live_stats.get('wrong_count', 0)}</p><p class="note">{live_stats.get('description', '只统计 V3.0 正式运行后的真实表现。')}</p></div>
     <div class="metric"><div class="label">历史验证补充</div><div class="value">B2 5D：{probability_pct(b2_std.get('directional_accuracy', 0.0))}</div><p class="note">standard 样本：{fmt_count(b2_std.get('sample_size'))} · purged：{probability_pct(b2_purged.get('directional_accuracy'))}</p><p class="note">P2 覆盖率：{probability_pct(p2_std.get('terminal_p10_p90_coverage'))} · Brier：{fmt_number(p2_std.get('positive_terminal_brier'))}</p></div>
-  </div>{live_sample_note}</section>
+  </div></section>
   <section><h2>人工执行说明</h2>
     <span class="pill">自动下单 <strong>关闭</strong></span>
     <span class="pill">券商接口 <strong>关闭</strong></span>
