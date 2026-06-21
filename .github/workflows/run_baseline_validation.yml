@@ -31,24 +31,45 @@ jobs:
         run: python -m cnsv.cli.run_baseline_validation
       - name: Commit validation report updates
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git restore \
-            docs/data/latest_baseline_model_report.json \
-            docs/data/baseline_registry.json \
-            docs/baseline.html \
-            docs/index.html \
-            reports/latest_baseline_model_report.md \
-            reports/archive/*_baseline_model_report.md || true
-          git add \
-            docs/data/latest_baseline_validation_report.json \
-            docs/data/baseline_validation_registry.json \
-            docs/validation.html \
-            reports/latest_baseline_validation_report.md \
+          tmpdir="$(mktemp -d)"
+          report_paths=(
+            docs/data/latest_baseline_validation_report.json
+            docs/data/baseline_validation_registry.json
+            reports/latest_baseline_validation_report.md
             reports/archive/*_baseline_validation_report.md
+            docs/baseline_validation.html
+            docs/index.html
+          )
+          if git diff --quiet -- "${report_paths[@]}"; then
+            echo "No baseline validation updates to commit"
+            exit 0
+          fi
+          for path in "${report_paths[@]}"; do
+            for file in $path; do
+              if [ -e "$file" ]; then
+                mkdir -p "$tmpdir/$(dirname "$file")"
+                cp "$file" "$tmpdir/$file"
+              fi
+            done
+          done
+          git fetch origin main
+          git reset --hard origin/main
+          cp -R "$tmpdir"/. .
+          git add "${report_paths[@]}"
           if git diff --cached --quiet; then
+            echo "No baseline validation updates after sync"
             exit 0
           fi
           git commit -m "report: update CNSV baseline validation report"
-          git pull --rebase origin main
-          git push
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              break
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            sleep 5
+          done

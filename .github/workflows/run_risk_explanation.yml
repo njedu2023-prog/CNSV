@@ -57,6 +57,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          tmpdir="$(mktemp -d)"
           report_paths=(
             docs/data/latest_risk_explanation_report.json
             docs/data/risk_explanation_registry.json
@@ -69,10 +70,17 @@ jobs:
             echo "No risk explanation updates to commit"
             exit 0
           fi
-          git stash push --include-untracked --message risk-explanation-updates -- "${report_paths[@]}"
+          for path in "${report_paths[@]}"; do
+            for file in $path; do
+              if [ -e "$file" ]; then
+                mkdir -p "$tmpdir/$(dirname "$file")"
+                cp "$file" "$tmpdir/$file"
+              fi
+            done
+          done
           git fetch origin main
           git reset --hard origin/main
-          git stash pop
+          cp -R "$tmpdir"/. .
           git add "${report_paths[@]}"
           if git diff --cached --quiet; then
             echo "No risk explanation updates after sync"
