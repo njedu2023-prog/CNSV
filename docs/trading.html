@@ -9,19 +9,29 @@
   </style>
 </head>
 <body>
-<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html" class="active">V3.0 交易决策</a><a href="data/latest_data_report.json">数据状态</a><a href="data/latest_feature_report.json">核心特征</a><a href="baseline.html">V1.2 基准模型</a><a href="validation.html">V1.2.2 验证</a><a href="path.html">V1.3 路径分布</a><a href="backtest.html">V1.4 观察级回测</a><a href="decision_support.html">V1.5 人工决策辅助</a><a href="risk.html">V1.6 风控解释</a><a href="live.html">V2.0 实盘人工决策</a></nav></div>
+<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html" class="active">交易决策</a><a href="index.html#coverage">数据状态</a><a href="index.html#priceVolumeCards">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
 <main>
   <div class="hero">
     <div>
       <div class="eyebrow">CNSV V3.0 交易决策系统</div>
       <h1>中国船舶 600150.SH</h1>
-      <p class="subtitle">人工执行量化交易决策参考。不自动下单，不连接券商接口。</p>
-      <div class="quick"><a href="index.html">主线看板</a><a href="live.html">V2.0 人工决策</a><a href="data/latest_trading_decision_report.json">原始 JSON</a></div>
       <div class="decision">
         <div class="label">今日决策</div>
+        <div class="hero-grid">
+          <div class="metric"><div class="label">信号生成日</div><div class="value">2026-06-21</div></div>
+          <div class="metric"><div class="label">预测日</div><div class="value">2026-06-22</div></div>
+          <div class="metric"><div class="label">验证日</div><div class="value">2026-06-22</div></div>
+          <div class="metric"><div class="label">数据交易日</div><div class="value">2026-06-18</div></div>
+        </div>
         <div class="signal sell">SELL</div>
         <div class="decision-text">建议卖出 · 降低至低仓位或退出</div>
-        <p class="note">下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。</p>
+        <div class="hero-grid">
+          <div class="metric"><div class="label">收盘数据日</div><div class="value">2026-06-18</div></div>
+          <div class="metric"><div class="label">最新收盘价</div><div class="value">36.1400</div></div>
+          <div class="metric"><div class="label">收盘涨跌幅</div><div class="value">-2.72%</div></div>
+          <div class="metric"><div class="label">成交额</div><div class="value">4,313,475.33</div></div>
+          <div class="metric"><div class="label">MA20</div><div class="value">36.5000</div></div>
+        </div>
         <div class="hero-grid">
           <div class="metric"><div class="label">建议仓位</div><div class="value">降至 0%~10%</div></div>
           <div class="metric"><div class="label">次日上涨概率</div><div class="value">37.96%</div></div>
@@ -55,6 +65,11 @@
     <div class="metric"><div class="label">止损参考</div><div class="value">-2.8%</div></div>
     <div class="metric"><div class="label">时间退出</div><div class="value">10 个交易日</div></div>
   </div></section>
+  <section><h2>5D / 10D / 20D 价格预测分布</h2><div class="grid">
+    <div class="metric"><div class="label">5D 预测分布</div><div class="value">P50 35.7889</div><p class="note">P10-P90：33.9677 ~ 38.5291</p><p class="note">期末上涨概率：41.90% · 样本数：105</p></div>
+    <div class="metric"><div class="label">10D 预测分布</div><div class="value">P50 36.0087</div><p class="note">P10-P90：31.6941 ~ 39.2201</p><p class="note">期末上涨概率：47.62% · 样本数：105</p></div>
+    <div class="metric"><div class="label">20D 预测分布</div><div class="value">P50 36.7185</div><p class="note">P10-P90：31.9460 ~ 40.7437</p><p class="note">期末上涨概率：53.33% · 样本数：105</p></div>
+  </div><p class="note">来自 V1.3 路径分布层的 P2 状态条件路径；只展示价格分布参考，不代表确定收益。</p></section>
   <section><h2>模型表现追踪</h2><div class="grid">
     <div class="metric"><div class="label">历史统计线</div><div class="value">方向准确率：50.70%</div><p class="note">样本数：712</p><p class="note">包含历史验证样本、walk-forward、purged walk-forward 等历史统计结果。</p></div>
     <div class="metric"><div class="label">实盘统计线</div><div class="value">方向准确率：暂无样本</div><p class="note">起始日期：2026-06-21 · 样本数：0</p><p class="note">正确次数：0 · 错误次数：0</p><p class="note">从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。</p></div>
@@ -66,7 +81,7 @@
     <span class="pill">人工参考 <strong>是</strong></span>
     <p class="note">所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。</p>
   </section>
-  <div class="footer">生成时间：2026-06-21T12:29:57.512731+00:00 · 数据日期：2026-06-18</div>
+  <div class="footer">生成时间：2026-06-21T15:05:32.124601+00:00 · 数据日期：2026-06-18</div>
 </main>
 </body>
 </html>
