@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from cnsv.cli.run_live_manual_decision import main as run_live_manual_decision_main
+from cnsv.data.downloader import fetch_parquet
+from cnsv.data.loader import remote_url
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
 from cnsv.trading.live_stats import build_model_performance, update_live_stats_registry
 from cnsv.trading.report import write_trading_html, write_trading_json, write_trading_markdown, write_trading_registry
-from cnsv.utils.io import repo_root
+from cnsv.utils.io import load_default_config, repo_root
 
 
 def main() -> int:
@@ -15,6 +17,7 @@ def main() -> int:
         if code != 0:
             raise RuntimeError("failed to generate V2.0 live manual decision evidence")
     evidence = load_trading_evidence(root)
+    _attach_trade_calendar(evidence)
     payload = build_trading_decision_payload(evidence)
     live_registry = update_live_stats_registry(
         payload,
@@ -35,6 +38,16 @@ def main() -> int:
         f"auto_order={payload['auto_order_enabled']} broker_api={payload['broker_api_enabled']}"
     )
     return 0
+
+
+def _attach_trade_calendar(evidence):
+    try:
+        source_config = load_default_config()["data_source"]
+        evidence["trade_calendar"] = fetch_parquet(remote_url(source_config, "trade_calendar"), timeout=8)
+        evidence["trade_calendar_source"] = "CNSVdata trade_calendar"
+    except Exception as exc:
+        evidence["trade_calendar_source"] = "fallback_cn_market_holiday_business_day"
+        evidence["trade_calendar_error"] = str(exc)
 
 
 def _ensure_trading_entry(path):
