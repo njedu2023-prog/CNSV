@@ -43,22 +43,26 @@ jobs:
             docs/baseline_validation.html
             docs/index.html
           )
-          if git diff --quiet -- "${report_paths[@]}"; then
-            echo "No baseline validation updates to commit"
-            exit 0
-          fi
+          actual_paths=()
           for path in "${report_paths[@]}"; do
             for file in $path; do
               if [ -e "$file" ]; then
-                mkdir -p "$tmpdir/$(dirname "$file")"
-                cp "$file" "$tmpdir/$file"
+                actual_paths+=("$file")
               fi
             done
+          done
+          if [ "${#actual_paths[@]}" -eq 0 ] || git diff --quiet -- "${actual_paths[@]}"; then
+            echo "No baseline validation updates to commit"
+            exit 0
+          fi
+          for file in "${actual_paths[@]}"; do
+            mkdir -p "$tmpdir/$(dirname "$file")"
+            cp "$file" "$tmpdir/$file"
           done
           git fetch origin main
           git reset --hard origin/main
           cp -R "$tmpdir"/. .
-          git add "${report_paths[@]}"
+          git add "${actual_paths[@]}"
           if git diff --cached --quiet; then
             echo "No baseline validation updates after sync"
             exit 0
