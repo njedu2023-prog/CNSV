@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
 from cnsv.trading import FORBIDDEN_TRADING_AUTOMATION, TRADING_REPORT_TYPE, TRADING_STAGE, TRADING_VERSION
 from cnsv.trading.ev_engine import compute_ev
 from cnsv.trading.exit_engine import compute_exit_plan
-from cnsv.trading.live_stats import build_model_performance
+from cnsv.trading.live_stats import build_model_performance, predicted_direction
 from cnsv.trading.position_engine import compute_position
 from cnsv.trading.probability import compute_next_day_probability
 from cnsv.trading.return_distribution import compute_return_distribution
@@ -28,10 +28,29 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     data_report = reports.get("data_report") or {}
     feature_report = reports.get("feature_report") or {}
     meta = feature_report.get("meta") or data_report.get("meta") or {}
+    features = feature_report.get("features") or {}
+    price_volume = features.get("price_volume") or {}
     trade_date = meta.get("latest_trade_date") or (data_report.get("data_manifest") or {}).get("latest_trade_date") or "N/A"
+    signal_date = date.today().isoformat()
+    prediction_date = (date.today() + timedelta(days=1)).isoformat()
     decision = {
         **signal,
         **position,
+    }
+    timeline = {
+        "data_trade_date": trade_date,
+        "signal_date": signal_date,
+        "prediction_date": prediction_date,
+        "verify_date": prediction_date,
+        "predicted_direction": predicted_direction({"decision": decision}),
+    }
+    market_snapshot = {
+        "latest_trade_date": price_volume.get("latest_trade_date") or trade_date,
+        "latest_close": price_volume.get("latest_close"),
+        "latest_pct_chg": price_volume.get("latest_pct_chg"),
+        "latest_amount": price_volume.get("latest_amount"),
+        "ma5": price_volume.get("ma5"),
+        "ma20": price_volume.get("ma20"),
     }
     payload = {
         "version": TRADING_VERSION,
@@ -50,6 +69,9 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "forbidden_actions": FORBIDDEN_TRADING_AUTOMATION,
         "cnsvdata_gate": data_report.get("cnsvdata_gate") or {},
         "decision": decision,
+        "decision_timeline": timeline,
+        "market_snapshot": market_snapshot,
+        "price_prediction_distribution": _price_prediction_distribution(reports),
         "probability": probability,
         "return_distribution": distribution,
         "ev": ev,
@@ -221,3 +243,30 @@ def _model_sources(reports: dict[str, Any]) -> dict[str, Any]:
         "risk_report_stage": ((reports.get("risk_explanation_report") or {}).get("meta") or {}).get("stage"),
         "live_report_stage": ((reports.get("live_manual_decision_report") or {}).get("meta") or {}).get("stage"),
     }
+
+
+def _price_prediction_distribution(reports: dict[str, Any]) -> dict[str, Any]:
+    path = reports.get("path_distribution_report") or {}
+    models = path.get("path_models") or {}
+    preferred = models.get("P2_state_conditional_path") or models.get("P1_volatility_adjusted_path") or models.get("P0_historical_path_replay") or {}
+    horizons = preferred.get("horizons") or {}
+    output: dict[str, Any] = {}
+    for horizon in ("5D", "10D", "20D"):
+        node = horizons.get(horizon) or {}
+        output[horizon] = {
+            "model_id": node.get("model_id") or preferred.get("model_id"),
+            "source_model": node.get("source_model"),
+            "latest_close": node.get("latest_close"),
+            "terminal_price_p10": node.get("terminal_price_p10"),
+            "terminal_price_p50": node.get("terminal_price_p50"),
+            "terminal_price_p90": node.get("terminal_price_p90"),
+            "terminal_return_p10": node.get("terminal_return_p10"),
+            "terminal_return_p50": node.get("terminal_return_p50"),
+            "terminal_return_p90": node.get("terminal_return_p90"),
+            "positive_terminal_prob": node.get("positive_terminal_prob"),
+            "sample_size": node.get("sample_size"),
+            "state_sample_size": node.get("state_sample_size"),
+            "fallback_used": node.get("fallback_used", False),
+            "fallback_reason": node.get("fallback_reason") or node.get("skipped_reason") or "",
+        }
+    return output
