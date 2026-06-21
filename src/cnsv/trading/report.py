@@ -146,7 +146,6 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     b2_std = ((hist.get("baseline_directional_accuracy") or {}).get("standard") or {})
     b2_purged = ((hist.get("baseline_directional_accuracy") or {}).get("purged") or {})
     p2_std = ((hist.get("path_probability_validation") or {}).get("standard") or {})
-    p2_purged = ((hist.get("path_probability_validation") or {}).get("purged") or {})
     signal_class = "buy" if d["signal"] in {"BUY", "STRONG_BUY"} else "sell" if d["signal"] in {"SELL", "STRONG_SELL", "REDUCE"} else "blocked" if d["signal"] == "BLOCKED" else "watch"
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -155,7 +154,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>CNSV V3.0 交易决策系统</title>
   <style>
-    :root{{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}}*{{box-sizing:border-box}}body{{margin:0;background:#f5f5f7}}.topbar{{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}}.topnav{{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}}.topnav a{{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}}.topnav a:hover,.topnav a.active{{opacity:1}}.topnav a.active{{font-weight:600;background:rgba(255,255,255,.12)}}main{{width:min(1180px,100%);margin:auto;padding:52px 18px 28px}}.hero{{display:grid;align-items:center;text-align:center;padding:16px 0 20px}}.eyebrow{{color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.08em}}h1{{font-size:30px;margin:5px 0 8px}}.subtitle{{color:var(--muted);font-size:13px;margin:0}}.quick{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}}.quick a{{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:5px 10px;font-size:12px}}.decision{{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px;margin-top:16px}}.signal{{font-size:56px;line-height:.92;font-weight:800;letter-spacing:0}}.buy{{color:var(--red)}}.sell,.blocked{{color:var(--green)}}.watch{{color:#1d1d1f}}.decision-text{{font-size:18px;font-weight:700;margin-top:8px}}.hero-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}}.metric{{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px;text-align:left}}.label{{color:var(--muted);font-size:12px}}.value{{font-size:17px;font-weight:700;margin-top:4px}}section{{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:12px 0}}h2{{font-size:16px;margin:0 0 10px}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}}.note{{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 0}}.warn{{color:#8a5a00}}.metric .note{{margin-top:5px}}.pill{{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:3px;background:#fbfbfd;font-size:12px}}.pill strong{{margin-left:6px}}.footer{{color:var(--muted);font-size:12px;text-align:center;padding:12px}}@media(max-width:760px){{.topnav{{justify-content:flex-start}}.hero{{padding:12px 0 16px}}main{{padding:50px 12px 24px}}h1{{font-size:24px}}.signal{{font-size:44px}}.hero-grid{{grid-template-columns:1fr 1fr}}.decision{{padding:14px}}.value{{font-size:16px}}}}
+    :root{{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}}*{{box-sizing:border-box}}body{{margin:0;background:#f5f5f7}}.topbar{{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}}.topnav{{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}}.topnav a{{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}}.topnav a:hover,.topnav a.active{{opacity:1}}.topnav a.active{{font-weight:600;background:rgba(255,255,255,.12)}}main{{width:min(1180px,100%);margin:auto;padding:52px 18px 28px}}.hero{{display:grid;align-items:center;text-align:center;padding:16px 0 20px}}.eyebrow{{color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.08em}}h1{{font-size:30px;margin:5px 0 8px}}.subtitle{{color:var(--muted);font-size:13px;margin:0}}.quick{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}}.quick a{{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:5px 10px;font-size:12px}}.decision{{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px;margin-top:16px}}.signal{{font-size:56px;line-height:.92;font-weight:800;letter-spacing:0}}.buy{{color:var(--red)}}.sell,.blocked{{color:var(--green)}}.watch{{color:#1d1d1f}}.decision-text{{font-size:18px;font-weight:700;margin-top:8px}}.hero-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}}.timeline-table{{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfbfd;text-align:left}}.timeline-table th,.timeline-table td{{padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px}}.timeline-table tr:last-child th,.timeline-table tr:last-child td{{border-bottom:0}}.timeline-table th{{color:var(--muted);font-weight:500;width:36%}}.timeline-table td{{font-weight:700;color:#1d1d1f}}.metric{{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px;text-align:left}}.label{{color:var(--muted);font-size:12px}}.value{{font-size:17px;font-weight:700;margin-top:4px}}section{{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:12px 0}}h2{{font-size:16px;margin:0 0 10px}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}}.note{{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 0}}.warn{{color:#8a5a00}}.metric .note{{margin-top:5px}}.pill{{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:3px;background:#fbfbfd;font-size:12px}}.pill strong{{margin-left:6px}}.footer{{color:var(--muted);font-size:12px;text-align:center;padding:12px}}@media(max-width:760px){{.topnav{{justify-content:flex-start}}.hero{{padding:12px 0 16px}}main{{padding:50px 12px 24px}}h1{{font-size:24px}}.signal{{font-size:44px}}.hero-grid{{grid-template-columns:1fr 1fr}}.decision{{padding:14px}}.value{{font-size:16px}}}}
   </style>
 </head>
 <body>
@@ -167,21 +166,21 @@ def build_trading_html(payload: dict[str, Any]) -> str:
       <h1>中国船舶 600150.SH</h1>
       <div class="decision">
         <div class="label">今日决策</div>
-        <div class="hero-grid">
-          <div class="metric"><div class="label">信号生成日</div><div class="value">{timeline.get('signal_date', 'N/A')}</div></div>
-          <div class="metric"><div class="label">预测日</div><div class="value">{timeline.get('prediction_date', 'N/A')}</div></div>
-          <div class="metric"><div class="label">验证日</div><div class="value">{timeline.get('verify_date', 'N/A')}</div></div>
-          <div class="metric"><div class="label">数据交易日</div><div class="value">{timeline.get('data_trade_date', payload['trade_date'])}</div></div>
-        </div>
+        <table class="timeline-table" aria-label="交易决策日期表">
+          <tbody>
+            <tr><th>信号生成日</th><td>{timeline.get('signal_date', 'N/A')}</td><th>预测日</th><td>{timeline.get('prediction_date', 'N/A')}</td></tr>
+            <tr><th>验证日</th><td>{timeline.get('verify_date', 'N/A')}</td><th>数据交易日</th><td>{timeline.get('data_trade_date', payload['trade_date'])}</td></tr>
+          </tbody>
+        </table>
         <div class="signal {signal_class}">{d['signal']}</div>
         <div class="decision-text">{d['signal_cn']} · {d['suggested_action']}</div>
-        <div class="hero-grid">
-          <div class="metric"><div class="label">收盘数据日</div><div class="value">{market.get('latest_trade_date', timeline.get('data_trade_date', payload['trade_date']))}</div></div>
-          <div class="metric"><div class="label">最新收盘价</div><div class="value">{fmt_number(market.get('latest_close'))}</div></div>
-          <div class="metric"><div class="label">收盘涨跌幅</div><div class="value">{fmt_pct_points(market.get('latest_pct_chg'))}</div></div>
-          <div class="metric"><div class="label">成交额</div><div class="value">{fmt_amount(market.get('latest_amount'))}</div></div>
-          <div class="metric"><div class="label">MA20</div><div class="value">{fmt_number(market.get('ma20'))}</div></div>
-        </div>
+        <table class="timeline-table" aria-label="收盘数据表">
+          <tbody>
+            <tr><th>收盘数据日</th><td>{market.get('latest_trade_date', timeline.get('data_trade_date', payload['trade_date']))}</td><th>最新收盘价</th><td>{fmt_number(market.get('latest_close'))}</td></tr>
+            <tr><th>收盘涨跌幅</th><td>{fmt_pct_points(market.get('latest_pct_chg'))}</td><th>成交额</th><td>{fmt_amount(market.get('latest_amount'))}</td></tr>
+            <tr><th>MA20</th><td>{fmt_number(market.get('ma20'))}</td><th>MA5</th><td>{fmt_number(market.get('ma5'))}</td></tr>
+          </tbody>
+        </table>
         <div class="hero-grid">
           <div class="metric"><div class="label">建议仓位</div><div class="value">{d['position_range']}</div></div>
           <div class="metric"><div class="label">次日上涨概率</div><div class="value">{probability_pct(p['prob_up_1d'])}</div></div>
@@ -192,6 +191,9 @@ def build_trading_html(payload: dict[str, Any]) -> str:
       </div>
     </div>
   </div>
+  <section><h2>5D / 10D / 20D 价格预测分布</h2><div class="grid">
+    {_price_distribution_cards(price_paths)}
+  </div><p class="note">来自 V1.3 路径分布层的 P2 状态条件路径；只展示价格分布参考，不代表确定收益。</p></section>
   <section><h2>概率判断</h2><div class="grid">
     <div class="metric"><div class="label">明天上涨概率</div><div class="value">{probability_pct(p['prob_up_1d'])}</div></div>
     <div class="metric"><div class="label">明天下跌概率</div><div class="value">{probability_pct(p['prob_down_1d'])}</div></div>
@@ -215,9 +217,6 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     <div class="metric"><div class="label">止损参考</div><div class="value">{exit_plan['stop_loss_reference']}</div></div>
     <div class="metric"><div class="label">时间退出</div><div class="value">{exit_plan['time_exit_days']} 个交易日</div></div>
   </div></section>
-  <section><h2>5D / 10D / 20D 价格预测分布</h2><div class="grid">
-    {_price_distribution_cards(price_paths)}
-  </div><p class="note">来自 V1.3 路径分布层的 P2 状态条件路径；只展示价格分布参考，不代表确定收益。</p></section>
   <section><h2>模型表现追踪</h2><div class="grid">
     <div class="metric"><div class="label">{historical_stats.get('name', '历史统计线')}</div><div class="value">方向准确率：{probability_pct(historical_stats.get('direction_accuracy'))}</div><p class="note">样本数：{fmt_count(historical_stats.get('sample_count'))}</p><p class="note">{historical_stats.get('description', '包含历史验证、walk-forward、purged walk-forward 等历史样本。')}</p></div>
     <div class="metric"><div class="label">{live_stats.get('name', '实盘统计线')}</div><div class="value">方向准确率：{_live_accuracy_text(live_stats)}</div><p class="note">起始日期：{live_stats.get('start_date', '2026-06-21')} · 样本数：{live_stats.get('sample_count', 0)}</p><p class="note">正确次数：{live_stats.get('correct_count', 0)} · 错误次数：{live_stats.get('wrong_count', 0)}</p><p class="note">{live_stats.get('description', '只统计 V3.0 正式运行后的真实表现。')}</p></div>
