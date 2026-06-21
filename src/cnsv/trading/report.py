@@ -154,7 +154,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>CNSV V3.0 交易决策系统</title>
   <style>
-    :root{{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}}*{{box-sizing:border-box}}body{{margin:0;background:#f5f5f7}}.topbar{{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}}.topnav{{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}}.topnav a{{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}}.topnav a:hover,.topnav a.active{{opacity:1}}.topnav a.active{{font-weight:600;background:rgba(255,255,255,.12)}}main{{width:min(1180px,100%);margin:auto;padding:52px 18px 28px}}.hero{{display:grid;align-items:center;text-align:center;padding:16px 0 20px}}.eyebrow{{color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.08em}}h1{{font-size:30px;margin:5px 0 8px}}.subtitle{{color:var(--muted);font-size:13px;margin:0}}.quick{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}}.quick a{{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:5px 10px;font-size:12px}}.decision{{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px;margin-top:16px}}.signal{{font-size:56px;line-height:.92;font-weight:800;letter-spacing:0}}.buy{{color:var(--red)}}.sell,.blocked{{color:var(--green)}}.watch{{color:#1d1d1f}}.decision-text{{font-size:18px;font-weight:700;margin-top:8px}}.hero-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}}.timeline-table{{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfbfd;text-align:left}}.timeline-table th,.timeline-table td{{padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px}}.timeline-table tr:last-child th,.timeline-table tr:last-child td{{border-bottom:0}}.timeline-table th{{color:var(--muted);font-weight:500;width:36%}}.timeline-table td{{font-weight:700;color:#1d1d1f}}.metric{{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px;text-align:left}}.label{{color:var(--muted);font-size:12px}}.value{{font-size:17px;font-weight:700;margin-top:4px}}section{{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:12px 0}}h2{{font-size:16px;margin:0 0 10px}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}}.note{{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 0}}.warn{{color:#8a5a00}}.metric .note{{margin-top:5px}}.pill{{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:3px;background:#fbfbfd;font-size:12px}}.pill strong{{margin-left:6px}}.footer{{color:var(--muted);font-size:12px;text-align:center;padding:12px}}@media(max-width:760px){{.topnav{{justify-content:flex-start}}.hero{{padding:12px 0 16px}}main{{padding:50px 12px 24px}}h1{{font-size:24px}}.signal{{font-size:44px}}.hero-grid{{grid-template-columns:1fr 1fr}}.decision{{padding:14px}}.value{{font-size:16px}}}}
+    :root{{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}}*{{box-sizing:border-box}}body{{margin:0;background:#f5f5f7}}.topbar{{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}}.topnav{{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}}.topnav a{{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}}.topnav a:hover,.topnav a.active{{opacity:1}}.topnav a.active{{font-weight:600;background:rgba(255,255,255,.12)}}main{{width:min(1180px,100%);margin:auto;padding:52px 18px 28px}}.hero{{display:grid;align-items:center;text-align:center;padding:16px 0 20px}}.eyebrow{{color:var(--red);font-size:12px;font-weight:700;letter-spacing:.08em}}h1{{font-size:30px;margin:5px 0 8px}}.subtitle{{color:var(--muted);font-size:13px;margin:0}}.quick{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}}.quick a{{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:5px 10px;font-size:12px}}.decision{{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px;margin-top:16px}}.signal{{font-size:56px;line-height:.92;font-weight:800;letter-spacing:0}}.buy{{color:var(--red)}}.sell,.blocked{{color:var(--green)}}.watch{{color:#1d1d1f}}.decision-text{{font-size:18px;font-weight:700;margin-top:8px}}.hero-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}}.timeline-table{{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfbfd;text-align:left}}.timeline-table th,.timeline-table td{{padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px}}.timeline-table tr:last-child th,.timeline-table tr:last-child td{{border-bottom:0}}.timeline-table th{{color:var(--muted);font-weight:500;width:36%}}.timeline-table td{{font-weight:700;color:#1d1d1f}}.metric{{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px;text-align:left}}.label{{color:var(--muted);font-size:12px}}.value{{font-size:17px;font-weight:700;margin-top:4px}}section{{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:12px 0}}h2{{font-size:16px;margin:0 0 10px}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}}.note{{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 0}}.warn{{color:#8a5a00}}.metric .note{{margin-top:5px}}.pill{{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:3px;background:#fbfbfd;font-size:12px}}.pill strong{{margin-left:6px}}.footer{{color:var(--muted);font-size:12px;text-align:center;padding:12px}}@media(max-width:760px){{.topnav{{justify-content:flex-start}}.hero{{padding:12px 0 16px}}main{{padding:50px 12px 24px}}h1{{font-size:24px}}.signal{{font-size:44px}}.hero-grid{{grid-template-columns:1fr 1fr}}.decision{{padding:14px}}.value{{font-size:16px}}}}
   </style>
 </head>
 <body>
@@ -177,7 +177,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
         <table class="timeline-table" aria-label="收盘数据表">
           <tbody>
             <tr><th>收盘数据日</th><td>{market.get('latest_trade_date', timeline.get('data_trade_date', payload['trade_date']))}</td><th>最新收盘价</th><td>{fmt_number(market.get('latest_close'))}</td></tr>
-            <tr><th>收盘涨跌幅</th><td>{fmt_pct_points(market.get('latest_pct_chg'))}</td><th>成交额</th><td>{fmt_amount(market.get('latest_amount'))}</td></tr>
+            <tr><th>收盘涨跌幅</th><td>{fmt_pct_points(market.get('latest_pct_chg'))}</td><th>成交额</th><td>{fmt_amount_yi(market.get('latest_amount'))}</td></tr>
             <tr><th>MA20</th><td>{fmt_number(market.get('ma20'))}</td><th>MA5</th><td>{fmt_number(market.get('ma5'))}</td></tr>
           </tbody>
         </table>
@@ -194,12 +194,12 @@ def build_trading_html(payload: dict[str, Any]) -> str:
   <section><h2>5D / 10D / 20D 价格预测分布</h2><div class="grid">
     {_price_distribution_cards(price_paths)}
   </div><p class="note">来自 V1.3 路径分布层的 P2 状态条件路径；只展示价格分布参考，不代表确定收益。</p></section>
-  <section><h2>概率判断</h2><div class="grid">
-    <div class="metric"><div class="label">明天上涨概率</div><div class="value">{probability_pct(p['prob_up_1d'])}</div></div>
-    <div class="metric"><div class="label">明天下跌概率</div><div class="value">{probability_pct(p['prob_down_1d'])}</div></div>
-    <div class="metric"><div class="label">大涨概率</div><div class="value">{probability_pct(dist['return_bins_1d']['gt_5pct'])}</div></div>
-    <div class="metric"><div class="label">大跌概率</div><div class="value">{probability_pct(dist['return_bins_1d']['lt_minus_5pct'])}</div></div>
-  </div></section>
+  <section><h2>概率判断</h2><table class="timeline-table" aria-label="概率判断表">
+    <tbody>
+      <tr><th>明天上涨概率</th><td>{probability_pct(p['prob_up_1d'])}</td><th>明天下跌概率</th><td>{probability_pct(p['prob_down_1d'])}</td></tr>
+      <tr><th>大涨概率</th><td>{probability_pct(dist['return_bins_1d']['gt_5pct'])}</td><th>大跌概率</th><td>{probability_pct(dist['return_bins_1d']['lt_minus_5pct'])}</td></tr>
+    </tbody>
+  </table></section>
   <section><h2>EV 与性价比</h2><div class="grid">
     <div class="metric"><div class="label">原始 EV</div><div class="value">{pct(ev['raw_ev'])}</div></div>
     <div class="metric"><div class="label">成本调整 EV</div><div class="value">{pct(ev['cost_adjusted_ev'])}</div></div>
@@ -276,6 +276,15 @@ def fmt_amount(value: Any) -> str:
         return "N/A"
     try:
         return f"{float(value):,.2f}"
+    except (TypeError, ValueError):
+        return "N/A"
+
+
+def fmt_amount_yi(value: Any) -> str:
+    if value is None:
+        return "N/A"
+    try:
+        return f"{float(value) / 100000:.2f} 亿"
     except (TypeError, ValueError):
         return "N/A"
 
