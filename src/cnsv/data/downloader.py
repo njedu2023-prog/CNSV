@@ -18,13 +18,13 @@ def _get(url: str, timeout: int = DEFAULT_TIMEOUT) -> requests.Response:
         raise RuntimeError(f"failed to fetch URL {url}: {exc}") from exc
 
 
-def fetch_text(url: str) -> str:
-    return _get(url).text
+def fetch_text(url: str, timeout: int = DEFAULT_TIMEOUT) -> str:
+    return _get(url, timeout=timeout).text
 
 
-def fetch_json(url: str) -> dict[str, Any]:
+def fetch_json(url: str, timeout: int = DEFAULT_TIMEOUT) -> dict[str, Any]:
     try:
-        payload = _get(url).json()
+        payload = _get(url, timeout=timeout).json()
     except ValueError as exc:
         raise RuntimeError(f"failed to decode JSON from URL {url}: {exc}") from exc
     if not isinstance(payload, dict):
@@ -32,8 +32,8 @@ def fetch_json(url: str) -> dict[str, Any]:
     return payload
 
 
-def fetch_parquet(url: str) -> pd.DataFrame:
-    response = _get(url)
+def fetch_parquet(url: str, timeout: int = DEFAULT_TIMEOUT) -> pd.DataFrame:
+    response = _get(url, timeout=timeout)
     try:
         return pd.read_parquet(io.BytesIO(response.content))
     except Exception as exc:
