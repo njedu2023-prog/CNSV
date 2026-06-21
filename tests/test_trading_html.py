@@ -15,5 +15,5 @@ def test_trading_html_is_chinese_dashboard():
     assert "历史统计线" in html
     assert "实盘统计线" in html
     assert "暂无样本" in html
-    assert "实盘统计线样本仍然较少" in html
+    assert "实盘统计线样本仍然较少" not in html
     assert "不自动下单" in html
