@@ -11,7 +11,7 @@ from cnsv.trading.probability import compute_next_day_probability
 from cnsv.trading.return_distribution import compute_return_distribution
 from cnsv.trading.risk_control import evaluate_trading_risk
 from cnsv.trading.signal_engine import decide_signal
-from cnsv.trading.utils import pct, probability_pct
+from cnsv.trading.utils import pct
 
 
 def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str, Any]:
@@ -23,6 +23,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     signal = decide_signal(probability, distribution, ev, risk)
     position = compute_position(signal, probability, ev, risk)
     exit_plan = compute_exit_plan(reports, distribution, risk)
+    historical_validation = _historical_validation(reports)
     data_report = reports.get("data_report") or {}
     feature_report = reports.get("feature_report") or {}
     meta = feature_report.get("meta") or data_report.get("meta") or {}
@@ -53,6 +54,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "ev": ev,
         "risk": risk,
         "exit": exit_plan,
+        "historical_validation": historical_validation,
         "human_explanation": _human_explanation(decision, probability, ev, risk),
         "model_sources": _model_sources(reports),
         "missing_reports": evidence_bundle.get("missing_reports", []),
@@ -70,12 +72,131 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     return payload
 
 
+def _historical_validation(reports: dict[str, Any]) -> dict[str, Any]:
+    baseline = reports.get("baseline_validation_report") or {}
+    path_validation = reports.get("path_validation_report") or {}
+    backtest = reports.get("observation_backtest_report") or {}
+    b2_standard = _metric(
+        baseline,
+        "model_metrics",
+        "standard_walk_forward_metrics",
+        "B2_state_grouped_distribution",
+        "5D",
+    )
+    b2_purged = _metric(
+        baseline,
+        "model_metrics",
+        "purged_walk_forward_metrics",
+        "B2_state_grouped_distribution",
+        "5D",
+    )
+    p2_standard = _metric(
+        path_validation,
+        "standard_walk_forward_metrics",
+        "P2_state_conditional_path",
+        "5D",
+    )
+    p2_purged = _metric(
+        path_validation,
+        "purged_walk_forward_metrics",
+        "P2_state_conditional_path",
+        "5D",
+    )
+    obs_standard = _metric(
+        backtest,
+        "model_backtest_metrics",
+        "standard_walk_forward",
+        "P2_state_conditional_path",
+        "5D",
+    )
+    obs_purged = _metric(
+        backtest,
+        "model_backtest_metrics",
+        "purged_walk_forward",
+        "P2_state_conditional_path",
+        "5D",
+    )
+    return {
+        "scope": "5D walk-forward validation; used as V3.0 probability evidence, not profit guarantee",
+        "baseline_directional_accuracy": {
+            "model": "B2_state_grouped_distribution",
+            "horizon": "5D",
+            "standard": _pick(
+                b2_standard,
+                "sample_size",
+                "directional_accuracy",
+                "positive_prob_brier",
+                "p10_p90_interval_coverage",
+            ),
+            "purged": _pick(
+                b2_purged,
+                "sample_size",
+                "directional_accuracy",
+                "positive_prob_brier",
+                "p10_p90_interval_coverage",
+            ),
+        },
+        "path_probability_validation": {
+            "model": "P2_state_conditional_path",
+            "horizon": "5D",
+            "standard": _pick(
+                p2_standard,
+                "sample_size",
+                "positive_terminal_brier",
+                "terminal_p10_p90_coverage",
+                "path_interval_coverage",
+            ),
+            "purged": _pick(
+                p2_purged,
+                "sample_size",
+                "positive_terminal_brier",
+                "terminal_p10_p90_coverage",
+                "path_interval_coverage",
+            ),
+        },
+        "observation_backtest": {
+            "model": "P2_state_conditional_path",
+            "horizon": "5D",
+            "standard": _pick(
+                obs_standard,
+                "sample_size",
+                "actual_positive_terminal_rate",
+                "positive_terminal_brier",
+                "terminal_p10_p90_coverage",
+                "model_coverage_rate",
+            ),
+            "purged": _pick(
+                obs_purged,
+                "sample_size",
+                "actual_positive_terminal_rate",
+                "positive_terminal_brier",
+                "terminal_p10_p90_coverage",
+                "model_coverage_rate",
+            ),
+        },
+        "interpretation": "方向准确率来自 B2 5D walk-forward；路径概率使用 Brier 分数和区间覆盖率衡量，Brier 越低越好。",
+    }
+
+
+def _metric(data: dict[str, Any], *keys: str) -> dict[str, Any]:
+    node: Any = data
+    for key in keys:
+        if not isinstance(node, dict):
+            return {}
+        node = node.get(key)
+    return node if isinstance(node, dict) else {}
+
+
+def _pick(data: dict[str, Any], *keys: str) -> dict[str, Any]:
+    return {key: data.get(key) for key in keys}
+
+
 def _human_explanation(decision: dict[str, Any], probability: dict[str, Any], ev: dict[str, Any], risk: dict[str, Any]) -> dict[str, str]:
     signal = decision["signal"]
     if signal == "BLOCKED":
         summary = "当前数据或模型条件不满足交易决策要求，不允许输出买卖建议。"
     elif signal in {"BUY", "STRONG_BUY"}:
-        summary = f"模型认为次日上涨概率为 {probability_pct(probability['prob_up_1d'])}，风险调整 EV 为 {pct(ev['risk_adjusted_ev'])}，可作为人工轻仓参与参考。"
+        summary = f"模型认为次日上涨概率为 {pct(probability['prob_up_1d'])}，风险调整 EV 为 {pct(ev['risk_adjusted_ev'])}，可作为人工轻仓参与参考。"
     elif signal in {"SELL", "STRONG_SELL"}:
         summary = "下行概率、EV 或尾部风险触发卖出条件，应优先降低风险暴露。"
     elif signal == "REDUCE":

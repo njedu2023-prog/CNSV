@@ -11,6 +11,8 @@ def test_trading_report_payload_contains_required_sections():
     assert payload["version"] == "CNSV_V3.0"
     assert payload["auto_order_enabled"] is False
     assert payload["broker_api_enabled"] is False
+    assert payload["historical_validation"]["baseline_directional_accuracy"]["standard"]["directional_accuracy"] is not None
     assert payload["decision"]["signal"] in {"STRONG_BUY", "BUY", "HOLD", "WATCH", "REDUCE", "SELL", "STRONG_SELL", "BLOCKED"}
     assert "今日总决策" in markdown
+    assert "历史验证与回测" in markdown
     assert "人工交易决策参考" in markdown

@@ -42,7 +42,9 @@ def pct(value: float, digits: int = 2) -> str:
 
 
 def probability_pct(value: float, digits: int = 2) -> str:
-    return f"{value * 100:.{digits}f}%"
+    if value is None:
+        return "N/A"
+    return f"{float(value) * 100:.{digits}f}%"
 
 
 def get_path(data: dict[str, Any], *keys: str, default: Any = None) -> Any:

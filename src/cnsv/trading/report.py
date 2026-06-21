@@ -32,6 +32,10 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
     ev = payload["ev"]
     risk = payload["risk"]
     exit_plan = payload["exit"]
+    hist = payload.get("historical_validation") or {}
+    b2_std = ((hist.get("baseline_directional_accuracy") or {}).get("standard") or {})
+    b2_purged = ((hist.get("baseline_directional_accuracy") or {}).get("purged") or {})
+    p2_std = ((hist.get("path_probability_validation") or {}).get("standard") or {})
     lines = [
         "# CNSV V3.0 交易决策系统报告",
         "",
@@ -49,6 +53,12 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
         f"- 下跌概率: {probability_pct(p['prob_down_1d'])}",
         f"- 平盘概率: {probability_pct(p['prob_flat_1d'])}",
         f"- 方向置信度: {p['direction_confidence']:.2f}",
+        "",
+        "## 历史验证与回测",
+        f"- B2 5D 标准样本方向准确率: {probability_pct(b2_std.get('directional_accuracy', 0.0))} / 样本数: {b2_std.get('sample_size', 'N/A')}",
+        f"- B2 5D purged 样本方向准确率: {probability_pct(b2_purged.get('directional_accuracy', 0.0))} / 样本数: {b2_purged.get('sample_size', 'N/A')}",
+        f"- P2 5D 路径区间覆盖率: {probability_pct(p2_std.get('terminal_p10_p90_coverage', 0.0))} / Brier: {fmt_number(p2_std.get('positive_terminal_brier'))}",
+        f"- 说明: {hist.get('interpretation', '历史验证只作为参考，不保证未来收益。')}",
         "",
         "## 次日涨跌幅分布",
         f"- 预期收益: {pct(dist['expected_return_1d'])}",
@@ -103,6 +113,11 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     ev = payload["ev"]
     risk = payload["risk"]
     exit_plan = payload["exit"]
+    hist = payload.get("historical_validation") or {}
+    b2_std = ((hist.get("baseline_directional_accuracy") or {}).get("standard") or {})
+    b2_purged = ((hist.get("baseline_directional_accuracy") or {}).get("purged") or {})
+    p2_std = ((hist.get("path_probability_validation") or {}).get("standard") or {})
+    p2_purged = ((hist.get("path_probability_validation") or {}).get("purged") or {})
     signal_class = "buy" if d["signal"] in {"BUY", "STRONG_BUY"} else "sell" if d["signal"] in {"SELL", "STRONG_SELL", "REDUCE"} else "blocked" if d["signal"] == "BLOCKED" else "watch"
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -130,6 +145,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
         <div class="hero-grid">
           <div class="metric"><div class="label">建议仓位</div><div class="value">{d['position_range']}</div></div>
           <div class="metric"><div class="label">次日上涨概率</div><div class="value">{probability_pct(p['prob_up_1d'])}</div></div>
+          <div class="metric"><div class="label">历史方向准确率</div><div class="value">{probability_pct(b2_std.get('directional_accuracy', 0.0))}</div></div>
           <div class="metric"><div class="label">风险调整 EV</div><div class="value">{pct(ev['risk_adjusted_ev'])}</div></div>
           <div class="metric"><div class="label">风险等级</div><div class="value">{risk['risk_level_cn']}</div></div>
         </div>
@@ -142,6 +158,12 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     <div class="metric"><div class="label">大涨概率</div><div class="value">{probability_pct(dist['return_bins_1d']['gt_5pct'])}</div></div>
     <div class="metric"><div class="label">大跌概率</div><div class="value">{probability_pct(dist['return_bins_1d']['lt_minus_5pct'])}</div></div>
   </div></section>
+  <section><h2>历史验证与回测</h2><div class="grid">
+    <div class="metric"><div class="label">B2 5D 标准方向准确率</div><div class="value">{probability_pct(b2_std.get('directional_accuracy', 0.0))}</div><p class="note">样本数：{b2_std.get('sample_size', 'N/A')}</p></div>
+    <div class="metric"><div class="label">B2 5D purged 方向准确率</div><div class="value">{probability_pct(b2_purged.get('directional_accuracy', 0.0))}</div><p class="note">样本数：{b2_purged.get('sample_size', 'N/A')}</p></div>
+    <div class="metric"><div class="label">P2 5D 标准区间覆盖率</div><div class="value">{probability_pct(p2_std.get('terminal_p10_p90_coverage', 0.0))}</div><p class="note">Brier：{fmt_number(p2_std.get('positive_terminal_brier'))}</p></div>
+    <div class="metric"><div class="label">P2 5D purged 区间覆盖率</div><div class="value">{probability_pct(p2_purged.get('terminal_p10_p90_coverage', 0.0))}</div><p class="note">Brier：{fmt_number(p2_purged.get('positive_terminal_brier'))}</p></div>
+  </div><p class="note">{hist.get('interpretation', '历史验证只作为参考，不保证未来收益。')}</p></section>
   <section><h2>EV 与性价比</h2><div class="grid">
     <div class="metric"><div class="label">原始 EV</div><div class="value">{pct(ev['raw_ev'])}</div></div>
     <div class="metric"><div class="label">成本调整 EV</div><div class="value">{pct(ev['cost_adjusted_ev'])}</div></div>
@@ -188,3 +210,12 @@ def write_trading_registry(path: str | Path) -> Path:
     ]
     target.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return target
+
+
+def fmt_number(value: Any, digits: int = 4) -> str:
+    if value is None:
+        return "N/A"
+    try:
+        return f"{float(value):.{digits}f}"
+    except (TypeError, ValueError):
+        return "N/A"
