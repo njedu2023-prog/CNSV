@@ -3,7 +3,6 @@ from __future__ import annotations
 import re
 
 
-# Shared static page chrome. Keep generated report pages visually consistent.
 GLOBAL_NAV_ITEMS = [
     ("trading.html", "交易决策", "trading"),
     ("index.html#coverage", "数据状态", "index"),
@@ -81,11 +80,11 @@ def site_nav(active: str) -> str:
     for href, label, key in GLOBAL_NAV_ITEMS:
         cls = ' class="active"' if key == active else ""
         links.append(f'<a href="{href}"{cls}>{label}</a>')
-    return f'<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单'>{"".join(links)}</nav></div>'
+    return f'<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单">{"".join(links)}</nav></div>'
 
 
 def _normalize_header(html: str, active: str) -> str:
-    eyebrow = PAGE_EYEBROWS.get(active, "CNSV 主线决策看板")
+    eyebrow = PAGE_EYEBROWS.get(active, "CNSV V3.0 交易决策系统")
 
     def replace_header(match: re.Match[str]) -> str:
         header = match.group(0)

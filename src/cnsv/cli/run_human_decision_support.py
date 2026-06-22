@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from cnsv.cli.run_observation_backtest import main as run_observation_backtest_main
 from cnsv.report.feature_report_html import write_feature_report_html
+from cnsv.support import FORBIDDEN_SUPPORT_FIELDS
 from cnsv.support.evidence_fusion import build_human_decision_support_payload
 from cnsv.support.evidence_loader import load_support_evidence
 from cnsv.support.support_registry import write_human_decision_support_registry
@@ -39,10 +41,23 @@ def _ensure_upstream_reports(root: Path) -> None:
 
 
 def _ensure_decision_support_entry(path: Path) -> None:
+    _ensure_index_entry(path)
+
+
+def _ensure_index_entry(path: Path) -> None:
     text = path.read_text(encoding="utf-8")
+    text = text.replace("CNSV V1.4 主线看板", "CNSV V1.5 主线看板")
     if 'href="decision_support.html"' not in text:
         text = text.replace("</nav>", '<a href="decision_support.html">人工辅助</a></nav>')
     path.write_text(text, encoding="utf-8")
+
+
+def _contains_forbidden_key(value: Any) -> bool:
+    if isinstance(value, dict):
+        return any(str(k) in FORBIDDEN_SUPPORT_FIELDS or _contains_forbidden_key(v) for k, v in value.items())
+    if isinstance(value, list):
+        return any(_contains_forbidden_key(v) for v in value)
+    return False
 
 
 if __name__ == "__main__":
