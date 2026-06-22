@@ -5,7 +5,12 @@ from typing import Any
 
 from cnsv.models.baseline_schema import FORBIDDEN_ACTIONS, clean_payload
 from cnsv.support import SUPPORT_REPORT_TYPE, SUPPORT_STAGE, SUPPORT_VERSION
+from cnsv.support.attention_items import build_human_attention_items
+from cnsv.support.consistency import build_model_consistency_summary
 from cnsv.support.evidence_loader import status_of
+from cnsv.support.review_checklist import build_human_review_checklist
+from cnsv.support.support_evaluator import evaluate_human_decision_support
+from cnsv.support.support_levels import classify_evidence_strength, classify_risk_attention, derive_support_levels
 
 
 def build_human_decision_support_payload(evidence_bundle: dict[str, Any]) -> dict[str, Any]:
@@ -14,21 +19,36 @@ def build_human_decision_support_payload(evidence_bundle: dict[str, Any]) -> dic
     data = reports.get("data_report") or {}
     feature = reports.get("feature_report") or {}
     baseline = reports.get("baseline_model_report") or {}
+    baseline_validation = reports.get("baseline_validation_report") or {}
     path = reports.get("path_distribution_report") or {}
+    path_validation = reports.get("path_validation_report") or {}
     backtest = reports.get("observation_backtest_report") or {}
     features = feature.get("features") or {}
     price = features.get("price_volume") or {}
     trend = features.get("trend") or {}
     volatility = features.get("volatility") or {}
     moneyflow = features.get("moneyflow") or {}
+    path_models = path.get("path_models") or {}
+    baseline_models = baseline.get("baseline_models") or {}
+    comparison = (backtest.get("model_comparison") or {}).get("standard_walk_forward") or {}
     quality_statuses = {
         "data_quality": status_of(data, "validation"),
         "feature_quality": status_of(feature, "feature_quality"),
         "baseline_quality": status_of(baseline, "baseline_quality"),
+        "validation_quality": status_of(baseline_validation, "validation_quality"),
         "path_quality": status_of(path, "path_quality"),
+        "path_validation_quality": status_of(path_validation, "path_validation_quality"),
         "observation_backtest_quality": status_of(backtest, "observation_backtest_quality"),
+        "leakage_checks": str((backtest.get("observation_backtest_leakage_checks") or {}).get("status") or "MISSING"),
     }
-    conflict_reasons = [f"{k}={v}" for k, v in quality_statuses.items() if v not in {"PASS", "N/A"}]
+    standard_sample = int((backtest.get("backtest_scope") or {}).get("standard_sample_size") or 0)
+    purged_sample = int((backtest.get("backtest_scope") or {}).get("purged_sample_size") or 0)
+    high_fallback = _p2_fallback_high(backtest)
+    evidence_strength = classify_evidence_strength(quality_statuses, standard_sample, purged_sample, high_fallback)
+    risk_attention = classify_risk_attention(path_models)
+    consistency = build_model_consistency_summary(baseline_models, path_models, comparison)
+    evidence_conflict, conflict_reasons = _evidence_conflicts(path_models, comparison, quality_statuses, high_fallback)
+    support_levels = derive_support_levels(evidence_strength, consistency["model_consistency_level"], risk_attention, evidence_conflict, availability.get("missing_reports", []))
     payload: dict[str, Any] = {
         "meta": {
             "system": "CNSV",
@@ -55,42 +75,29 @@ def build_human_decision_support_payload(evidence_bundle: dict[str, Any]) -> dic
         "model_evidence_summary": {
             "observation_backtest_summary": {
                 "quality_status": quality_statuses["observation_backtest_quality"],
-                "standard_sample_size": (backtest.get("backtest_scope") or {}).get("standard_sample_size"),
-                "purged_sample_size": (backtest.get("backtest_scope") or {}).get("purged_sample_size"),
+                "standard_sample_size": standard_sample,
+                "purged_sample_size": purged_sample,
                 "leakage_status": (backtest.get("observation_backtest_leakage_checks") or {}).get("status"),
             },
             "model_support_summary": {
-                "baseline_models": list((baseline.get("baseline_models") or {}).keys()),
-                "path_models": list((path.get("path_models") or {}).keys()),
+                "baseline_models": list(baseline_models.keys()),
+                "path_models": list(path_models.keys()),
                 "p2_role": "辅助状态层，不作为核心决策依赖",
             },
         },
-        "path_opportunity_observation": _path_snapshot(path, "opportunity"),
-        "path_risk_observation": _path_snapshot(path, "risk"),
-        "model_consistency_summary": {
-            "model_consistency_level": "人工复核",
-            "model_disagreement_points": [],
-            "p2_role": "辅助状态层，不作为核心决策依赖",
-        },
-        "evidence_conflict_summary": {"evidence_conflict": bool(conflict_reasons), "evidence_conflict_reasons": conflict_reasons},
-        "human_attention_items": [{"category": "evidence_items", "text": "上游证据已汇总，仍需人工结合市场与行业背景复核。"}],
-        "human_review_checklist": [
-            {"id": "data_freshness", "text": "确认 latest_trade_date 与当前人工复核日期是否匹配。"},
-            {"id": "market_context", "text": "确认当天市场环境是否存在外部冲击。"},
-            {"id": "path_risk", "text": "复核路径概率、回撤和风险解释。"},
-        ],
-        "support_levels": {
-            "observation_priority": "medium",
-            "risk_attention_level": "medium",
-            "evidence_strength": "moderate" if not availability.get("missing_reports") else "insufficient",
-            "model_consistency_level": "人工复核",
-            "human_review_required": True,
-        },
+        "path_opportunity_observation": _path_snapshot(path_models, "opportunity"),
+        "path_risk_observation": _path_snapshot(path_models, "risk"),
+        "model_consistency_summary": consistency,
+        "evidence_conflict_summary": {"evidence_conflict": evidence_conflict, "evidence_conflict_reasons": conflict_reasons},
+        "human_attention_items": [],
+        "human_review_checklist": build_human_review_checklist(),
+        "support_levels": support_levels,
         "upstream_quality_statuses": quality_statuses,
         "forbidden_actions": FORBIDDEN_ACTIONS,
         "next_stage": "V1.6 risk explanation",
     }
-    payload["human_decision_support_quality"] = _evaluate(payload)
+    payload["human_attention_items"] = build_human_attention_items(availability, support_levels, consistency, conflict_reasons)
+    payload["human_decision_support_quality"] = evaluate_human_decision_support(payload)
     return clean_payload(payload)
 
 
@@ -110,8 +117,8 @@ def _latest_trade_date(*reports: dict[str, Any]) -> str:
     return "N/A"
 
 
-def _path_snapshot(path: dict[str, Any], kind: str) -> dict[str, Any]:
-    p1 = (((path.get("path_models") or {}).get("P1_volatility_adjusted_path") or {}).get("horizons") or {}).get("20D") or {}
+def _path_snapshot(models: dict[str, Any], kind: str) -> dict[str, Any]:
+    p1 = ((models.get("P1_volatility_adjusted_path") or {}).get("horizons") or {}).get("20D") or {}
     if kind == "opportunity":
         return {
             "positive_terminal_observation": p1.get("positive_terminal_prob"),
@@ -121,20 +128,28 @@ def _path_snapshot(path: dict[str, Any], kind: str) -> dict[str, Any]:
     return {
         "downside_path_observation": p1.get("touch_down_5pct_prob"),
         "drawdown_observation": p1.get("max_drawdown_p50"),
-        "risk_attention_level": "medium",
+        "risk_attention_level": classify_risk_attention({"P1_volatility_adjusted_path": {"horizons": {"20D": p1}}}),
     }
 
 
-def _evaluate(payload: dict[str, Any]) -> dict[str, Any]:
-    missing = payload.get("evidence_availability", {}).get("missing_reports", [])
-    conflict = payload.get("evidence_conflict_summary", {}).get("evidence_conflict")
-    checks = [
-        {"name": "is_trade_signal_false", "status": "PASS", "detail": "V1.5 remains human decision support only"},
-        {"name": "forbidden_actions_present", "status": "PASS", "detail": "formal signal and auto order remain forbidden"},
-        {"name": "upstream_reports_available", "status": "WARN" if missing else "PASS", "detail": f"missing_reports={missing}"},
-        {"name": "human_review_required", "status": "WARN", "detail": "manual review remains required"},
-        {"name": "evidence_conflict", "status": "WARN" if conflict else "PASS", "detail": "conflicts are non-blocking human-review items"},
-    ]
-    failed = sum(1 for item in checks if item["status"] == "FAIL")
-    warn = sum(1 for item in checks if item["status"] == "WARN")
-    return {"status": "FAIL" if failed else "WARN" if warn else "PASS", "failed_count": failed, "warn_count": warn, "blocking_error_count": failed, "checks": checks}
+def _p2_fallback_high(backtest: dict[str, Any]) -> bool:
+    metrics = (backtest.get("model_backtest_metrics") or {}).get("standard_walk_forward") or {}
+    p2 = metrics.get("P2_state_conditional_path") or {}
+    rates = [float(row.get("fallback_rate") or 0) for row in p2.values()]
+    return bool(rates and max(rates) >= 0.30)
+
+
+def _evidence_conflicts(path_models: dict[str, Any], comparison: dict[str, Any], quality_statuses: dict[str, str], high_fallback: bool) -> tuple[bool, list[str]]:
+    reasons: list[str] = []
+    p1 = ((path_models.get("P1_volatility_adjusted_path") or {}).get("horizons") or {}).get("20D") or {}
+    if float(p1.get("touch_up_5pct_prob") or 0) >= 0.45 and float(p1.get("touch_down_5pct_prob") or 0) >= 0.45:
+        reasons.append("上行触达概率与下行触达概率同时偏高，路径机会与风险并存。")
+    for horizon, row in comparison.items():
+        if "underperform" in str(row.get("P1_vs_P0_conclusion") or ""):
+            reasons.append(f"{horizon} P1 相对 P0 表现偏弱。")
+    if high_fallback:
+        reasons.append("P2 fallback_rate 偏高，P2 只能作为辅助观察。")
+    for name, status in quality_statuses.items():
+        if status not in {"PASS", "N/A"}:
+            reasons.append(f"{name} 状态为 {status}，需要降级复核。")
+    return bool(reasons), reasons
