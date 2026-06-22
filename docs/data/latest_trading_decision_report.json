@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-18",
-  "generated_at": "2026-06-21T19:44:38.362106+00:00",
+  "generated_at": "2026-06-22T06:19:28.545587+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -47,7 +47,7 @@
   },
   "decision_timeline": {
     "data_trade_date": "2026-06-18",
-    "signal_date": "2026-06-21",
+    "signal_date": "2026-06-22",
     "prediction_date": "2026-06-22",
     "verify_date": "2026-06-23",
     "predicted_direction": "DOWN",
