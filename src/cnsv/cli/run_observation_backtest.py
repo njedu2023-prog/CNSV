@@ -28,7 +28,6 @@ def main() -> int:
     write_observation_backtest_md(payload, root / "reports/latest_observation_backtest_report.md", root / "reports/archive")
     write_observation_backtest_html(root / "docs/backtest.html")
     write_feature_report_html(root / "docs/index.html")
-    _ensure_backtest_entry(root / "docs/index.html")
     quality = payload["observation_backtest_quality"]
     print(f"observation_backtest_quality={quality['status']} failed={quality['failed_count']} warn={quality['warn_count']}")
     return 0 if quality["status"] in {"PASS", "WARN"} else 1
@@ -47,13 +46,6 @@ def _ensure_path_artifacts(root: Path, bundle: dict, gate: dict) -> None:
     write_path_distribution_report_md(distribution, root / "reports/latest_path_distribution_report.md", root / "reports/archive")
     write_path_validation_report_md(validation, root / "reports/latest_path_validation_report.md", root / "reports/archive")
     write_path_report_html(root / "docs/path.html")
-
-
-def _ensure_backtest_entry(path: Path) -> None:
-    text = path.read_text(encoding="utf-8")
-    if 'href="backtest.html"' not in text:
-        text = text.replace("</nav>", '<a href="backtest.html">Observation Backtest Report</a></nav>')
-    path.write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":

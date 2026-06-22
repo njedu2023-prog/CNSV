@@ -21,7 +21,6 @@ def main() -> int:
     write_risk_explanation_md(payload, root / "reports/latest_risk_explanation_report.md", root / "reports/archive")
     write_risk_explanation_html(root / "docs/risk.html")
     write_feature_report_html(root / "docs/index.html")
-    _ensure_risk_entry(root / "docs/index.html")
     quality = payload["risk_explanation_quality"]
     print(f"risk_explanation_quality={quality['status']} failed={quality['failed_count']} warn={quality['warn_count']}")
     return 0 if quality["status"] in {"PASS", "WARN"} else 1
@@ -33,13 +32,6 @@ def _ensure_upstream_reports(root: Path) -> None:
         code = run_human_decision_support_main()
         if code != 0:
             raise RuntimeError("failed to generate V1.5 human decision support evidence")
-
-
-def _ensure_risk_entry(path: Path) -> None:
-    text = path.read_text(encoding="utf-8")
-    if 'href="risk.html"' not in text:
-        text = text.replace("</nav>", '<a href="risk.html">V1.6 风控解释</a></nav>')
-    path.write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":

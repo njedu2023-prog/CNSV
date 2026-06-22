@@ -21,21 +21,9 @@ def main() -> int:
     write_path_distribution_report_md(payload, root / "reports/latest_path_distribution_report.md", root / "reports/archive")
     write_path_report_html(root / "docs/path.html")
     write_feature_report_html(root / "docs/index.html")
-    _ensure_path_entry(root / "docs/index.html")
     quality = payload["path_quality"]
     print(f"path_quality={quality['status']} failed={quality['failed_count']} warn={quality['warn_count']}")
     return 0 if quality["status"] in {"PASS", "WARN"} else 1
-
-
-def _ensure_path_entry(path) -> None:
-    text = path.read_text(encoding="utf-8")
-    if 'href="path.html"' not in text:
-        marker = '<a href="validation.html">V1.2.2 验证看板</a>'
-        if marker in text:
-            text = text.replace(marker, marker + '<a href="path.html">V1.3 路径分布看板</a>')
-        else:
-            text = text.replace("</nav>", '<a href="path.html">V1.3 路径分布看板</a></nav>')
-    path.write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":
