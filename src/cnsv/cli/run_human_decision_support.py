@@ -38,5 +38,12 @@ def _ensure_upstream_reports(root: Path) -> None:
             raise RuntimeError("failed to generate V1.4 observation backtest evidence")
 
 
+def _ensure_decision_support_entry(path: Path) -> None:
+    text = path.read_text(encoding="utf-8")
+    if 'href="decision_support.html"' not in text:
+        text = text.replace("</nav>", '<a href="decision_support.html">人工辅助</a></nav>')
+    path.write_text(text, encoding="utf-8")
+
+
 if __name__ == "__main__":
     raise SystemExit(main())

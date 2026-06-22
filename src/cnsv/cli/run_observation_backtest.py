@@ -48,5 +48,12 @@ def _ensure_path_artifacts(root: Path, bundle: dict, gate: dict) -> None:
     write_path_report_html(root / "docs/path.html")
 
 
+def _ensure_backtest_entry(path: Path) -> None:
+    text = path.read_text(encoding="utf-8")
+    if 'href="backtest.html"' not in text:
+        text = text.replace("</nav>", '<a href="backtest.html">观察回测</a></nav>')
+    path.write_text(text, encoding="utf-8")
+
+
 if __name__ == "__main__":
     raise SystemExit(main())
