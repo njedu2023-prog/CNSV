@@ -2,15 +2,6 @@ name: Run CNSV Risk Explanation
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "src/**"
-      - "tests/**"
-      - "config/**"
-      - "docs/data/**"
-      - ".github/workflows/run_risk_explanation.yml"
 
 concurrency:
   group: cnsv-risk-explanation-main
