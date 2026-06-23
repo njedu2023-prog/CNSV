@@ -31,9 +31,13 @@ def test_live_stats_are_separated_from_historical_stats():
 
 
 def test_default_live_registry_entry_uses_v3_signal_date_and_direction():
-    payload = {"decision": {"signal": "SELL"}}
+    payload = {
+        "decision": {"signal": "SELL"},
+        "decision_timeline": {"data_trade_date": "2026-06-22"},
+    }
     entry = default_live_registry_entry(payload, "2026-06-21")
 
+    assert entry["data_trade_date"] == "2026-06-22"
     assert entry["signal_date"] == "2026-06-21"
     assert entry["verify_date"] == "2026-06-22"
     assert entry["predicted_direction"] == "DOWN"
@@ -69,3 +73,41 @@ def test_live_registry_skips_blocked_or_unverifiable_entries(tmp_path):
     registry = update_live_stats_registry(payload, path, {"feature_report": {}})
 
     assert registry == []
+
+
+def test_live_registry_drops_legacy_unverified_entries_without_base_date(tmp_path):
+    path = tmp_path / "live_stats_registry.json"
+    path.write_text(
+        """[
+  {
+    "trade_date": "2026-06-22",
+    "signal_date": "2026-06-22",
+    "verify_date": "2026-06-23",
+    "predicted_direction": "DOWN",
+    "actual_direction": null,
+    "is_correct": null,
+    "close_t": 36.14,
+    "close_t1": null,
+    "return_1d": null
+  }
+]
+""",
+        encoding="utf-8",
+    )
+    payload = {
+        "decision": {"signal": "SELL"},
+        "decision_timeline": {
+            "data_trade_date": "2026-06-22",
+            "signal_date": "2026-06-23",
+            "prediction_date": "2026-06-23",
+            "verify_date": "2026-06-24",
+        },
+        "market_snapshot": {"latest_trade_date": "2026-06-22", "latest_close": 37.33},
+    }
+
+    registry = update_live_stats_registry(payload, path, {"feature_report": {}})
+
+    assert len(registry) == 1
+    assert registry[0]["signal_date"] == "2026-06-23"
+    assert registry[0]["data_trade_date"] == "2026-06-22"
+    assert registry[0]["close_t"] == 37.33
