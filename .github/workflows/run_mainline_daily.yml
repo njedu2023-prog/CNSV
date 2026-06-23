@@ -1,0 +1,90 @@
+name: Run CNSV Mainline Daily
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 18:10 Asia/Shanghai on weekdays. GitHub cron uses UTC.
+    - cron: "10 10 * * 1-5"
+
+concurrency:
+  group: cnsv-mainline-daily-main
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  run-mainline-daily:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest
+
+      - name: Generate data report
+        run: python -m cnsv.cli.generate_data_report
+
+      - name: Generate feature report
+        run: python -m cnsv.cli.generate_feature_report
+
+      - name: Generate baseline model report
+        run: python -m cnsv.cli.run_baseline_models
+
+      - name: Generate baseline validation report
+        run: python -m cnsv.cli.run_baseline_validation
+
+      - name: Generate path distribution report
+        run: python -m cnsv.cli.run_path_distribution
+
+      - name: Generate path validation report
+        run: python -m cnsv.cli.run_path_validation
+
+      - name: Generate observation backtest report
+        run: python -m cnsv.cli.run_observation_backtest
+
+      - name: Generate human decision support report
+        run: python -m cnsv.cli.run_human_decision_support
+
+      - name: Generate risk explanation report
+        run: python -m cnsv.cli.run_risk_explanation
+
+      - name: Generate live manual decision report
+        run: python -m cnsv.cli.run_live_manual_decision
+
+      - name: Generate trading decision report
+        run: python -m cnsv.cli.run_trading_decision
+
+      - name: Commit mainline report updates
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs reports
+          if git diff --cached --quiet; then
+            echo "No CNSV mainline report updates to commit"
+            exit 0
+          fi
+          git commit -m "report: update CNSV mainline daily reports"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              break
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            sleep 5
+          done
