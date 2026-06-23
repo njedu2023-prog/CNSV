@@ -1,12 +1,7 @@
 name: Run CNSV Baseline Validation
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-  schedule:
-    - cron: "35 9 * * 1-5"
 
 permissions:
   contents: write
