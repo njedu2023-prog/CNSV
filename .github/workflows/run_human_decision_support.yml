@@ -2,15 +2,6 @@ name: Run CNSV Human Decision Support
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "src/**"
-      - "tests/**"
-      - "config/**"
-      - "docs/data/**"
-      - ".github/workflows/run_human_decision_support.yml"
 
 concurrency:
   group: cnsv-human-decision-support-main
