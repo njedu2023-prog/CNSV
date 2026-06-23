@@ -34,6 +34,7 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
 def update_live_stats_registry(payload: dict[str, Any], path: str | Path, reports: dict[str, Any]) -> list[dict[str, Any]]:
     target = Path(path)
     registry = load_live_stats_registry(target)
+    registry = _backfill_verified_archive_entries(registry, target, reports)
     registry = [_try_verify_entry(item, reports) for item in registry]
 
     signal_date = (payload.get("decision_timeline") or {}).get("signal_date") or _today()
@@ -63,6 +64,28 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
     registry.sort(key=lambda item: str(item.get("signal_date", "")))
     write_live_stats_registry(registry, target)
     return registry
+
+
+def _backfill_verified_archive_entries(
+    registry: list[dict[str, Any]], target: Path, reports: dict[str, Any]
+) -> list[dict[str, Any]]:
+    latest_date, _ = _latest_close(reports)
+    archive_dir = _archive_dir_for_registry(target)
+    if not latest_date or not archive_dir.exists():
+        return registry
+
+    existing_signal_dates = {str(item.get("signal_date", "")) for item in registry}
+    out = list(registry)
+    for archive_path in sorted(archive_dir.glob("*_trading_decision_report.md")):
+        entry = _archived_markdown_entry(archive_path, latest_date)
+        if not entry:
+            continue
+        signal_date = str(entry.get("signal_date", ""))
+        if signal_date in existing_signal_dates:
+            continue
+        existing_signal_dates.add(signal_date)
+        out.append(entry)
+    return out
 
 
 def load_live_stats_registry(path: str | Path) -> list[dict[str, Any]]:
@@ -173,6 +196,59 @@ def _has_auditable_base_date(item: dict[str, Any]) -> bool:
     if item.get("is_correct") is not None:
         return True
     return bool(item.get("data_trade_date"))
+
+
+def _archive_dir_for_registry(target: Path) -> Path:
+    try:
+        root = target.parent.parent.parent
+    except IndexError:
+        return Path("reports/archive")
+    return root / "reports/archive"
+
+
+def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | None:
+    text = path.read_text(encoding="utf-8")
+    signal_date = _md_value(text, "信号生成日")
+    verify_date = _md_value(text, "验证日")
+    if not signal_date or signal_date < LIVE_STATS_START_DATE or verify_date != latest_date:
+        return None
+
+    signal = _md_value(text, "信号")
+    close_t = _parse_float(_md_value(text, "收盘价"))
+    direction = predicted_direction({"decision": {"signal": (signal or "").split("/")[0].strip()}})
+    if direction not in VERIFIABLE_DIRECTIONS or close_t is None:
+        return None
+    return {
+        "trade_date": _md_value(text, "预测日") or signal_date,
+        "data_trade_date": _md_value(text, "数据交易日") or _md_value(text, "交易日"),
+        "signal_date": signal_date,
+        "verify_date": verify_date,
+        "predicted_direction": direction,
+        "actual_direction": None,
+        "is_correct": None,
+        "close_t": close_t,
+        "close_t1": None,
+        "return_1d": None,
+        "source": "reports_archive",
+    }
+
+
+def _md_value(text: str, label: str) -> str | None:
+    prefix = f"- {label}:"
+    for line in text.splitlines():
+        if line.startswith(prefix):
+            value = line[len(prefix) :].strip()
+            return value or None
+    return None
+
+
+def _parse_float(value: str | None) -> float | None:
+    if value is None:
+        return None
+    try:
+        return float(value.replace(",", "").replace("%", ""))
+    except ValueError:
+        return None
 
 
 def _today() -> str:
