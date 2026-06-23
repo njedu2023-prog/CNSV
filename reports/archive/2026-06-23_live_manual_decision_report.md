@@ -53,7 +53,7 @@
 - [check_human_review_required] 确认所有人工复核项已逐条记录。
 
 ## 人工确认区
-- decision_session_id: manual-2026-06-18-20260623030205
+- decision_session_id: manual-2026-06-18-20260623030252
 - decision_snapshot_id: live-2026-06-18-9reports
 - manual_review_status: blocked_by_missing_evidence
 
