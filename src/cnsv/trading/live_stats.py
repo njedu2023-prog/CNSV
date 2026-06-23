@@ -209,7 +209,8 @@ def _archive_dir_for_registry(target: Path) -> Path:
 def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | None:
     text = path.read_text(encoding="utf-8")
     signal_date = _md_value(text, "信号生成日")
-    verify_date = _md_value(text, "验证日")
+    prediction_date = _md_value(text, "预测日")
+    verify_date = prediction_date or _md_value(text, "验证日")
     if not signal_date or signal_date < LIVE_STATS_START_DATE or verify_date != latest_date:
         return None
 
@@ -219,7 +220,7 @@ def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | N
     if direction not in VERIFIABLE_DIRECTIONS or close_t is None:
         return None
     return {
-        "trade_date": _md_value(text, "预测日") or signal_date,
+        "trade_date": prediction_date or signal_date,
         "data_trade_date": _md_value(text, "数据交易日") or _md_value(text, "交易日"),
         "signal_date": signal_date,
         "verify_date": verify_date,
