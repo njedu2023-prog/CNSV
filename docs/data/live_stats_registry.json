@@ -20,5 +20,16 @@
     "close_t": 36.14,
     "close_t1": null,
     "return_1d": null
+  },
+  {
+    "trade_date": "2026-06-23",
+    "signal_date": "2026-06-23",
+    "verify_date": "2026-06-24",
+    "predicted_direction": null,
+    "actual_direction": null,
+    "is_correct": null,
+    "close_t": null,
+    "close_t1": null,
+    "return_1d": null
   }
 ]

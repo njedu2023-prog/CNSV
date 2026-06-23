@@ -19,12 +19,12 @@
         <div class="label">今日决策</div>
         <table class="timeline-table" aria-label="交易决策日期表">
           <tbody>
-            <tr><th>信号生成日</th><td>2026-06-22</td><th>预测日</th><td>2026-06-22</td></tr>
+            <tr><th>信号生成日</th><td>2026-06-23</td><th>预测日</th><td>2026-06-22</td></tr>
             <tr><th>验证日</th><td>2026-06-23</td><th>数据交易日</th><td>2026-06-18</td></tr>
           </tbody>
         </table>
-        <div class="signal sell">SELL</div>
-        <div class="decision-text">建议卖出 · 降低至低仓位或退出</div>
+        <div class="signal blocked">BLOCKED</div>
+        <div class="decision-text">风控阻断 · 不允许输出买卖建议</div>
         <table class="timeline-table" aria-label="收盘数据表">
           <tbody>
             <tr><th>收盘数据日</th><td>2026-06-18</td><th>最新收盘价</th><td>36.1400</td></tr>
@@ -33,11 +33,11 @@
           </tbody>
         </table>
         <div class="hero-grid">
-          <div class="metric"><div class="label">建议仓位</div><div class="value">降至 0%~10%</div></div>
+          <div class="metric"><div class="label">建议仓位</div><div class="value">0%</div></div>
           <div class="metric"><div class="label">次日上涨概率</div><div class="value">37.96%</div></div>
           <div class="metric"><div class="label">历史方向准确率</div><div class="value">50.70%</div></div>
           <div class="metric"><div class="label">风险调整 EV</div><div class="value">-0.59%</div></div>
-          <div class="metric"><div class="label">风险等级</div><div class="value">中低风险</div></div>
+          <div class="metric"><div class="label">风险等级</div><div class="value">高风险</div></div>
         </div>
       </div>
     </div>
@@ -60,14 +60,14 @@
     <div class="metric"><div class="label">交易性价比</div><div class="value">负期望</div></div>
   </div><p class="note">EV 为长期重复同类交易时的期望收益，单次交易仍可能亏损。</p></section>
   <section><h2>风控状态</h2><div class="grid">
-    <div class="metric"><div class="label">当前风险</div><div class="value">中低风险</div></div>
+    <div class="metric"><div class="label">当前风险</div><div class="value">高风险</div></div>
     <div class="metric"><div class="label">风控状态</div><div class="value">已拦截</div></div>
-    <div class="metric"><div class="label">主要风险</div><div class="value">风险调整 EV 为负</div></div>
-  </div><p class="note">风险调整 EV 为负，因此需要风控降级或拦截。</p></section>
+    <div class="metric"><div class="label">主要风险</div><div class="value">CNSVdata 未就绪；数据门禁失败；风险调整 EV 为负</div></div>
+  </div><p class="note">CNSVdata 未就绪；数据门禁失败；风险调整 EV 为负，因此需要风控降级或拦截。</p></section>
   <section><h2>仓位与退出</h2><div class="grid">
-    <div class="metric"><div class="label">建议仓位</div><div class="value">降至 0%~10%</div><p class="note">不建议满仓，不建议加杠杆。</p></div>
+    <div class="metric"><div class="label">建议仓位</div><div class="value">0%</div><p class="note">不建议满仓，不建议加杠杆。</p></div>
     <div class="metric"><div class="label">止盈参考</div><div class="value">+6.3%~+8.5%</div></div>
-    <div class="metric"><div class="label">止损参考</div><div class="value">-2.8%</div></div>
+    <div class="metric"><div class="label">止损参考</div><div class="value">-2.0%</div></div>
     <div class="metric"><div class="label">时间退出</div><div class="value">10 个交易日</div></div>
   </div></section>
   <section><h2>模型表现追踪</h2><div class="grid">
@@ -81,7 +81,7 @@
     <span class="pill">人工参考 <strong>是</strong></span>
     <p class="note">所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。</p>
   </section>
-  <div class="footer">生成时间：2026-06-22T06:19:28.545587+00:00 · 数据日期：2026-06-18</div>
+  <div class="footer">生成时间：2026-06-23T02:43:24.787992+00:00 · 数据日期：2026-06-18</div>
 </main>
 </body>
 </html>

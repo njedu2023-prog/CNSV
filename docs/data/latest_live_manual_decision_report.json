@@ -6,23 +6,24 @@
     "report_type": "live_manual_decision_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-23T02:32:26.494402+00:00",
+    "generated_at": "2026-06-23T02:43:21.102992+00:00",
     "latest_trade_date": "2026-06-18",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
-    "ready": true,
-    "status": "PASS",
-    "can_continue": true,
-    "can_develop": true,
-    "can_develop_cnsv_main_program": true,
-    "can_run_daily_ingest": true,
-    "can_run_backtest": true,
-    "can_use_moneyflow_as_strong_factor": true,
+    "ready": false,
+    "status": "FAIL",
+    "can_continue": false,
+    "can_develop": false,
+    "can_develop_cnsv_main_program": false,
+    "can_run_daily_ingest": false,
+    "can_run_backtest": false,
+    "can_use_moneyflow_as_strong_factor": false,
     "can_generate_formal_signal": false,
-    "blocking_reason": null,
+    "blocking_reason": "latest_trade_date_consistency failed",
     "warnings": [
-      "formal signal generation is forbidden by CNSVdata allowed_usage"
+      "formal signal generation is forbidden by CNSVdata allowed_usage",
+      "moneyflow strong-factor usage is forbidden; use low confidence only"
     ],
     "can_auto_order": false,
     "can_connect_broker_api": false,
@@ -42,7 +43,13 @@
       "risk_explanation_report"
     ],
     "missing_reports": [],
-    "failed_quality_gates": [],
+    "failed_quality_gates": [
+      {
+        "report": "data_report",
+        "quality_key": "validation",
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json"
+      }
+    ],
     "warning_quality_gates": [
       {
         "report": "human_decision_support_report",
@@ -60,8 +67,8 @@
       "data_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
-        "quality_status": "PASS",
-        "latest_trade_date": "2026-06-18"
+        "quality_status": "FAIL",
+        "latest_trade_date": "N/A"
       },
       "feature_report": {
         "available": true,
@@ -116,7 +123,7 @@
   "live_state_overview": {
     "latest_trade_date": "2026-06-18",
     "latest_close": 36.14,
-    "data_status": "PASS",
+    "data_status": "FAIL",
     "feature_status": "PASS",
     "baseline_status": "PASS",
     "baseline_validation_status": "N/A",
@@ -125,11 +132,19 @@
     "backtest_status": "PASS",
     "support_status": "WARN",
     "risk_status": "WARN",
-    "overall_system_status": "ready_for_manual_review",
-    "manual_decision_status": "review_required",
+    "overall_system_status": "evidence_incomplete",
+    "manual_decision_status": "evidence_incomplete",
     "manual_review_required": true,
     "status_reasons": [
-      "high risk or evidence conflict requires manual review"
+      {
+        "failed_quality_gates": [
+          {
+            "report": "data_report",
+            "quality_key": "validation",
+            "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json"
+          }
+        ]
+      }
     ]
   },
   "evidence_dashboard": {
@@ -147,7 +162,13 @@
         "risk_explanation_report"
       ],
       "missing_reports": [],
-      "failed_quality_gates": [],
+      "failed_quality_gates": [
+        {
+          "report": "data_report",
+          "quality_key": "validation",
+          "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json"
+        }
+      ],
       "warning_quality_gates": [
         {
           "report": "human_decision_support_report",
@@ -165,8 +186,8 @@
         "data_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
-          "quality_status": "PASS",
-          "latest_trade_date": "2026-06-18"
+          "quality_status": "FAIL",
+          "latest_trade_date": "N/A"
         },
         "feature_report": {
           "available": true,
@@ -220,7 +241,13 @@
     },
     "missing_evidence": [],
     "stale_evidence": [],
-    "failed_quality_gates": [],
+    "failed_quality_gates": [
+      {
+        "report": "data_report",
+        "quality_key": "validation",
+        "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json"
+      }
+    ],
     "warning_quality_gates": [
       {
         "report": "human_decision_support_report",
@@ -1104,10 +1131,10 @@
   ],
   "manual_confirmation_panel": {
     "operator_name": "N/A",
-    "decision_session_id": "manual-2026-06-18-20260623023226",
+    "decision_session_id": "manual-2026-06-18-20260623024321",
     "decision_snapshot_id": "live-2026-06-18-9reports",
-    "manual_review_timestamp": "2026-06-23T02:32:26.494385+00:00",
-    "manual_review_status": "not_started",
+    "manual_review_timestamp": "2026-06-23T02:43:21.102981+00:00",
+    "manual_review_status": "blocked_by_missing_evidence",
     "operator_notes": "",
     "manual_confirmation_items": [
       {
@@ -1181,9 +1208,9 @@
         "required": true
       }
     ],
-    "manual_decision_status": "review_required"
+    "manual_decision_status": "evidence_incomplete"
   },
-  "manual_decision_status": "review_required",
+  "manual_decision_status": "evidence_incomplete",
   "manual_review_required": true,
   "auto_order_enabled": false,
   "broker_api_enabled": false,
@@ -1195,9 +1222,9 @@
   ],
   "next_stage": "V2.0 acceptance and daily manual operation",
   "manual_action_log": {
-    "decision_session_id": "manual-2026-06-18-20260623023226",
+    "decision_session_id": "manual-2026-06-18-20260623024321",
     "decision_snapshot_id": "live-2026-06-18-9reports",
-    "manual_review_status": "not_started",
+    "manual_review_status": "blocked_by_missing_evidence",
     "execution_action_recorded": false
   },
   "live_manual_decision_quality": {
@@ -1254,12 +1281,12 @@
       {
         "name": "manual_decision_status_allowed",
         "status": "PASS",
-        "detail": "manual_decision_status=review_required"
+        "detail": "manual_decision_status=evidence_incomplete"
       },
       {
         "name": "manual_review_status_allowed",
         "status": "PASS",
-        "detail": "manual_review_status=not_started"
+        "detail": "manual_review_status=blocked_by_missing_evidence"
       },
       {
         "name": "manual_log_safe",

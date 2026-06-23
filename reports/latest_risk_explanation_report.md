@@ -16,15 +16,15 @@
 - 缺失证据: 无
 
 ## 风险总览
-- 总体风险等级: high
+- 总体风险等级: severe
 - 风险置信度: medium
-- 主要风险来源: p2_auxiliary_risk, evidence_conflict_risk
-- 次要风险来源: data_risk, feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
+- 主要风险来源: data_risk, p2_auxiliary_risk, evidence_conflict_risk
+- 次要风险来源: feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
 - 需要人工复核: True
 - 风险原因: 风险等级由数据、特征、模型、路径、回测和人工辅助证据综合得到，仅用于人工复核。
 
 ## 风险来源拆解
-- data_risk: low；数据门禁、数据新鲜度与 manifest 一致性需要人工确认。
+- data_risk: severe；数据门禁、数据新鲜度与 manifest 一致性需要人工确认。
 - feature_risk: low；趋势、波动率、资金流状态共同决定特征风险；unknown 状态需要降级复核。
 - baseline_model_risk: medium；基准模型分布与验证结果用于识别 B 模型之间的方向分歧。
 - path_distribution_risk: medium；路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。
@@ -38,7 +38,7 @@
 ## 数据风险解释
 - risk_level: low
 - data_freshness_risk: medium；需要确认最新交易日是否仍然有效。
-- data_gate_risk: low；CNSVdata gate 必须保持可用。
+- data_gate_risk: high；CNSVdata gate 必须保持可用。
 - missing_data_risk: low；缺失报告会导致 V1.6 降级解释。
 - quality_check_risk: low；数据质量检查用于确认基础输入完整性。
 - manifest_consistency_risk: low；manifest 与报告快照需人工抽查。

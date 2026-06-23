@@ -14,12 +14,12 @@
 - 证据完整: True
 - 可用证据: data_report, feature_report, baseline_model_report, baseline_validation_report, path_distribution_report, path_validation_report, observation_backtest_report, human_decision_support_report, risk_explanation_report
 - 缺失证据: 无
-- FAIL 门禁: 0
+- FAIL 门禁: 1
 - WARN 门禁: 2
 
 ## 当前系统状态
-- overall_system_status: ready_for_manual_review
-- manual_decision_status: review_required
+- overall_system_status: evidence_incomplete
+- manual_decision_status: evidence_incomplete
 - manual_review_required: True
 
 ## 路径观察摘要
@@ -53,9 +53,9 @@
 - [check_human_review_required] 确认所有人工复核项已逐条记录。
 
 ## 人工确认区
-- decision_session_id: manual-2026-06-18-20260623023226
+- decision_session_id: manual-2026-06-18-20260623024321
 - decision_snapshot_id: live-2026-06-18-9reports
-- manual_review_status: not_started
+- manual_review_status: blocked_by_missing_evidence
 
 ## 禁止自动交易声明
 - is_trade_signal: false
@@ -65,5 +65,5 @@
 - forbidden_actions: formal_signal_generation, auto_order, broker_api
 
 ## 每日人工使用状态
-- 可进入人工复核: True
-- 不可使用原因: 无阻断，仅需人工复核
+- 可进入人工复核: False
+- 不可使用原因: [{'failed_quality_gates': [{'report': 'data_report', 'quality_key': 'validation', 'path': '/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json'}]}]
