@@ -126,7 +126,7 @@ def test_live_registry_backfills_verified_archive_entry(tmp_path):
 - 数据交易日: 2026-06-18
 - 信号生成日: 2026-06-21
 - 预测日: 2026-06-22
-- 验证日: 2026-06-22
+- 验证日: 2026-06-23
 - 收盘价: 36.1400
 """,
         encoding="utf-8",
