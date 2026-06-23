@@ -16,8 +16,10 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
     signal_day = signal_date or timeline.get("signal_date") or _today()
     verify_day = timeline.get("verify_date") or _plus_one_day(signal_day)
     market = payload.get("market_snapshot") or {}
+    data_trade_date = timeline.get("data_trade_date") or market.get("latest_trade_date")
     return {
         "trade_date": timeline.get("prediction_date") or signal_day,
+        "data_trade_date": data_trade_date,
         "signal_date": signal_day,
         "verify_date": verify_day,
         "predicted_direction": predicted_direction(payload),
@@ -56,6 +58,7 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
         if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
         and item.get("predicted_direction") in VERIFIABLE_DIRECTIONS
         and item.get("close_t") is not None
+        and _has_auditable_base_date(item)
     ]
     registry.sort(key=lambda item: str(item.get("signal_date", "")))
     write_live_stats_registry(registry, target)
@@ -164,6 +167,12 @@ def _has_base_close(payload: dict[str, Any]) -> bool:
     except (TypeError, ValueError):
         return False
     return True
+
+
+def _has_auditable_base_date(item: dict[str, Any]) -> bool:
+    if item.get("is_correct") is not None:
+        return True
+    return bool(item.get("data_trade_date"))
 
 
 def _today() -> str:
