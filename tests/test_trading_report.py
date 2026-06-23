@@ -1,5 +1,5 @@
 from cnsv.trading.evidence_loader import load_trading_evidence
-from cnsv.trading.fusion import build_trading_decision_payload
+from cnsv.trading.fusion import build_trading_decision_payload, _decision_timeline
 from cnsv.trading.report import build_trading_markdown
 from cnsv.utils.io import repo_root
 
@@ -33,3 +33,27 @@ def test_trading_report_payload_contains_required_sections():
     assert "模型表现追踪" in markdown
     assert "实盘统计线方向准确率" in markdown
     assert "人工交易决策参考" in markdown
+
+
+def test_trading_timeline_uses_trade_calendar_after_data_trade_date():
+    timeline = _decision_timeline(
+        "2026-06-18",
+        {"signal": "SELL"},
+        {
+            "trade_calendar": ["2026-06-18", "2026-06-22", "2026-06-23"],
+            "trade_calendar_source": "unit_test_calendar",
+        },
+    )
+
+    assert timeline["prediction_date"] == "2026-06-22"
+    assert timeline["verify_date"] == "2026-06-23"
+    assert timeline["signal_date"] == "2026-06-22"
+    assert timeline["prediction_date_source"] == "trade_calendar"
+    assert timeline["verify_date_source"] == "trade_calendar"
+
+
+def test_trading_timeline_fallback_skips_known_a_share_holidays():
+    timeline = _decision_timeline("2026-06-18", {"signal": "SELL"}, {})
+
+    assert timeline["prediction_date"] == "2026-06-22"
+    assert timeline["verify_date"] == "2026-06-23"
