@@ -112,13 +112,13 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
 
 
 def _decision_timeline(trade_date: str, decision: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
-    signal_date = date.today().isoformat()
     calendar_dates = _open_trade_dates(evidence_bundle.get("trade_calendar"))
     prediction_date, prediction_source = _next_trade_date(trade_date, calendar_dates)
     verify_date, verify_source = _next_trade_date(prediction_date, calendar_dates)
+    signal_date = prediction_date
     calendar_source = evidence_bundle.get("trade_calendar_source")
     if not calendar_source:
-        calendar_source = "CNSVdata trade_calendar" if calendar_dates else "fallback_cn_market_holiday_business_day"
+        calendar_source = "CNSVdata trade_calendar" if calendar_dates else "fallback_business_day"
     return {
         "data_trade_date": trade_date,
         "signal_date": signal_date,
