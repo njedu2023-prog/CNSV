@@ -131,6 +131,20 @@ def test_live_registry_backfills_verified_archive_entry(tmp_path):
 """,
         encoding="utf-8",
     )
+    (archive / "2026-06-22_trading_decision_report.md").write_text(
+        """# CNSV V3.0 交易决策系统报告
+
+## 今日总决策
+- 交易日: 2026-06-18
+- 信号: SELL / 建议卖出
+- 数据交易日: 2026-06-18
+- 信号生成日: 2026-06-22
+- 预测日: 2026-06-22
+- 验证日: 2026-06-23
+- 收盘价: 36.1400
+""",
+        encoding="utf-8",
+    )
     path = root / "docs/data/live_stats_registry.json"
     path.parent.mkdir(parents=True)
     path.write_text("[]\n", encoding="utf-8")
@@ -157,5 +171,6 @@ def test_live_registry_backfills_verified_archive_entry(tmp_path):
     assert verified["predicted_direction"] == "DOWN"
     assert verified["is_correct"] is False
     assert verified["close_t1"] == 37.33
+    assert [item["trade_date"] for item in registry].count("2026-06-22") == 1
     assert performance["live_stats"]["sample_count"] == 1
     assert performance["live_stats"]["wrong_count"] == 1
