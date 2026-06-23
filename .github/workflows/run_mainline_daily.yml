@@ -44,36 +44,80 @@ jobs:
         run: pytest
 
       - name: Generate data report
-        run: python -m cnsv.cli.generate_data_report
+        run: |
+          set +e
+          python -m cnsv.cli.generate_data_report
+          code=$?
+          echo "data_report_exit_code=${code}" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Check CNSVdata gate
+        id: data_gate
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          report = Path("docs/data/latest_data_report.json")
+          proceed = False
+          status = "MISSING"
+          reason = "latest_data_report.json missing"
+          if report.exists():
+              payload = json.loads(report.read_text(encoding="utf-8"))
+              gate = payload.get("cnsvdata_gate") or {}
+              status = str(gate.get("status") or gate.get("gate_status") or "UNKNOWN")
+              reason = str(gate.get("blocking_reason") or gate.get("blocking_reason_cn") or "")
+              proceed = bool(gate.get("can_continue")) and status in {"PASS", "WARN"}
+          print(f"proceed={str(proceed).lower()}")
+          print(f"status={status}")
+          print(f"reason={reason}")
+          PY
+
+      - name: Report blocked CNSVdata gate
+        if: steps.data_gate.outputs.proceed != 'true'
+        run: |
+          echo "CNSVdata gate is not passable."
+          echo "status=${{ steps.data_gate.outputs.status }}"
+          echo "reason=${{ steps.data_gate.outputs.reason }}"
+          echo "Downstream V3.0 trading decision generation is skipped by design."
 
       - name: Generate feature report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.generate_feature_report
 
       - name: Generate baseline model report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_baseline_models
 
       - name: Generate baseline validation report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_baseline_validation
 
       - name: Generate path distribution report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_path_distribution
 
       - name: Generate path validation report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_path_validation
 
       - name: Generate observation backtest report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_observation_backtest
 
       - name: Generate human decision support report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_human_decision_support
 
       - name: Generate risk explanation report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_risk_explanation
 
       - name: Generate live manual decision report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_live_manual_decision
 
       - name: Generate trading decision report
+        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_trading_decision
 
       - name: Commit mainline report updates
