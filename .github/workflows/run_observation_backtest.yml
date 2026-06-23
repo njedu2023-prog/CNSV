@@ -1,12 +1,7 @@
 name: Run CNSV Observation Backtest
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-  schedule:
-    - cron: "55 9 * * 1-5"
 
 concurrency:
   group: cnsv-observation-backtest-main
