@@ -78,7 +78,8 @@ jobs:
           echo "CNSVdata gate is not passable."
           echo "status=${{ steps.data_gate.outputs.status }}"
           echo "reason=${{ steps.data_gate.outputs.reason }}"
-          echo "Downstream V3.0 trading decision generation is skipped by design."
+          echo "Downstream feature/model/path recomputation is skipped."
+          echo "V3.0 trading page will still be refreshed as BLOCKED from existing evidence."
 
       - name: Generate feature report
         if: steps.data_gate.outputs.proceed == 'true'
@@ -117,7 +118,6 @@ jobs:
         run: python -m cnsv.cli.run_live_manual_decision
 
       - name: Generate trading decision report
-        if: steps.data_gate.outputs.proceed == 'true'
         run: python -m cnsv.cli.run_trading_decision
 
       - name: Commit mainline report updates
