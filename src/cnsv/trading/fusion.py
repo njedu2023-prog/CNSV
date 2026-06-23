@@ -114,7 +114,8 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
 def _decision_timeline(trade_date: str, decision: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
     calendar_dates = _open_trade_dates(evidence_bundle.get("trade_calendar"))
     prediction_date, prediction_source = _next_trade_date(trade_date, calendar_dates)
-    verify_date, verify_source = _next_trade_date(prediction_date, calendar_dates)
+    verify_date = prediction_date
+    verify_source = prediction_source
     signal_date = prediction_date
     calendar_source = evidence_bundle.get("trade_calendar_source")
     if not calendar_source:
