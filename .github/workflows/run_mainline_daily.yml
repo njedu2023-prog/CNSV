@@ -2,6 +2,14 @@ name: Run CNSV Mainline Daily
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "config/**"
+      - ".github/workflows/run_mainline_daily.yml"
   schedule:
     # 18:10 Asia/Shanghai on weekdays. GitHub cron uses UTC.
     - cron: "10 10 * * 1-5"
