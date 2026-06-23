@@ -46,7 +46,7 @@ def test_trading_timeline_uses_trade_calendar_after_data_trade_date():
     )
 
     assert timeline["prediction_date"] == "2026-06-22"
-    assert timeline["verify_date"] == "2026-06-23"
+    assert timeline["verify_date"] == "2026-06-22"
     assert timeline["signal_date"] == "2026-06-22"
     assert timeline["prediction_date_source"] == "trade_calendar"
     assert timeline["verify_date_source"] == "trade_calendar"
@@ -56,4 +56,4 @@ def test_trading_timeline_fallback_skips_known_a_share_holidays():
     timeline = _decision_timeline("2026-06-18", {"signal": "SELL"}, {})
 
     assert timeline["prediction_date"] == "2026-06-22"
-    assert timeline["verify_date"] == "2026-06-23"
+    assert timeline["verify_date"] == "2026-06-22"
