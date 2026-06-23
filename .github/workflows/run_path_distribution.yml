@@ -1,12 +1,7 @@
 name: Run CNSV Path Distribution
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-  schedule:
-    - cron: "45 9 * * 1-5"
 
 concurrency:
   group: cnsv-path-distribution-main
