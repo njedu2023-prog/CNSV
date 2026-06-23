@@ -61,6 +61,7 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
         and item.get("close_t") is not None
         and _has_auditable_base_date(item)
     ]
+    registry = _dedupe_prediction_dates(registry)
     registry.sort(key=lambda item: str(item.get("signal_date", "")))
     write_live_stats_registry(registry, target)
     return registry
@@ -103,6 +104,24 @@ def write_live_stats_registry(registry: list[dict[str, Any]], path: str | Path) 
     target = ensure_parent(path)
     target.write_text(json.dumps(registry, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     return target
+
+
+def _dedupe_prediction_dates(registry: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_prediction: dict[str, dict[str, Any]] = {}
+    for item in sorted(registry, key=lambda value: str(value.get("signal_date", ""))):
+        key = str(item.get("trade_date") or item.get("verify_date") or item.get("signal_date"))
+        current = by_prediction.get(key)
+        if current is None or _prefer_entry(item, current):
+            by_prediction[key] = item
+    return list(by_prediction.values())
+
+
+def _prefer_entry(candidate: dict[str, Any], current: dict[str, Any]) -> bool:
+    if candidate.get("is_correct") is not None and current.get("is_correct") is None:
+        return True
+    if candidate.get("is_correct") is None and current.get("is_correct") is not None:
+        return False
+    return str(candidate.get("signal_date", "")) < str(current.get("signal_date", ""))
 
 
 def build_model_performance(historical_validation: dict[str, Any], registry: list[dict[str, Any]] | None = None) -> dict[str, Any]:
