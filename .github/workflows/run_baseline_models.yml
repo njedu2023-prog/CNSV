@@ -1,12 +1,7 @@
 name: Run CNSV Baseline Models
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-  schedule:
-    - cron: "25 9 * * 1-5"
 
 permissions:
   contents: write
