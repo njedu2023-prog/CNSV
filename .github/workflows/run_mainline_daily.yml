@@ -10,6 +10,10 @@ on:
       - "tests/**"
       - "config/**"
       - ".github/workflows/run_mainline_daily.yml"
+      - ".github/workflows/run_trading_decision.yml"
+      - ".github/workflows/run_live_manual_decision.yml"
+      - ".github/workflows/run_human_decision_support.yml"
+      - ".github/workflows/run_risk_explanation.yml"
   schedule:
     # 18:10 Asia/Shanghai on weekdays. GitHub cron uses UTC.
     - cron: "10 10 * * 1-5"
