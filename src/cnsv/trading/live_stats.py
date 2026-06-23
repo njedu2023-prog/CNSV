@@ -8,18 +8,22 @@ from typing import Any
 from cnsv.utils.io import ensure_parent
 
 LIVE_STATS_START_DATE = "2026-06-21"
+VERIFIABLE_DIRECTIONS = {"UP", "DOWN", "FLAT"}
 
 
 def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None = None) -> dict[str, Any]:
-    signal_day = signal_date or _today()
+    timeline = payload.get("decision_timeline") or {}
+    signal_day = signal_date or timeline.get("signal_date") or _today()
+    verify_day = timeline.get("verify_date") or _plus_one_day(signal_day)
+    market = payload.get("market_snapshot") or {}
     return {
-        "trade_date": signal_day,
+        "trade_date": timeline.get("prediction_date") or signal_day,
         "signal_date": signal_day,
-        "verify_date": _plus_one_day(signal_day),
+        "verify_date": verify_day,
         "predicted_direction": predicted_direction(payload),
         "actual_direction": None,
         "is_correct": None,
-        "close_t": None,
+        "close_t": market.get("latest_close"),
         "close_t1": None,
         "return_1d": None,
     }
@@ -30,11 +34,29 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
     registry = load_live_stats_registry(target)
     registry = [_try_verify_entry(item, reports) for item in registry]
 
-    signal_date = _today()
-    if signal_date >= LIVE_STATS_START_DATE and not any(item.get("signal_date") == signal_date for item in registry):
-        registry.append(default_live_registry_entry(payload, signal_date))
+    signal_date = (payload.get("decision_timeline") or {}).get("signal_date") or _today()
+    current_direction = predicted_direction(payload)
+    if signal_date >= LIVE_STATS_START_DATE and current_direction in VERIFIABLE_DIRECTIONS and _has_base_close(payload):
+        replacement = default_live_registry_entry(payload, signal_date)
+        found = False
+        updated: list[dict[str, Any]] = []
+        for item in registry:
+            if item.get("signal_date") == signal_date:
+                found = True
+                updated.append(item if item.get("is_correct") is not None else {**item, **replacement})
+            else:
+                updated.append(item)
+        registry = updated
+        if not found:
+            registry.append(replacement)
 
-    registry = [item for item in registry if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE]
+    registry = [
+        item
+        for item in registry
+        if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
+        and item.get("predicted_direction") in VERIFIABLE_DIRECTIONS
+        and item.get("close_t") is not None
+    ]
     registry.sort(key=lambda item: str(item.get("signal_date", "")))
     write_live_stats_registry(registry, target)
     return registry
@@ -133,6 +155,15 @@ def _latest_close(reports: dict[str, Any]) -> tuple[str | None, float | None]:
     except (TypeError, ValueError):
         close = None
     return date_value, close
+
+
+def _has_base_close(payload: dict[str, Any]) -> bool:
+    market = payload.get("market_snapshot") or {}
+    try:
+        float(market.get("latest_close"))
+    except (TypeError, ValueError):
+        return False
+    return True
 
 
 def _today() -> str:
