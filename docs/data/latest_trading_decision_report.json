@@ -5,7 +5,7 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-06-22",
-  "generated_at": "2026-06-23T05:02:13.835594+00:00",
+  "generated_at": "2026-06-23T05:16:38.014492+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -49,7 +49,7 @@
     "data_trade_date": "2026-06-22",
     "signal_date": "2026-06-23",
     "prediction_date": "2026-06-23",
-    "verify_date": "2026-06-24",
+    "verify_date": "2026-06-23",
     "predicted_direction": "DOWN",
     "calendar_source": "CNSVdata trade_calendar",
     "prediction_date_source": "trade_calendar",
@@ -240,10 +240,10 @@
     "live_stats": {
       "name": "实盘统计线",
       "start_date": "2026-06-21",
-      "direction_accuracy": null,
+      "direction_accuracy": 0.0,
       "correct_count": 0,
-      "wrong_count": 0,
-      "sample_count": 0,
+      "wrong_count": 2,
+      "sample_count": 2,
       "description": "从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。"
     }
   },
