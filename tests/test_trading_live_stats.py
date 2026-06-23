@@ -1,4 +1,4 @@
-from cnsv.trading.live_stats import build_model_performance, default_live_registry_entry, predicted_direction
+from cnsv.trading.live_stats import build_model_performance, default_live_registry_entry, predicted_direction, update_live_stats_registry
 
 
 def test_live_stats_are_separated_from_historical_stats():
@@ -39,3 +39,33 @@ def test_default_live_registry_entry_uses_v3_signal_date_and_direction():
     assert entry["predicted_direction"] == "DOWN"
     assert entry["is_correct"] is None
     assert predicted_direction({"decision": {"signal": "BUY"}}) == "UP"
+
+
+def test_live_registry_skips_blocked_or_unverifiable_entries(tmp_path):
+    path = tmp_path / "live_stats_registry.json"
+    path.write_text(
+        """[
+  {
+    "trade_date": "2026-06-21",
+    "signal_date": "2026-06-21",
+    "verify_date": "2026-06-22",
+    "predicted_direction": "DOWN",
+    "actual_direction": null,
+    "is_correct": null,
+    "close_t": null,
+    "close_t1": null,
+    "return_1d": null
+  }
+]
+""",
+        encoding="utf-8",
+    )
+    payload = {
+        "decision": {"signal": "BLOCKED"},
+        "decision_timeline": {"signal_date": "2026-06-23", "prediction_date": "2026-06-23", "verify_date": "2026-06-24"},
+        "market_snapshot": {"latest_close": 36.14},
+    }
+
+    registry = update_live_stats_registry(payload, path, {"feature_report": {}})
+
+    assert registry == []
