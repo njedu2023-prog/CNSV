@@ -6,7 +6,7 @@
     "report_type": "live_manual_decision_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-23T02:43:21.102992+00:00",
+    "generated_at": "2026-06-23T03:02:05.748806+00:00",
     "latest_trade_date": "2026-06-18",
     "is_trade_signal": false
   },
@@ -870,14 +870,14 @@
     }
   },
   "risk_explanation_card": {
-    "overall_risk_level": "high",
+    "overall_risk_level": "severe",
     "risk_confidence": "medium",
     "primary_risk_sources": [
+      "data_risk",
       "p2_auxiliary_risk",
       "evidence_conflict_risk"
     ],
     "secondary_risk_sources": [
-      "data_risk",
       "feature_risk",
       "baseline_model_risk",
       "path_distribution_risk",
@@ -1131,9 +1131,9 @@
   ],
   "manual_confirmation_panel": {
     "operator_name": "N/A",
-    "decision_session_id": "manual-2026-06-18-20260623024321",
+    "decision_session_id": "manual-2026-06-18-20260623030205",
     "decision_snapshot_id": "live-2026-06-18-9reports",
-    "manual_review_timestamp": "2026-06-23T02:43:21.102981+00:00",
+    "manual_review_timestamp": "2026-06-23T03:02:05.748791+00:00",
     "manual_review_status": "blocked_by_missing_evidence",
     "operator_notes": "",
     "manual_confirmation_items": [
@@ -1222,7 +1222,7 @@
   ],
   "next_stage": "V2.0 acceptance and daily manual operation",
   "manual_action_log": {
-    "decision_session_id": "manual-2026-06-18-20260623024321",
+    "decision_session_id": "manual-2026-06-18-20260623030205",
     "decision_snapshot_id": "live-2026-06-18-9reports",
     "manual_review_status": "blocked_by_missing_evidence",
     "execution_action_recorded": false
@@ -1316,7 +1316,7 @@
       {
         "name": "high_risk_warn",
         "status": "WARN",
-        "detail": "overall_risk_level=high"
+        "detail": "overall_risk_level=severe"
       }
     ]
   }

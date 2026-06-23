@@ -28,9 +28,9 @@
 - drawdown_summary: {'5D': {'max_drawdown_p50': -0.02003956754473213, 'max_drawdown_p90': -0.0057491821732728815}, '10D': {'max_drawdown_p50': -0.03642666435588071, 'max_drawdown_p90': -0.014352860381152906}, '20D': {'max_drawdown_p50': -0.05669567924033836, 'max_drawdown_p90': -0.026429829122163684}}
 
 ## 风险解释摘要
-- overall_risk_level: high
-- primary_risk_sources: p2_auxiliary_risk, evidence_conflict_risk
-- secondary_risk_sources: data_risk, feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
+- overall_risk_level: severe
+- primary_risk_sources: data_risk, p2_auxiliary_risk, evidence_conflict_risk
+- secondary_risk_sources: feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
 
 ## 证据冲突摘要
 - evidence_conflict: True
@@ -53,7 +53,7 @@
 - [check_human_review_required] 确认所有人工复核项已逐条记录。
 
 ## 人工确认区
-- decision_session_id: manual-2026-06-18-20260623024321
+- decision_session_id: manual-2026-06-18-20260623030205
 - decision_snapshot_id: live-2026-06-18-9reports
 - manual_review_status: blocked_by_missing_evidence
 
