@@ -2,15 +2,6 @@ name: Run CNSV Trading Decision
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "src/**"
-      - "tests/**"
-      - "config/**"
-      - "docs/data/**"
-      - ".github/workflows/run_trading_decision.yml"
 
 concurrency:
   group: cnsv-trading-decision-main
