@@ -5,7 +5,7 @@
 ## 阶段说明
 - 版本: 1.6
 - 阶段: V1.6_risk_explanation
-- latest_trade_date: 2026-06-18
+- latest_trade_date: 2026-06-22
 - 质量状态: WARN
 - FAIL 数量: 0
 - WARN 数量: 2
@@ -16,15 +16,15 @@
 - 缺失证据: 无
 
 ## 风险总览
-- 总体风险等级: severe
+- 总体风险等级: high
 - 风险置信度: medium
-- 主要风险来源: data_risk, p2_auxiliary_risk, evidence_conflict_risk
-- 次要风险来源: feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
+- 主要风险来源: p2_auxiliary_risk, evidence_conflict_risk
+- 次要风险来源: data_risk, feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
 - 需要人工复核: True
 - 风险原因: 风险等级由数据、特征、模型、路径、回测和人工辅助证据综合得到，仅用于人工复核。
 
 ## 风险来源拆解
-- data_risk: severe；数据门禁、数据新鲜度与 manifest 一致性需要人工确认。
+- data_risk: low；数据门禁、数据新鲜度与 manifest 一致性需要人工确认。
 - feature_risk: low；趋势、波动率、资金流状态共同决定特征风险；unknown 状态需要降级复核。
 - baseline_model_risk: medium；基准模型分布与验证结果用于识别 B 模型之间的方向分歧。
 - path_distribution_risk: medium；路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。
@@ -38,33 +38,33 @@
 ## 数据风险解释
 - risk_level: low
 - data_freshness_risk: medium；需要确认最新交易日是否仍然有效。
-- data_gate_risk: high；CNSVdata gate 必须保持可用。
+- data_gate_risk: low；CNSVdata gate 必须保持可用。
 - missing_data_risk: low；缺失报告会导致 V1.6 降级解释。
 - quality_check_risk: low；数据质量检查用于确认基础输入完整性。
 - manifest_consistency_risk: low；manifest 与报告快照需人工抽查。
 
 ## 特征风险解释
-- risk_level: medium
-- trend_state_risk: medium；趋势状态为 downtrend，需要结合路径风险复核。
+- risk_level: low
+- trend_state_risk: low；趋势状态为 uptrend，需要结合路径风险复核。
 - volatility_state_risk: low；波动率状态为 normal_vol。
-- flow_strength_basic_risk: medium；资金流强弱状态为 mixed。
+- flow_strength_basic_risk: low；资金流强弱状态为 positive。
 - moneyflow_reliability_risk: medium；moneyflow 只能作为强因子观察，不是单独结论。
 - feature_unknown_risk: low；unknown 状态会降低风险解释置信度。
-- feature_conflict_risk: medium；趋势与资金流可能出现解释冲突。
+- feature_conflict_risk: low；趋势与资金流可能出现解释冲突。
 
 ## 基准模型风险解释
 - risk_level: medium
 - baseline_distribution_risk: medium；基准分布仅为历史/状态分布观察。
 - B1_B3_conflict_risk: medium；B1 与 B3 分布方向差异需要人工复核。
-- B2_state_sample_risk: medium；B2 最小状态样本数为 105。
+- B2_state_sample_risk: medium；B2 最小状态样本数为 46。
 - positive_prob_calibration_risk: medium；正向概率校准只能用于观察，不代表确定结果。
 - quantile_coverage_risk: low；分位覆盖需要结合验证层。
 
 ## 路径风险解释
 - risk_level: medium
 - downside_path_risk: medium；20D 下行路径概率需要人工复核。
-- touch_down_risk: medium；20D touch_down_5pct_prob=0.4331。
-- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0567。
+- touch_down_risk: medium；20D touch_down_5pct_prob=0.4746。
+- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0615。
 - path_volatility_risk: medium；路径波动率放大时需要额外复核。
 - terminal_distribution_risk: medium；终端分布为历史路径观察，不代表未来承诺。
 
@@ -88,7 +88,7 @@
 ## P2 辅助层风险解释
 - p2_auxiliary_risk_level: high
 - p2_fallback_risk: high；P2 max_fallback_rate=0.3194。
-- p2_state_sample_risk: medium；P2 min_state_sample_size=105。
+- p2_state_sample_risk: medium；P2 min_state_sample_size=46。
 - p2_state_space_fragmentation_risk: medium；状态空间分组容易碎片化，需要避免核心依赖。
 - p2_core_dependency_forbidden: True
 - p2_role: 辅助状态层，不作为核心决策依赖
@@ -97,7 +97,7 @@
 - risk_level: high
 - evidence_conflict: True
 - risk_reason: 证据冲突需要人工复核，不得转化为交易动作。
-- risk_evidence: 20D P1 相对 P0 表现偏弱。, P2 fallback_rate 偏高，P2 只能作为辅助观察。
+- risk_evidence: 上行触达概率与下行触达概率同时偏高，路径机会与风险并存。, 20D P1 相对 P0 表现偏弱。, P2 fallback_rate 偏高，P2 只能作为辅助观察。
 - source_reports: latest_human_decision_support_report.json
 - human_review_required: True
 

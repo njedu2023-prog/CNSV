@@ -6,24 +6,23 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-23T03:12:23.860040+00:00",
-    "latest_trade_date": "2026-06-18",
+    "generated_at": "2026-06-23T04:10:23.522483+00:00",
+    "latest_trade_date": "2026-06-22",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
-    "ready": false,
-    "status": "FAIL",
-    "can_continue": false,
-    "can_develop": false,
-    "can_develop_cnsv_main_program": false,
-    "can_run_daily_ingest": false,
-    "can_run_backtest": false,
-    "can_use_moneyflow_as_strong_factor": false,
+    "ready": true,
+    "status": "PASS",
+    "can_continue": true,
+    "can_develop": true,
+    "can_develop_cnsv_main_program": true,
+    "can_run_daily_ingest": true,
+    "can_run_backtest": true,
+    "can_use_moneyflow_as_strong_factor": true,
     "can_generate_formal_signal": false,
-    "blocking_reason": "latest_trade_date_consistency failed",
+    "blocking_reason": null,
     "warnings": [
-      "formal signal generation is forbidden by CNSVdata allowed_usage",
-      "moneyflow strong-factor usage is forbidden; use low confidence only"
+      "formal signal generation is forbidden by CNSVdata allowed_usage"
     ],
     "can_auto_order": false,
     "can_connect_broker_api": false,
@@ -78,14 +77,14 @@
     }
   },
   "overall_risk_summary": {
-    "overall_risk_level": "severe",
+    "overall_risk_level": "high",
     "risk_confidence": "medium",
     "primary_risk_sources": [
-      "data_risk",
       "p2_auxiliary_risk",
       "evidence_conflict_risk"
     ],
     "secondary_risk_sources": [
+      "data_risk",
       "feature_risk",
       "baseline_model_risk",
       "path_distribution_risk",
@@ -100,7 +99,7 @@
   "risk_source_breakdown": {
     "data_risk": {
       "risk_type": "data_risk",
-      "risk_level": "severe",
+      "risk_level": "low",
       "risk_reason": "数据门禁、数据新鲜度与 manifest 一致性需要人工确认。",
       "risk_evidence": [
         "latest_data_report.json"
@@ -238,7 +237,7 @@
       "human_review_required": true
     },
     "data_gate_risk": {
-      "risk_level": "high",
+      "risk_level": "low",
       "risk_reason": "CNSVdata gate 必须保持可用。",
       "risk_evidence": [
         "latest_data_report.json"
@@ -271,10 +270,10 @@
     }
   },
   "feature_risk_explanation": {
-    "risk_level": "medium",
+    "risk_level": "low",
     "trend_state_risk": {
-      "risk_level": "medium",
-      "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
+      "risk_level": "low",
+      "risk_reason": "趋势状态为 uptrend，需要结合路径风险复核。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -289,8 +288,8 @@
       "human_review_required": true
     },
     "flow_strength_basic_risk": {
-      "risk_level": "medium",
-      "risk_reason": "资金流强弱状态为 mixed。",
+      "risk_level": "low",
+      "risk_reason": "资金流强弱状态为 positive。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -313,7 +312,7 @@
       "human_review_required": true
     },
     "feature_conflict_risk": {
-      "risk_level": "medium",
+      "risk_level": "low",
       "risk_reason": "趋势与资金流可能出现解释冲突。",
       "risk_evidence": [
         "latest_feature_report.json"
@@ -341,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 105。",
+      "risk_reason": "B2 最小状态样本数为 46。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -376,7 +375,7 @@
     },
     "touch_down_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D touch_down_5pct_prob=0.4331。",
+      "risk_reason": "20D touch_down_5pct_prob=0.4746。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -384,7 +383,7 @@
     },
     "max_drawdown_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.0567。",
+      "risk_reason": "20D max_drawdown_p50=-0.0615。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -513,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=105。",
+      "risk_reason": "P2 min_state_sample_size=46。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -535,6 +534,7 @@
     "evidence_conflict": true,
     "risk_reason": "证据冲突需要人工复核，不得转化为交易动作。",
     "risk_evidence": [
+      "上行触达概率与下行触达概率同时偏高，路径机会与风险并存。",
       "20D P1 相对 P0 表现偏弱。",
       "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
     ],
@@ -580,6 +580,7 @@
       "scenario_name": "模型分歧风险",
       "risk_level": "high",
       "trigger_evidence": [
+        "上行触达概率与下行触达概率同时偏高，路径机会与风险并存。",
         "20D P1 相对 P0 表现偏弱。",
         "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
       ],
@@ -757,7 +758,7 @@
       {
         "name": "risk_level_review",
         "status": "WARN",
-        "detail": "overall_risk_level=severe"
+        "detail": "overall_risk_level=high"
       }
     ]
   }
