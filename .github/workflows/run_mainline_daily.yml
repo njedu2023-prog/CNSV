@@ -15,10 +15,9 @@ on:
       - ".github/workflows/run_human_decision_support.yml"
       - ".github/workflows/run_risk_explanation.yml"
   schedule:
-    # CNSVdata runs at 19:10 and acceptance runs at 20:10 Asia/Shanghai.
-    # Run the main program after CNSVdata is ready, with a late retry for delayed data jobs.
-    - cron: "30 13 * * 1-5"  # 21:30 Asia/Shanghai primary daily run
-    - cron: "0 15 * * 1-5"   # 23:00 Asia/Shanghai retry run
+    # 22:00 Beijing time / 14:00 UTC, Monday-Friday.
+    # CNSVdata daily pipeline is scheduled at 20:30 Beijing time.
+    - cron: "0 14 * * 1-5"
 
 concurrency:
   group: cnsv-mainline-daily-main
