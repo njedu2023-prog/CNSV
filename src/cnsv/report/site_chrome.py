@@ -5,8 +5,8 @@ import re
 
 GLOBAL_NAV_ITEMS = [
     ("trading.html", "交易决策", "trading"),
-    ("index.html#coverage", "数据状态", "index"),
-    ("index.html#priceVolumeCards", "核心特征", "index"),
+    ("data.html", "数据状态", "data"),
+    ("features.html", "核心特征", "features"),
     ("baseline.html", "基准模型", "baseline"),
     ("validation.html", "基准验证", "validation"),
     ("path.html", "路径分布", "path"),
@@ -18,6 +18,8 @@ GLOBAL_NAV_ITEMS = [
 
 PAGE_EYEBROWS = {
     "index": "CNSV V3.0 交易决策系统",
+    "data": "CNSV V3.0 交易决策系统",
+    "features": "CNSV V3.0 交易决策系统",
     "baseline": "CNSV V3.0 交易决策系统",
     "validation": "CNSV V3.0 交易决策系统",
     "path": "CNSV V3.0 交易决策系统",
@@ -88,7 +90,7 @@ def site_nav(active: str) -> str:
     for href, label, key in GLOBAL_NAV_ITEMS:
         cls = ' class="active"' if key == active else ""
         links.append(f'<a href="{href}"{cls}>{label}</a>')
-    return f'<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单">{"".join(links)}</nav></div>'
+    return f'<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单'>{"".join(links)}</nav></div>'
 
 
 def _normalize_header(html: str, active: str) -> str:
