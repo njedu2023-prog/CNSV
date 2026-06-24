@@ -2,10 +2,6 @@ name: Run CNSV Trading Decision
 
 on:
   workflow_dispatch:
-  schedule:
-    # 22:00 Beijing time / 14:00 UTC, Monday-Friday.
-    # CNSVdata daily pipeline is scheduled at 20:30 Beijing time.
-    - cron: "0 14 * * 1-5"
 
 concurrency:
   group: cnsv-trading-decision-main
