@@ -10,16 +10,16 @@
 - blocking_reason: None
 
 ## Data Manifest
-- snapshot_id: cnsvdata-2026-06-23-f91718793826
-- latest_trade_date: 2026-06-23
-- generated_at: 2026-06-23 23:21:11
+- snapshot_id: cnsvdata-2026-06-24-9039ab677ed3
+- latest_trade_date: 2026-06-24
+- generated_at: 2026-06-24 23:20:00
 - file_count: 14
 
 ## Loaded Data
-- daily_rows: 3841
-- one_min_rows: 2410
-- moneyflow_rows: 3841
-- latest_trade_date: 2026-06-23
+- daily_rows: 3842
+- one_min_rows: 2651
+- moneyflow_rows: 3842
+- latest_trade_date: 2026-06-24
 
 ## Validation
 - status: PASS
@@ -27,9 +27,9 @@
 - warn_count: 0
 
 ## Feature Summary
-- price_volume: {'latest_trade_date': '2026-06-23', 'latest_open': 37.5, 'latest_high': 37.92, 'latest_low': 35.58, 'latest_close': 35.81, 'latest_pre_close': 37.33, 'latest_pct_chg': -4.0718, 'latest_volume': 1249031.01, 'latest_amount': 4571717.552, 'ma5': 36.484, 'ma10': 35.738, 'ma20': 36.342, 'ma60': 36.196666666666665, 'ret_1d': -0.040717921242968025, 'ret_3d': -0.03606998654104965, 'ret_5d': -0.002784739626844779, 'ret_10d': 0.028136663795578665, 'ret_20d': -0.055145118733509135, 'ret_60d': 0.13394553514882857, 'volume_ma5': 1127277.91, 'volume_ma20': 940510.2115, 'volume_ratio_5d': 1.1235534727372327, 'volume_ratio_20d': 1.3606408434426929, 'amount_ma5': 4116655.2574, 'amount_ma20': 3428149.783, 'amount_ratio_5d': 1.1310872538450945, 'amount_ratio_20d': 1.3642575555274874, 'price_position_20d': 0.31023102310231054, 'price_position_60d': 0.43293591654247404, 'new_high_20d': False, 'new_low_20d': False, 'new_high_60d': False, 'new_low_60d': False}
-- minute_structure: {'latest_intraday_date': '2026-06-23', 'latest_intraday_open': 37.5, 'latest_intraday_high': 37.92, 'latest_intraday_low': 35.58, 'latest_intraday_close': 35.81, 'intraday_range_pct': 0.06534487573303556, 'close_position_in_day_range': 0.09829059829059984, 'morning_return': -0.022133333333333338, 'afternoon_return': -0.023452413416962026, 'last_30min_return': 0.004206393718452217, 'last_60min_return': -0.005277777777777715, 'morning_volume_ratio': 0.5685150042832003, 'afternoon_volume_ratio': 0.4314849957167997, 'last_30min_volume_ratio': 0.12866589277074875, 'last_60min_volume_ratio': 0.23662076252214106, 'intraday_volume_sum': 124903101.0, 'intraday_amount_sum': 4571717556.0, 'late_session_strength': False, 'late_session_weakness': False, 'intraday_reversal_flag': True}
-- moneyflow: {'net_mf_amount': -115777.59, 'net_mf_ratio': -0.025324746921285744, 'small_order_net': -12287.640000000014, 'medium_order_net': -8108.299999999988, 'large_order_net': 4403.5, 'extra_large_order_net': 15992.429999999997, 'main_force_net': 20395.929999999997, 'main_force_ratio': 0.0044613276669021994, 'main_force_available': True, 'moneyflow_latest_trade_date': '2026-06-23', 'moneyflow_lag_days': 0, 'moneyflow_strength_basic': 'mixed', 'flow_strength_basic': 'mixed', 'flow_strength_score': -20.86341925438354, 'flow_continuity_3d': -1, 'flow_continuity_5d': -1, 'flow_continuity_10d': -2, 'positive_flow_days_5d': 2, 'positive_flow_days_10d': 4, 'flow_reversal_1d': True, 'flow_reversal_3d': False, 'price_flow_confirm': True, 'price_flow_divergence': False, 'volume_flow_confirm': 'outflow_confirmed', 'moneyflow_warning': '', 'can_use_as_strong_factor': True}
+- price_volume: {'latest_trade_date': '2026-06-24', 'latest_open': 35.81, 'latest_high': 36.44, 'latest_low': 35.3, 'latest_close': 35.35, 'latest_pre_close': 35.81, 'latest_pct_chg': -1.2846, 'latest_volume': 852772.66, 'latest_amount': 3045576.404, 'ma5': 36.356, 'ma10': 35.80800000000001, 'ma20': 36.175, 'ma60': 36.254999999999995, 'ret_1d': -0.012845573862049764, 'ret_3d': -0.021859435528500226, 'ret_5d': -0.017782717421505945, 'ret_10d': 0.020202020202020332, 'ret_20d': -0.0863272163349702, 'ret_60d': 0.10989010989010994, 'volume_ma5': 1140109.0320000001, 'volume_ma20': 933679.801, 'volume_ratio_5d': 0.7564883977900357, 'volume_ratio_20d': 0.9067128135056938, 'amount_ma5': 4158159.5741999997, 'amount_ma20': 3392052.8082500002, 'amount_ratio_5d': 0.7398181809189257, 'amount_ratio_20d': 0.8884023735202121, 'price_position_20d': 0.23432343234323452, 'price_position_60d': 0.39865871833084954, 'new_high_20d': False, 'new_low_20d': False, 'new_high_60d': False, 'new_low_60d': False}
+- minute_structure: {'latest_intraday_date': '2026-06-24', 'latest_intraday_open': 35.81, 'latest_intraday_high': 36.44, 'latest_intraday_low': 35.3, 'latest_intraday_close': 35.35, 'intraday_range_pct': 0.032248939179632265, 'close_position_in_day_range': 0.043859649122810734, 'morning_return': -0.0061435353253280756, 'afternoon_return': -0.0067434672660859896, 'last_30min_return': -0.0019762845849802257, 'last_60min_return': -0.0025395033860043936, 'morning_volume_ratio': 0.6277305958659604, 'afternoon_volume_ratio': 0.37226940413403964, 'last_30min_volume_ratio': 0.12882379460898757, 'last_60min_volume_ratio': 0.20532272927230102, 'intraday_volume_sum': 85277266.0, 'intraday_amount_sum': 3045576398.0, 'late_session_strength': False, 'late_session_weakness': True, 'intraday_reversal_flag': True}
+- moneyflow: {'net_mf_amount': -33267.03, 'net_mf_ratio': -0.010923065320675501, 'small_order_net': -4265.040000000008, 'medium_order_net': 1247.1699999999983, 'large_order_net': 4386.069999999992, 'extra_large_order_net': -1368.2099999999991, 'main_force_net': 3017.8599999999933, 'main_force_ratio': 0.0009908994553662798, 'main_force_available': True, 'moneyflow_latest_trade_date': '2026-06-24', 'moneyflow_lag_days': 0, 'moneyflow_strength_basic': 'mixed', 'flow_strength_basic': 'mixed', 'flow_strength_score': -9.93216586530922, 'flow_continuity_3d': -1, 'flow_continuity_5d': -1, 'flow_continuity_10d': -2, 'positive_flow_days_5d': 2, 'positive_flow_days_10d': 4, 'flow_reversal_1d': False, 'flow_reversal_3d': False, 'price_flow_confirm': True, 'price_flow_divergence': False, 'volume_flow_confirm': 'neutral', 'moneyflow_warning': '', 'can_use_as_strong_factor': True}
 
 ## Forbidden Actions
 - formal_signal_generation

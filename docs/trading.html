@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>CNSV V3.0 交易决策系统</title>
   <style>
-    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}*{box-sizing:border-box}body{margin:0;background:#f5f5f7}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}.topnav{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}.topnav a{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}.topnav a:hover,.topnav a.active{opacity:1}.topnav a.active{font-weight:600;background:rgba(255,255,255,.12)}main{width:min(1180px,100%);margin:auto;padding:52px 18px 28px}.hero{display:grid;align-items:center;text-align:center;padding:16px 0 20px}.eyebrow{color:var(--red);font-size:12px;font-weight:700;letter-spacing:.08em}h1{font-size:30px;margin:5px 0 8px}.subtitle{color:var(--muted);font-size:13px;margin:0}.quick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}.quick a{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:5px 10px;font-size:12px}.decision{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px;margin-top:16px}.signal{font-size:56px;line-height:.92;font-weight:800;letter-spacing:0}.buy{color:var(--red)}.sell,.blocked{color:var(--green)}.watch{color:#1d1d1f}.decision-text{font-size:18px;font-weight:700;margin-top:8px}.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}.timeline-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfbfd;text-align:left}.timeline-table th,.timeline-table td{padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px}.timeline-table tr:last-child th,.timeline-table tr:last-child td{border-bottom:0}.timeline-table th{color:var(--muted);font-weight:500;width:36%}.timeline-table td{font-weight:700;color:#1d1d1f}.metric{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px;text-align:left}.label{color:var(--muted);font-size:12px}.value{font-size:17px;font-weight:700;margin-top:4px}section{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:12px 0}h2{font-size:16px;margin:0 0 10px}h3{font-size:13px;margin:0 0 6px;color:#1d1d1f}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.note{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 0}.warn{color:#8a5a00}.metric .note{margin-top:5px}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:3px;background:#fbfbfd;font-size:12px}.pill strong{margin-left:6px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:12px}@media(max-width:760px){.topnav{justify-content:flex-start}.hero{padding:12px 0 16px}main{padding:50px 12px 24px}h1{font-size:24px}.signal{font-size:44px}.hero-grid{grid-template-columns:1fr 1fr}.decision{padding:14px}.value{font-size:16px}}
+    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}*{box-sizing:border-box}body{margin:0;background:#f5f5f7}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}.topnav{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}.topnav a{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}.topnav a:hover,.topnav a.active{opacity:1}.topnav a.active{font-weight:600;background:rgba(255,255,255,.12)}main{width:min(1180px,100%);margin:auto;padding:52px 18px 28px}.hero{display:grid;align-items:center;text-align:center;padding:16px 0 20px}.eyebrow{color:var(--red);font-size:12px;font-weight:700;letter-spacing:.08em}h1{font-size:30px;margin:5px 0 8px}.subtitle{color:var(--muted);font-size:13px;margin:0}.quick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}.quick a{border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--blue);text-decoration:none;padding:5px 10px;font-size:12px}.decision{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px;margin-top:16px}.signal{font-size:56px;line-height:.92;font-weight:800;letter-spacing:0}.buy{color:var(--red)}.sell,.blocked{color:var(--green)}.watch{color:#1d1d1f}.decision-text{font-size:18px;font-weight:700;margin-top:8px}.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}.timeline-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfbfd;text-align:left}.timeline-table th,.timeline-table td{padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px}.timeline-table tr:last-child th,.timeline-table tr:last-child td{border-bottom:0}.timeline-table th{color:var(--muted);font-weight:500;width:36%}.timeline-table td{font-weight:700;color:#1d1d1f}.metric{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px;text-align:left}.label{color:var(--muted);font-size:12px}.value{font-size:17px;font-weight:700;margin-top:4px}section{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:12px 0}h2{font-size:16px;margin:0 0 10px}h3{font-size:13px;margin:0 0 6px;color:#1d1d1f}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.three-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.note{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 0}.warn{color:#8a5a00}.metric .note{margin-top:5px}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:3px;background:#fbfbfd;font-size:12px}.pill strong{margin-left:6px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:12px}@media(max-width:760px){.topnav{justify-content:flex-start}.hero{padding:12px 0 16px}main{padding:50px 12px 24px}h1{font-size:24px}.signal{font-size:44px}.hero-grid{grid-template-columns:1fr 1fr}.three-grid{grid-template-columns:1fr}.decision{padding:14px}.value{font-size:16px}}
   </style>
 </head>
 <body>
-<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html" class="active">交易决策</a><a href="index.html#coverage">数据状态</a><a href="index.html#priceVolumeCards">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
+<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html" class="active">交易决策</a><a href="data.html">数据状态</a><a href="features.html">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
 <main>
   <div class="hero">
     <div>
@@ -19,24 +19,24 @@
         <div class="label">今日决策</div>
         <table class="timeline-table" aria-label="交易决策日期表">
           <tbody>
-            <tr><th>信号生成日</th><td>2026-06-24</td><th>预测日</th><td>2026-06-24</td></tr>
-            <tr><th>验证日</th><td>2026-06-24</td><th>数据交易日</th><td>2026-06-23</td></tr>
+            <tr><th>信号生成日</th><td>2026-06-25</td><th>预测日</th><td>2026-06-25</td></tr>
+            <tr><th>验证日</th><td>2026-06-25</td><th>数据交易日</th><td>2026-06-24</td></tr>
           </tbody>
         </table>
         <div class="signal sell">STRONG_SELL</div>
         <div class="decision-text">强烈卖出 · 优先退出</div>
         <table class="timeline-table" aria-label="收盘数据表">
           <tbody>
-            <tr><th>收盘数据日</th><td>2026-06-23</td><th>最新收盘价</th><td>35.8100</td></tr>
-            <tr><th>收盘涨跌幅</th><td>-4.07%</td><th>成交额</th><td>45.72 亿</td></tr>
-            <tr><th>MA20</th><td>36.3420</td><th>MA5</th><td>36.4840</td></tr>
+            <tr><th>收盘数据日</th><td>2026-06-24</td><th>最新收盘价</th><td>35.3500</td></tr>
+            <tr><th>收盘涨跌幅</th><td>-1.28%</td><th>成交额</th><td>30.46 亿</td></tr>
+            <tr><th>MA20</th><td>36.1750</td><th>MA5</th><td>36.3560</td></tr>
           </tbody>
         </table>
         <div class="hero-grid">
           <div class="metric"><div class="label">建议仓位</div><div class="value">0%</div></div>
-          <div class="metric"><div class="label">次日上涨概率</div><div class="value">38.32%</div></div>
+          <div class="metric"><div class="label">次日上涨概率</div><div class="value">39.30%</div></div>
           <div class="metric"><div class="label">历史方向准确率</div><div class="value">50.63%</div></div>
-          <div class="metric"><div class="label">实盘方向准确率</div><div class="value">50.00%</div></div>
+          <div class="metric"><div class="label">实盘方向准确率</div><div class="value">66.67%</div></div>
           <div class="metric"><div class="label">风险调整 EV</div><div class="value">-0.95%</div></div>
           <div class="metric"><div class="label">风险等级</div><div class="value">高风险</div></div>
         </div>
@@ -44,13 +44,13 @@
     </div>
   </div>
   <section><h2>5D / 10D / 20D 价格预测分布</h2><div class="grid">
-    <div><h3>5D 预测分布</h3><table class="timeline-table" aria-label="5D 价格预测分布表"><tbody><tr><th>P10</th><td>31.9707</td><th>P50</th><td>35.5376</td></tr><tr><th>P90</th><td>38.3788</td><th>期末上涨概率</th><td>42.70%</td></tr><tr><th>样本数</th><td>89</td><th>模型层</th><td>P2</td></tr></tbody></table></div>
-    <div><h3>10D 预测分布</h3><table class="timeline-table" aria-label="10D 价格预测分布表"><tbody><tr><th>P10</th><td>31.3871</td><th>P50</th><td>35.8333</td></tr><tr><th>P90</th><td>41.4816</td><th>期末上涨概率</th><td>50.56%</td></tr><tr><th>样本数</th><td>89</td><th>模型层</th><td>P2</td></tr></tbody></table></div>
-    <div><h3>20D 预测分布</h3><table class="timeline-table" aria-label="20D 价格预测分布表"><tbody><tr><th>P10</th><td>30.0691</td><th>P50</th><td>36.3554</td></tr><tr><th>P90</th><td>40.5545</td><th>期末上涨概率</th><td>56.82%</td></tr><tr><th>样本数</th><td>88</td><th>模型层</th><td>P2</td></tr></tbody></table></div>
+    <div><h3>5D 预测分布</h3><table class="timeline-table" aria-label="5D 价格预测分布表"><tbody><tr><th>P10</th><td>31.5600</td><th>P50</th><td>35.0811</td></tr><tr><th>P90</th><td>37.8858</td><th>期末上涨概率</th><td>42.70%</td></tr><tr><th>样本数</th><td>89</td><th>模型层</th><td>P2</td></tr></tbody></table></div>
+    <div><h3>10D 预测分布</h3><table class="timeline-table" aria-label="10D 价格预测分布表"><tbody><tr><th>P10</th><td>30.9839</td><th>P50</th><td>35.3730</td></tr><tr><th>P90</th><td>40.9488</td><th>期末上涨概率</th><td>50.56%</td></tr><tr><th>样本数</th><td>89</td><th>模型层</th><td>P2</td></tr></tbody></table></div>
+    <div><h3>20D 预测分布</h3><table class="timeline-table" aria-label="20D 价格预测分布表"><tbody><tr><th>P10</th><td>29.6828</td><th>P50</th><td>35.8884</td></tr><tr><th>P90</th><td>40.0336</td><th>期末上涨概率</th><td>56.82%</td></tr><tr><th>样本数</th><td>88</td><th>模型层</th><td>P2</td></tr></tbody></table></div>
   </div><p class="note">来自 V1.3 路径分布层的 P2 状态条件路径；只展示价格分布参考，不代表确定收益。</p></section>
   <section><h2>概率判断</h2><table class="timeline-table" aria-label="概率判断表">
     <tbody>
-      <tr><th>明天上涨概率</th><td>38.32%</td><th>明天下跌概率</th><td>57.68%</td></tr>
+      <tr><th>明天上涨概率</th><td>39.30%</td><th>明天下跌概率</th><td>56.70%</td></tr>
       <tr><th>大涨概率</th><td>5.04%</td><th>大跌概率</th><td>6.73%</td></tr>
     </tbody>
   </table></section>
@@ -71,10 +71,10 @@
     <div class="metric"><div class="label">止损参考</div><div class="value">-2.0%</div></div>
     <div class="metric"><div class="label">时间退出</div><div class="value">10 个交易日</div></div>
   </div></section>
-  <section><h2>模型表现追踪</h2><div class="grid">
-    <div class="metric"><div class="label">历史统计线</div><div class="value">方向准确率：50.63%</div><p class="note">样本数：713</p><p class="note">包含历史验证样本、walk-forward、purged walk-forward 等历史统计结果。</p></div>
-    <div class="metric"><div class="label">实盘统计线</div><div class="value">方向准确率：50.00%</div><p class="note">起始日期：2026-06-21 · 样本数：2</p><p class="note">正确次数：1 · 错误次数：1</p><p class="note">从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。</p></div>
-    <div class="metric"><div class="label">历史验证补充</div><div class="value">B2 5D：50.63%</div><p class="note">standard 样本：713 · purged：50.35%</p><p class="note">P2 覆盖率：72.22% · Brier：0.2523</p></div>
+  <section><h2>模型表现追踪</h2><div class="three-grid">
+    <div class="metric"><div class="label">历史统计线</div><div class="value">50.63%</div><p class="note">样本数：713</p><p class="note">历史验证 / walk-forward / purged</p></div>
+    <div class="metric"><div class="label">实盘统计线</div><div class="value">66.67%</div><p class="note">起始：2026-06-21 · 样本：3</p><p class="note">正确：2 · 错误：1</p></div>
+    <div class="metric"><div class="label">历史验证补充</div><div class="value">B2 5D 50.63%</div><p class="note">standard：713 · purged：50.35%</p><p class="note">P2 覆盖：72.22% · Brier：0.2523</p></div>
   </div></section>
   <section><h2>人工执行说明</h2>
     <span class="pill">自动下单 <strong>关闭</strong></span>
@@ -82,7 +82,7 @@
     <span class="pill">人工参考 <strong>是</strong></span>
     <p class="note">所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。</p>
   </section>
-  <div class="footer">生成时间：2026-06-24T03:54:32.735848+00:00 · 数据日期：2026-06-23</div>
+  <div class="footer">生成时间：2026-06-24T21:13:57.534152+00:00 · 数据日期：2026-06-24</div>
 </main>
 </body>
 </html>

@@ -4,6 +4,6 @@
 
 - version: 1.5
 - stage: V1.5_human_decision_support
-- latest_trade_date: 2026-06-23
+- latest_trade_date: 2026-06-24
 - quality: WARN
 - forbidden_actions: formal_signal_generation, auto_order, broker_api

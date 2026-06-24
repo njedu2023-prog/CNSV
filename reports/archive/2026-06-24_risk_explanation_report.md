@@ -5,7 +5,7 @@
 ## 阶段说明
 - 版本: 1.6
 - 阶段: V1.6_risk_explanation
-- latest_trade_date: 2026-06-23
+- latest_trade_date: 2026-06-24
 - 质量状态: WARN
 - FAIL 数量: 0
 - WARN 数量: 2
@@ -63,8 +63,8 @@
 ## 路径风险解释
 - risk_level: medium
 - downside_path_risk: medium；20D 下行路径概率需要人工复核。
-- touch_down_risk: medium；20D touch_down_5pct_prob=0.5051。
-- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0665。
+- touch_down_risk: medium；20D touch_down_5pct_prob=0.4966。
+- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0648。
 - path_volatility_risk: medium；路径波动率放大时需要额外复核。
 - terminal_distribution_risk: medium；终端分布为历史路径观察，不代表未来承诺。
 

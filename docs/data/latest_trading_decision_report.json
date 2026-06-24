@@ -4,8 +4,8 @@
   "report_type": "trading_decision_report",
   "symbol": "600150.SH",
   "name": "中国船舶",
-  "trade_date": "2026-06-23",
-  "generated_at": "2026-06-24T03:54:32.735848+00:00",
+  "trade_date": "2026-06-24",
+  "generated_at": "2026-06-24T21:13:57.534152+00:00",
   "data_status": "PASS",
   "is_trade_signal": true,
   "manual_reference_only": true,
@@ -46,31 +46,31 @@
     "manual_reference_only": true
   },
   "decision_timeline": {
-    "data_trade_date": "2026-06-23",
-    "signal_date": "2026-06-24",
-    "prediction_date": "2026-06-24",
-    "verify_date": "2026-06-24",
+    "data_trade_date": "2026-06-24",
+    "signal_date": "2026-06-25",
+    "prediction_date": "2026-06-25",
+    "verify_date": "2026-06-25",
     "predicted_direction": "DOWN",
     "calendar_source": "CNSVdata trade_calendar",
     "prediction_date_source": "trade_calendar",
     "verify_date_source": "trade_calendar"
   },
   "market_snapshot": {
-    "latest_trade_date": "2026-06-23",
-    "latest_close": 35.81,
-    "latest_pct_chg": -4.0718,
-    "latest_amount": 4571717.552,
-    "ma5": 36.484,
-    "ma20": 36.342
+    "latest_trade_date": "2026-06-24",
+    "latest_close": 35.35,
+    "latest_pct_chg": -1.2846,
+    "latest_amount": 3045576.404,
+    "ma5": 36.356,
+    "ma20": 36.175
   },
   "price_prediction_distribution": {
     "5D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 35.81,
-      "terminal_price_p10": 31.970726231285077,
-      "terminal_price_p50": 35.53761156186613,
-      "terminal_price_p90": 38.37884686792292,
+      "latest_close": 35.35,
+      "terminal_price_p10": 31.560043906057736,
+      "terminal_price_p50": 35.08111054766734,
+      "terminal_price_p90": 37.885848555740715,
       "terminal_return_p10": -0.1072123364622989,
       "terminal_return_p50": -0.00760649087221088,
       "terminal_return_p90": 0.07173546126564967,
@@ -83,10 +83,10 @@
     "10D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 35.81,
-      "terminal_price_p10": 31.38712888677709,
-      "terminal_price_p50": 35.833291056910575,
-      "terminal_price_p90": 41.48160512217982,
+      "latest_close": 35.35,
+      "terminal_price_p10": 30.98394320434432,
+      "terminal_price_p50": 35.37299186991871,
+      "terminal_price_p90": 40.948750099666476,
       "terminal_return_p10": -0.12350938601571937,
       "terminal_return_p50": 0.0006504065040651152,
       "terminal_return_p90": 0.1583804837246528,
@@ -99,10 +99,10 @@
     "20D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 35.81,
-      "terminal_price_p10": 30.06906059301089,
-      "terminal_price_p50": 36.35536986812777,
-      "terminal_price_p90": 40.55453938319746,
+      "latest_close": 35.35,
+      "terminal_price_p10": 29.68280625420092,
+      "terminal_price_p50": 35.888364279204595,
+      "terminal_price_p90": 40.03359305210919,
       "terminal_return_p10": -0.16031665476093587,
       "terminal_return_p50": 0.015229541137329439,
       "terminal_return_p90": 0.13249202410492744,
@@ -114,20 +114,20 @@
     }
   },
   "probability": {
-    "prob_up_1d": 0.38315865623636947,
-    "prob_down_1d": 0.5768413437636305,
+    "prob_up_1d": 0.3929870985963153,
+    "prob_down_1d": 0.5670129014036847,
     "prob_flat_1d": 0.040000000000000036,
-    "direction_confidence": 0.6915778812690827,
+    "direction_confidence": 0.6658099636685934,
     "primary_model": "B2_state_grouped_distribution+P2_state_conditional_path",
     "fallback_used": false,
     "fallback_reason": null,
     "inputs": {
-      "b1_positive_prob_5d": 0.4835766423357664,
+      "b1_positive_prob_5d": 0.4834506124576492,
       "b2_positive_prob_5d": 0.42696629213483145,
       "p2_positive_terminal_prob_5d": 0.42696629213483145,
-      "ret_1d": -0.040717921242968025,
-      "flow_strength_score": -20.86341925438354,
-      "main_force_net": 20395.929999999997
+      "ret_1d": -0.012845573862049764,
+      "flow_strength_score": -9.93216586530922,
+      "main_force_net": 3017.8599999999933
     }
   },
   "return_distribution": {
@@ -242,10 +242,10 @@
     "live_stats": {
       "name": "实盘统计线",
       "start_date": "2026-06-21",
-      "direction_accuracy": 0.5,
-      "correct_count": 1,
+      "direction_accuracy": 0.6666666666666666,
+      "correct_count": 2,
       "wrong_count": 1,
-      "sample_count": 2,
+      "sample_count": 3,
       "description": "从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。"
     }
   },
