@@ -2,8 +2,6 @@ name: Check CNSV Data
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "5 9 * * 1-5"
 
 permissions:
   contents: write
