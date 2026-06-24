@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=trading.html">
   <title>CNSV V3.0 交易决策入口</title>
   <style>
     :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--blue:#06c;--muted:#6e6e73;--surface:#fff;--shadow:0 18px 42px rgba(0,0,0,.07)}
@@ -13,25 +12,28 @@
 <body>
   <div class="topbar">
     <nav class="nav" aria-label="CNSV 全量菜单">
-      <a href="trading.html" class="active">V3.0 交易决策</a>
-      <a href="data/latest_data_report.json">数据状态</a>
-      <a href="data/latest_feature_report.json">核心特征</a>
-      <a href="baseline.html">V1.2 基准模型</a>
-      <a href="validation.html">V1.2.2 验证</a>
-      <a href="path.html">V1.3 路径分布</a>
-      <a href="backtest.html">V1.4 观察级回测</a>
-      <a href="decision_support.html">V1.5 人工决策辅助</a>
-      <a href="risk.html">V1.6 风控解释</a>
-      <a href="live.html">V2.0 实盘人工决策</a>
+      <a href="trading.html" class="active">交易决策</a>
+      <a href="data.html">数据状态</a>
+      <a href="features.html">核心特征</a>
+      <a href="baseline.html">基准模型</a>
+      <a href="validation.html">基准验证</a>
+      <a href="path.html">路径分布</a>
+      <a href="backtest.html">观察回测</a>
+      <a href="decision_support.html">人工辅助</a>
+      <a href="risk.html">风控解释</a>
+      <a href="live.html">人工确认</a>
     </nav>
   </div>
   <main>
     <section class="card">
-      <h1>正在打开 V3.0 交易决策</h1>
-      <p class="note">入口页不再使用 iframe，避免页面递归嵌套。所有菜单链接均在当前窗口打开。</p>
-      <a class="button" href="trading.html">立即打开</a>
+      <h1>正在打开 CNSV 页面</h1>
+      <p class="note">数据状态和核心特征已拆分为独立页面；旧锚点入口会自动跳转到对应页面。</p>
+      <a class="button" href="trading.html">打开交易决策</a>
     </section>
   </main>
-  <script>window.location.replace('trading.html');</script>
+  <script>
+    const routes = {"#coverage": "data.html", "#priceVolumeCards": "features.html"};
+    window.location.replace(routes[window.location.hash] || "trading.html");
+  </script>
 </body>
 </html>
