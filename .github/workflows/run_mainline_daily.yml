@@ -122,8 +122,16 @@ jobs:
         run: python -m cnsv.cli.run_observation_backtest
 
       - name: Generate human decision support report
+        id: human_support
         if: steps.data_gate.outputs.proceed == 'true'
+        continue-on-error: true
         run: python -m cnsv.cli.run_human_decision_support
+
+      - name: Report non-blocking human support failure
+        if: steps.human_support.outcome == 'failure'
+        run: |
+          echo "::warning::human decision support report failed; V3 trading decision generation will continue with existing support evidence."
+          echo "This should be inspected, but it must not leave trading.html stale."
 
       - name: Generate risk explanation report
         if: steps.data_gate.outputs.proceed == 'true'
