@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CNSV 核心特征</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}*{box-sizing:border-box}body{margin:0;background:#f5f5f7;padding-top:48px}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}.topnav{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}.topnav a{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}.topnav a:hover,.topnav a.active{opacity:1}.topnav a.active{font-weight:600;background:rgba(255,255,255,.12)}main{width:min(1180px,100%);margin:auto;padding:26px 18px 28px}.site-hero{text-align:center;padding:16px 0 20px}.eyebrow{color:var(--red);font-size:12px;font-weight:700;letter-spacing:.08em;margin:0 0 5px}h1{font-size:30px;margin:5px 0 8px}section{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;margin:12px 0}h2{font-size:14px;margin:0 0 10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}.metric{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px 12px}.label{color:var(--muted);font-size:12px}.value{font-size:13px;line-height:1.26;font-weight:700;margin-top:5px;overflow-wrap:anywhere}.pos{color:var(--red)}.neg{color:var(--green)}.footer{color:var(--muted);font-size:12px;text-align:center;padding:12px}@media(max-width:760px){.topnav{justify-content:flex-start}main{padding-left:14px;padding-right:14px}h1{font-size:24px}section{padding:16px}}
+  </style>
+</head>
+<body>
+<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html">交易决策</a><a href="data.html">数据状态</a><a href="features.html" class="active">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
+<main>
+  <header class="site-hero"><p class="eyebrow">CNSV V3.0 交易决策系统</p><h1>中国船舶 600150.SH</h1></header>
+  <section><h2>特征质量</h2><div id="quality" class="grid"></div></section>
+  <section><h2>量价核心摘要</h2><div id="price" class="grid"></div></section>
+  <section><h2>资金流核心摘要</h2><div id="moneyflow" class="grid"></div></section>
+  <section><h2>分钟结构摘要</h2><div id="minute" class="grid"></div></section>
+  <section><h2>趋势摘要</h2><div id="trend" class="grid"></div></section>
+  <section><h2>波动率摘要</h2><div id="volatility" class="grid"></div></section>
+  <div id="footer" class="footer"></div>
+</main>
+<script>
+const pctKeys=new Set(['latest_pct_chg','ret_1d','ret_5d','ret_20d','net_mf_ratio','main_force_ratio','intraday_range_pct','realized_vol_20d']);
+const moneyKeys=new Set(['latest_amount','net_mf_amount','main_force_net']);
+const fmt=(v,k='')=>{if(v===null||v===undefined||v==='')return 'N/A';if(typeof v==='boolean')return v?'YES':'NO';if(typeof v==='number'){if(pctKeys.has(k))return `${(k==='latest_pct_chg'?v:v*100).toFixed(2)}%`;if(moneyKeys.has(k))return v.toLocaleString('zh-CN',{maximumFractionDigits:2});return v.toLocaleString('zh-CN',{maximumFractionDigits:4,minimumFractionDigits:Number.isInteger(v)?0:4})}return String(v)};
+const cls=v=>typeof v==='number'?(v>0?'pos':v<0?'neg':''):'';
+const card=(label,value,key='')=>`<div class="metric"><div class="label">${label}</div><div class="value ${cls(value)}">${fmt(value,key)}</div></div>`;
+function fill(id,obj,rows){document.getElementById(id).innerHTML=rows.map(([k,l])=>card(l,obj&&obj[k],k)).join('')}
+fetch('data/latest_feature_report.json').then(r=>r.json()).then(d=>{
+ const q=d.feature_quality||{}, f=d.features||{}, p=f.price_volume||{}, m=f.moneyflow||{}, mi=f.minute_structure||{}, t=f.trend||{}, v=f.volatility||{}, meta=d.meta||{}, dm=d.data_manifest||{};
+ quality.innerHTML=[card('质量状态',q.status),card('失败数量',q.failed_count),card('警告数量',q.warn_count),card('检查项数量',(q.checks||[]).length)].join('');
+ fill('price',p,[['latest_trade_date','最新交易日'],['latest_close','最新收盘价'],['latest_pct_chg','最新涨跌幅'],['latest_amount','成交额'],['ma5','MA5'],['ma20','MA20'],['ret_1d','1D 收益'],['ret_5d','5D 收益'],['ret_20d','20D 收益']]);
+ fill('moneyflow',m,[['main_force_net','主力净流入'],['net_mf_amount','净流入金额'],['net_mf_ratio','净流入占比'],['main_force_ratio','主力占比'],['flow_strength_score','资金流强弱分'],['price_flow_confirm','价量资金确认'],['price_flow_divergence','价量资金背离'],['volume_flow_confirm','量能资金确认']]);
+ fill('minute',mi,[['latest_intraday_date','日内日期'],['latest_intraday_close','日内收盘价'],['intraday_range_pct','日内振幅'],['close_position_in_day_range','日内收盘位置'],['morning_return','上午收益'],['afternoon_return','下午收益'],['last_30min_return','尾盘30min收益']]);
+ fill('trend',t,[['trend_state','趋势状态'],['trend_ma5_ma20','MA5-MA20'],['close_above_ma5','收盘在 MA5 上方'],['close_above_ma20','收盘在 MA20 上方'],['ma5_slope','MA5 斜率'],['ma20_slope','MA20 斜率']]);
+ fill('volatility',v,[['volatility_state','波动率状态'],['realized_vol_5d','5D 实现波动率'],['realized_vol_10d','10D 实现波动率'],['realized_vol_20d','20D 实现波动率'],['atr_14d','ATR 14D'],['intraday_range_ma20','20D 日内振幅均值']]);
+ footer.textContent=`generated_at: ${fmt(meta.generated_at)} · data snapshot: ${fmt((dm||{}).snapshot_id)}`;
+}).catch(e=>quality.innerHTML=`<div class="metric"><div class="value neg">加载失败：${e}</div></div>`);
+</script>
+</body>
+</html>
