@@ -1,5 +1,8 @@
+import pandas as pd
+
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload, _decision_timeline
+from cnsv.trading.live_stats import update_live_stats_registry
 from cnsv.trading.report import build_trading_markdown
 from cnsv.utils.io import repo_root
 
@@ -57,3 +60,50 @@ def test_trading_timeline_fallback_skips_known_a_share_holidays():
 
     assert timeline["prediction_date"] == "2026-06-22"
     assert timeline["verify_date"] == "2026-06-22"
+
+
+def test_live_stats_verifies_missed_sample_from_daily_history(tmp_path):
+    registry_path = tmp_path / "live_stats_registry.json"
+    registry_path.write_text(
+        """[
+  {
+    "trade_date": "2026-06-22",
+    "data_trade_date": "2026-06-18",
+    "signal_date": "2026-06-22",
+    "verify_date": "2026-06-22",
+    "predicted_direction": "DOWN",
+    "actual_direction": null,
+    "is_correct": null,
+    "close_t": 36.14,
+    "close_t1": null,
+    "return_1d": null
+  }
+]
+""",
+        encoding="utf-8",
+    )
+    payload = {
+        "decision_timeline": {
+            "signal_date": "2026-06-24",
+            "prediction_date": "2026-06-24",
+            "verify_date": "2026-06-24",
+            "data_trade_date": "2026-06-23",
+        },
+        "decision": {"signal": "SELL"},
+        "market_snapshot": {"latest_trade_date": "2026-06-23", "latest_close": 35.81},
+    }
+    reports = {
+        "daily_price_history": pd.DataFrame(
+            {
+                "trade_date": ["2026-06-18", "2026-06-22", "2026-06-23"],
+                "close": [36.14, 37.0, 35.81],
+            }
+        ),
+        "feature_report": {"features": {"price_volume": {"latest_trade_date": "2026-06-23", "latest_close": 35.81}}},
+    }
+
+    registry = update_live_stats_registry(payload, registry_path, reports)
+
+    verified = [item for item in registry if item.get("signal_date") == "2026-06-22"][0]
+    assert verified["actual_direction"] == "UP"
+    assert verified["is_correct"] is False
