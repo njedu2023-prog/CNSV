@@ -22,8 +22,9 @@
     .global-nav { display: none !important; }
     header nav { display: none !important; }
     main { padding-top: 26px !important; }
-    header { text-align: center !important; padding: 16px 0 20px !important; }
+    header, .site-hero { text-align: center !important; padding: 16px 0 20px !important; }
     header .eyebrow,
+    .site-hero .eyebrow,
     .hero .eyebrow {
       color: #d70015 !important; font-size: 12px !important; font-weight: 700 !important;
       letter-spacing: .08em !important; margin: 0 0 5px !important;
@@ -44,4 +45,9 @@
     }
 
   </style></head><body>
-<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html">交易决策</a><a href="index.html#coverage">数据状态</a><a href="index.html#priceVolumeCards">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html" class="active">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div><main><header><p class="eyebrow">CNSV V3.0 交易决策系统</p><h1>中国船舶 600150.SH</h1></header><section><h2>阶段总览</h2><div id="overview" class="grid"></div></section><section><h2>当前状态摘要</h2><div id="state" class="grid"></div></section><section><h2>人工关注点</h2><div id="attention" class="grid"></div></section><section><h2>禁止交易信号声明</h2><div id="guard" class="grid"></div></section><div id="footer" class="footer"></div></main><script>const fmt=v=>v===null||v===undefined?'N/A':typeof v==='object'?JSON.stringify(v):v;const card=(l,v)=>`<div class="card"><div class="label">${l}</div><div class="value">${fmt(v)}</div></div>`;fetch('data/latest_human_decision_support_report.json').then(r=>r.json()).then(d=>{const m=d.meta||{},q=d.human_decision_support_quality||{};overview.innerHTML=[card('版本',m.version),card('阶段',m.stage),card('质量',q.status),card('交易信号',m.is_trade_signal?'YES':'NO')].join('');state.innerHTML=Object.entries(d.current_state_summary||{}).map(([k,v])=>card(k,v)).join('');attention.innerHTML=(d.human_attention_items||[]).map(x=>card(x.category,x.text)).join('');guard.innerHTML=(d.forbidden_actions||[]).map(x=>card('禁止动作',x)).join('');footer.textContent='generated_at: '+(m.generated_at||'N/A')});</script></body></html>
+<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html">交易决策</a><a href="index.html#coverage">数据状态</a><a href="index.html#priceVolumeCards">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html" class="active">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div><main>
+  <header class="site-hero">
+    <p class="eyebrow">CNSV V3.0 交易决策系统</p>
+    <h1>中国船舶 600150.SH</h1>
+  </header>
+<section><h2>阶段总览</h2><div id="overview" class="grid"></div></section><section><h2>当前状态摘要</h2><div id="state" class="grid"></div></section><section><h2>人工关注点</h2><div id="attention" class="grid"></div></section><section><h2>禁止交易信号声明</h2><div id="guard" class="grid"></div></section><div id="footer" class="footer"></div></main><script>const fmt=v=>v===null||v===undefined?'N/A':typeof v==='object'?JSON.stringify(v):v;const card=(l,v)=>`<div class="card"><div class="label">${l}</div><div class="value">${fmt(v)}</div></div>`;fetch('data/latest_human_decision_support_report.json').then(r=>r.json()).then(d=>{const m=d.meta||{},q=d.human_decision_support_quality||{};overview.innerHTML=[card('版本',m.version),card('阶段',m.stage),card('质量',q.status),card('交易信号',m.is_trade_signal?'YES':'NO')].join('');state.innerHTML=Object.entries(d.current_state_summary||{}).map(([k,v])=>card(k,v)).join('');attention.innerHTML=(d.human_attention_items||[]).map(x=>card(x.category,x.text)).join('');guard.innerHTML=(d.forbidden_actions||[]).map(x=>card('禁止动作',x)).join('');footer.textContent='generated_at: '+(m.generated_at||'N/A')});</script></body></html>
