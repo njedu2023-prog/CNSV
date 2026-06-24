@@ -18,6 +18,7 @@ def main() -> int:
             raise RuntimeError("failed to generate V2.0 live manual decision evidence")
     evidence = load_trading_evidence(root)
     _attach_trade_calendar(evidence)
+    _attach_daily_price_history(evidence)
     payload = build_trading_decision_payload(evidence)
     live_registry = update_live_stats_registry(
         payload,
@@ -48,6 +49,17 @@ def _attach_trade_calendar(evidence):
     except Exception as exc:
         evidence["trade_calendar_source"] = "fallback_cn_market_holiday_business_day"
         evidence["trade_calendar_error"] = str(exc)
+
+
+def _attach_daily_price_history(evidence):
+    try:
+        source_config = load_default_config()["data_source"]
+        evidence["reports"]["daily_price_history"] = fetch_parquet(remote_url(source_config, "daily"), timeout=8)
+        evidence["daily_price_history_source"] = "CNSVdata daily"
+    except Exception as exc:
+        evidence["reports"]["daily_price_history"] = None
+        evidence["daily_price_history_source"] = "unavailable"
+        evidence["daily_price_history_error"] = str(exc)
 
 
 def _ensure_trading_entry(path):
