@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CNSV 数据状态</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#1d1d1f;background:#f5f5f7;--line:#d2d2d7;--muted:#6e6e73;--blue:#06c;--green:#0b8f45;--red:#d70015;--shadow:0 16px 40px rgba(0,0,0,.07)}*{box-sizing:border-box}body{margin:0;background:#f5f5f7;padding-top:48px}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.88);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.16)}.topnav{display:flex;gap:2px;overflow-x:auto;white-space:nowrap;justify-content:center;padding:9px 18px}.topnav a{color:#fff;text-decoration:none;font-size:12px;line-height:1.2;padding:4px 10px;border-radius:999px;opacity:.78}.topnav a:hover,.topnav a.active{opacity:1}.topnav a.active{font-weight:600;background:rgba(255,255,255,.12)}main{width:min(1180px,100%);margin:auto;padding:26px 18px 28px}.site-hero{text-align:center;padding:16px 0 20px}.eyebrow{color:var(--red);font-size:12px;font-weight:700;letter-spacing:.08em;margin:0 0 5px}h1{font-size:30px;margin:5px 0 8px}section{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;margin:12px 0}h2{font-size:14px;margin:0 0 10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}.metric{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;padding:10px 12px}.label{color:var(--muted);font-size:12px}.value{font-size:13px;line-height:1.26;font-weight:700;margin-top:5px;overflow-wrap:anywhere}.ok{color:var(--green)}.bad{color:var(--red)}.footer{color:var(--muted);font-size:12px;text-align:center;padding:12px}@media(max-width:760px){.topnav{justify-content:flex-start}main{padding-left:14px;padding-right:14px}h1{font-size:24px}section{padding:16px}}
+  </style>
+</head>
+<body>
+<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单"><a href="trading.html">交易决策</a><a href="data.html" class="active">数据状态</a><a href="features.html">核心特征</a><a href="baseline.html">基准模型</a><a href="validation.html">基准验证</a><a href="path.html">路径分布</a><a href="backtest.html">观察回测</a><a href="decision_support.html">人工辅助</a><a href="risk.html">风控解释</a><a href="live.html">人工确认</a></nav></div>
+<main>
+  <header class="site-hero"><p class="eyebrow">CNSV V3.0 交易决策系统</p><h1>中国船舶 600150.SH</h1></header>
+  <section><h2>数据状态</h2><div id="overview" class="grid"></div></section>
+  <section><h2>CNSVdata Gate</h2><div id="gate" class="grid"></div></section>
+  <section><h2>数据覆盖</h2><div id="coverage" class="grid"></div></section>
+  <section><h2>数据校验</h2><div id="validation" class="grid"></div></section>
+  <section><h2>禁止动作</h2><div id="forbidden" class="grid"></div></section>
+  <div id="footer" class="footer"></div>
+</main>
+<script>
+const fmt=v=>v===null||v===undefined||v===""?"N/A":typeof v==="boolean"?(v?"YES":"NO"):String(v);
+const tone=v=>v===true||v==="PASS"?"ok":v===false||v==="FAIL"?"bad":"";
+const card=(label,value)=>`<div class="metric"><div class="label">${label}</div><div class="value ${tone(value)}">${fmt(value)}</div></div>`;
+fetch('data/latest_data_report.json').then(r=>r.json()).then(d=>{
+ const m=d.meta||{}, g=d.cnsvdata_gate||{}, dm=d.data_manifest||{}, s=d.loaded_data_summary||{}, v=d.validation||{};
+ overview.innerHTML=[card('报告类型','数据状态'),card('标的',`${m.ts_code||'600150.SH'} ${m.name||'中国船舶'}`),card('生成时间',m.generated_at),card('数据快照',dm.snapshot_id)].join('');
+ gate.innerHTML=[card('就绪',g.ready),card('门禁状态',g.status),card('允许继续',g.can_continue),card('允许正式信号',g.can_generate_formal_signal)].join('');
+ coverage.innerHTML=[card('最新交易日',s.latest_trade_date||dm.latest_trade_date),card('daily 行数',s.daily_rows),card('1min 行数',s.one_min_rows),card('moneyflow 行数',s.moneyflow_rows),card('文件数量',dm.file_count)].join('');
+ validation.innerHTML=[card('校验状态',v.status),card('失败数量',v.failed_count),card('警告数量',v.warn_count),card('检查项数量',(v.checks||[]).length)].join('');
+ forbidden.innerHTML=(d.forbidden_actions||[]).map(x=>card('禁止',x)).join('') || card('禁止','N/A');
+ footer.textContent=`generated_at: ${fmt(m.generated_at)} · data snapshot: ${fmt(dm.snapshot_id)}`;
+}).catch(e=>overview.innerHTML=`<div class="metric"><div class="value bad">加载失败：${e}</div></div>`);
+</script>
+</body>
+</html>
