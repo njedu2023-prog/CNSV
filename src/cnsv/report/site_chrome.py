@@ -28,6 +28,13 @@ PAGE_EYEBROWS = {
     "trading": "CNSV V3.0 交易决策系统",
 }
 
+GLOBAL_HEADER_HTML = """
+  <header class="site-hero">
+    <p class="eyebrow">CNSV V3.0 交易决策系统</p>
+    <h1>中国船舶 600150.SH</h1>
+  </header>
+"""
+
 
 GLOBAL_CHROME_CSS = """
     body { padding-top: 48px; }
@@ -52,8 +59,9 @@ GLOBAL_CHROME_CSS = """
     .global-nav { display: none !important; }
     header nav { display: none !important; }
     main { padding-top: 26px !important; }
-    header { text-align: center !important; padding: 16px 0 20px !important; }
+    header, .site-hero { text-align: center !important; padding: 16px 0 20px !important; }
     header .eyebrow,
+    .site-hero .eyebrow,
     .hero .eyebrow {
       color: #d70015 !important; font-size: 12px !important; font-weight: 700 !important;
       letter-spacing: .08em !important; margin: 0 0 5px !important;
@@ -84,26 +92,10 @@ def site_nav(active: str) -> str:
 
 
 def _normalize_header(html: str, active: str) -> str:
-    eyebrow = PAGE_EYEBROWS.get(active, "CNSV V3.0 交易决策系统")
-
-    def replace_header(match: re.Match[str]) -> str:
-        header = match.group(0)
-        if "class=\"eyebrow\"" in header:
-            header = re.sub(
-                r"<p class=\"eyebrow\">.*?</p>",
-                f'<p class="eyebrow">{eyebrow}</p>',
-                header,
-                count=1,
-                flags=re.S,
-            )
-        else:
-            header = header.replace("<header>", f'<header><p class="eyebrow">{eyebrow}</p>', 1)
-        header = re.sub(r"<h1>.*?</h1>", "<h1>中国船舶 600150.SH</h1>", header, count=1, flags=re.S)
-        header = re.sub(r"\s*<p class=\"subtitle\">.*?</p>", "", header, count=1, flags=re.S)
-        header = re.sub(r"\s*<nav\b.*?</nav>", "", header, count=1, flags=re.S)
-        return header
-
-    return re.sub(r"<header>.*?</header>", replace_header, html, count=1, flags=re.S)
+    del active
+    if re.search(r"<header\b", html, flags=re.S):
+        return re.sub(r"<header\b[^>]*>.*?</header>", GLOBAL_HEADER_HTML, html, count=1, flags=re.S)
+    return re.sub(r"<main\b[^>]*>", lambda match: f"{match.group(0)}\n{GLOBAL_HEADER_HTML}", html, count=1, flags=re.S)
 
 
 def apply_site_chrome(html: str, active: str) -> str:
@@ -114,10 +106,9 @@ def apply_site_chrome(html: str, active: str) -> str:
         count=1,
         flags=re.S,
     )
-    html = re.sub(r"\s*<nav class=\"global-nav\">.*?</nav>", "", html, count=1, flags=re.S)
-    html = re.sub(r"\s*<div class=\"topbar\">.*?</div>", "", html, count=1, flags=re.S)
-    html = html.replace("<body>", f"<body>\n{site_nav(active)}", 1)
-    html = html.replace("<body><main>", f"<body>\n{site_nav(active)}\n<main>", 1)
-    if ".global-nav" not in html:
+    html = re.sub(r"\s*<nav class=\"global-nav\">.*?</nav>", "", html, flags=re.S)
+    html = re.sub(r"\s*<div class=\"topbar\">.*?</div>", "", html, flags=re.S)
+    html = re.sub(r"(<body\b[^>]*>)", rf"\1\n{site_nav(active)}", html, count=1, flags=re.S)
+    if ".topbar {" not in html or ".site-hero" not in html:
         html = html.replace("</style>", f"{GLOBAL_CHROME_CSS}\n  </style>", 1)
     return _normalize_header(html, active)
