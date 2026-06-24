@@ -2,6 +2,10 @@ name: Run CNSV Trading Decision
 
 on:
   workflow_dispatch:
+  schedule:
+    # 22:00 Beijing time / 14:00 UTC, Monday-Friday.
+    # CNSVdata daily pipeline is scheduled at 20:30 Beijing time.
+    - cron: "0 14 * * 1-5"
 
 concurrency:
   group: cnsv-trading-decision-main
@@ -25,6 +29,10 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run tests
         run: pytest
+      - name: Generate data status report
+        run: python -m cnsv.cli.generate_data_report
+      - name: Generate feature report
+        run: python -m cnsv.cli.generate_feature_report
       - name: Generate baseline model report
         run: python -m cnsv.cli.run_baseline_models
       - name: Generate baseline validation report
@@ -44,12 +52,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           tmpdir="$(mktemp -d)"
           report_paths=(
-            docs/data/latest_trading_decision_report.json
-            docs/data/trading_decision_registry.json
-            reports/latest_trading_decision_report.md
-            reports/archive/*_trading_decision_report.md
-            docs/trading.html
-            docs/index.html
+            docs
+            reports
           )
           actual_paths=()
           for path in "${report_paths[@]}"; do
@@ -60,22 +64,22 @@ jobs:
             done
           done
           if [ "${#actual_paths[@]}" -eq 0 ] || git diff --quiet -- "${actual_paths[@]}"; then
-            echo "No trading decision updates to commit"
+            echo "No CNSV report updates to commit"
             exit 0
           fi
           for file in "${actual_paths[@]}"; do
             mkdir -p "$tmpdir/$(dirname "$file")"
-            cp "$file" "$tmpdir/$file"
+            cp -R "$file" "$tmpdir/$file"
           done
           git fetch origin main
           git reset --hard origin/main
           cp -R "$tmpdir"/. .
           git add "${actual_paths[@]}"
           if git diff --cached --quiet; then
-            echo "No trading decision updates after sync"
+            echo "No CNSV report updates after sync"
             exit 0
           fi
-          git commit -m "report: update CNSV trading decision report"
+          git commit -m "report: update CNSV daily decision reports"
           for attempt in 1 2 3; do
             if git pull --rebase origin main && git push origin HEAD:main; then
               break
