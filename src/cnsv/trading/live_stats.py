@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -169,20 +170,49 @@ def _try_verify_entry(item: dict[str, Any], reports: dict[str, Any]) -> dict[str
     if item.get("is_correct") is not None:
         return item
     verify_date = item.get("verify_date")
+    verify_close = _close_on_date(reports, str(verify_date)) if verify_date else None
     latest_date, latest_close = _latest_close(reports)
-    if not verify_date or verify_date != latest_date or latest_close is None:
+    if verify_close is None and verify_date == latest_date:
+        verify_close = latest_close
+    if not verify_date or verify_close is None:
         return item
     close_t = item.get("close_t")
     if close_t is None:
         return item
-    ret = (float(latest_close) / float(close_t)) - 1.0
+    try:
+        base_close = float(close_t)
+        end_close = float(verify_close)
+    except (TypeError, ValueError):
+        return item
+    if not math.isfinite(base_close) or not math.isfinite(end_close) or base_close == 0:
+        return item
+    ret = (end_close / base_close) - 1.0
     actual = "UP" if ret > 0 else "DOWN" if ret < 0 else "FLAT"
     out = dict(item)
-    out["close_t1"] = float(latest_close)
+    out["close_t1"] = end_close
     out["return_1d"] = ret
     out["actual_direction"] = actual
     out["is_correct"] = actual == item.get("predicted_direction")
     return out
+
+
+def _close_on_date(reports: dict[str, Any], trade_date: str) -> float | None:
+    history = reports.get("daily_price_history")
+    if history is None or not hasattr(history, "empty") or history.empty:
+        return None
+    if "close" not in history.columns:
+        return None
+    date_col = "trade_date" if "trade_date" in history.columns else history.columns[0]
+    frame = history.copy()
+    mask = frame[date_col].astype(str).map(_date_text) == _date_text(trade_date)
+    matched = frame.loc[mask]
+    if matched.empty:
+        return None
+    try:
+        close = float(matched.iloc[-1]["close"])
+    except (TypeError, ValueError):
+        return None
+    return close if math.isfinite(close) else None
 
 
 def _latest_close(reports: dict[str, Any]) -> tuple[str | None, float | None]:
@@ -199,16 +229,18 @@ def _latest_close(reports: dict[str, Any]) -> tuple[str | None, float | None]:
         close = float(close_value)
     except (TypeError, ValueError):
         close = None
+    if close is not None and not math.isfinite(close):
+        close = None
     return date_value, close
 
 
 def _has_base_close(payload: dict[str, Any]) -> bool:
     market = payload.get("market_snapshot") or {}
     try:
-        float(market.get("latest_close"))
+        close = float(market.get("latest_close"))
     except (TypeError, ValueError):
         return False
-    return True
+    return math.isfinite(close)
 
 
 def _has_auditable_base_date(item: dict[str, Any]) -> bool:
@@ -266,9 +298,10 @@ def _parse_float(value: str | None) -> float | None:
     if value is None:
         return None
     try:
-        return float(value.replace(",", "").replace("%", ""))
+        parsed = float(value.replace(",", "").replace("%", ""))
     except ValueError:
         return None
+    return parsed if math.isfinite(parsed) else None
 
 
 def _today() -> str:
@@ -281,3 +314,12 @@ def _plus_one_day(value: str) -> str:
     except ValueError:
         return value
     return (day + timedelta(days=1)).isoformat()
+
+
+def _date_text(value: Any) -> str:
+    if value is None:
+        return ""
+    text = str(value)[:10]
+    if len(text) == 8 and text.isdigit():
+        return f"{text[:4]}-{text[4:6]}-{text[6:8]}"
+    return text
