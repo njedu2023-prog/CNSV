@@ -36,7 +36,7 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
     target = Path(path)
     registry = load_live_stats_registry(target)
     registry = _backfill_verified_archive_entries(registry, target, reports)
-    registry = [_try_verify_entry(item, reports) for item in registry]
+    registry = [_sanitize_entry(_try_verify_entry(item, reports)) for item in registry]
 
     signal_date = (payload.get("decision_timeline") or {}).get("signal_date") or _today()
     current_direction = predicted_direction(payload)
@@ -54,12 +54,13 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
         if not found:
             registry.append(replacement)
 
+    registry = [_sanitize_entry(item) for item in registry]
     registry = [
         item
         for item in registry
         if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
         and item.get("predicted_direction") in VERIFIABLE_DIRECTIONS
-        and item.get("close_t") is not None
+        and _has_finite_number(item.get("close_t"))
         and _has_auditable_base_date(item)
     ]
     registry = _dedupe_prediction_dates(registry)
@@ -103,8 +104,22 @@ def load_live_stats_registry(path: str | Path) -> list[dict[str, Any]]:
 
 def write_live_stats_registry(registry: list[dict[str, Any]], path: str | Path) -> Path:
     target = ensure_parent(path)
-    target.write_text(json.dumps(registry, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    clean_registry = [_sanitize_entry(item) for item in registry]
+    target.write_text(json.dumps(clean_registry, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     return target
+
+
+def _sanitize_entry(item: dict[str, Any]) -> dict[str, Any]:
+    out = dict(item)
+    out["close_t"] = _finite_or_none(out.get("close_t"))
+    out["close_t1"] = _finite_or_none(out.get("close_t1"))
+    out["return_1d"] = _finite_or_none(out.get("return_1d"))
+    if out["close_t"] is None:
+        out["actual_direction"] = None
+        out["is_correct"] = None
+        out["close_t1"] = None
+        out["return_1d"] = None
+    return out
 
 
 def _dedupe_prediction_dates(registry: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -236,11 +251,7 @@ def _latest_close(reports: dict[str, Any]) -> tuple[str | None, float | None]:
 
 def _has_base_close(payload: dict[str, Any]) -> bool:
     market = payload.get("market_snapshot") or {}
-    try:
-        close = float(market.get("latest_close"))
-    except (TypeError, ValueError):
-        return False
-    return math.isfinite(close)
+    return _has_finite_number(market.get("latest_close"))
 
 
 def _has_auditable_base_date(item: dict[str, Any]) -> bool:
@@ -297,11 +308,21 @@ def _md_value(text: str, label: str) -> str | None:
 def _parse_float(value: str | None) -> float | None:
     if value is None:
         return None
-    try:
-        parsed = float(value.replace(",", "").replace("%", ""))
-    except ValueError:
+    return _finite_or_none(value.replace(",", "").replace("%", ""))
+
+
+def _has_finite_number(value: Any) -> bool:
+    return _finite_or_none(value) is not None
+
+
+def _finite_or_none(value: Any) -> float | None:
+    if value is None:
         return None
-    return parsed if math.isfinite(parsed) else None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if math.isfinite(number) else None
 
 
 def _today() -> str:
