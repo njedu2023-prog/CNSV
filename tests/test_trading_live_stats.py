@@ -75,6 +75,45 @@ def test_live_registry_skips_blocked_or_unverifiable_entries(tmp_path):
     assert registry == []
 
 
+def test_live_registry_drops_non_finite_base_close(tmp_path):
+    path = tmp_path / "live_stats_registry.json"
+    path.write_text(
+        """[
+  {
+    "trade_date": "2026-06-22",
+    "data_trade_date": "2026-06-18",
+    "signal_date": "2026-06-21",
+    "verify_date": "2026-06-22",
+    "predicted_direction": "DOWN",
+    "actual_direction": null,
+    "is_correct": null,
+    "close_t": NaN,
+    "close_t1": null,
+    "return_1d": null
+  }
+]
+""",
+        encoding="utf-8",
+    )
+    payload = {
+        "decision": {"signal": "SELL"},
+        "decision_timeline": {
+            "data_trade_date": "2026-06-23",
+            "signal_date": "2026-06-24",
+            "prediction_date": "2026-06-24",
+            "verify_date": "2026-06-25",
+        },
+        "market_snapshot": {"latest_trade_date": "2026-06-23", "latest_close": 35.81},
+    }
+
+    registry = update_live_stats_registry(payload, path, {"feature_report": {}})
+
+    assert len(registry) == 1
+    assert registry[0]["signal_date"] == "2026-06-24"
+    assert registry[0]["close_t"] == 35.81
+    assert "NaN" not in path.read_text(encoding="utf-8")
+
+
 def test_live_registry_drops_legacy_unverified_entries_without_base_date(tmp_path):
     path = tmp_path / "live_stats_registry.json"
     path.write_text(
