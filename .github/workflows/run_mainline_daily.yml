@@ -158,7 +158,58 @@ jobs:
           echo "This should be inspected, but it must not leave trading.html stale."
 
       - name: Generate trading decision report
-        run: python -m cnsv.cli.run_trading_decision
+        run: |
+          set +e
+          python - <<'PY'
+          import traceback
+          from cnsv.cli.run_trading_decision import main
+          try:
+              raise SystemExit(main())
+          except SystemExit:
+              raise
+          except Exception:
+              traceback.print_exc()
+              raise
+          PY
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "::error::run_trading_decision failed with exit code $code"
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          names = [
+              "latest_data_report.json",
+              "latest_feature_report.json",
+              "latest_baseline_model_report.json",
+              "latest_path_distribution_report.json",
+              "latest_observation_backtest_report.json",
+              "latest_human_decision_support_report.json",
+              "latest_risk_explanation_report.json",
+              "latest_live_manual_decision_report.json",
+              "latest_trading_decision_report.json",
+              "live_stats_registry.json",
+          ]
+          for name in names:
+              path = Path("docs/data") / name
+              print(f"DIAG {name} exists={path.exists()} size={path.stat().st_size if path.exists() else 'NA'}")
+              if not path.exists():
+                  continue
+              try:
+                  payload = json.loads(path.read_text(encoding="utf-8"))
+              except Exception as exc:
+                  print(f"DIAG {name} json_error={exc!r}")
+                  continue
+              if isinstance(payload, dict):
+                  meta = payload.get("meta") or {}
+                  print("DIAG", name, "generated_at=", payload.get("generated_at") or meta.get("generated_at"))
+                  print("DIAG", name, "trade_date=", payload.get("trade_date") or meta.get("trade_date") or meta.get("latest_trade_date") or ((payload.get("data_manifest") or {}).get("latest_trade_date")))
+                  print("DIAG", name, "status=", ((payload.get("cnsvdata_gate") or {}).get("status") or (payload.get("quality") or {}).get("status") or (payload.get("risk_explanation_quality") or {}).get("status") or (payload.get("live_manual_decision_quality") or {}).get("status")))
+              elif isinstance(payload, list):
+                  print("DIAG", name, "items=", len(payload))
+                  print("DIAG", name, "tail=", payload[-3:])
+          PY
+          fi
+          exit "$code"
 
       - name: Commit mainline report updates
         run: |
