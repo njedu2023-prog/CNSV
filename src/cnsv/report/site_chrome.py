@@ -90,7 +90,7 @@ def site_nav(active: str) -> str:
     for href, label, key in GLOBAL_NAV_ITEMS:
         cls = ' class="active"' if key == active else ""
         links.append(f'<a href="{href}"{cls}>{label}</a>')
-    return f'<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单'>{"".join(links)}</nav></div>'
+    return f'<div class="topbar"><nav class="topnav" aria-label="CNSV 全量菜单">{"".join(links)}</nav></div>'
 
 
 def _normalize_header(html: str, active: str) -> str:
