@@ -134,12 +134,28 @@ jobs:
           echo "This should be inspected, but it must not leave trading.html stale."
 
       - name: Generate risk explanation report
+        id: risk_explanation
         if: steps.data_gate.outputs.proceed == 'true'
+        continue-on-error: true
         run: python -m cnsv.cli.run_risk_explanation
 
+      - name: Report non-blocking risk explanation failure
+        if: steps.risk_explanation.outcome == 'failure'
+        run: |
+          echo "::warning::risk explanation report failed; V3 trading decision generation will continue with existing risk evidence."
+          echo "This should be inspected, but it must not leave trading.html stale."
+
       - name: Generate live manual decision report
+        id: live_manual
         if: steps.data_gate.outputs.proceed == 'true'
+        continue-on-error: true
         run: python -m cnsv.cli.run_live_manual_decision
+
+      - name: Report non-blocking live manual failure
+        if: steps.live_manual.outcome == 'failure'
+        run: |
+          echo "::warning::live manual decision report failed; V3 trading decision generation will continue with existing live evidence."
+          echo "This should be inspected, but it must not leave trading.html stale."
 
       - name: Generate trading decision report
         run: python -m cnsv.cli.run_trading_decision
