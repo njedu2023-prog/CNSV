@@ -42,9 +42,21 @@
     "signal_date": "2026-06-25",
     "verify_date": "2026-06-25",
     "predicted_direction": "DOWN",
+    "actual_direction": "DOWN",
+    "is_correct": true,
+    "close_t": 35.35,
+    "close_t1": 35.33,
+    "return_1d": -0.0005657708628006297
+  },
+  {
+    "trade_date": "2026-06-26",
+    "data_trade_date": "2026-06-25",
+    "signal_date": "2026-06-26",
+    "verify_date": "2026-06-26",
+    "predicted_direction": "DOWN",
     "actual_direction": null,
     "is_correct": null,
-    "close_t": 35.35,
+    "close_t": 35.33,
     "close_t1": null,
     "return_1d": null
   }
