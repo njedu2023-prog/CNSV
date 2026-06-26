@@ -1,3 +1,5 @@
+# This test keeps the live trading page freshness contract covered by CI.
+
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
 from cnsv.trading.live_html import build_live_trading_html
