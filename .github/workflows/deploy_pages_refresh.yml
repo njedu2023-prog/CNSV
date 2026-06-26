@@ -32,7 +32,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Wait for earlier Pages deployment
-        run: sleep 90
+        run: sleep 180
 
       - name: Checkout latest main
         uses: actions/checkout@v4
