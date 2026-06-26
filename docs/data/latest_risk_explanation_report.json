@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-26T13:35:28.654804+00:00",
-    "latest_trade_date": "2026-06-25",
+    "generated_at": "2026-06-26T14:25:21.243102+00:00",
+    "latest_trade_date": "2026-06-26",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -272,8 +272,8 @@
   "feature_risk_explanation": {
     "risk_level": "low",
     "trend_state_risk": {
-      "risk_level": "medium",
-      "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
+      "risk_level": "low",
+      "risk_reason": "趋势状态为 strong_downtrend，需要结合路径风险复核。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 172。",
+      "risk_reason": "B2 最小状态样本数为 150。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -375,7 +375,7 @@
     },
     "touch_down_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D touch_down_5pct_prob=0.4928。",
+      "risk_reason": "20D touch_down_5pct_prob=0.5387。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -383,7 +383,7 @@
     },
     "max_drawdown_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.0642。",
+      "risk_reason": "20D max_drawdown_p50=-0.0720。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=172。",
+      "risk_reason": "P2 min_state_sample_size=150。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],

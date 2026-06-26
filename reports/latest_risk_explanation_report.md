@@ -5,7 +5,7 @@
 ## 阶段说明
 - 版本: 1.6
 - 阶段: V1.6_risk_explanation
-- latest_trade_date: 2026-06-25
+- latest_trade_date: 2026-06-26
 - 质量状态: WARN
 - FAIL 数量: 0
 - WARN 数量: 2
@@ -45,7 +45,7 @@
 
 ## 特征风险解释
 - risk_level: low
-- trend_state_risk: medium；趋势状态为 downtrend，需要结合路径风险复核。
+- trend_state_risk: low；趋势状态为 strong_downtrend，需要结合路径风险复核。
 - volatility_state_risk: medium；波动率状态为 high_vol。
 - flow_strength_basic_risk: low；资金流强弱状态为 negative。
 - moneyflow_reliability_risk: medium；moneyflow 只能作为强因子观察，不是单独结论。
@@ -56,15 +56,15 @@
 - risk_level: medium
 - baseline_distribution_risk: medium；基准分布仅为历史/状态分布观察。
 - B1_B3_conflict_risk: medium；B1 与 B3 分布方向差异需要人工复核。
-- B2_state_sample_risk: medium；B2 最小状态样本数为 172。
+- B2_state_sample_risk: medium；B2 最小状态样本数为 150。
 - positive_prob_calibration_risk: medium；正向概率校准只能用于观察，不代表确定结果。
 - quantile_coverage_risk: low；分位覆盖需要结合验证层。
 
 ## 路径风险解释
 - risk_level: medium
 - downside_path_risk: medium；20D 下行路径概率需要人工复核。
-- touch_down_risk: medium；20D touch_down_5pct_prob=0.4928。
-- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0642。
+- touch_down_risk: medium；20D touch_down_5pct_prob=0.5387。
+- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0720。
 - path_volatility_risk: medium；路径波动率放大时需要额外复核。
 - terminal_distribution_risk: medium；终端分布为历史路径观察，不代表未来承诺。
 
@@ -88,7 +88,7 @@
 ## P2 辅助层风险解释
 - p2_auxiliary_risk_level: high
 - p2_fallback_risk: high；P2 max_fallback_rate=0.3194。
-- p2_state_sample_risk: medium；P2 min_state_sample_size=172。
+- p2_state_sample_risk: medium；P2 min_state_sample_size=150。
 - p2_state_space_fragmentation_risk: medium；状态空间分组容易碎片化，需要避免核心依赖。
 - p2_core_dependency_forbidden: True
 - p2_role: 辅助状态层，不作为核心决策依赖

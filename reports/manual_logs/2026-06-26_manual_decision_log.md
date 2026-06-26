@@ -1,8 +1,8 @@
 # CNSV V2.0 人工复核日志
 
-- decision_session_id: manual-2026-06-25-20260626133529
-- decision_snapshot_id: live-2026-06-25-9reports
-- latest_trade_date: 2026-06-25
+- decision_session_id: manual-2026-06-26-20260626142521
+- decision_snapshot_id: live-2026-06-26-9reports
+- latest_trade_date: 2026-06-26
 - manual_review_status: not_started
 - manual_decision_status: review_required
 - available_reports: data_report, feature_report, baseline_model_report, baseline_validation_report, path_distribution_report, path_validation_report, observation_backtest_report, human_decision_support_report, risk_explanation_report
