@@ -1,15 +1,19 @@
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
-from cnsv.trading.report import build_trading_html
+from cnsv.trading.live_html import build_live_trading_html
 from cnsv.utils.io import repo_root
 
 
 def test_trading_html_is_chinese_dashboard():
-    html = build_trading_html(build_trading_decision_payload(load_trading_evidence(repo_root())))
+    html = build_live_trading_html(build_trading_decision_payload(load_trading_evidence(repo_root())))
     nav = html.split('<nav class="topnav"', 1)[1].split("</nav>", 1)[0]
 
     assert "CNSV V3.0 交易决策系统" in html
     assert "今日决策" in html
+    assert "data/latest_trading_decision_report.json" in html
+    assert "Date.now()" in html
+    assert 'cache: "no-store"' in html
+    assert "function render(payload)" in html
     assert "信号生成日" in html
     assert "预测日" in html
     assert "数据交易日" in html
@@ -23,12 +27,8 @@ def test_trading_html_is_chinese_dashboard():
     assert ".eyebrow{color:var(--red)" in html
     assert 'aria-label="概率判断表"' in html
     assert "5D / 10D / 20D 价格预测分布" in html
-    assert "5D 预测分布" in html
-    assert "10D 预测分布" in html
-    assert "20D 预测分布" in html
-    assert 'aria-label="5D 价格预测分布表"' in html
-    assert 'aria-label="10D 价格预测分布表"' in html
-    assert 'aria-label="20D 价格预测分布表"' in html
+    assert '${label} 预测分布' in html
+    assert 'aria-label="${label} 价格预测分布表"' in html
     assert html.index("今日决策") < html.index("5D / 10D / 20D 价格预测分布") < html.index("概率判断")
     assert "交易决策" in nav
     assert "V3.0 交易决策" not in nav
@@ -48,3 +48,19 @@ def test_trading_html_is_chinese_dashboard():
     assert "暂无样本" in html
     assert "实盘统计线样本仍然较少" not in html
     assert "自动下单" in html
+    assert "2026-06-25T" not in html
+    assert "最新收盘价</th><td>35." not in html
+
+
+def test_trading_workflows_deploy_pages_after_generation():
+    root = repo_root()
+    for path in [
+        root / ".github/workflows/run_trading_decision.yml",
+        root / ".github/workflows/run_mainline_daily.yml",
+    ]:
+        text = path.read_text(encoding="utf-8")
+        assert "pages: write" in text
+        assert "id-token: write" in text
+        assert "actions/upload-pages-artifact@v3" in text
+        assert "actions/deploy-pages@v4" in text
+        assert "path: docs" in text
