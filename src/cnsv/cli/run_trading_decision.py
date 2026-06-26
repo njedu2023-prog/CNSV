@@ -6,7 +6,8 @@ from cnsv.data.loader import remote_url
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
 from cnsv.trading.live_stats import build_model_performance, update_live_stats_registry
-from cnsv.trading.report import write_trading_html, write_trading_json, write_trading_markdown, write_trading_registry
+from cnsv.trading.live_html import write_live_trading_html
+from cnsv.trading.report import write_trading_json, write_trading_markdown, write_trading_registry
 from cnsv.utils.io import load_default_config, repo_root
 
 
@@ -29,7 +30,7 @@ def main() -> int:
     write_trading_json(payload, root / "docs/data/latest_trading_decision_report.json")
     write_trading_registry(root / "docs/data/trading_decision_registry.json")
     write_trading_markdown(payload, root / "reports/latest_trading_decision_report.md", root / "reports/archive")
-    write_trading_html(payload, root / "docs/trading.html")
+    write_live_trading_html(payload, root / "docs/trading.html")
     _ensure_trading_entry(root / "docs/index.html")
     decision = payload["decision"]
     risk = payload["risk"]
