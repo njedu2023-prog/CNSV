@@ -6,8 +6,8 @@
     "report_type": "baseline_model_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-26T16:28:37.590543+00:00",
-    "latest_trade_date": "2026-06-26",
+    "generated_at": "2026-06-29T16:52:49.129070+00:00",
+    "latest_trade_date": "2026-06-29",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -26,9 +26,9 @@
     ]
   },
   "data_manifest": {
-    "snapshot_id": "cnsvdata-2026-06-26-b3d58a5c3acb",
-    "latest_trade_date": "2026-06-26",
-    "generated_at": "2026-06-26 23:11:45",
+    "snapshot_id": "cnsvdata-2026-06-29-d9c53da4c68b",
+    "latest_trade_date": "2026-06-29",
+    "generated_at": "2026-06-30 00:42:00",
     "file_count": 14
   },
   "feature_quality": {
@@ -134,12 +134,12 @@
       {
         "name": "latest_trade_date_daily_vs_1min",
         "status": "PASS",
-        "detail": "daily=2026-06-26, one_min=2026-06-26"
+        "detail": "daily=2026-06-29, one_min=2026-06-29"
       },
       {
         "name": "latest_trade_date_daily_vs_moneyflow",
         "status": "PASS",
-        "detail": "daily=2026-06-26, moneyflow=2026-06-26"
+        "detail": "daily=2026-06-29, moneyflow=2026-06-29"
       }
     ]
   },
@@ -411,7 +411,7 @@
     "fallback_notes": []
   },
   "current_state": {
-    "latest_close": 33.4,
+    "latest_close": 33.59,
     "trend_state": "strong_downtrend",
     "volatility_state": "high_vol",
     "flow_strength_basic": "negative",
@@ -424,47 +424,47 @@
         "5D": {
           "model_id": "B0_random_walk",
           "horizon": 5,
-          "current_close": 33.4,
+          "current_close": 33.59,
           "expected_return": 0.0,
-          "expected_price": 33.4,
-          "volatility_estimate": 0.057184600182380384,
-          "p10_return": -0.07328501388877162,
+          "expected_price": 33.59,
+          "volatility_estimate": 0.0571096472962723,
+          "p10_return": -0.07318895790023772,
           "p50_return": 0.0,
-          "p90_return": 0.07328501388877162,
-          "p10_price": 31.039819682299726,
-          "p50_price": 33.4,
-          "p90_price": 35.939641770410844,
-          "sample_size": 3839
+          "p90_return": 0.07318895790023772,
+          "p10_price": 31.21939217239411,
+          "p50_price": 33.59,
+          "p90_price": 36.14061714493257,
+          "sample_size": 3840
         },
         "10D": {
           "model_id": "B0_random_walk",
           "horizon": 10,
-          "current_close": 33.4,
+          "current_close": 33.59,
           "expected_return": 0.0,
-          "expected_price": 33.4,
-          "volatility_estimate": 0.0808712371368053,
-          "p10_return": -0.10364066056020146,
+          "expected_price": 33.59,
+          "volatility_estimate": 0.08076523774873225,
+          "p10_return": -0.10350481687846967,
           "p50_return": 0.0,
-          "p90_return": 0.10364066056020146,
-          "p10_price": 30.111743326992645,
-          "p50_price": 33.4,
-          "p90_price": 37.047340231543295,
-          "sample_size": 3834
+          "p90_return": 0.10350481687846967,
+          "p10_price": 30.287151714018563,
+          "p50_price": 33.59,
+          "p90_price": 37.25302764200723,
+          "sample_size": 3835
         },
         "20D": {
           "model_id": "B0_random_walk",
           "horizon": 20,
-          "current_close": 33.4,
+          "current_close": 33.59,
           "expected_return": 0.0,
-          "expected_price": 33.4,
-          "volatility_estimate": 0.11436920036476077,
-          "p10_return": -0.14657002777754324,
+          "expected_price": 33.59,
+          "volatility_estimate": 0.1142192945925446,
+          "p10_return": -0.14637791580047543,
           "p50_return": 0.0,
-          "p90_return": 0.14657002777754324,
-          "p10_price": 28.846419338613217,
-          "p50_price": 33.4,
-          "p90_price": 38.67239073609162,
-          "sample_size": 3824
+          "p90_return": 0.14637791580047543,
+          "p10_price": 29.01608953896226,
+          "p50_price": 33.59,
+          "p90_price": 38.884912402994765,
+          "sample_size": 3825
         }
       }
     },
@@ -474,65 +474,65 @@
         "5D": {
           "model_id": "B1_historical_distribution",
           "horizon": 5,
-          "sample_size": 3839,
-          "mean_return": -0.0010074637554112816,
-          "median_return": -0.0016280019875715987,
-          "std_return": 0.06674436025706772,
-          "p05_return": -0.09922010360797906,
-          "p10_return": -0.06895879330247515,
-          "p25_return": -0.03301281731086067,
-          "p50_return": -0.0016280019875715987,
-          "p75_return": 0.03210997405512836,
-          "p90_return": 0.07161196348411987,
-          "p95_return": 0.10196535505001245,
-          "positive_prob": 0.48319874967439436,
-          "negative_prob": 0.5141964053138838,
-          "expected_price": 33.3663676550982,
-          "p10_price": 31.174395682038764,
-          "p50_price": 33.34566897112647,
-          "p90_price": 35.879563209448
+          "sample_size": 3840,
+          "mean_return": -0.0010346932933141143,
+          "median_return": -0.0016484935379798365,
+          "std_return": 0.0667569949635397,
+          "p05_return": -0.0992412631808002,
+          "p10_return": -0.0690239517876096,
+          "p25_return": -0.033034247076748444,
+          "p50_return": -0.0016484935379798365,
+          "p75_return": 0.03210853552413321,
+          "p90_return": 0.07160958282782919,
+          "p95_return": 0.10195574041340937,
+          "positive_prob": 0.4830729166666667,
+          "negative_prob": 0.5143229166666666,
+          "expected_price": 33.55526262664033,
+          "p10_price": 31.349692293662816,
+          "p50_price": 33.53467271792222,
+          "p90_price": 36.08358260643229
         },
         "10D": {
           "model_id": "B1_historical_distribution",
           "horizon": 10,
-          "sample_size": 3834,
-          "mean_return": -0.0020148982604562926,
-          "median_return": -0.0037295237786564408,
-          "std_return": 0.09527060490606416,
-          "p05_return": -0.13997616443687597,
-          "p10_return": -0.10119376878060353,
-          "p25_return": -0.04906168685023716,
-          "p50_return": -0.0037295237786564408,
-          "p75_return": 0.047578069363735445,
-          "p90_return": 0.10335434810411921,
-          "p95_return": 0.14449164318797267,
-          "positive_prob": 0.47730829420970267,
-          "negative_prob": 0.5216484089723527,
-          "expected_price": 33.33277015149822,
-          "p10_price": 30.185513721487766,
-          "p50_price": 33.275665903394916,
-          "p90_price": 37.03673463489994
+          "sample_size": 3835,
+          "mean_return": -0.0020242742587128835,
+          "median_return": -0.003789318668350591,
+          "std_return": 0.09525994921106834,
+          "p05_return": -0.13992723804489512,
+          "p10_return": -0.1011814606100421,
+          "p25_return": -0.049061525769267894,
+          "p50_return": -0.003789318668350591,
+          "p75_return": 0.04757113041883965,
+          "p90_return": 0.10330491667625606,
+          "p95_return": 0.1444324055555079,
+          "positive_prob": 0.4771838331160365,
+          "negative_prob": 0.5217731421121251,
+          "expected_price": 33.52207340187702,
+          "p10_price": 30.35760136593583,
+          "p50_price": 33.46295763993949,
+          "p90_price": 37.24558149851612
         },
         "20D": {
           "model_id": "B1_historical_distribution",
           "horizon": 20,
-          "sample_size": 3824,
-          "mean_return": -0.003948810766633403,
-          "median_return": -0.0030106923480563872,
-          "std_return": 0.13461825142007997,
-          "p05_return": -0.21607512364328083,
-          "p10_return": -0.1493667001323979,
-          "p25_return": -0.0751748088487463,
-          "p50_return": -0.0030106923480563872,
-          "p75_return": 0.07221430746298785,
-          "p90_return": 0.14302942842073427,
-          "p95_return": 0.20339329930080233,
-          "positive_prob": 0.488755230125523,
-          "negative_prob": 0.5101987447698745,
-          "expected_price": 33.268369782847415,
-          "p10_price": 28.76585805937197,
-          "p50_price": 33.29959409705892,
-          "p90_price": 38.53570940402796
+          "sample_size": 3825,
+          "mean_return": -0.003975728044446888,
+          "median_return": -0.003102526815267721,
+          "std_return": 0.13461094288474196,
+          "p05_return": -0.2160715860586537,
+          "p10_return": -0.14935813351413724,
+          "p25_return": -0.07533404682539874,
+          "p50_return": -0.003102526815267721,
+          "p75_return": 0.07219997920686426,
+          "p90_return": 0.14302752867261367,
+          "p95_return": 0.20337485594909882,
+          "positive_prob": 0.4886274509803922,
+          "negative_prob": 0.5103267973856209,
+          "expected_price": 33.456720412240415,
+          "p10_price": 28.9297440030927,
+          "p50_price": 33.48594762038863,
+          "p90_price": 38.7548508928791
         }
       }
     },
@@ -546,8 +546,8 @@
       ],
       "state_coverage": {
         "has_state_columns": true,
-        "state_rows": 3844,
-        "usable_state_rows": 3795
+        "state_rows": 3845,
+        "usable_state_rows": 3796
       },
       "horizons": {
         "5D": {
@@ -565,10 +565,10 @@
           "p50_return": 0.0005239246046819173,
           "p90_return": 0.06754906207045681,
           "positive_prob": 0.506578947368421,
-          "expected_price": 33.367130031291616,
-          "p10_price": 31.053106936781212,
-          "p50_price": 33.41750366669681,
-          "p90_price": 35.73408381570099
+          "expected_price": 33.556943046439685,
+          "p10_price": 31.229756347499436,
+          "p50_price": 33.60760323845347,
+          "p90_price": 35.93736153800588
         },
         "10D": {
           "model_id": "B2_state_grouped_distribution",
@@ -585,10 +585,10 @@
           "p50_return": -0.0015947958439609497,
           "p90_return": 0.09193696186388566,
           "positive_prob": 0.48026315789473684,
-          "expected_price": 33.26764541564253,
-          "p10_price": 30.531086039163032,
-          "p50_price": 33.3467762705836,
-          "p90_price": 36.616276762906175
+          "expected_price": 33.45689250034229,
+          "p10_price": 30.704765869924742,
+          "p50_price": 33.53647350086536,
+          "p90_price": 36.824572948084395
         },
         "20D": {
           "model_id": "B2_state_grouped_distribution",
@@ -605,59 +605,59 @@
           "p50_return": -0.003842259647301867,
           "p90_return": 0.13145825677970005,
           "positive_prob": 0.48,
-          "expected_price": 33.12120538183104,
-          "p10_price": 27.943871398072673,
-          "p50_price": 33.27191475374307,
-          "p90_price": 38.092375986296275
+          "expected_price": 33.3096194244223,
+          "p10_price": 28.102833540756325,
+          "p50_price": 33.4611861250967,
+          "p90_price": 38.30906914310455
         }
       }
     },
     "B3_volatility_adjusted": {
       "model_id": "B3_volatility_adjusted",
-      "volatility_scale": 0.8358681669165158,
+      "volatility_scale": 0.8320989621795943,
       "warnings": [],
       "horizons": {
         "5D": {
           "model_id": "B3_volatility_adjusted",
           "horizon": 5,
-          "mean_return": -0.0010074637554112816,
-          "adjusted_std": 0.05578948606009074,
-          "volatility_scale": 0.8358681669165158,
-          "p10_return": -0.07250456695664922,
-          "p50_return": -0.0010074637554112816,
-          "p90_return": 0.07048963944582667,
-          "p10_price": 31.06405406994106,
-          "p50_price": 33.3663676550982,
-          "p90_price": 35.83931730187385,
-          "sample_size": 3839
+          "mean_return": -0.0010346932933141143,
+          "adjusted_std": 0.05554842622738979,
+          "volatility_scale": 0.8320989621795943,
+          "p10_return": -0.07222286588856423,
+          "p50_return": -0.0010346932933141143,
+          "p90_return": 0.07015347930193601,
+          "p10_price": 31.24956755153055,
+          "p50_price": 33.55526262664033,
+          "p90_price": 36.031079408894335,
+          "sample_size": 3840
         },
         "10D": {
           "model_id": "B3_volatility_adjusted",
           "horizon": 10,
-          "mean_return": -0.0020148982604562926,
-          "adjusted_std": 0.07963366588385946,
-          "volatility_scale": 0.8358681669165158,
-          "p10_return": -0.10406954744397202,
-          "p50_return": -0.0020148982604562926,
-          "p90_return": 0.10003975092305943,
-          "p10_price": 30.098831564272988,
-          "p50_price": 33.33277015149822,
-          "p90_price": 36.914176007132575,
-          "sample_size": 3834
+          "mean_return": -0.0020242742587128835,
+          "adjusted_std": 0.07926570487581083,
+          "volatility_scale": 0.8320989621795943,
+          "p10_return": -0.10360736243630451,
+          "p50_return": -0.0020242742587128835,
+          "p90_return": 0.09955881391887876,
+          "p10_price": 30.284046060389034,
+          "p50_price": 33.52207340187702,
+          "p90_price": 37.106316735881876,
+          "sample_size": 3835
         },
         "20D": {
           "model_id": "B3_volatility_adjusted",
           "horizon": 20,
-          "mean_return": -0.003948810766633403,
-          "adjusted_std": 0.11252311104800888,
-          "volatility_scale": 0.8358681669165158,
-          "p10_return": -0.1481529798901581,
-          "p50_return": -0.003948810766633403,
-          "p90_return": 0.14025535835689132,
-          "p10_price": 28.800792959893386,
-          "p50_price": 33.268369782847415,
-          "p90_price": 38.4289567842639,
-          "sample_size": 3824
+          "mean_return": -0.003975728044446888,
+          "adjusted_std": 0.11200962587241044,
+          "volatility_scale": 0.8320989621795943,
+          "p10_return": -0.14752183943729946,
+          "p50_return": -0.003975728044446888,
+          "p90_return": 0.13957038334840566,
+          "p10_price": 28.98291632571924,
+          "p50_price": 33.456720412240415,
+          "p90_price": 38.621101070823535,
+          "sample_size": 3825
         }
       }
     }
