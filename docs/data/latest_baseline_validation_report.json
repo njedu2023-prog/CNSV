@@ -6,8 +6,8 @@
     "report_type": "baseline_validation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-29T17:14:19.480561+00:00",
-    "latest_trade_date": "2026-06-29",
+    "generated_at": "2026-06-30T16:24:32.862623+00:00",
+    "latest_trade_date": "2026-06-30",
     "is_trade_signal": false
   },
   "validation_quality": {
@@ -19,7 +19,7 @@
       {
         "name": "validation_samples_present",
         "status": "PASS",
-        "detail": "rows=8556"
+        "detail": "rows=8568"
       },
       {
         "name": "no_future_training_data",
@@ -39,12 +39,12 @@
       {
         "name": "B0_random_walk.5D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B0_random_walk.5D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.8120617110799438"
+        "detail": "coverage=0.8123249299719888"
       },
       {
         "name": "B0_random_walk.5D.quantile_order",
@@ -59,12 +59,12 @@
       {
         "name": "B0_random_walk.10D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B0_random_walk.10D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7868162692847125"
+        "detail": "coverage=0.7871148459383753"
       },
       {
         "name": "B0_random_walk.10D.quantile_order",
@@ -79,12 +79,12 @@
       {
         "name": "B0_random_walk.20D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B0_random_walk.20D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.788218793828892"
+        "detail": "coverage=0.788515406162465"
       },
       {
         "name": "B0_random_walk.20D.quantile_order",
@@ -104,12 +104,12 @@
       {
         "name": "B1_historical_distribution.5D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B1_historical_distribution.5D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.8064516129032258"
+        "detail": "coverage=0.8067226890756303"
       },
       {
         "name": "B1_historical_distribution.5D.quantile_order",
@@ -124,12 +124,12 @@
       {
         "name": "B1_historical_distribution.10D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B1_historical_distribution.10D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.8064516129032258"
+        "detail": "coverage=0.8067226890756303"
       },
       {
         "name": "B1_historical_distribution.10D.quantile_order",
@@ -144,12 +144,12 @@
       {
         "name": "B1_historical_distribution.20D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B1_historical_distribution.20D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7938288920056101"
+        "detail": "coverage=0.7941176470588235"
       },
       {
         "name": "B1_historical_distribution.20D.quantile_order",
@@ -169,12 +169,12 @@
       {
         "name": "B2_state_grouped_distribution.5D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B2_state_grouped_distribution.5D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7812061711079944"
+        "detail": "coverage=0.7815126050420168"
       },
       {
         "name": "B2_state_grouped_distribution.5D.quantile_order",
@@ -184,7 +184,7 @@
       {
         "name": "B2_state_grouped_distribution.5D.fallback_rate",
         "status": "PASS",
-        "detail": "fallback_rate=0.31136044880785413"
+        "detail": "fallback_rate=0.31092436974789917"
       },
       {
         "name": "B2_state_grouped_distribution.10D.present",
@@ -194,12 +194,12 @@
       {
         "name": "B2_state_grouped_distribution.10D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B2_state_grouped_distribution.10D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7784011220196353"
+        "detail": "coverage=0.7787114845938375"
       },
       {
         "name": "B2_state_grouped_distribution.10D.quantile_order",
@@ -209,7 +209,7 @@
       {
         "name": "B2_state_grouped_distribution.10D.fallback_rate",
         "status": "PASS",
-        "detail": "fallback_rate=0.3141654978962132"
+        "detail": "fallback_rate=0.3137254901960784"
       },
       {
         "name": "B2_state_grouped_distribution.20D.present",
@@ -219,12 +219,12 @@
       {
         "name": "B2_state_grouped_distribution.20D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B2_state_grouped_distribution.20D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7685834502103787"
+        "detail": "coverage=0.7689075630252101"
       },
       {
         "name": "B2_state_grouped_distribution.20D.quantile_order",
@@ -234,7 +234,7 @@
       {
         "name": "B2_state_grouped_distribution.20D.fallback_rate",
         "status": "PASS",
-        "detail": "fallback_rate=0.31837307152875177"
+        "detail": "fallback_rate=0.3179271708683473"
       },
       {
         "name": "B3_volatility_adjusted.present",
@@ -249,12 +249,12 @@
       {
         "name": "B3_volatility_adjusted.5D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B3_volatility_adjusted.5D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.8078541374474053"
+        "detail": "coverage=0.8081232492997199"
       },
       {
         "name": "B3_volatility_adjusted.5D.quantile_order",
@@ -269,12 +269,12 @@
       {
         "name": "B3_volatility_adjusted.10D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B3_volatility_adjusted.10D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7812061711079944"
+        "detail": "coverage=0.7815126050420168"
       },
       {
         "name": "B3_volatility_adjusted.10D.quantile_order",
@@ -289,12 +289,12 @@
       {
         "name": "B3_volatility_adjusted.20D.sample_size",
         "status": "PASS",
-        "detail": "sample_size=713"
+        "detail": "sample_size=714"
       },
       {
         "name": "B3_volatility_adjusted.20D.interval_coverage",
         "status": "PASS",
-        "detail": "coverage=0.7573632538569425"
+        "detail": "coverage=0.757703081232493"
       },
       {
         "name": "B3_volatility_adjusted.20D.quantile_order",
@@ -329,69 +329,69 @@
     "standard_walk_forward_metrics": {
       "B0_random_walk": {
         "5D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.48667601683029454,
-          "mean_actual_return": -0.0010361428152622439,
-          "median_actual_return": -0.0008025682613774484,
-          "p10_coverage": 0.9186535764375876,
-          "p90_coverage": 0.8934081346423562,
-          "p10_p90_interval_coverage": 0.8120617110799438,
-          "median_error": 0.0008025682613774484,
-          "mean_error": 0.0010361428152622439,
-          "mae_median": 0.045948424730441424,
-          "rmse_median": 0.06813514090837672,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.48599439775910364,
+          "mean_actual_return": -0.0011094633371023102,
+          "median_actual_return": -0.0009078697869921866,
+          "p10_coverage": 0.9187675070028011,
+          "p90_coverage": 0.8935574229691877,
+          "p10_p90_interval_coverage": 0.8123249299719888,
+          "median_error": 0.0009078697869921866,
+          "mean_error": 0.0011094633371023102,
+          "mae_median": 0.045958842896658,
+          "rmse_median": 0.06811671825586707,
           "positive_prob_brier": null,
-          "directional_accuracy": 0.48667601683029454,
-          "pinball_loss_p10": 0.01210349030712507,
-          "pinball_loss_p50": 0.022974212365220712,
-          "pinball_loss_p90": 0.012757638509476175,
+          "directional_accuracy": 0.48599439775910364,
+          "pinball_loss_p10": 0.01208923441936452,
+          "pinball_loss_p50": 0.022979421448329,
+          "pinball_loss_p90": 0.012757420788213472,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
           "state_coverage_rate": null
         },
         "10D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.46563814866760167,
-          "mean_actual_return": -0.0021345226344316793,
-          "median_actual_return": -0.006139334513508851,
-          "p10_coverage": 0.9186535764375876,
-          "p90_coverage": 0.8681626928471248,
-          "p10_p90_interval_coverage": 0.7868162692847125,
-          "median_error": 0.006139334513508851,
-          "mean_error": 0.0021345226344316793,
-          "mae_median": 0.06735606509510143,
-          "rmse_median": 0.09584598623529547,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.4649859943977591,
+          "mean_actual_return": -0.0021635362883736355,
+          "median_actual_return": -0.006258744127131141,
+          "p10_coverage": 0.9187675070028011,
+          "p90_coverage": 0.8683473389355743,
+          "p10_p90_interval_coverage": 0.7871148459383753,
+          "median_error": 0.006258744127131141,
+          "mean_error": 0.0021635362883736355,
+          "mae_median": 0.06729373205091921,
+          "rmse_median": 0.09578266115546234,
           "positive_prob_brier": null,
-          "directional_accuracy": 0.46563814866760167,
-          "pinball_loss_p10": 0.016929831419303022,
-          "pinball_loss_p50": 0.03367803254755072,
-          "pinball_loss_p90": 0.018404076485955743,
+          "directional_accuracy": 0.4649859943977591,
+          "pinball_loss_p10": 0.016917306575911874,
+          "pinball_loss_p50": 0.033646866025459604,
+          "pinball_loss_p90": 0.018395887509851914,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
           "state_coverage_rate": null
         },
         "20D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.4908835904628331,
-          "mean_actual_return": -0.0044810005099426035,
-          "median_actual_return": -0.002846301731838806,
-          "p10_coverage": 0.9018232819074333,
-          "p90_coverage": 0.8863955119214586,
-          "p10_p90_interval_coverage": 0.788218793828892,
-          "median_error": 0.002846301731838806,
-          "mean_error": 0.0044810005099426035,
-          "mae_median": 0.09943646147790597,
-          "rmse_median": 0.13711523230087688,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.49019607843137253,
+          "mean_actual_return": -0.004591953140966186,
+          "median_actual_return": -0.003394126362077636,
+          "p10_coverage": 0.9019607843137255,
+          "p90_coverage": 0.8865546218487395,
+          "p10_p90_interval_coverage": 0.788515406162465,
+          "median_error": 0.003394126362077636,
+          "mean_error": 0.004591953140966186,
+          "mae_median": 0.09941442326723772,
+          "rmse_median": 0.13705498072625727,
           "positive_prob_brier": null,
-          "directional_accuracy": 0.4908835904628331,
-          "pinball_loss_p10": 0.02504795372157641,
-          "pinball_loss_p50": 0.049718230738952984,
-          "pinball_loss_p90": 0.02619204364456109,
+          "directional_accuracy": 0.49019607843137253,
+          "pinball_loss_p10": 0.02502149559881219,
+          "pinball_loss_p50": 0.04970721163361886,
+          "pinball_loss_p90": 0.026187428863378336,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
@@ -400,69 +400,69 @@
       },
       "B1_historical_distribution": {
         "5D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.48667601683029454,
-          "mean_actual_return": -0.0010361428152622439,
-          "median_actual_return": -0.0008025682613774484,
-          "p10_coverage": 0.9130434782608695,
-          "p90_coverage": 0.8934081346423562,
-          "p10_p90_interval_coverage": 0.8064516129032258,
-          "median_error": -0.0022603340023797866,
-          "mean_error": -0.001802006474965836,
-          "mae_median": 0.046057437594990015,
-          "rmse_median": 0.06821099232191838,
-          "positive_prob_brier": 0.2504605258270005,
-          "directional_accuracy": 0.5133239831697055,
-          "pinball_loss_p10": 0.012333962525882952,
-          "pinball_loss_p50": 0.023028718797495008,
-          "pinball_loss_p90": 0.012218056640859294,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.48599439775910364,
+          "mean_actual_return": -0.0011094633371023102,
+          "median_actual_return": -0.0009078697869921866,
+          "p10_coverage": 0.9131652661064426,
+          "p90_coverage": 0.8935574229691877,
+          "p10_p90_interval_coverage": 0.8067226890756303,
+          "median_error": -0.0022296149701714566,
+          "mean_error": -0.001726878546879626,
+          "mae_median": 0.046065535489364796,
+          "rmse_median": 0.06819081155402026,
+          "positive_prob_brier": 0.2504380561128513,
+          "directional_accuracy": 0.5140056022408963,
+          "pinball_loss_p10": 0.012318878060965772,
+          "pinball_loss_p50": 0.023032767744682398,
+          "pinball_loss_p90": 0.012218495261635048,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
           "state_coverage_rate": null
         },
         "10D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.46563814866760167,
-          "mean_actual_return": -0.0021345226344316793,
-          "median_actual_return": -0.006139334513508851,
-          "p10_coverage": 0.9214586255259467,
-          "p90_coverage": 0.884992987377279,
-          "p10_p90_interval_coverage": 0.8064516129032258,
-          "median_error": -0.0012001677276145487,
-          "mean_error": -0.0033860143158090813,
-          "mae_median": 0.06747923415949078,
-          "rmse_median": 0.09623499156488771,
-          "positive_prob_brier": 0.250324189320619,
-          "directional_accuracy": 0.5287517531556802,
-          "pinball_loss_p10": 0.017893142218724678,
-          "pinball_loss_p50": 0.03373961707974539,
-          "pinball_loss_p90": 0.01737550472753768,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.4649859943977591,
+          "mean_actual_return": -0.0021635362883736355,
+          "median_actual_return": -0.006258744127131141,
+          "p10_coverage": 0.9215686274509803,
+          "p90_coverage": 0.8851540616246498,
+          "p10_p90_interval_coverage": 0.8067226890756303,
+          "median_error": -0.0011628954051538633,
+          "mean_error": -0.003354327035931424,
+          "mae_median": 0.06741167039108371,
+          "rmse_median": 0.09617027168658744,
+          "positive_prob_brier": 0.2502939349394837,
+          "directional_accuracy": 0.5294117647058824,
+          "pinball_loss_p10": 0.0178790508263862,
+          "pinball_loss_p50": 0.03370583519554186,
+          "pinball_loss_p90": 0.017368889785175076,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
           "state_coverage_rate": null
         },
         "20D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.4908835904628331,
-          "mean_actual_return": -0.0044810005099426035,
-          "median_actual_return": -0.002846301731838806,
-          "p10_coverage": 0.9032258064516129,
-          "p90_coverage": 0.8906030855539971,
-          "p10_p90_interval_coverage": 0.7938288920056101,
-          "median_error": -0.003942732963968883,
-          "mean_error": -0.0025902586664989847,
-          "mae_median": 0.10047464363278721,
-          "rmse_median": 0.13788063477473128,
-          "positive_prob_brier": 0.25310081977747745,
-          "directional_accuracy": 0.49789621318373073,
-          "pinball_loss_p10": 0.026537451490762098,
-          "pinball_loss_p50": 0.05023732181639361,
-          "pinball_loss_p90": 0.024508048490924316,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.49019607843137253,
+          "mean_actual_return": -0.004591953140966186,
+          "median_actual_return": -0.003394126362077636,
+          "p10_coverage": 0.9033613445378151,
+          "p90_coverage": 0.8907563025210085,
+          "p10_p90_interval_coverage": 0.7941176470588235,
+          "median_error": -0.0037384054804096424,
+          "mean_error": -0.002472427606359154,
+          "mae_median": 0.10044812609026699,
+          "rmse_median": 0.13781783469007444,
+          "positive_prob_brier": 0.2530840770886072,
+          "directional_accuracy": 0.49859943977591037,
+          "pinball_loss_p10": 0.026509439564852372,
+          "pinball_loss_p50": 0.050224063045133494,
+          "pinball_loss_p90": 0.024505510255904167,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
@@ -471,140 +471,140 @@
       },
       "B2_state_grouped_distribution": {
         "5D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.48667601683029454,
-          "mean_actual_return": -0.0010361428152622439,
-          "median_actual_return": -0.0008025682613774484,
-          "p10_coverage": 0.8948106591865358,
-          "p90_coverage": 0.8863955119214586,
-          "p10_p90_interval_coverage": 0.7812061711079944,
-          "median_error": -0.002622555658004073,
-          "mean_error": -0.002072228991720162,
-          "mae_median": 0.046299224423411604,
-          "rmse_median": 0.06852807461413021,
-          "positive_prob_brier": 0.2508112404524785,
-          "directional_accuracy": 0.5063113604488079,
-          "pinball_loss_p10": 0.01267856313596453,
-          "pinball_loss_p50": 0.023149612211705802,
-          "pinball_loss_p90": 0.012118109749038333,
-          "fallback_rate": 0.31136044880785413,
-          "avg_state_sample_size": 64.43758765778401,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.48599439775910364,
+          "mean_actual_return": -0.0011094633371023102,
+          "median_actual_return": -0.0009078697869921866,
+          "p10_coverage": 0.8949579831932774,
+          "p90_coverage": 0.8865546218487395,
+          "p10_p90_interval_coverage": 0.7815126050420168,
+          "median_error": -0.0025587534839735474,
+          "mean_error": -0.0019793313773816554,
+          "mae_median": 0.04632437490411547,
+          "rmse_median": 0.06852227844891402,
+          "positive_prob_brier": 0.25094777018503445,
+          "directional_accuracy": 0.5056022408963585,
+          "pinball_loss_p10": 0.012673367179617178,
+          "pinball_loss_p50": 0.023162187452057736,
+          "pinball_loss_p90": 0.012120673701164769,
+          "fallback_rate": 0.31092436974789917,
+          "avg_state_sample_size": 64.4327731092437,
           "min_state_sample_size": 0.0,
           "state_coverage_rate": 1.0
         },
         "10D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.46563814866760167,
-          "mean_actual_return": -0.0021345226344316793,
-          "median_actual_return": -0.006139334513508851,
-          "p10_coverage": 0.9046283309957924,
-          "p90_coverage": 0.8737727910238429,
-          "p10_p90_interval_coverage": 0.7784011220196353,
-          "median_error": -0.0006371286943272145,
-          "mean_error": -0.00438122326216237,
-          "mae_median": 0.06830703860293157,
-          "rmse_median": 0.09707127755622688,
-          "positive_prob_brier": 0.2545360395499816,
-          "directional_accuracy": 0.511921458625526,
-          "pinball_loss_p10": 0.018142882284837895,
-          "pinball_loss_p50": 0.03415351930146578,
-          "pinball_loss_p90": 0.01753357124163363,
-          "fallback_rate": 0.3141654978962132,
-          "avg_state_sample_size": 63.95652173913044,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.4649859943977591,
+          "mean_actual_return": -0.0021635362883736355,
+          "median_actual_return": -0.006258744127131141,
+          "p10_coverage": 0.9047619047619048,
+          "p90_coverage": 0.8739495798319328,
+          "p10_p90_interval_coverage": 0.7787114845938375,
+          "median_error": -0.0004128774016780865,
+          "mean_error": -0.004341868866030043,
+          "mae_median": 0.06824458871073744,
+          "rmse_median": 0.09700733758450755,
+          "positive_prob_brier": 0.2545779280722427,
+          "directional_accuracy": 0.511204481792717,
+          "pinball_loss_p10": 0.01813031994826632,
+          "pinball_loss_p50": 0.03412229435536872,
+          "pinball_loss_p90": 0.017530991999628053,
+          "fallback_rate": 0.3137254901960784,
+          "avg_state_sample_size": 63.950980392156865,
           "min_state_sample_size": 0.0,
           "state_coverage_rate": 1.0
         },
         "20D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.4908835904628331,
-          "mean_actual_return": -0.0044810005099426035,
-          "median_actual_return": -0.002846301731838806,
-          "p10_coverage": 0.8948106591865358,
-          "p90_coverage": 0.8737727910238429,
-          "p10_p90_interval_coverage": 0.7685834502103787,
-          "median_error": -0.0062265742880849625,
-          "mean_error": -0.002554615068266436,
-          "mae_median": 0.1029445181826261,
-          "rmse_median": 0.14000643001790994,
-          "positive_prob_brier": 0.26030502165489267,
-          "directional_accuracy": 0.4642356241234222,
-          "pinball_loss_p10": 0.027099503849178263,
-          "pinball_loss_p50": 0.05147225909131305,
-          "pinball_loss_p90": 0.02525007302817152,
-          "fallback_rate": 0.31837307152875177,
-          "avg_state_sample_size": 63.45441795231417,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.49019607843137253,
+          "mean_actual_return": -0.004591953140966186,
+          "median_actual_return": -0.003394126362077636,
+          "p10_coverage": 0.8949579831932774,
+          "p90_coverage": 0.8739495798319328,
+          "p10_p90_interval_coverage": 0.7689075630252101,
+          "median_error": -0.005886335999404777,
+          "mean_error": -0.0024542718780846185,
+          "mae_median": 0.10289710348310079,
+          "rmse_median": 0.1399322425307081,
+          "positive_prob_brier": 0.2602454596886782,
+          "directional_accuracy": 0.4649859943977591,
+          "pinball_loss_p10": 0.027079561897411186,
+          "pinball_loss_p50": 0.05144855174155039,
+          "pinball_loss_p90": 0.025250515380388246,
+          "fallback_rate": 0.3179271708683473,
+          "avg_state_sample_size": 63.44957983193277,
           "min_state_sample_size": 0.0,
           "state_coverage_rate": 1.0
         }
       },
       "B3_volatility_adjusted": {
         "5D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.48667601683029454,
-          "mean_actual_return": -0.0010361428152622439,
-          "median_actual_return": -0.0008025682613774484,
-          "p10_coverage": 0.9214586255259467,
-          "p90_coverage": 0.8863955119214586,
-          "p10_p90_interval_coverage": 0.8078541374474053,
-          "median_error": -0.0036726906188164024,
-          "mean_error": -0.0026826800167348915,
-          "mae_median": 0.04614111147863166,
-          "rmse_median": 0.06828215532024248,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.48599439775910364,
+          "mean_actual_return": -0.0011094633371023102,
+          "median_actual_return": -0.0009078697869921866,
+          "p10_coverage": 0.9215686274509803,
+          "p90_coverage": 0.8865546218487395,
+          "p10_p90_interval_coverage": 0.8081232492997199,
+          "median_error": -0.0036671706344631903,
+          "mean_error": -0.0026054498152095497,
+          "mae_median": 0.04614996101979935,
+          "rmse_median": 0.06826255970062896,
           "positive_prob_brier": null,
-          "directional_accuracy": 0.5077138849929874,
-          "pinball_loss_p10": 0.01193301915137423,
-          "pinball_loss_p50": 0.02307055573931583,
-          "pinball_loss_p90": 0.012347496554868609,
+          "directional_accuracy": 0.5084033613445378,
+          "pinball_loss_p10": 0.011918219012034019,
+          "pinball_loss_p50": 0.023074980509899676,
+          "pinball_loss_p90": 0.012346810504283271,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
           "state_coverage_rate": null
         },
         "10D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.46563814866760167,
-          "mean_actual_return": -0.0021345226344316793,
-          "median_actual_return": -0.006139334513508851,
-          "p10_coverage": 0.9228611500701263,
-          "p90_coverage": 0.8583450210378681,
-          "p10_p90_interval_coverage": 0.7812061711079944,
-          "median_error": -0.0024043427514077167,
-          "mean_error": -0.0053784748790182335,
-          "mae_median": 0.06742428362446441,
-          "rmse_median": 0.0962616722348604,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.4649859943977591,
+          "mean_actual_return": -0.0021635362883736355,
+          "median_actual_return": -0.006258744127131141,
+          "p10_coverage": 0.9229691876750701,
+          "p90_coverage": 0.8585434173669467,
+          "p10_p90_interval_coverage": 0.7815126050420168,
+          "median_error": -0.002210741932954255,
+          "mean_error": -0.00534154782741987,
+          "mae_median": 0.06735924602829879,
+          "rmse_median": 0.0961974450042092,
           "positive_prob_brier": null,
-          "directional_accuracy": 0.5315568022440392,
-          "pinball_loss_p10": 0.017034186902607603,
-          "pinball_loss_p50": 0.033712141812232206,
-          "pinball_loss_p90": 0.018185595030282324,
+          "directional_accuracy": 0.5322128851540616,
+          "pinball_loss_p10": 0.017020613593089463,
+          "pinball_loss_p50": 0.033679623014149396,
+          "pinball_loss_p90": 0.018176287939062175,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
           "state_coverage_rate": null
         },
         "20D": {
-          "sample_size": 713,
-          "valid_prediction_count": 713,
-          "actual_positive_rate": 0.4908835904628331,
-          "mean_actual_return": -0.0044810005099426035,
-          "median_actual_return": -0.002846301731838806,
-          "p10_coverage": 0.9116409537166901,
-          "p90_coverage": 0.8457223001402524,
-          "p10_p90_interval_coverage": 0.7573632538569425,
-          "median_error": -0.009441625086043218,
-          "mean_error": -0.010390855308234167,
-          "mae_median": 0.10080566100126033,
-          "rmse_median": 0.13839979479762216,
+          "sample_size": 714,
+          "valid_prediction_count": 714,
+          "actual_positive_rate": 0.49019607843137253,
+          "mean_actual_return": -0.004591953140966186,
+          "median_actual_return": -0.003394126362077636,
+          "p10_coverage": 0.9117647058823529,
+          "p90_coverage": 0.84593837535014,
+          "p10_p90_interval_coverage": 0.757703081232493,
+          "median_error": -0.009033201887549788,
+          "mean_error": -0.010263937874842487,
+          "mae_median": 0.10077684101685158,
+          "rmse_median": 0.1383354291517018,
           "positive_prob_brier": null,
-          "directional_accuracy": 0.4992987377279102,
-          "pinball_loss_p10": 0.0252525475623457,
-          "pinball_loss_p50": 0.050402830500630165,
-          "pinball_loss_p90": 0.02709442447023885,
+          "directional_accuracy": 0.5,
+          "pinball_loss_p10": 0.025224612981848152,
+          "pinball_loss_p50": 0.05038842050842579,
+          "pinball_loss_p90": 0.027086383113156972,
           "fallback_rate": 0.0,
           "avg_state_sample_size": null,
           "min_state_sample_size": null,
@@ -902,27 +902,27 @@
   "b2_vs_b1": {
     "standard_walk_forward_metrics": {
       "10D": {
-        "B2_vs_B1_interval_coverage_delta": -0.028050490883590462,
-        "B2_vs_B1_brier_delta": 0.0042118502293626014,
-        "B2_vs_B1_pinball_loss_delta": 0.00041390222172039276,
-        "B2_vs_B1_directional_accuracy_delta": -0.016830294530154277,
-        "B2_vs_B1_median_error_delta": -0.0005630390332873342,
+        "B2_vs_B1_interval_coverage_delta": -0.02801120448179273,
+        "B2_vs_B1_brier_delta": 0.004283993132759012,
+        "B2_vs_B1_pinball_loss_delta": 0.00041645915982686105,
+        "B2_vs_B1_directional_accuracy_delta": -0.018207282913165312,
+        "B2_vs_B1_median_error_delta": -0.0007500180034757768,
         "B2_vs_B1_conclusion": "B2 underperforms B1"
       },
       "20D": {
-        "B2_vs_B1_interval_coverage_delta": -0.02524544179523147,
-        "B2_vs_B1_brier_delta": 0.007204201877415217,
-        "B2_vs_B1_pinball_loss_delta": 0.0012349372749194398,
-        "B2_vs_B1_directional_accuracy_delta": -0.033660589060308554,
-        "B2_vs_B1_median_error_delta": 0.0022838413241160795,
+        "B2_vs_B1_interval_coverage_delta": -0.025210084033613356,
+        "B2_vs_B1_brier_delta": 0.007161382600070987,
+        "B2_vs_B1_pinball_loss_delta": 0.0012244886964168991,
+        "B2_vs_B1_directional_accuracy_delta": -0.03361344537815125,
+        "B2_vs_B1_median_error_delta": 0.0021479305189951348,
         "B2_vs_B1_conclusion": "B2 underperforms B1"
       },
       "5D": {
-        "B2_vs_B1_interval_coverage_delta": -0.02524544179523136,
-        "B2_vs_B1_brier_delta": 0.00035071462547797694,
-        "B2_vs_B1_pinball_loss_delta": 0.00012089341421079453,
-        "B2_vs_B1_directional_accuracy_delta": -0.007012622720897643,
-        "B2_vs_B1_median_error_delta": 0.00036222165562428644,
+        "B2_vs_B1_interval_coverage_delta": -0.025210084033613467,
+        "B2_vs_B1_brier_delta": 0.0005097140721831428,
+        "B2_vs_B1_pinball_loss_delta": 0.00012941970737533753,
+        "B2_vs_B1_directional_accuracy_delta": -0.008403361344537785,
+        "B2_vs_B1_median_error_delta": 0.0003291385138020908,
         "B2_vs_B1_conclusion": "B2 underperforms B1"
       }
     },
@@ -955,7 +955,7 @@
   },
   "leakage_checks": {
     "status": "PASS",
-    "check_count": 713,
+    "check_count": 714,
     "failed_count": 0,
     "max_training_date_rule": "training data must be <= as_of_date",
     "actual_return_rule": "actual_return uses T+horizon close only",
