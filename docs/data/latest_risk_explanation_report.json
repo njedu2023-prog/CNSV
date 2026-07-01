@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-06-30T16:35:45.800673+00:00",
-    "latest_trade_date": "2026-06-30",
+    "generated_at": "2026-07-01T16:29:04.979488+00:00",
+    "latest_trade_date": "2026-07-01",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -80,6 +80,7 @@
     "overall_risk_level": "high",
     "risk_confidence": "medium",
     "primary_risk_sources": [
+      "path_distribution_risk",
       "p2_auxiliary_risk",
       "evidence_conflict_risk"
     ],
@@ -87,7 +88,6 @@
       "data_risk",
       "feature_risk",
       "baseline_model_risk",
-      "path_distribution_risk",
       "path_validation_risk",
       "observation_backtest_risk",
       "decision_support_risk",
@@ -139,7 +139,7 @@
     },
     "path_distribution_risk": {
       "risk_type": "path_distribution_risk",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_reason": "路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。",
       "risk_evidence": [
         "latest_path_distribution_report.json",
@@ -270,10 +270,10 @@
     }
   },
   "feature_risk_explanation": {
-    "risk_level": "medium",
+    "risk_level": "low",
     "trend_state_risk": {
-      "risk_level": "low",
-      "risk_reason": "趋势状态为 strong_downtrend，需要结合路径风险复核。",
+      "risk_level": "medium",
+      "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -288,8 +288,8 @@
       "human_review_required": true
     },
     "flow_strength_basic_risk": {
-      "risk_level": "medium",
-      "risk_reason": "资金流强弱状态为 mixed。",
+      "risk_level": "low",
+      "risk_reason": "资金流强弱状态为 positive。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 65。",
+      "risk_reason": "B2 最小状态样本数为 79。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -364,9 +364,9 @@
     }
   },
   "path_distribution_risk_explanation": {
-    "risk_level": "medium",
+    "risk_level": "high",
     "downside_path_risk": {
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_reason": "20D 下行路径概率需要人工复核。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
@@ -374,8 +374,8 @@
       "human_review_required": true
     },
     "touch_down_risk": {
-      "risk_level": "medium",
-      "risk_reason": "20D touch_down_5pct_prob=0.5371。",
+      "risk_level": "high",
+      "risk_reason": "20D touch_down_5pct_prob=0.5602。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -383,7 +383,7 @@
     },
     "max_drawdown_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.0716。",
+      "risk_reason": "20D max_drawdown_p50=-0.0772。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=65。",
+      "risk_reason": "P2 min_state_sample_size=79。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -547,7 +547,7 @@
     {
       "scenario_id": "downside_touch_risk_card",
       "scenario_name": "下穿路径风险",
-      "risk_level": "medium",
+      "risk_level": "high",
       "trigger_evidence": [
         "touch_down_5pct_prob"
       ],
