@@ -6,8 +6,8 @@
     "report_type": "baseline_validation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-01T16:41:13.670242+00:00",
-    "latest_trade_date": "2026-07-01",
+    "generated_at": "2026-07-02T16:05:53.861173+00:00",
+    "latest_trade_date": "2026-07-02",
     "is_trade_signal": false
   },
   "validation_quality": {
@@ -526,7 +526,7 @@
           "p90_coverage": 0.8739495798319328,
           "p10_p90_interval_coverage": 0.7689075630252101,
           "median_error": -0.005886335999404777,
-          "mean_error": -0.0024542718780846185,
+          "mean_error": -0.0024542718780846172,
           "mae_median": 0.10289710348310079,
           "rmse_median": 0.1399322425307081,
           "positive_prob_brier": 0.2602454596886782,
@@ -550,7 +550,7 @@
           "p10_coverage": 0.9215686274509803,
           "p90_coverage": 0.8865546218487395,
           "p10_p90_interval_coverage": 0.8081232492997199,
-          "median_error": -0.0036671706344631903,
+          "median_error": -0.003667170634463191,
           "mean_error": -0.0026054498152095497,
           "mae_median": 0.04614996101979935,
           "rmse_median": 0.06826255970062896,
