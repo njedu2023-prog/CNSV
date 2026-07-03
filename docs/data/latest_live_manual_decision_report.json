@@ -6,7 +6,7 @@
     "report_type": "live_manual_decision_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-03T15:55:51.945925+00:00",
+    "generated_at": "2026-07-03T16:05:11.726406+00:00",
     "latest_trade_date": "2026-07-03",
     "is_trade_signal": false
   },
@@ -1106,9 +1106,9 @@
   ],
   "manual_confirmation_panel": {
     "operator_name": "N/A",
-    "decision_session_id": "manual-2026-07-03-20260703155551",
+    "decision_session_id": "manual-2026-07-03-20260703160511",
     "decision_snapshot_id": "live-2026-07-03-9reports",
-    "manual_review_timestamp": "2026-07-03T15:55:51.945907+00:00",
+    "manual_review_timestamp": "2026-07-03T16:05:11.726392+00:00",
     "manual_review_status": "not_started",
     "operator_notes": "",
     "manual_confirmation_items": [
@@ -1197,7 +1197,7 @@
   ],
   "next_stage": "V2.0 acceptance and daily manual operation",
   "manual_action_log": {
-    "decision_session_id": "manual-2026-07-03-20260703155551",
+    "decision_session_id": "manual-2026-07-03-20260703160511",
     "decision_snapshot_id": "live-2026-07-03-9reports",
     "manual_review_status": "not_started",
     "execution_action_recorded": false
