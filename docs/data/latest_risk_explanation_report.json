@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-03T16:05:11.220555+00:00",
-    "latest_trade_date": "2026-07-03",
+    "generated_at": "2026-07-06T16:55:19.468510+00:00",
+    "latest_trade_date": "2026-07-06",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -270,10 +270,10 @@
     }
   },
   "feature_risk_explanation": {
-    "risk_level": "low",
+    "risk_level": "medium",
     "trend_state_risk": {
       "risk_level": "low",
-      "risk_reason": "趋势状态为 neutral，需要结合路径风险复核。",
+      "risk_reason": "趋势状态为 uptrend，需要结合路径风险复核。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -288,8 +288,8 @@
       "human_review_required": true
     },
     "flow_strength_basic_risk": {
-      "risk_level": "low",
-      "risk_reason": "资金流强弱状态为 positive。",
+      "risk_level": "medium",
+      "risk_reason": "资金流强弱状态为 mixed。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 32。",
+      "risk_reason": "B2 最小状态样本数为 74。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -375,7 +375,7 @@
     },
     "touch_down_risk": {
       "risk_level": "high",
-      "risk_reason": "20D touch_down_5pct_prob=0.6365。",
+      "risk_reason": "20D touch_down_5pct_prob=0.6334。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -383,7 +383,7 @@
     },
     "max_drawdown_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.0948。",
+      "risk_reason": "20D max_drawdown_p50=-0.0934。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=32。",
+      "risk_reason": "P2 min_state_sample_size=74。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
