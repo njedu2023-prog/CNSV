@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-06T17:19:40.469777+00:00",
-    "latest_trade_date": "2026-07-06",
+    "generated_at": "2026-07-07T16:31:58.458789+00:00",
+    "latest_trade_date": "2026-07-07",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -375,7 +375,7 @@
     },
     "touch_down_risk": {
       "risk_level": "high",
-      "risk_reason": "20D touch_down_5pct_prob=0.6334。",
+      "risk_reason": "20D touch_down_5pct_prob=0.6239。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -383,7 +383,7 @@
     },
     "max_drawdown_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.0934。",
+      "risk_reason": "20D max_drawdown_p50=-0.0909。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],

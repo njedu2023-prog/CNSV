@@ -4,8 +4,8 @@
   "report_type": "trading_decision_report",
   "symbol": "600150.SH",
   "name": "中国船舶",
-  "trade_date": "2026-07-06",
-  "generated_at": "2026-07-06T17:19:41.620748+00:00",
+  "trade_date": "2026-07-07",
+  "generated_at": "2026-07-07T16:31:59.581738+00:00",
   "data_status": "PASS",
   "is_trade_signal": false,
   "manual_reference_only": true,
@@ -37,7 +37,6 @@
     "signal_cn": "继续观察",
     "suggested_action": "观察等待",
     "decision_reasons": [
-      "方向置信度不足",
       "风险调整 EV 为负",
       "波动率异常"
     ],
@@ -48,31 +47,31 @@
     "manual_reference_only": true
   },
   "decision_timeline": {
-    "data_trade_date": "2026-07-06",
-    "signal_date": "2026-07-07",
-    "prediction_date": "2026-07-07",
-    "verify_date": "2026-07-07",
+    "data_trade_date": "2026-07-07",
+    "signal_date": "2026-07-08",
+    "prediction_date": "2026-07-08",
+    "verify_date": "2026-07-08",
     "predicted_direction": "FLAT",
     "calendar_source": "CNSVdata trade_calendar",
     "prediction_date_source": "trade_calendar",
     "verify_date_source": "trade_calendar"
   },
   "market_snapshot": {
-    "latest_trade_date": "2026-07-06",
-    "latest_close": 37.64,
-    "latest_pct_chg": 1.319,
-    "latest_amount": 5735515.648,
-    "ma5": 35.626,
-    "ma20": 35.40050000000001
+    "latest_trade_date": "2026-07-07",
+    "latest_close": 37.33,
+    "latest_pct_chg": -0.8236,
+    "latest_amount": 3644105.052,
+    "ma5": 36.33399999999999,
+    "ma20": 35.5255
   },
   "price_prediction_distribution": {
     "5D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 37.64,
-      "terminal_price_p10": 35.0776444179452,
-      "terminal_price_p50": 37.598641212538055,
-      "terminal_price_p90": 40.553308306139414,
+      "latest_close": 37.33,
+      "terminal_price_p10": 34.78874777156998,
+      "terminal_price_p50": 37.28898184017124,
+      "terminal_price_p90": 40.219314534223805,
       "terminal_return_p10": -0.06807533427350694,
       "terminal_return_p50": -0.0010987988167361351,
       "terminal_return_p90": 0.07739926424387383,
@@ -85,10 +84,10 @@
     "10D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 37.64,
-      "terminal_price_p10": 34.21809681375923,
-      "terminal_price_p50": 37.0257590592418,
-      "terminal_price_p90": 40.75973558223214,
+      "latest_close": 37.33,
+      "terminal_price_p10": 33.93627933203061,
+      "terminal_price_p50": 36.72081789802063,
+      "terminal_price_p90": 40.42404169194276,
       "terminal_return_p10": -0.0909113492625071,
       "terminal_return_p50": -0.016318834770409185,
       "terminal_return_p90": 0.08288351706249035,
@@ -101,10 +100,10 @@
     "20D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 37.64,
-      "terminal_price_p10": 32.25803178517605,
-      "terminal_price_p50": 36.90513547669097,
-      "terminal_price_p90": 43.53251806605384,
+      "latest_close": 37.33,
+      "terminal_price_p10": 31.992357240717904,
+      "terminal_price_p50": 36.601187761553504,
+      "terminal_price_p90": 43.17398776317189,
       "terminal_return_p10": -0.14298534045759695,
       "terminal_return_p50": -0.019523499556563018,
       "terminal_return_p90": 0.15654936413533047,
@@ -116,20 +115,20 @@
     }
   },
   "probability": {
-    "prob_up_1d": 0.4644913011668846,
-    "prob_down_1d": 0.49550869883311544,
+    "prob_up_1d": 0.436109453243443,
+    "prob_down_1d": 0.5238905467565569,
     "prob_flat_1d": 0.040000000000000036,
-    "direction_confidence": 0.5240519957314362,
+    "direction_confidence": 0.5999057041133234,
     "primary_model": "B2_state_grouped_distribution+P2_state_conditional_path",
     "fallback_used": false,
     "fallback_reason": null,
     "inputs": {
-      "b1_positive_prob_5d": 0.4829648894668401,
+      "b1_positive_prob_5d": 0.4830993239729589,
       "b2_positive_prob_5d": 0.4864864864864865,
       "p2_positive_terminal_prob_5d": 0.4864864864864865,
-      "ret_1d": 0.01318977119784659,
-      "flow_strength_score": -0.15726572035672426,
-      "main_force_net": -8844.029999999984
+      "ret_1d": -0.008235919234856559,
+      "flow_strength_score": -4.769379518974413,
+      "main_force_net": 5688.55000000001
     }
   },
   "return_distribution": {
@@ -164,14 +163,13 @@
     "block_reasons": [],
     "buy_blocked": true,
     "buy_block_reasons": [
-      "方向置信度不足",
       "风险调整 EV 为负",
       "波动率异常"
     ],
     "warnings": [],
     "downside_tail_prob": 0.02200877176578298,
     "p10_return_1d": -0.03153086794808473,
-    "human_risk_explanation": "方向置信度不足；风险调整 EV 为负；波动率异常，因此需要风控降级或拦截。"
+    "human_risk_explanation": "风险调整 EV 为负；波动率异常，因此需要风控降级或拦截。"
   },
   "exit": {
     "take_profit_range": "+9.9%~+11.7%",
@@ -186,10 +184,10 @@
       "model": "B2_state_grouped_distribution",
       "horizon": "5D",
       "standard": {
-        "sample_size": 714,
-        "directional_accuracy": 0.5056022408963585,
-        "positive_prob_brier": 0.25094777018503445,
-        "p10_p90_interval_coverage": 0.7815126050420168
+        "sample_size": 715,
+        "directional_accuracy": 0.5062937062937063,
+        "positive_prob_brier": 0.25087519044273077,
+        "p10_p90_interval_coverage": 0.7818181818181819
       },
       "purged": {
         "sample_size": 143,
@@ -237,23 +235,23 @@
   "model_performance": {
     "historical_stats": {
       "name": "历史统计线",
-      "direction_accuracy": 0.5056022408963585,
-      "sample_count": 714,
+      "direction_accuracy": 0.5062937062937063,
+      "sample_count": 715,
       "description": "包含历史验证样本、walk-forward、purged walk-forward 等历史统计结果。"
     },
     "live_stats": {
       "name": "实盘统计线",
       "start_date": "2026-06-21",
-      "direction_accuracy": 0.36363636363636365,
+      "direction_accuracy": 0.3333333333333333,
       "correct_count": 4,
-      "wrong_count": 7,
-      "sample_count": 11,
+      "wrong_count": 8,
+      "sample_count": 12,
       "description": "从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。"
     }
   },
   "human_explanation": {
     "summary": "信号强度不足，建议继续观察，不建议主动买入。",
-    "risk_note": "方向置信度不足；风险调整 EV 为负；波动率异常，因此需要风控降级或拦截。",
+    "risk_note": "风险调整 EV 为负；波动率异常，因此需要风控降级或拦截。",
     "execution_note": "所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。"
   },
   "model_sources": {
