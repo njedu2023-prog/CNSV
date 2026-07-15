@@ -5,7 +5,7 @@
 ## 阶段与范围
 - 版本: 1.4
 - 阶段: V1.4_observation_backtest
-- latest_trade_date: 2026-07-14
+- latest_trade_date: 2026-07-15
 - horizons: [5, 10, 20]
 - models: P0_historical_path_replay, P1_volatility_adjusted_path, P2_state_conditional_path
 - standard walk-forward 样本数: 648

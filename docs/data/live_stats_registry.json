@@ -5,14 +5,31 @@
     "signal_date": "2026-07-15",
     "verify_date": "2026-07-15",
     "predicted_direction": "UP",
-    "actual_direction": null,
-    "is_correct": null,
+    "actual_direction": "UP",
+    "is_correct": true,
     "close_t": 33.77,
-    "close_t1": null,
-    "return_1d": null,
+    "close_t1": 34.31,
+    "return_1d": 0.015991,
     "model_id": "T1_HGB_ENSEMBLE_V1",
     "prob_up_1d": 0.5256086534814411,
     "prob_down_1d": 0.47439134651855885,
-    "direction_confidence": 0.5256086534814411
+    "direction_confidence": 0.5256086534814411,
+    "verification_status": "VERIFIED"
+  },
+  {
+    "trade_date": "2026-07-16",
+    "data_trade_date": "2026-07-15",
+    "signal_date": "2026-07-16",
+    "verify_date": "2026-07-16",
+    "predicted_direction": "DOWN",
+    "model_id": "T1_HGB_ENSEMBLE_V1",
+    "prob_up_1d": 0.4996412452826962,
+    "prob_down_1d": 0.5003587547173038,
+    "direction_confidence": 0.5003587547173038,
+    "actual_direction": null,
+    "is_correct": null,
+    "close_t": 34.31,
+    "close_t1": null,
+    "return_1d": null
   }
 ]
