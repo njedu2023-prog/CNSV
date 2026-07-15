@@ -10,5 +10,8 @@ def test_trading_probability_outputs_valid_probabilities():
     assert 0 <= probability["prob_up_1d"] <= 1
     assert 0 <= probability["prob_down_1d"] <= 1
     assert 0 <= probability["prob_flat_1d"] <= 1
-    assert probability["prob_up_1d"] + probability["prob_down_1d"] + probability["prob_flat_1d"] <= 1.01
+    assert probability["prob_up_1d"] + probability["prob_down_1d"] == 1.0
+    assert probability["prob_flat_1d"] == 0.0
     assert probability["primary_model"]
+    assert probability["model_id"] == "T1_HGB_ENSEMBLE_V1"
+    assert "5D" not in probability["primary_model"]

@@ -5,11 +5,13 @@ import math
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
+from cnsv.trading.next_day_model import MODEL_ID
 from cnsv.utils.io import ensure_parent
 
-LIVE_STATS_START_DATE = "2026-06-21"
-VERIFIABLE_DIRECTIONS = {"UP", "DOWN", "FLAT"}
+LIVE_STATS_START_DATE = "2026-07-15"
+VERIFIABLE_DIRECTIONS = {"UP", "DOWN"}
 
 
 def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None = None) -> dict[str, Any]:
@@ -17,6 +19,7 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
     signal_day = signal_date or timeline.get("signal_date") or _today()
     verify_day = timeline.get("verify_date") or _plus_one_day(signal_day)
     market = payload.get("market_snapshot") or {}
+    probability = payload.get("probability") or {}
     data_trade_date = timeline.get("data_trade_date") or market.get("latest_trade_date")
     return {
         "trade_date": timeline.get("prediction_date") or signal_day,
@@ -24,6 +27,10 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
         "signal_date": signal_day,
         "verify_date": verify_day,
         "predicted_direction": predicted_direction(payload),
+        "model_id": probability.get("model_id") or MODEL_ID,
+        "prob_up_1d": _finite_or_none(probability.get("prob_up_1d")),
+        "prob_down_1d": _finite_or_none(probability.get("prob_down_1d")),
+        "direction_confidence": _finite_or_none(probability.get("direction_confidence")),
         "actual_direction": None,
         "is_correct": None,
         "close_t": market.get("latest_close"),
@@ -40,7 +47,8 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
 
     signal_date = (payload.get("decision_timeline") or {}).get("signal_date") or _today()
     current_direction = predicted_direction(payload)
-    if signal_date >= LIVE_STATS_START_DATE and current_direction in VERIFIABLE_DIRECTIONS and _has_base_close(payload):
+    model_ready = bool((payload.get("probability") or {}).get("model_ready"))
+    if signal_date >= LIVE_STATS_START_DATE and model_ready and current_direction in VERIFIABLE_DIRECTIONS and _has_base_close(payload):
         replacement = default_live_registry_entry(payload, signal_date)
         found = False
         updated: list[dict[str, Any]] = []
@@ -59,6 +67,7 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
         item
         for item in registry
         if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
+        and item.get("model_id") == MODEL_ID
         and item.get("predicted_direction") in VERIFIABLE_DIRECTIONS
         and _has_finite_number(item.get("close_t"))
         and _has_auditable_base_date(item)
@@ -141,12 +150,16 @@ def _prefer_entry(candidate: dict[str, Any], current: dict[str, Any]) -> bool:
 
 
 def build_model_performance(historical_validation: dict[str, Any], registry: list[dict[str, Any]] | None = None) -> dict[str, Any]:
-    standard = ((historical_validation.get("baseline_directional_accuracy") or {}).get("standard") or {})
+    standard = ((historical_validation.get("next_day_directional_accuracy") or {}).get("standard") or {})
+    if not standard:
+        standard = ((historical_validation.get("baseline_directional_accuracy") or {}).get("standard") or {})
     historical_accuracy = standard.get("directional_accuracy")
     verified = [
         item
         for item in (registry or [])
-        if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE and item.get("is_correct") is not None
+        if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
+        and item.get("model_id") == MODEL_ID
+        and item.get("is_correct") is not None
     ]
     correct_count = sum(1 for item in verified if item.get("is_correct") is True)
     wrong_count = sum(1 for item in verified if item.get("is_correct") is False)
@@ -156,7 +169,11 @@ def build_model_performance(historical_validation: dict[str, Any], registry: lis
             "name": "历史统计线",
             "direction_accuracy": historical_accuracy,
             "sample_count": standard.get("sample_size"),
-            "description": "包含历史验证样本、walk-forward、purged walk-forward 等历史统计结果。",
+            "accuracy_ci_95_low": standard.get("accuracy_ci_95_low"),
+            "accuracy_ci_95_high": standard.get("accuracy_ci_95_high"),
+            "high_confidence_accuracy": standard.get("high_confidence_accuracy"),
+            "high_confidence_coverage": standard.get("high_confidence_coverage"),
+            "description": "T+1 扩展窗口样本；每次验证只使用此前交易日数据。",
         },
         "live_stats": {
             "name": "实盘统计线",
@@ -165,27 +182,27 @@ def build_model_performance(historical_validation: dict[str, Any], registry: lis
             "correct_count": correct_count,
             "wrong_count": wrong_count,
             "sample_count": sample_count,
-            "description": "从 2026-06-21 起，只统计 V3.0 正式运行后的真实方向命中情况。",
+            "model_id": MODEL_ID,
+            "description": "从新 T+1 模型上线日起，逐日按下一交易日收盘方向验证。",
         },
     }
 
 
 def predicted_direction(payload: dict[str, Any]) -> str | None:
-    signal = ((payload.get("decision") or {}).get("signal") or "").upper()
-    if signal in {"BUY", "STRONG_BUY"}:
-        return "UP"
-    if signal in {"SELL", "STRONG_SELL", "REDUCE"}:
-        return "DOWN"
-    if signal in {"HOLD", "WATCH"}:
-        return "FLAT"
+    probability_direction = ((payload.get("probability") or {}).get("predicted_direction") or "").upper()
+    if probability_direction in VERIFIABLE_DIRECTIONS:
+        return probability_direction
+    timeline_direction = ((payload.get("decision_timeline") or {}).get("predicted_direction") or "").upper()
+    if timeline_direction in VERIFIABLE_DIRECTIONS:
+        return timeline_direction
     return None
 
 
 def _try_verify_entry(item: dict[str, Any], reports: dict[str, Any]) -> dict[str, Any]:
-    if item.get("is_correct") is not None:
+    if item.get("is_correct") is not None or item.get("verification_status") == "TIE_EXCLUDED":
         return item
     verify_date = item.get("verify_date")
-    verify_close = _close_on_date(reports, str(verify_date)) if verify_date else None
+    verify_close, verify_pct_chg = _market_on_date(reports, str(verify_date)) if verify_date else (None, None)
     latest_date, latest_close = _latest_close(reports)
     if verify_close is None and verify_date == latest_date:
         verify_close = latest_close
@@ -201,33 +218,37 @@ def _try_verify_entry(item: dict[str, Any], reports: dict[str, Any]) -> dict[str
         return item
     if not math.isfinite(base_close) or not math.isfinite(end_close) or base_close == 0:
         return item
-    ret = (end_close / base_close) - 1.0
+    ret = verify_pct_chg / 100.0 if verify_pct_chg is not None else (end_close / base_close) - 1.0
     actual = "UP" if ret > 0 else "DOWN" if ret < 0 else "FLAT"
     out = dict(item)
     out["close_t1"] = end_close
     out["return_1d"] = ret
     out["actual_direction"] = actual
-    out["is_correct"] = actual == item.get("predicted_direction")
+    out["is_correct"] = actual == item.get("predicted_direction") if actual in VERIFIABLE_DIRECTIONS else None
+    out["verification_status"] = "VERIFIED" if actual in VERIFIABLE_DIRECTIONS else "TIE_EXCLUDED"
     return out
 
 
-def _close_on_date(reports: dict[str, Any], trade_date: str) -> float | None:
+def _market_on_date(reports: dict[str, Any], trade_date: str) -> tuple[float | None, float | None]:
     history = reports.get("daily_price_history")
     if history is None or not hasattr(history, "empty") or history.empty:
-        return None
+        return None, None
     if "close" not in history.columns:
-        return None
+        return None, None
     date_col = "trade_date" if "trade_date" in history.columns else history.columns[0]
     frame = history.copy()
     mask = frame[date_col].astype(str).map(_date_text) == _date_text(trade_date)
     matched = frame.loc[mask]
     if matched.empty:
-        return None
+        return None, None
     try:
         close = float(matched.iloc[-1]["close"])
     except (TypeError, ValueError):
-        return None
-    return close if math.isfinite(close) else None
+        return None, None
+    if not math.isfinite(close):
+        close = None
+    pct_chg = _finite_or_none(matched.iloc[-1].get("pct_chg")) if "pct_chg" in matched.columns else None
+    return close, pct_chg
 
 
 def _latest_close(reports: dict[str, Any]) -> tuple[str | None, float | None]:
@@ -276,9 +297,11 @@ def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | N
     if not signal_date or signal_date < LIVE_STATS_START_DATE or verify_date != latest_date:
         return None
 
-    signal = _md_value(text, "信号")
+    model_id = _md_value(text, "模型ID")
+    if model_id != MODEL_ID:
+        return None
     close_t = _parse_float(_md_value(text, "收盘价"))
-    direction = predicted_direction({"decision": {"signal": (signal or "").split("/")[0].strip()}})
+    direction = (_md_value(text, "预测方向") or "").upper()
     if direction not in VERIFIABLE_DIRECTIONS or close_t is None:
         return None
     return {
@@ -287,6 +310,7 @@ def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | N
         "signal_date": signal_date,
         "verify_date": verify_date,
         "predicted_direction": direction,
+        "model_id": model_id,
         "actual_direction": None,
         "is_correct": None,
         "close_t": close_t,
@@ -326,7 +350,7 @@ def _finite_or_none(value: Any) -> float | None:
 
 
 def _today() -> str:
-    return date.today().isoformat()
+    return datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat()
 
 
 def _plus_one_day(value: str) -> str:

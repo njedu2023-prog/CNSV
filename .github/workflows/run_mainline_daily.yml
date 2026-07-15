@@ -15,12 +15,14 @@ on:
       - ".github/workflows/run_human_decision_support.yml"
       - ".github/workflows/run_risk_explanation.yml"
   schedule:
-    # 22:00 Beijing time / 14:00 UTC, Monday-Friday.
-    # CNSVdata daily pipeline is scheduled at 20:30 Beijing time.
-    - cron: "0 14 * * 1-5"
-    # 22:15 Beijing time fallback. GitHub can delay or skip top-of-hour schedules.
-    # The second run normally commits nothing if the 22:00 run already published reports.
-    - cron: "15 14 * * 1-5"
+    # Beijing 20:24 primary, then every 15 minutes through 21:24.
+    # CNSVdata starts at 20:04. The freshness precheck makes early or holiday
+    # runs a no-op until a new completed close-data snapshot is available.
+    - cron: "24 12 * * *"
+    - cron: "39 12 * * *"
+    - cron: "54 12 * * *"
+    - cron: "9 13 * * *"
+    - cron: "24 13 * * *"
 
 concurrency:
   group: cnsv-mainline-daily-main
@@ -28,15 +30,67 @@ concurrency:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
-  run-mainline-daily:
+  check-upstream:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      should_run: ${{ steps.freshness.outputs.should_run }}
+      reason: ${{ steps.freshness.outputs.reason }}
+    steps:
+      - name: Checkout for freshness comparison
+        uses: actions/checkout@v4
+      - name: Check whether CNSVdata has a new snapshot
+        id: freshness
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          UPSTREAM_READY_URL: https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main/metadata/downstream_ready.json
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          def iso_date(value):
+              text = str(value or "")[:10].replace("-", "")
+              return f"{text[:4]}-{text[4:6]}-{text[6:8]}" if len(text) == 8 and text.isdigit() else ""
+
+          if os.environ["EVENT_NAME"] != "schedule":
+              print("should_run=true")
+              print("reason=manual_or_code_change")
+              raise SystemExit(0)
+
+          current_path = Path("docs/data/latest_trading_decision_report.json")
+          current = json.loads(current_path.read_text(encoding="utf-8")) if current_path.exists() else {}
+          current_date = iso_date(current.get("trade_date"))
+          data_report_path = Path("docs/data/latest_data_report.json")
+          data_report = json.loads(data_report_path.read_text(encoding="utf-8")) if data_report_path.exists() else {}
+          current_snapshot = str(((data_report.get("data_manifest") or {}).get("snapshot_id")) or "")
+          try:
+              request = urllib.request.Request(
+                  os.environ["UPSTREAM_READY_URL"],
+                  headers={"Cache-Control": "no-cache", "User-Agent": "CNSV-mainline-freshness"},
+              )
+              with urllib.request.urlopen(request, timeout=15) as response:
+                  upstream = json.load(response)
+              upstream_date = iso_date(upstream.get("latest_trade_date"))
+              upstream_snapshot = str(upstream.get("manifest_snapshot_id") or "")
+              changed = not current_date or upstream_date != current_date
+              if current_snapshot and upstream_snapshot:
+                  changed = changed or upstream_snapshot != current_snapshot
+              print(f"should_run={str(changed).lower()}")
+              print(f"reason={'new_upstream_snapshot' if changed else 'upstream_unchanged'}")
+          except Exception as exc:
+              print("should_run=true")
+              print(f"reason=upstream_check_failed_{type(exc).__name__}")
+          PY
+
+  run-mainline-daily:
+    needs: check-upstream
+    if: needs.check-upstream.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       PYTHONPATH: ${{ github.workspace }}/src
     steps:
@@ -237,12 +291,3 @@ jobs:
             git rebase --abort || true
             sleep 5
           done
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-      - name: Deploy Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

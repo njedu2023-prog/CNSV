@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
 from cnsv.trading import FORBIDDEN_TRADING_AUTOMATION, TRADING_REPORT_TYPE, TRADING_STAGE, TRADING_VERSION
 from cnsv.trading.ev_engine import compute_ev
 from cnsv.trading.exit_engine import compute_exit_plan
-from cnsv.trading.live_stats import build_model_performance, predicted_direction
+from cnsv.trading.live_stats import build_model_performance
 from cnsv.trading.position_engine import compute_position
 from cnsv.trading.probability import compute_next_day_probability
 from cnsv.trading.return_distribution import compute_return_distribution
@@ -37,6 +38,8 @@ CN_MARKET_HOLIDAY_FALLBACK = {
     "2026-10-07",
 }
 
+BEIJING_TIMEZONE = ZoneInfo("Asia/Shanghai")
+
 
 def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str, Any]:
     reports = evidence_bundle["reports"]
@@ -47,7 +50,6 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     signal = decide_signal(probability, distribution, ev, risk)
     position = compute_position(signal, probability, ev, risk)
     exit_plan = compute_exit_plan(reports, distribution, risk)
-    historical_validation = _historical_validation(reports)
     data_report = reports.get("data_report") or {}
     feature_report = reports.get("feature_report") or {}
     meta = feature_report.get("meta") or data_report.get("meta") or {}
@@ -58,7 +60,8 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         **signal,
         **position,
     }
-    timeline = _decision_timeline(trade_date, decision, evidence_bundle)
+    timeline = _decision_timeline(trade_date, probability, evidence_bundle)
+    historical_validation = _historical_validation(reports, probability)
     market_snapshot = {
         "latest_trade_date": price_volume.get("latest_trade_date") or trade_date,
         "latest_close": price_volume.get("latest_close"),
@@ -67,6 +70,8 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "ma5": price_volume.get("ma5"),
         "ma20": price_volume.get("ma20"),
     }
+    generated_at_utc = datetime.now(timezone.utc)
+    generated_at_beijing = generated_at_utc.astimezone(BEIJING_TIMEZONE)
     payload = {
         "version": TRADING_VERSION,
         "stage": TRADING_STAGE,
@@ -74,7 +79,9 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "symbol": "600150.SH",
         "name": "中国船舶",
         "trade_date": trade_date,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": generated_at_utc.isoformat(),
+        "generated_at_beijing": generated_at_beijing.isoformat(),
+        "timezone": "Asia/Shanghai",
         "data_status": ((data_report.get("cnsvdata_gate") or {}).get("status") or "N/A"),
         "is_trade_signal": signal["signal"] not in {"BLOCKED", "WATCH"},
         "manual_reference_only": True,
@@ -85,6 +92,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "cnsvdata_gate": data_report.get("cnsvdata_gate") or {},
         "decision": decision,
         "decision_timeline": timeline,
+        "freshness": _freshness_contract(trade_date, timeline, generated_at_beijing),
         "market_snapshot": market_snapshot,
         "price_prediction_distribution": _price_prediction_distribution(reports),
         "probability": probability,
@@ -98,6 +106,18 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "model_sources": _model_sources(reports),
         "missing_reports": evidence_bundle.get("missing_reports", []),
     }
+    model_date_mismatch = probability.get("latest_data_trade_date") not in {None, trade_date}
+    if not probability.get("model_ready") or model_date_mismatch:
+        reason = probability.get("fallback_reason") or "T+1 模型数据日期与主报告不一致"
+        payload["decision"]["signal"] = "BLOCKED"
+        payload["decision"]["signal_cn"] = "风控阻断"
+        payload["decision"]["suggested_action"] = "T+1 模型不可用，不允许输出买卖建议"
+        payload["decision"]["suggested_position_pct"] = 0.0
+        payload["decision"]["position_range"] = "0%"
+        payload["risk"]["blocked"] = True
+        payload["risk"]["risk_passed"] = False
+        payload["risk"]["block_reasons"] = payload["risk"].get("block_reasons", []) + [reason]
+        payload["is_trade_signal"] = False
     if evidence_bundle.get("missing_reports"):
         payload["decision"]["signal"] = "BLOCKED"
         payload["decision"]["signal_cn"] = "风控阻断"
@@ -111,7 +131,23 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     return payload
 
 
-def _decision_timeline(trade_date: str, decision: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
+def _freshness_contract(trade_date: str, timeline: dict[str, Any], generated_at_beijing: datetime) -> dict[str, Any]:
+    decision_date = timeline.get("prediction_date") or timeline.get("signal_date") or "N/A"
+    valid_until = None
+    if _date_text(decision_date):
+        valid_until = f"{_date_text(decision_date)}T15:00:00+08:00"
+    return {
+        "timezone": "Asia/Shanghai",
+        "data_trade_date": trade_date,
+        "decision_trade_date": decision_date,
+        "generated_date_beijing": generated_at_beijing.date().isoformat(),
+        "generated_at_beijing": generated_at_beijing.isoformat(),
+        "valid_until_beijing": valid_until,
+        "runtime_status_required": True,
+    }
+
+
+def _decision_timeline(trade_date: str, probability: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
     calendar_dates = _open_trade_dates(evidence_bundle.get("trade_calendar"))
     prediction_date, prediction_source = _next_trade_date(trade_date, calendar_dates)
     verify_date = prediction_date
@@ -125,7 +161,7 @@ def _decision_timeline(trade_date: str, decision: dict[str, Any], evidence_bundl
         "signal_date": signal_date,
         "prediction_date": prediction_date,
         "verify_date": verify_date,
-        "predicted_direction": predicted_direction({"decision": decision}),
+        "predicted_direction": probability.get("predicted_direction"),
         "calendar_source": calendar_source,
         "prediction_date_source": prediction_source,
         "verify_date_source": verify_source,
@@ -167,7 +203,7 @@ def _next_business_day(current: str) -> str:
     try:
         day = date.fromisoformat(current)
     except (TypeError, ValueError):
-        day = date.today()
+        day = datetime.now(BEIJING_TIMEZONE).date()
     day += timedelta(days=1)
     while day.weekday() >= 5 or day.isoformat() in CN_MARKET_HOLIDAY_FALLBACK:
         day += timedelta(days=1)
@@ -183,7 +219,7 @@ def _date_text(value: Any) -> str:
     return text
 
 
-def _historical_validation(reports: dict[str, Any]) -> dict[str, Any]:
+def _historical_validation(reports: dict[str, Any], probability: dict[str, Any]) -> dict[str, Any]:
     baseline = reports.get("baseline_validation_report") or {}
     path_validation = reports.get("path_validation_report") or {}
     backtest = reports.get("observation_backtest_report") or {}
@@ -227,8 +263,34 @@ def _historical_validation(reports: dict[str, Any]) -> dict[str, Any]:
         "P2_state_conditional_path",
         "5D",
     )
+    next_day = probability.get("validation") or {}
     return {
-        "scope": "5D walk-forward validation; used as V3.0 probability evidence, not profit guarantee",
+        "scope": "1D expanding walk-forward validation; each prediction uses earlier trade dates only",
+        "next_day_directional_accuracy": {
+            "model": probability.get("model_id"),
+            "horizon": "1D",
+            "standard": _pick(
+                next_day,
+                "sample_size",
+                "start_date",
+                "end_date",
+                "directional_accuracy",
+                "accuracy_ci_95_low",
+                "accuracy_ci_95_high",
+                "brier_raw",
+                "brier_calibrated",
+                "roc_auc",
+                "high_confidence_threshold",
+                "high_confidence_sample_size",
+                "high_confidence_coverage",
+                "high_confidence_accuracy",
+                "refit_interval_days",
+                "leakage_guard",
+            ),
+        },
+        "supporting_5d_validation": {
+            "description": "legacy 5D models retained only as medium-horizon supporting evidence",
+        },
         "baseline_directional_accuracy": {
             "model": "B2_state_grouped_distribution",
             "horizon": "5D",
@@ -285,7 +347,7 @@ def _historical_validation(reports: dict[str, Any]) -> dict[str, Any]:
                 "model_coverage_rate",
             ),
         },
-        "interpretation": "方向准确率来自 B2 5D walk-forward；路径概率使用 Brier 分数和区间覆盖率衡量，Brier 越低越好。",
+        "interpretation": "核心方向准确率来自独立的 T+1 扩展窗口验证；B2/P2 5D 结果仅作为中期风险与路径参考。",
     }
 
 
@@ -325,6 +387,7 @@ def _human_explanation(decision: dict[str, Any], probability: dict[str, Any], ev
 
 def _model_sources(reports: dict[str, Any]) -> dict[str, Any]:
     return {
+        "next_day_model": "T1_HGB_ENSEMBLE_V1",
         "baseline_models": list(((reports.get("baseline_model_report") or {}).get("baseline_models") or {}).keys()),
         "path_models": list(((reports.get("path_distribution_report") or {}).get("path_models") or {}).keys()),
         "risk_report_stage": ((reports.get("risk_explanation_report") or {}).get("meta") or {}).get("stage"),

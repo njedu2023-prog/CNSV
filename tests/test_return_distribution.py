@@ -18,3 +18,4 @@ def test_return_distribution_bins_sum_to_one():
     }
     assert abs(sum(distribution["return_bins_1d"].values()) - 1.0) < 1e-9
     assert distribution["p10_return_1d"] <= distribution["p90_return_1d"]
+    assert "scaled_to_1D" not in distribution["distribution_source"]

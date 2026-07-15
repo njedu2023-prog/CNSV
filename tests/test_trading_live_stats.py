@@ -11,10 +11,10 @@ def test_live_stats_are_separated_from_historical_stats():
         }
     }
     registry = [
-        {"signal_date": "2026-06-20", "is_correct": True},
-        {"signal_date": "2026-06-21", "is_correct": None},
-        {"signal_date": "2026-06-22", "is_correct": True},
-        {"signal_date": "2026-06-23", "is_correct": False},
+        {"signal_date": "2026-07-14", "model_id": "T1_HGB_ENSEMBLE_V1", "is_correct": True},
+        {"signal_date": "2026-07-15", "model_id": "T1_HGB_ENSEMBLE_V1", "is_correct": None},
+        {"signal_date": "2026-07-16", "model_id": "T1_HGB_ENSEMBLE_V1", "is_correct": True},
+        {"signal_date": "2026-07-17", "model_id": "T1_HGB_ENSEMBLE_V1", "is_correct": False},
     ]
 
     perf = build_model_performance(historical, registry)
@@ -23,7 +23,7 @@ def test_live_stats_are_separated_from_historical_stats():
     assert perf["historical_stats"]["direction_accuracy"] == 0.507
     assert perf["historical_stats"]["sample_count"] == 712
     assert perf["live_stats"]["name"] == "实盘统计线"
-    assert perf["live_stats"]["start_date"] == "2026-06-21"
+    assert perf["live_stats"]["start_date"] == "2026-07-15"
     assert perf["live_stats"]["sample_count"] == 2
     assert perf["live_stats"]["correct_count"] == 1
     assert perf["live_stats"]["wrong_count"] == 1
@@ -33,16 +33,24 @@ def test_live_stats_are_separated_from_historical_stats():
 def test_default_live_registry_entry_uses_v3_signal_date_and_direction():
     payload = {
         "decision": {"signal": "SELL"},
-        "decision_timeline": {"data_trade_date": "2026-06-22"},
+        "probability": {
+            "model_id": "T1_HGB_ENSEMBLE_V1",
+            "predicted_direction": "UP",
+            "prob_up_1d": 0.53,
+            "prob_down_1d": 0.47,
+        },
+        "decision_timeline": {"data_trade_date": "2026-07-15"},
     }
-    entry = default_live_registry_entry(payload, "2026-06-21")
+    entry = default_live_registry_entry(payload, "2026-07-16")
 
-    assert entry["data_trade_date"] == "2026-06-22"
-    assert entry["signal_date"] == "2026-06-21"
-    assert entry["verify_date"] == "2026-06-22"
-    assert entry["predicted_direction"] == "DOWN"
+    assert entry["data_trade_date"] == "2026-07-15"
+    assert entry["signal_date"] == "2026-07-16"
+    assert entry["verify_date"] == "2026-07-17"
+    assert entry["predicted_direction"] == "UP"
+    assert entry["model_id"] == "T1_HGB_ENSEMBLE_V1"
     assert entry["is_correct"] is None
-    assert predicted_direction({"decision": {"signal": "BUY"}}) == "UP"
+    assert predicted_direction({"decision": {"signal": "BUY"}}) is None
+    assert predicted_direction({"decision": {"signal": "HOLD"}}) is None
 
 
 def test_live_registry_skips_blocked_or_unverifiable_entries(tmp_path):
@@ -97,19 +105,26 @@ def test_live_registry_drops_non_finite_base_close(tmp_path):
     )
     payload = {
         "decision": {"signal": "SELL"},
-        "decision_timeline": {
-            "data_trade_date": "2026-06-23",
-            "signal_date": "2026-06-24",
-            "prediction_date": "2026-06-24",
-            "verify_date": "2026-06-25",
+        "probability": {
+            "model_ready": True,
+            "model_id": "T1_HGB_ENSEMBLE_V1",
+            "predicted_direction": "DOWN",
+            "prob_up_1d": 0.47,
+            "prob_down_1d": 0.53,
         },
-        "market_snapshot": {"latest_trade_date": "2026-06-23", "latest_close": 35.81},
+        "decision_timeline": {
+            "data_trade_date": "2026-07-15",
+            "signal_date": "2026-07-16",
+            "prediction_date": "2026-07-16",
+            "verify_date": "2026-07-16",
+        },
+        "market_snapshot": {"latest_trade_date": "2026-07-15", "latest_close": 35.81},
     }
 
     registry = update_live_stats_registry(payload, path, {"feature_report": {}})
 
     assert len(registry) == 1
-    assert registry[0]["signal_date"] == "2026-06-24"
+    assert registry[0]["signal_date"] == "2026-07-16"
     assert registry[0]["close_t"] == 35.81
     assert "NaN" not in path.read_text(encoding="utf-8")
 
@@ -135,20 +150,27 @@ def test_live_registry_drops_legacy_unverified_entries_without_base_date(tmp_pat
     )
     payload = {
         "decision": {"signal": "SELL"},
-        "decision_timeline": {
-            "data_trade_date": "2026-06-22",
-            "signal_date": "2026-06-23",
-            "prediction_date": "2026-06-23",
-            "verify_date": "2026-06-24",
+        "probability": {
+            "model_ready": True,
+            "model_id": "T1_HGB_ENSEMBLE_V1",
+            "predicted_direction": "DOWN",
+            "prob_up_1d": 0.47,
+            "prob_down_1d": 0.53,
         },
-        "market_snapshot": {"latest_trade_date": "2026-06-22", "latest_close": 37.33},
+        "decision_timeline": {
+            "data_trade_date": "2026-07-15",
+            "signal_date": "2026-07-16",
+            "prediction_date": "2026-07-16",
+            "verify_date": "2026-07-16",
+        },
+        "market_snapshot": {"latest_trade_date": "2026-07-15", "latest_close": 37.33},
     }
 
     registry = update_live_stats_registry(payload, path, {"feature_report": {}})
 
     assert len(registry) == 1
-    assert registry[0]["signal_date"] == "2026-06-23"
-    assert registry[0]["data_trade_date"] == "2026-06-22"
+    assert registry[0]["signal_date"] == "2026-07-16"
+    assert registry[0]["data_trade_date"] == "2026-07-15"
     assert registry[0]["close_t"] == 37.33
 
 
@@ -156,30 +178,34 @@ def test_live_registry_backfills_verified_archive_entry(tmp_path):
     root = tmp_path
     archive = root / "reports/archive"
     archive.mkdir(parents=True)
-    (archive / "2026-06-21_trading_decision_report.md").write_text(
+    (archive / "2026-07-15_trading_decision_report.md").write_text(
         """# CNSV V3.0 交易决策系统报告
 
 ## 今日总决策
-- 交易日: 2026-06-18
+- 交易日: 2026-07-14
 - 信号: SELL / 建议卖出
-- 数据交易日: 2026-06-18
-- 信号生成日: 2026-06-21
-- 预测日: 2026-06-22
-- 验证日: 2026-06-23
+- 数据交易日: 2026-07-14
+- 信号生成日: 2026-07-15
+- 预测日: 2026-07-15
+- 验证日: 2026-07-15
+- 预测方向: DOWN
+- 模型ID: T1_HGB_ENSEMBLE_V1
 - 收盘价: 36.1400
 """,
         encoding="utf-8",
     )
-    (archive / "2026-06-22_trading_decision_report.md").write_text(
+    (archive / "2026-07-16_trading_decision_report.md").write_text(
         """# CNSV V3.0 交易决策系统报告
 
 ## 今日总决策
-- 交易日: 2026-06-18
+- 交易日: 2026-07-14
 - 信号: SELL / 建议卖出
-- 数据交易日: 2026-06-18
-- 信号生成日: 2026-06-22
-- 预测日: 2026-06-22
-- 验证日: 2026-06-23
+- 数据交易日: 2026-07-14
+- 信号生成日: 2026-07-16
+- 预测日: 2026-07-15
+- 验证日: 2026-07-15
+- 预测方向: DOWN
+- 模型ID: T1_HGB_ENSEMBLE_V1
 - 收盘价: 36.1400
 """,
         encoding="utf-8",
@@ -189,27 +215,34 @@ def test_live_registry_backfills_verified_archive_entry(tmp_path):
     path.write_text("[]\n", encoding="utf-8")
     payload = {
         "decision": {"signal": "SELL"},
-        "decision_timeline": {
-            "data_trade_date": "2026-06-22",
-            "signal_date": "2026-06-23",
-            "prediction_date": "2026-06-23",
-            "verify_date": "2026-06-24",
+        "probability": {
+            "model_ready": True,
+            "model_id": "T1_HGB_ENSEMBLE_V1",
+            "predicted_direction": "DOWN",
+            "prob_up_1d": 0.47,
+            "prob_down_1d": 0.53,
         },
-        "market_snapshot": {"latest_trade_date": "2026-06-22", "latest_close": 37.33},
+        "decision_timeline": {
+            "data_trade_date": "2026-07-15",
+            "signal_date": "2026-07-16",
+            "prediction_date": "2026-07-16",
+            "verify_date": "2026-07-16",
+        },
+        "market_snapshot": {"latest_trade_date": "2026-07-15", "latest_close": 37.33},
     }
 
     registry = update_live_stats_registry(
         payload,
         path,
-        {"feature_report": {"features": {"price_volume": {"latest_trade_date": "2026-06-22", "latest_close": 37.33}}}},
+        {"feature_report": {"features": {"price_volume": {"latest_trade_date": "2026-07-15", "latest_close": 37.33}}}},
     )
     performance = build_model_performance({"baseline_directional_accuracy": {"standard": {}}}, registry)
 
-    verified = [item for item in registry if item["signal_date"] == "2026-06-21"][0]
+    verified = [item for item in registry if item["signal_date"] == "2026-07-15"][0]
     assert verified["actual_direction"] == "UP"
     assert verified["predicted_direction"] == "DOWN"
     assert verified["is_correct"] is False
     assert verified["close_t1"] == 37.33
-    assert [item["trade_date"] for item in registry].count("2026-06-22") == 1
+    assert [item["trade_date"] for item in registry].count("2026-07-15") == 1
     assert performance["live_stats"]["sample_count"] == 1
     assert performance["live_stats"]["wrong_count"] == 1
