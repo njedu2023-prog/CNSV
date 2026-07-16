@@ -26,9 +26,26 @@
     "prob_up_1d": 0.4996412452826962,
     "prob_down_1d": 0.5003587547173038,
     "direction_confidence": 0.5003587547173038,
+    "actual_direction": "DOWN",
+    "is_correct": true,
+    "close_t": 34.31,
+    "close_t1": 33.0,
+    "return_1d": -0.038181,
+    "verification_status": "VERIFIED"
+  },
+  {
+    "trade_date": "2026-07-17",
+    "data_trade_date": "2026-07-16",
+    "signal_date": "2026-07-17",
+    "verify_date": "2026-07-17",
+    "predicted_direction": "UP",
+    "model_id": "T1_HGB_ENSEMBLE_V1",
+    "prob_up_1d": 0.5222585013629062,
+    "prob_down_1d": 0.4777414986370938,
+    "direction_confidence": 0.5222585013629062,
     "actual_direction": null,
     "is_correct": null,
-    "close_t": 34.31,
+    "close_t": 33.0,
     "close_t1": null,
     "return_1d": null
   }
