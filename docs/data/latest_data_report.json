@@ -6,7 +6,7 @@
     "name": "中国船舶",
     "mode": "research_mode",
     "report_type": "data_status_report",
-    "generated_at": "2026-07-16T14:43:40.084218+00:00"
+    "generated_at": "2026-07-16T15:50:07.302935+00:00"
   },
   "cnsvdata_gate": {
     "ready": true,
@@ -24,9 +24,9 @@
     ]
   },
   "data_manifest": {
-    "snapshot_id": "cnsvdata-2026-07-16-33d2a16bb037",
+    "snapshot_id": "cnsvdata-2026-07-16-12c678044229",
     "latest_trade_date": "2026-07-16",
-    "generated_at": "2026-07-16 21:40:00",
+    "generated_at": "2026-07-16 23:48:32",
     "file_count": 14
   },
   "loaded_data_summary": {
