@@ -66,6 +66,47 @@ def fetch_realtime_minutes(
         raise RuntimeError("TUSHARE_TOKEN is not configured for CNSV realtime prediction")
 
     sender = post or requests.post
+    payload = _request_realtime_payload(api_token, sender, timeout)
+    data = payload.get("data") or {}
+    fields = data.get("fields") or []
+    items = data.get("items") or []
+    if not fields or not items:
+        return _empty_minutes()
+    frame = pd.DataFrame(items, columns=fields)
+    return _normalize_realtime_minutes(frame, current)
+
+
+def probe_realtime_connection(
+    *,
+    token: str | None = None,
+    post: Callable[..., Any] | None = None,
+    timeout: int = 25,
+) -> dict[str, Any]:
+    api_token = (token or os.getenv("TUSHARE_TOKEN", "")).strip()
+    if not api_token:
+        raise RuntimeError("TUSHARE_TOKEN is not configured for CNSV realtime prediction")
+
+    payload = _request_realtime_payload(api_token, post or requests.post, timeout)
+    data = payload.get("data") or {}
+    if not isinstance(data, dict):
+        raise RuntimeError("Tushare realtime response data is not a JSON object")
+    fields = data.get("fields") or []
+    items = data.get("items") or []
+    if not isinstance(fields, list) or not isinstance(items, list):
+        raise RuntimeError("Tushare realtime response fields or items is invalid")
+    return {
+        "status": "PASS",
+        "data_source": "Tushare direct realtime",
+        "data_endpoint": TUSHARE_REALTIME_API,
+        "returned_rows": len(items),
+    }
+
+
+def _request_realtime_payload(
+    api_token: str,
+    sender: Callable[..., Any],
+    timeout: int,
+) -> dict[str, Any]:
     payload: Any = None
     last_error: Exception | None = None
     for attempt in range(1, REALTIME_FETCH_ATTEMPTS + 1):
@@ -97,14 +138,7 @@ def fetch_realtime_minutes(
     if payload.get("code") not in (0, None):
         message = str(payload.get("msg") or "unknown error").strip()
         raise RuntimeError(f"Tushare {TUSHARE_REALTIME_API} failed: code={payload.get('code')} msg={message}")
-
-    data = payload.get("data") or {}
-    fields = data.get("fields") or []
-    items = data.get("items") or []
-    if not fields or not items:
-        return _empty_minutes()
-    frame = pd.DataFrame(items, columns=fields)
-    return _normalize_realtime_minutes(frame, current)
+    return payload
 
 
 def build_realtime_ready(

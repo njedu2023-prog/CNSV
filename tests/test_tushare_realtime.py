@@ -9,6 +9,7 @@ from cnsv.data.tushare_realtime import (
     build_realtime_ready,
     fetch_realtime_minutes,
     merge_intraday_history,
+    probe_realtime_connection,
 )
 
 BEIJING = ZoneInfo("Asia/Shanghai")
@@ -67,6 +68,31 @@ def test_preopen_checkpoint_does_not_call_tushare():
     assert ready["can_predict_intraday"] is False
     assert ready["market_phase"] == "preopen"
     assert ready["blocking_reason"] == "preopen_no_continuous_auction_minute"
+
+
+def test_realtime_connectivity_probe_validates_endpoint_without_exposing_token():
+    captured = {}
+
+    def post(url, json, timeout):
+        captured.update({"url": url, "json": json, "timeout": timeout})
+        return _Response({
+            "code": 0,
+            "data": {
+                "fields": ["code", "time"],
+                "items": [["600150.SH", "2026-07-16 15:00:00"]],
+            },
+        })
+
+    result = probe_realtime_connection(token="secret-token", post=post)
+
+    assert result == {
+        "status": "PASS",
+        "data_source": "Tushare direct realtime",
+        "data_endpoint": "rt_min_daily",
+        "returned_rows": 1,
+    }
+    assert captured["json"]["token"] == "secret-token"
+    assert "token" not in result
 
 
 def test_realtime_fetch_uses_rt_min_daily_and_enforces_current_cutoff():

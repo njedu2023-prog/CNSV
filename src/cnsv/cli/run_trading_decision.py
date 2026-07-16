@@ -10,6 +10,7 @@ from cnsv.data.tushare_realtime import (
     build_realtime_ready,
     fetch_realtime_minutes,
     merge_intraday_history,
+    probe_realtime_connection,
 )
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
@@ -94,6 +95,13 @@ def _attach_moneyflow_history(evidence):
 def _attach_intraday_history(evidence):
     now = datetime.now(ZoneInfo("Asia/Shanghai"))
     preflight = build_realtime_ready(None, now=now, trade_calendar=evidence.get("trade_calendar"))
+    if preflight.get("blocking_reason") == "preopen_no_continuous_auction_minute":
+        probe = probe_realtime_connection()
+        evidence["reports"]["tushare_realtime_connectivity"] = probe
+        print(
+            "tushare_realtime_connectivity="
+            f"{probe['status']} endpoint={probe['data_endpoint']} rows={probe['returned_rows']}"
+        )
     if preflight.get("blocking_reason") != "tushare_realtime_minutes_unavailable":
         evidence["reports"]["intraday_realtime_ready"] = preflight
         evidence["reports"]["intraday_minute_history"] = None
