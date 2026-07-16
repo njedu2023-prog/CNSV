@@ -7,11 +7,13 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from cnsv.trading.next_day_model import MODEL_ID
+from cnsv.trading.intraday_next_day_model import MODEL_ID as INTRADAY_MODEL_ID
+from cnsv.trading.next_day_model import MODEL_ID as DAILY_MODEL_ID
 from cnsv.utils.io import ensure_parent
 
 LIVE_STATS_START_DATE = "2026-07-15"
 VERIFIABLE_DIRECTIONS = {"UP", "DOWN"}
+TRACKED_MODEL_IDS = {DAILY_MODEL_ID, INTRADAY_MODEL_ID}
 
 
 def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None = None) -> dict[str, Any]:
@@ -27,7 +29,7 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
         "signal_date": signal_day,
         "verify_date": verify_day,
         "predicted_direction": predicted_direction(payload),
-        "model_id": probability.get("model_id") or MODEL_ID,
+        "model_id": probability.get("model_id") or DAILY_MODEL_ID,
         "prob_up_1d": _finite_or_none(probability.get("prob_up_1d")),
         "prob_down_1d": _finite_or_none(probability.get("prob_down_1d")),
         "direction_confidence": _finite_or_none(probability.get("direction_confidence")),
@@ -67,7 +69,7 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
         item
         for item in registry
         if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
-        and item.get("model_id") == MODEL_ID
+        and item.get("model_id") in TRACKED_MODEL_IDS
         and item.get("predicted_direction") in VERIFIABLE_DIRECTIONS
         and _has_finite_number(item.get("close_t"))
         and _has_auditable_base_date(item)
@@ -150,7 +152,9 @@ def _prefer_entry(candidate: dict[str, Any], current: dict[str, Any]) -> bool:
 
 
 def build_model_performance(historical_validation: dict[str, Any], registry: list[dict[str, Any]] | None = None) -> dict[str, Any]:
-    standard = ((historical_validation.get("next_day_directional_accuracy") or {}).get("standard") or {})
+    next_day = historical_validation.get("next_day_directional_accuracy") or {}
+    active_model_id = next_day.get("model") or DAILY_MODEL_ID
+    standard = (next_day.get("standard") or {})
     if not standard:
         standard = ((historical_validation.get("baseline_directional_accuracy") or {}).get("standard") or {})
     historical_accuracy = standard.get("directional_accuracy")
@@ -158,7 +162,7 @@ def build_model_performance(historical_validation: dict[str, Any], registry: lis
         item
         for item in (registry or [])
         if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
-        and item.get("model_id") == MODEL_ID
+        and item.get("model_id") == active_model_id
         and item.get("is_correct") is not None
     ]
     correct_count = sum(1 for item in verified if item.get("is_correct") is True)
@@ -182,7 +186,7 @@ def build_model_performance(historical_validation: dict[str, Any], registry: lis
             "correct_count": correct_count,
             "wrong_count": wrong_count,
             "sample_count": sample_count,
-            "model_id": MODEL_ID,
+            "model_id": active_model_id,
             "description": "从新 T+1 模型上线日起，逐日按下一交易日收盘方向验证。",
         },
     }
@@ -298,9 +302,9 @@ def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | N
         return None
 
     model_id = _md_value(text, "模型ID")
-    if model_id != MODEL_ID:
+    if model_id not in TRACKED_MODEL_IDS:
         return None
-    close_t = _parse_float(_md_value(text, "收盘价"))
+    close_t = _parse_float(_md_value(text, "行情基准价") or _md_value(text, "收盘价"))
     direction = (_md_value(text, "预测方向") or "").upper()
     if direction not in VERIFIABLE_DIRECTIONS or close_t is None:
         return None

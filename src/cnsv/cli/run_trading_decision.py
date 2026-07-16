@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from cnsv.cli.run_live_manual_decision import main as run_live_manual_decision_main
-from cnsv.data.downloader import fetch_parquet
+from cnsv.data.downloader import fetch_json, fetch_parquet
 from cnsv.data.loader import remote_url
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
@@ -21,6 +21,7 @@ def main() -> int:
     _attach_trade_calendar(evidence)
     _attach_daily_price_history(evidence)
     _attach_moneyflow_history(evidence)
+    _attach_intraday_history(evidence)
     payload = build_trading_decision_payload(evidence)
     live_registry = update_live_stats_registry(
         payload,
@@ -73,6 +74,23 @@ def _attach_moneyflow_history(evidence):
         evidence["reports"]["moneyflow_history"] = None
         evidence["moneyflow_history_source"] = "unavailable"
         evidence["moneyflow_history_error"] = str(exc)
+
+
+def _attach_intraday_history(evidence):
+    try:
+        source_config = load_default_config()["data_source"]
+        evidence["reports"]["intraday_realtime_ready"] = fetch_json(
+            remote_url(source_config, "intraday_realtime_ready"), timeout=20
+        )
+        evidence["reports"]["intraday_minute_history"] = fetch_parquet(
+            remote_url(source_config, "intraday_minute_history"), timeout=30
+        )
+        evidence["intraday_history_source"] = "CNSVdata realtime 1min"
+    except Exception as exc:
+        evidence["reports"]["intraday_realtime_ready"] = None
+        evidence["reports"]["intraday_minute_history"] = None
+        evidence["intraday_history_source"] = "unavailable"
+        evidence["intraday_history_error"] = str(exc)
 
 
 def _ensure_trading_entry(path):

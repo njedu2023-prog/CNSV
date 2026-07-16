@@ -1,0 +1,59 @@
+name: Run CNSV realtime next-day prediction
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Six minutes after each CNSVdata refresh, including the Beijing 20:04 final refresh.
+    - cron: "56 1 * * 1-5"
+    - cron: "16,36,56 2 * * 1-5"
+    - cron: "16,36 3 * * 1-5"
+    - cron: "16,36,56 5 * * 1-5"
+    - cron: "16,36,56 6 * * 1-5"
+    - cron: "16 7 * * 1-5"
+    - cron: "10 12 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cnsv-trading-decision-main
+  cancel-in-progress: true
+
+jobs:
+  run-realtime-prediction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Verify realtime model and report contracts
+        run: pytest -q tests/test_intraday_next_day_model.py tests/test_trading_probability.py tests/test_trading_report.py tests/test_trading_html.py
+      - name: Generate latest next-trading-day prediction
+        run: python -m cnsv.cli.run_trading_decision
+      - name: Commit realtime report update
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs reports
+          if git diff --cached --quiet; then
+            echo "No realtime report update"
+            exit 0
+          fi
+          git commit -m "report: refresh 20-minute next-day prediction"
+          for attempt in 1 2 3; do
+            if git pull --rebase -X theirs origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            sleep 5
+          done

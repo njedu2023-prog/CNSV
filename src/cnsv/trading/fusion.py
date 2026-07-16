@@ -55,20 +55,25 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     meta = feature_report.get("meta") or data_report.get("meta") or {}
     features = feature_report.get("features") or {}
     price_volume = features.get("price_volume") or {}
-    trade_date = meta.get("latest_trade_date") or (data_report.get("data_manifest") or {}).get("latest_trade_date") or "N/A"
+    report_trade_date = meta.get("latest_trade_date") or (data_report.get("data_manifest") or {}).get("latest_trade_date") or "N/A"
+    trade_date = probability.get("latest_data_trade_date") or report_trade_date
     decision = {
         **signal,
         **position,
     }
     timeline = _decision_timeline(trade_date, probability, evidence_bundle)
     historical_validation = _historical_validation(reports, probability)
+    realtime_basis = bool(probability.get("uses_intraday_snapshot"))
     market_snapshot = {
-        "latest_trade_date": price_volume.get("latest_trade_date") or trade_date,
-        "latest_close": price_volume.get("latest_close"),
-        "latest_pct_chg": price_volume.get("latest_pct_chg"),
-        "latest_amount": price_volume.get("latest_amount"),
+        "latest_trade_date": trade_date if realtime_basis else price_volume.get("latest_trade_date") or trade_date,
+        "latest_close": probability.get("asof_price") if realtime_basis else price_volume.get("latest_close"),
+        "latest_pct_chg": probability.get("asof_pct_chg") if realtime_basis else price_volume.get("latest_pct_chg"),
+        "latest_amount": probability.get("asof_amount") if realtime_basis else price_volume.get("latest_amount"),
         "ma5": price_volume.get("ma5"),
         "ma20": price_volume.get("ma20"),
+        "asof_time": probability.get("asof_time") if realtime_basis else "15:00:00",
+        "price_kind": "intraday_asof" if realtime_basis else "daily_close",
+        "prediction_basis": probability.get("prediction_basis"),
     }
     generated_at_utc = datetime.now(timezone.utc)
     generated_at_beijing = generated_at_utc.astimezone(BEIJING_TIMEZONE)

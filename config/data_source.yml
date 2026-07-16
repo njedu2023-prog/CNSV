@@ -21,6 +21,8 @@ required_remote_files:
   moneyflow: "data/processed/cnsv_moneyflow.parquet"
   corporate_actions: "data/processed/corporate_actions.parquet"
   structural_breaks: "data/processed/structural_breaks.parquet"
+  intraday_realtime_ready: "metadata/intraday/intraday_realtime_ready.json"
+  intraday_minute_history: "data/intraday/raw/cnsv_1min_intraday_1400.parquet"
 
 local_cache:
   enabled: true

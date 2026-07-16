@@ -64,9 +64,11 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
         f"- 验证日: {timeline.get('verify_date', 'N/A')}",
         f"- 预测方向: {p.get('predicted_direction') or 'N/A'}",
         f"- 模型ID: {p.get('model_id') or 'N/A'}",
-        f"- 收盘价: {fmt_number(market.get('latest_close'))}",
-        f"- 收盘涨跌幅: {fmt_pct_points(market.get('latest_pct_chg'))}",
-        f"- 成交额: {fmt_amount(market.get('latest_amount'))}",
+        f"- 行情基准价: {fmt_number(market.get('latest_close'))}",
+        f"- 基准价涨跌幅: {fmt_pct_points(market.get('latest_pct_chg'))}",
+        f"- 累计成交额: {fmt_amount(market.get('latest_amount'))}",
+        f"- 行情截止时间: {market.get('asof_time', 'N/A')}",
+        f"- 预测口径: {_prediction_basis_text(market.get('prediction_basis', p.get('prediction_basis')))}",
         "",
         "## 次日涨跌概率",
         f"- 上涨概率: {probability_pct(p['prob_up_1d'])}",
@@ -192,10 +194,11 @@ def build_trading_html(payload: dict[str, Any]) -> str:
         </table>
         <div class="signal {signal_class}">{predicted_direction}</div>
         <div class="decision-text">次日{'看涨' if predicted_direction == 'UP' else '看跌' if predicted_direction == 'DOWN' else '方向不可用'} · {d['signal_cn']} · {d['suggested_action']}</div>
-        <table class="timeline-table pair-table" aria-label="收盘数据表">
+        <table class="timeline-table pair-table" aria-label="实时行情数据表">
           <tbody>
-            <tr><th>收盘数据日</th><td>{market.get('latest_trade_date', timeline.get('data_trade_date', payload['trade_date']))}</td><th>最新收盘价</th><td>{fmt_number(market.get('latest_close'))}</td></tr>
-            <tr><th>收盘涨跌幅</th><td>{fmt_pct_points(market.get('latest_pct_chg'))}</td><th>成交额</th><td>{fmt_amount_yi(market.get('latest_amount'))}</td></tr>
+            <tr><th>行情数据日</th><td>{market.get('latest_trade_date', timeline.get('data_trade_date', payload['trade_date']))}</td><th>行情基准价</th><td>{fmt_number(market.get('latest_close'))}</td></tr>
+            <tr><th>基准价涨跌幅</th><td>{fmt_pct_points(market.get('latest_pct_chg'))}</td><th>累计成交额</th><td>{fmt_amount_yi(market.get('latest_amount'))}</td></tr>
+            <tr><th>行情截止时间</th><td>{market.get('asof_time', 'N/A')}</td><th>预测口径</th><td>{_prediction_basis_text(market.get('prediction_basis', p.get('prediction_basis')))}</td></tr>
             <tr><th>MA20</th><td>{fmt_number(market.get('ma20'))}</td><th>MA5</th><td>{fmt_number(market.get('ma5'))}</td></tr>
           </tbody>
         </table>
@@ -247,7 +250,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
     <span class="pill">人工参考 <strong>是</strong></span>
     <p class="note">{payload['human_explanation']['execution_note']}</p>
   </section>
-  <div class="footer">生成时间（北京时间）：{payload.get('generated_at_beijing', payload['generated_at'])} · 数据交易日：{payload['trade_date']} · 每日 20:04 自动更新</div>
+  <div class="footer">生成时间（北京时间）：{payload.get('generated_at_beijing', payload['generated_at'])} · 数据交易日：{payload['trade_date']} · 交易时段每 20 分钟更新，收盘后生成最终版</div>
 </main>
 </body>
 </html>"""
@@ -315,6 +318,14 @@ def fmt_count(value: Any) -> str:
         return str(int(value))
     except (TypeError, ValueError):
         return "--"
+
+
+def _prediction_basis_text(value: Any) -> str:
+    if value == "next_trading_day_close_vs_current_trade_day_close":
+        return "次交易日收盘相对本交易日收盘"
+    if value == "next_trading_day_close_vs_daily_close":
+        return "次交易日收盘相对当日收盘"
+    return str(value or "N/A")
 
 
 def _live_accuracy_text(live_stats: dict[str, Any]) -> str:

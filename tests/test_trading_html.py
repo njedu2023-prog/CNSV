@@ -21,15 +21,17 @@ def test_trading_html_is_chinese_dashboard():
     assert "验证日（T+1 收盘）" in html
     assert "生成时间（北京时间）" in html
     assert 'aria-label="交易决策日期表"' in html
-    assert "收盘数据日" in html
-    assert "最新收盘价" in html
-    assert "收盘涨跌幅" in html
-    assert 'aria-label="收盘数据表"' in html
+    assert "行情数据日" in html
+    assert "行情基准价" in html
+    assert "基准价涨跌幅" in html
+    assert "行情截止时间" in html
+    assert "预测口径" in html
+    assert 'aria-label="实时行情数据表"' in html
     assert html.count('class="timeline-table pair-table"') == 2
     assert ".pair-table tr{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content minmax(0,1fr)" in html
     assert '.pair-table th::after{content:"："}' in html
     assert ".pair-table td{padding-left:6px" in html
-    assert "成交额" in html
+    assert "累计成交额" in html
     assert " 亿" in html
     assert ".eyebrow{color:var(--red)" in html
     assert 'aria-label="概率判断表"' in html
@@ -61,7 +63,7 @@ def test_trading_html_is_chinese_dashboard():
     assert "STALE" in html
     assert "setInterval(loadLatest, REFRESH_INTERVAL_MS)" in html
     assert "visibilitychange" in html
-    assert "每日 20:04 自动更新" in html
+    assert "交易时段每 20 分钟更新" in html
     assert 'document.getElementById("priceDistribution").innerHTML' in html
     assert 'document.getElementById("priceDistribution").outerHTML' not in html
     assert "2026-06-25T" not in html

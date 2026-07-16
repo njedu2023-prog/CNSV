@@ -38,7 +38,9 @@ def test_trading_report_payload_contains_required_sections():
     assert "今日总决策" in markdown
     assert "信号生成日" in markdown
     assert "预测日" in markdown
-    assert "收盘价" in markdown
+    assert "行情基准价" in markdown
+    assert "行情截止时间" in markdown
+    assert "预测口径" in markdown
     assert "5D / 10D / 20D 价格预测分布" in markdown
     assert "历史验证与回测" in markdown
     assert "T+1 扩展窗口方向准确率" in markdown
@@ -62,6 +64,43 @@ def test_trading_timeline_uses_trade_calendar_after_data_trade_date():
     assert timeline["signal_date"] == "2026-06-22"
     assert timeline["prediction_date_source"] == "trade_calendar"
     assert timeline["verify_date_source"] == "trade_calendar"
+
+
+def test_realtime_probability_controls_data_date_and_market_basis(monkeypatch):
+    import cnsv.trading.fusion as fusion
+
+    evidence = load_trading_evidence(repo_root())
+    monkeypatch.setattr(
+        fusion,
+        "compute_next_day_probability",
+        lambda reports: {
+            "model_ready": True,
+            "model_id": "T1_INTRADAY_20M_HGB_V2",
+            "predicted_direction": "UP",
+            "prob_up_1d": 0.56,
+            "prob_down_1d": 0.44,
+            "prob_flat_1d": 0.0,
+            "direction_confidence": 0.56,
+            "latest_data_trade_date": "2026-07-16",
+            "asof_time": "14:10:00",
+            "asof_price": 33.12,
+            "asof_amount": 2_000_000_000,
+            "asof_pct_chg": -0.4,
+            "prediction_basis": "next_trading_day_close_vs_current_trade_day_close",
+            "uses_intraday_snapshot": True,
+            "validation": {},
+            "model_return_distribution": {},
+        },
+    )
+    evidence["trade_calendar"] = ["2026-07-16", "2026-07-17"]
+
+    payload = fusion.build_trading_decision_payload(evidence)
+
+    assert payload["trade_date"] == "2026-07-16"
+    assert payload["decision_timeline"]["prediction_date"] == "2026-07-17"
+    assert payload["market_snapshot"]["latest_close"] == 33.12
+    assert payload["market_snapshot"]["asof_time"] == "14:10:00"
+    assert payload["market_snapshot"]["price_kind"] == "intraday_asof"
 
 
 def test_trading_timeline_fallback_skips_known_a_share_holidays():
