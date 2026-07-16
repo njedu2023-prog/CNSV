@@ -178,6 +178,8 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
         "asof_amount": float(latest["asof_amount"]),
         "asof_pct_chg": float(latest["asof_pct_chg"]),
         "prediction_basis": "next_trading_day_close_vs_current_trade_day_close",
+        "direction_label_anchor": "current_trade_day_official_close",
+        "feature_price_anchor": "latest_valid_intraday_trade_at_checkpoint",
         "uses_intraday_snapshot": True,
         "refresh_interval_minutes": 20,
         "training": {
@@ -224,6 +226,8 @@ def unavailable_model(reason: str) -> dict[str, Any]:
         "fallback_reason": reason,
         "latest_data_trade_date": None,
         "prediction_basis": "next_trading_day_close_vs_current_trade_day_close",
+        "direction_label_anchor": "current_trade_day_official_close",
+        "feature_price_anchor": "latest_valid_intraday_trade_at_checkpoint",
         "uses_intraday_snapshot": False,
         "training": {},
         "validation": {},

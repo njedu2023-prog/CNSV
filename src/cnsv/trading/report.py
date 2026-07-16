@@ -322,7 +322,7 @@ def fmt_count(value: Any) -> str:
 
 def _prediction_basis_text(value: Any) -> str:
     if value == "next_trading_day_close_vs_current_trade_day_close":
-        return "次交易日收盘相对本交易日收盘"
+        return "次交易日官方收盘价 vs 本交易日官方收盘价"
     if value == "next_trading_day_close_vs_daily_close":
         return "次交易日收盘相对当日收盘"
     return str(value or "N/A")

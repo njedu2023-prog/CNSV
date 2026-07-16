@@ -87,6 +87,8 @@ def test_realtime_probability_controls_data_date_and_market_basis(monkeypatch):
             "asof_amount": 2_000_000_000,
             "asof_pct_chg": -0.4,
             "prediction_basis": "next_trading_day_close_vs_current_trade_day_close",
+            "direction_label_anchor": "current_trade_day_official_close",
+            "feature_price_anchor": "latest_valid_intraday_trade_at_checkpoint",
             "uses_intraday_snapshot": True,
             "validation": {},
             "model_return_distribution": {},
@@ -101,6 +103,8 @@ def test_realtime_probability_controls_data_date_and_market_basis(monkeypatch):
     assert payload["market_snapshot"]["latest_close"] == 33.12
     assert payload["market_snapshot"]["asof_time"] == "14:10:00"
     assert payload["market_snapshot"]["price_kind"] == "intraday_asof"
+    assert payload["market_snapshot"]["direction_label_anchor"] == "current_trade_day_official_close"
+    assert payload["market_snapshot"]["feature_price_anchor"] == "latest_valid_intraday_trade_at_checkpoint"
     assert payload["model_sources"]["next_day_model"] == "T1_INTRADAY_20M_HGB_V2"
 
 

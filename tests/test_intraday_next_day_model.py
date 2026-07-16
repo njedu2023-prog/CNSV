@@ -73,6 +73,8 @@ def test_intraday_model_runs_trade_date_grouped_walk_forward(monkeypatch):
     assert output["latest_data_trade_date"] == latest_date
     assert output["asof_time"] == "15:00:00"
     assert output["prediction_basis"] == "next_trading_day_close_vs_current_trade_day_close"
+    assert output["direction_label_anchor"] == "current_trade_day_official_close"
+    assert output["feature_price_anchor"] == "latest_valid_intraday_trade_at_checkpoint"
     assert output["uses_intraday_snapshot"] is True
     assert output["training"]["trading_day_count"] >= 80
     assert output["validation"]["trading_day_count"] == 20

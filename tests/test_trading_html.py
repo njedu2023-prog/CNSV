@@ -26,6 +26,7 @@ def test_trading_html_is_chinese_dashboard():
     assert "基准价涨跌幅" in html
     assert "行情截止时间" in html
     assert "预测口径" in html
+    assert "次交易日官方收盘价 vs 本交易日官方收盘价" in html
     assert 'aria-label="实时行情数据表"' in html
     assert html.count('class="timeline-table pair-table"') == 2
     assert ".pair-table tr{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content minmax(0,1fr)" in html

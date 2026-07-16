@@ -74,6 +74,8 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "asof_time": probability.get("asof_time") if realtime_basis else "15:00:00",
         "price_kind": "intraday_asof" if realtime_basis else "daily_close",
         "prediction_basis": probability.get("prediction_basis"),
+        "direction_label_anchor": probability.get("direction_label_anchor"),
+        "feature_price_anchor": probability.get("feature_price_anchor"),
     }
     generated_at_utc = datetime.now(timezone.utc)
     generated_at_beijing = generated_at_utc.astimezone(BEIJING_TIMEZONE)
