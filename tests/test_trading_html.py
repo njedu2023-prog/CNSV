@@ -25,6 +25,10 @@ def test_trading_html_is_chinese_dashboard():
     assert "最新收盘价" in html
     assert "收盘涨跌幅" in html
     assert 'aria-label="收盘数据表"' in html
+    assert html.count('class="timeline-table pair-table"') == 2
+    assert ".pair-table tr{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content minmax(0,1fr)" in html
+    assert '.pair-table th::after{content:"："}' in html
+    assert ".pair-table td{padding-left:6px" in html
     assert "成交额" in html
     assert " 亿" in html
     assert ".eyebrow{color:var(--red)" in html
