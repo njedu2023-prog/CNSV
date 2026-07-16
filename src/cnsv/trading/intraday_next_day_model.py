@@ -10,7 +10,7 @@ from sklearn.metrics import brier_score_loss, roc_auc_score
 
 from cnsv.trading.next_day_model import build_feature_frame as build_daily_feature_frame
 
-MODEL_ID = "T1_INTRADAY_20M_HGB_V2"
+MODEL_ID = "T1_INTRADAY_20M_HGB_V3"
 MODEL_VERSION = "2026-07-17"
 MIN_TRAIN_ROWS = 500
 TRAIN_WINDOW_ROWS = 2000
@@ -18,8 +18,9 @@ VALIDATION_DAYS = 60
 HIGH_CONFIDENCE_THRESHOLD = 0.55
 
 CHECKPOINT_TIMES = (
-    "09:50:00", "10:10:00", "10:30:00", "10:50:00", "11:10:00", "11:30:00",
-    "13:10:00", "13:30:00", "13:50:00", "14:10:00", "14:30:00", "14:50:00", "15:00:00",
+    "09:35:00", "09:55:00", "10:15:00", "10:35:00", "10:55:00", "11:15:00",
+    "11:30:00", "13:00:00", "13:20:00", "13:40:00", "14:00:00", "14:20:00",
+    "14:40:00", "15:00:00",
 )
 
 FLOW_SOURCE_COLUMNS = (
@@ -67,6 +68,8 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
     moneyflow = reports.get("moneyflow_history")
     if not isinstance(ready, dict) or not ready.get("ready"):
         return unavailable_model("realtime_intraday_not_ready")
+    if ready.get("can_predict_intraday") is False:
+        return unavailable_model("realtime_intraday_prediction_not_allowed")
     if not isinstance(minutes, pd.DataFrame) or minutes.empty:
         return unavailable_model("intraday_minute_history_unavailable")
     if not isinstance(daily, pd.DataFrame) or daily.empty:
@@ -195,6 +198,8 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
         "validation": validation_summary,
         "model_return_distribution": distribution,
         "inputs": {
+            "realtime_source": ready.get("data_source", "unknown"),
+            "realtime_endpoint": ready.get("data_endpoint", "unknown"),
             "minute_rows": int(len(minutes)),
             "daily_rows": int(len(daily)),
             "moneyflow_rows": int(len(moneyflow)),

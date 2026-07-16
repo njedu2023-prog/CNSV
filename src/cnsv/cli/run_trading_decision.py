@@ -1,8 +1,16 @@
 from __future__ import annotations
 
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 from cnsv.cli.run_live_manual_decision import main as run_live_manual_decision_main
-from cnsv.data.downloader import fetch_json, fetch_parquet
+from cnsv.data.downloader import fetch_parquet
 from cnsv.data.loader import remote_url
+from cnsv.data.tushare_realtime import (
+    build_realtime_ready,
+    fetch_realtime_minutes,
+    merge_intraday_history,
+)
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload
 from cnsv.trading.live_stats import build_model_performance, update_live_stats_registry
@@ -21,7 +29,13 @@ def main() -> int:
     _attach_trade_calendar(evidence)
     _attach_daily_price_history(evidence)
     _attach_moneyflow_history(evidence)
-    _attach_intraday_history(evidence)
+    realtime_ready = _attach_intraday_history(evidence)
+    if not realtime_ready["ready"]:
+        reason = realtime_ready.get("blocking_reason") or "realtime_not_ready"
+        if realtime_ready.get("status") == "FAIL":
+            raise RuntimeError(f"CNSV direct Tushare realtime gate failed: {reason}")
+        print(f"trading_decision=SKIP reason={reason}")
+        return 0
     payload = build_trading_decision_payload(evidence)
     live_registry = update_live_stats_registry(
         payload,
@@ -77,20 +91,20 @@ def _attach_moneyflow_history(evidence):
 
 
 def _attach_intraday_history(evidence):
-    try:
-        source_config = load_default_config()["data_source"]
-        evidence["reports"]["intraday_realtime_ready"] = fetch_json(
-            remote_url(source_config, "intraday_realtime_ready"), timeout=20
-        )
-        evidence["reports"]["intraday_minute_history"] = fetch_parquet(
-            remote_url(source_config, "intraday_minute_history"), timeout=30
-        )
-        evidence["intraday_history_source"] = "CNSVdata realtime 1min"
-    except Exception as exc:
-        evidence["reports"]["intraday_realtime_ready"] = None
+    now = datetime.now(ZoneInfo("Asia/Shanghai"))
+    current = fetch_realtime_minutes(now=now)
+    ready = build_realtime_ready(current, now=now, trade_calendar=evidence.get("trade_calendar"))
+    evidence["reports"]["intraday_realtime_ready"] = ready
+    evidence["intraday_history_source"] = "Tushare rt_min_daily direct realtime"
+    if not ready["ready"]:
         evidence["reports"]["intraday_minute_history"] = None
-        evidence["intraday_history_source"] = "unavailable"
-        evidence["intraday_history_error"] = str(exc)
+        return ready
+
+    source_config = load_default_config()["data_source"]
+    historical = fetch_parquet(remote_url(source_config, "intraday_minute_history"), timeout=30)
+    evidence["reports"]["intraday_minute_history"] = merge_intraday_history(historical, current)
+    evidence["intraday_history_source"] = "Tushare rt_min_daily + CNSVdata historical 1min"
+    return ready
 
 
 def _ensure_trading_entry(path):

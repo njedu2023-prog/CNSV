@@ -3,33 +3,38 @@ name: Run CNSV realtime next-day prediction
 on:
   workflow_dispatch:
   schedule:
-    # Six minutes after each CNSVdata refresh, including the Beijing 20:04 final refresh.
-    - cron: "56 1 * * 1-5"
-    - cron: "16 2 * * 1-5"
-    - cron: "36 2 * * 1-5"
-    - cron: "56 2 * * 1-5"
-    - cron: "16 3 * * 1-5"
-    - cron: "36 3 * * 1-5"
-    - cron: "16 5 * * 1-5"
-    - cron: "36 5 * * 1-5"
-    - cron: "56 5 * * 1-5"
-    - cron: "16 6 * * 1-5"
-    - cron: "36 6 * * 1-5"
-    - cron: "56 6 * * 1-5"
-    - cron: "16 7 * * 1-5"
-    - cron: "10 12 * * 1-5"
+    # Beijing morning window: 09:15-11:30, every 20 minutes plus the close endpoint.
+    - cron: "15 1 * * 1-5"
+    - cron: "35 1 * * 1-5"
+    - cron: "55 1 * * 1-5"
+    - cron: "15 2 * * 1-5"
+    - cron: "35 2 * * 1-5"
+    - cron: "55 2 * * 1-5"
+    - cron: "15 3 * * 1-5"
+    - cron: "30 3 * * 1-5"
+    # Beijing afternoon window: 13:00-15:10, every 20 minutes plus the close endpoint.
+    - cron: "0 5 * * 1-5"
+    - cron: "20 5 * * 1-5"
+    - cron: "40 5 * * 1-5"
+    - cron: "0 6 * * 1-5"
+    - cron: "20 6 * * 1-5"
+    - cron: "40 6 * * 1-5"
+    - cron: "0 7 * * 1-5"
+    - cron: "10 7 * * 1-5"
+    # Final daily prediction at Beijing 20:04.
+    - cron: "4 12 * * 1-5"
 
 permissions:
   contents: write
 
 concurrency:
   group: cnsv-trading-decision-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   run-realtime-prediction:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     env:
       PYTHONPATH: ${{ github.workspace }}/src
     steps:
@@ -39,127 +44,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Wait for matching CNSVdata checkpoint
-        id: upstream
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          SCHEDULE_EXPRESSION: ${{ github.event.schedule }}
-          READY_URL: https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main/metadata/intraday/intraday_realtime_ready.json
-        run: |
-          python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
-          import os
-          import sys
-          import time
-          import urllib.request
-          from datetime import datetime, timedelta
-          from zoneinfo import ZoneInfo
-
-          BEIJING = ZoneInfo("Asia/Shanghai")
-          CHECKPOINTS = {
-              "56 1 * * 1-5": ("09:50:00", "09:50:00"),
-              "16 2 * * 1-5": ("10:10:00", "10:10:00"),
-              "36 2 * * 1-5": ("10:30:00", "10:30:00"),
-              "56 2 * * 1-5": ("10:50:00", "10:50:00"),
-              "16 3 * * 1-5": ("11:10:00", "11:10:00"),
-              "36 3 * * 1-5": ("11:30:00", "11:30:00"),
-              "16 5 * * 1-5": ("13:10:00", "13:10:00"),
-              "36 5 * * 1-5": ("13:30:00", "13:30:00"),
-              "56 5 * * 1-5": ("13:50:00", "13:50:00"),
-              "16 6 * * 1-5": ("14:10:00", "14:10:00"),
-              "36 6 * * 1-5": ("14:30:00", "14:30:00"),
-              "56 6 * * 1-5": ("14:50:00", "14:50:00"),
-              "16 7 * * 1-5": ("15:00:00", "15:10:00"),
-              "10 12 * * 1-5": ("15:00:00", "20:04:00"),
-          }
-
-          def compact_date(value):
-              return str(value or "")[:10].replace("-", "")
-
-          def parse_created_at(value):
-              text = str(value or "").strip().replace("Z", "+00:00")
-              if not text:
-                  return None
-              parsed = datetime.fromisoformat(text)
-              if parsed.tzinfo is None:
-                  return parsed.replace(tzinfo=BEIJING)
-              return parsed.astimezone(BEIJING)
-
-          def emit(should_run, reason):
-              print(f"should_run={str(should_run).lower()}")
-              print(f"reason={reason}")
-
-          if os.environ["EVENT_NAME"] != "schedule":
-              emit(True, "manual_dispatch")
-              raise SystemExit(0)
-
-          expression = os.environ.get("SCHEDULE_EXPRESSION", "")
-          checkpoint = CHECKPOINTS.get(expression)
-          if checkpoint is None:
-              print(f"::error::Unknown realtime schedule: {expression!r}", file=sys.stderr)
-              raise SystemExit(1)
-
-          expected_asof, upstream_trigger_time = checkpoint
-          started = datetime.now(BEIJING)
-          today = started.strftime("%Y%m%d")
-          trigger_at = datetime.fromisoformat(
-              f"{started.date().isoformat()}T{upstream_trigger_time}"
-          ).replace(tzinfo=BEIJING)
-          deadline = started + timedelta(minutes=18)
-          last_state = "upstream_not_checked"
-
-          while True:
-              now = datetime.now(BEIJING)
-              try:
-                  separator = "&" if "?" in os.environ["READY_URL"] else "?"
-                  request = urllib.request.Request(
-                      f"{os.environ['READY_URL']}{separator}t={time.time_ns()}",
-                      headers={"Cache-Control": "no-cache", "User-Agent": "CNSV-realtime-gate"},
-                  )
-                  with urllib.request.urlopen(request, timeout=20) as response:
-                      payload = json.load(response)
-
-                  ready = bool(payload.get("ready")) and payload.get("status") in {"PASS", "WARN"}
-                  trade_date = compact_date(payload.get("trade_date"))
-                  expected_trade_date = compact_date(payload.get("expected_trade_date"))
-                  asof_time = str(payload.get("asof_time") or "")
-                  created_at = parse_created_at(payload.get("created_at"))
-                  generated_for_checkpoint = created_at is not None and created_at >= trigger_at
-
-                  if ready and generated_for_checkpoint:
-                      if expected_trade_date and expected_trade_date != today:
-                          emit(False, "non_trading_day")
-                          raise SystemExit(0)
-                      if trade_date == today and expected_trade_date == today and asof_time >= expected_asof:
-                          emit(True, "matching_upstream_checkpoint")
-                          raise SystemExit(0)
-
-                  last_state = (
-                      f"ready={ready}, trade_date={trade_date}, expected_trade_date={expected_trade_date}, "
-                      f"asof={asof_time}, expected_asof={expected_asof}, created_at={created_at}, "
-                      f"trigger_at={trigger_at.isoformat()}"
-                  )
-              except (SystemExit, KeyboardInterrupt):
-                  raise
-              except Exception as exc:
-                  last_state = f"{type(exc).__name__}: {exc}"
-
-              if now >= deadline:
-                  print(f"::error::CNSVdata checkpoint did not arrive: {last_state}", file=sys.stderr)
-                  raise SystemExit(1)
-              print(f"Waiting 30s for CNSVdata checkpoint: {last_state}", file=sys.stderr, flush=True)
-              time.sleep(30)
-          PY
-      - if: steps.upstream.outputs.should_run == 'true'
+      - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Verify realtime model and report contracts
-        if: steps.upstream.outputs.should_run == 'true'
-        run: pytest -q tests/test_intraday_next_day_model.py tests/test_trading_probability.py tests/test_trading_report.py tests/test_trading_html.py
-      - name: Generate latest next-trading-day prediction
-        if: steps.upstream.outputs.should_run == 'true'
+      - name: Verify direct Tushare and next-day model contracts
+        run: >-
+          pytest -q
+          tests/test_tushare_realtime.py
+          tests/test_intraday_next_day_model.py
+          tests/test_trading_probability.py
+          tests/test_trading_report.py
+          tests/test_trading_html.py
+      - name: Fetch Tushare realtime minutes and generate next-day prediction
+        env:
+          TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
         run: python -m cnsv.cli.run_trading_decision
       - name: Commit realtime report update
-        if: steps.upstream.outputs.should_run == 'true'
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"

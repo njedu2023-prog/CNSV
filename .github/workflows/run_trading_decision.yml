@@ -41,6 +41,8 @@ jobs:
       - name: Generate live manual decision report
         run: python -m cnsv.cli.run_live_manual_decision
       - name: Generate trading decision report
+        env:
+          TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
         run: python -m cnsv.cli.run_trading_decision
       - name: Commit trading decision updates
         run: |

@@ -90,14 +90,22 @@ def test_trading_workflows_delegate_pages_to_single_refresh_workflow():
     assert "Check whether reports changed" in refresh
 
 
-def test_realtime_workflow_waits_for_matching_upstream_checkpoint():
+def test_realtime_workflow_runs_direct_tushare_at_exact_beijing_checkpoints():
     workflow = (repo_root() / ".github/workflows/run_intraday_realtime.yml").read_text(encoding="utf-8")
 
-    assert "Wait for matching CNSVdata checkpoint" in workflow
-    assert "intraday_realtime_ready.json" in workflow
-    assert "SCHEDULE_EXPRESSION: ${{ github.event.schedule }}" in workflow
-    assert '"10 12 * * 1-5": ("15:00:00", "20:04:00")' in workflow
-    assert "matching_upstream_checkpoint" in workflow
-    assert "generated_for_checkpoint" in workflow
-    assert "time.sleep(30)" in workflow
-    assert workflow.count("if: steps.upstream.outputs.should_run == 'true'") == 4
+    assert "Wait for matching CNSVdata checkpoint" not in workflow
+    assert "READY_URL" not in workflow
+    assert "TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}" in workflow
+    assert "Fetch Tushare realtime minutes and generate next-day prediction" in workflow
+    assert workflow.count("- cron:") == 17
+    for cron in (
+        '"15 1 * * 1-5"',  # 09:15 Beijing
+        '"30 3 * * 1-5"',  # 11:30 Beijing
+        '"0 5 * * 1-5"',   # 13:00 Beijing
+        '"10 7 * * 1-5"',  # 15:10 Beijing
+        '"4 12 * * 1-5"',  # 20:04 Beijing
+    ):
+        assert f"- cron: {cron}" in workflow
+
+    deploy = (repo_root() / ".github/workflows/deploy_pages_refresh.yml").read_text(encoding="utf-8")
+    assert "Run CNSV realtime next-day prediction" in deploy

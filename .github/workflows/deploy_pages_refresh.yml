@@ -11,6 +11,7 @@ on:
     workflows:
       - Run CNSV Mainline Daily
       - Run CNSV Trading Decision
+      - Run CNSV realtime next-day prediction
     types:
       - completed
 

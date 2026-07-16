@@ -62,7 +62,14 @@ def test_intraday_model_runs_trade_date_grouped_walk_forward(monkeypatch):
     latest_date = daily.iloc[-1]["trade_date"]
 
     output = model.fit_intraday_next_day_model({
-        "intraday_realtime_ready": {"ready": True, "trade_date": latest_date, "asof_time": "15:00:00"},
+        "intraday_realtime_ready": {
+            "ready": True,
+            "can_predict_intraday": True,
+            "trade_date": latest_date,
+            "asof_time": "15:00:00",
+            "data_source": "Tushare direct realtime",
+            "data_endpoint": "rt_min_daily",
+        },
         "intraday_minute_history": minutes,
         "daily_price_history": daily,
         "moneyflow_history": moneyflow,
@@ -76,6 +83,7 @@ def test_intraday_model_runs_trade_date_grouped_walk_forward(monkeypatch):
     assert output["direction_label_anchor"] == "current_trade_day_official_close"
     assert output["feature_price_anchor"] == "latest_valid_intraday_trade_at_checkpoint"
     assert output["uses_intraday_snapshot"] is True
+    assert output["inputs"]["realtime_endpoint"] == "rt_min_daily"
     assert output["training"]["trading_day_count"] >= 80
     assert output["validation"]["trading_day_count"] == 20
     assert "T-2" in output["validation"]["leakage_guard"]
@@ -88,8 +96,8 @@ def test_current_prediction_ignores_minutes_after_reported_asof():
     mask = (minutes["trade_time"].str.startswith(current_date)) & minutes["trade_time"].str.endswith("15:00:00")
     minutes.loc[mask, ["open", "high", "low", "close"]] = 999.0
 
-    frame = model.build_intraday_feature_frame(minutes, daily, current_date, "10:10:00", moneyflow)
-    current = frame[(frame["trade_date"] == current_date) & (frame["asof_time"] == "10:10:00")].iloc[0]
+    frame = model.build_intraday_feature_frame(minutes, daily, current_date, "10:15:00", moneyflow)
+    current = frame[(frame["trade_date"] == current_date) & (frame["asof_time"] == "10:15:00")].iloc[0]
 
     assert current["asof_price"] < 100.0
 
