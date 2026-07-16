@@ -101,6 +101,7 @@ def test_realtime_probability_controls_data_date_and_market_basis(monkeypatch):
     assert payload["market_snapshot"]["latest_close"] == 33.12
     assert payload["market_snapshot"]["asof_time"] == "14:10:00"
     assert payload["market_snapshot"]["price_kind"] == "intraday_asof"
+    assert payload["model_sources"]["next_day_model"] == "T1_INTRADAY_20M_HGB_V2"
 
 
 def test_trading_timeline_fallback_skips_known_a_share_holidays():

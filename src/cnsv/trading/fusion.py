@@ -108,7 +108,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "historical_validation": historical_validation,
         "model_performance": build_model_performance(historical_validation),
         "human_explanation": _human_explanation(decision, probability, ev, risk),
-        "model_sources": _model_sources(reports),
+        "model_sources": _model_sources(reports, probability),
         "missing_reports": evidence_bundle.get("missing_reports", []),
     }
     model_date_mismatch = probability.get("latest_data_trade_date") not in {None, trade_date}
@@ -390,9 +390,9 @@ def _human_explanation(decision: dict[str, Any], probability: dict[str, Any], ev
     }
 
 
-def _model_sources(reports: dict[str, Any]) -> dict[str, Any]:
+def _model_sources(reports: dict[str, Any], probability: dict[str, Any] | None = None) -> dict[str, Any]:
     return {
-        "next_day_model": "T1_HGB_ENSEMBLE_V1",
+        "next_day_model": (probability or {}).get("model_id") or "T1_HGB_ENSEMBLE_V1",
         "baseline_models": list(((reports.get("baseline_model_report") or {}).get("baseline_models") or {}).keys()),
         "path_models": list(((reports.get("path_distribution_report") or {}).get("path_models") or {}).keys()),
         "risk_report_stage": ((reports.get("risk_explanation_report") or {}).get("meta") or {}).get("stage"),
