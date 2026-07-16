@@ -10,9 +10,9 @@
 - blocking_reason: None
 
 ## Data Manifest
-- snapshot_id: cnsvdata-2026-07-16-58bda63e40be
+- snapshot_id: cnsvdata-2026-07-16-06bed5746544
 - latest_trade_date: 2026-07-16
-- generated_at: 2026-07-17 01:14:46
+- generated_at: 2026-07-17 01:24:42
 - file_count: 14
 
 ## Loaded Data
