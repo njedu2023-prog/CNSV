@@ -88,3 +88,16 @@ def test_trading_workflows_delegate_pages_to_single_refresh_workflow():
     assert "actions/deploy-pages@v4" in refresh
     assert "cancel-in-progress: true" in refresh
     assert "Check whether reports changed" in refresh
+
+
+def test_realtime_workflow_waits_for_matching_upstream_checkpoint():
+    workflow = (repo_root() / ".github/workflows/run_intraday_realtime.yml").read_text(encoding="utf-8")
+
+    assert "Wait for matching CNSVdata checkpoint" in workflow
+    assert "intraday_realtime_ready.json" in workflow
+    assert "SCHEDULE_EXPRESSION: ${{ github.event.schedule }}" in workflow
+    assert '"10 12 * * 1-5": ("15:00:00", "20:04:00")' in workflow
+    assert "matching_upstream_checkpoint" in workflow
+    assert "generated_for_checkpoint" in workflow
+    assert "time.sleep(30)" in workflow
+    assert workflow.count("if: steps.upstream.outputs.should_run == 'true'") == 4
