@@ -88,6 +88,10 @@ def test_intraday_model_runs_trade_date_grouped_walk_forward(monkeypatch):
     assert output["validation"]["trading_day_count"] == 20
     assert "T-2" in output["validation"]["leakage_guard"]
     assert output["prob_up_1d"] + output["prob_down_1d"] == 1.0
+    assert output["calibration_method"] == "none_small_sample"
+    assert output["calibration_slope"] is None
+    assert output["reliability_gate"]["passed"] is False
+    assert "validation_sample_lt_50" in output["reliability_gate"]["reasons"]
 
 
 def test_current_prediction_ignores_minutes_after_reported_asof():
@@ -129,3 +133,28 @@ def test_probability_prefers_ready_intraday_model(monkeypatch):
     monkeypatch.setattr(probability, "fit_next_day_model", lambda reports: (_ for _ in ()).throw(AssertionError("daily fallback called")))
 
     assert probability.compute_next_day_probability({}) is intraday
+
+
+def test_probability_never_uses_daily_fallback_during_realtime_run(monkeypatch):
+    intraday = model.unavailable_model("validation_failed")
+    monkeypatch.setattr(probability, "fit_intraday_next_day_model", lambda reports: intraday)
+    monkeypatch.setattr(
+        probability,
+        "fit_next_day_model",
+        lambda reports: (_ for _ in ()).throw(AssertionError("daily fallback called")),
+    )
+
+    output = probability.compute_next_day_probability({
+        "intraday_realtime_ready": {
+            "status": "PASS",
+            "ready": True,
+            "trade_date": "2026-07-17",
+            "asof_time": "14:22:00",
+            "asof_price": 33.25,
+        }
+    })
+
+    assert output["model_ready"] is False
+    assert output["latest_data_trade_date"] == "2026-07-17"
+    assert output["uses_intraday_snapshot"] is True
+    assert output["fallback_reason"] == "validation_failed"

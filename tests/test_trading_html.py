@@ -25,6 +25,10 @@ def test_trading_html_is_chinese_dashboard():
     assert "行情基准价" in html
     assert "基准价涨跌幅" in html
     assert "行情截止时间" in html
+    assert "实时数据源" in html
+    assert "分钟数据质量" in html
+    assert "模型可靠性" in html
+    assert "超过 45 分钟未生成新预测" in html
     assert "预测口径" in html
     assert "次交易日官方收盘价 vs 本交易日官方收盘价" in html
     assert 'aria-label="实时行情数据表"' in html
@@ -88,9 +92,10 @@ def test_trading_workflows_delegate_pages_to_single_refresh_workflow():
     assert "actions/deploy-pages@v4" in refresh
     assert "cancel-in-progress: true" in refresh
     assert "Check whether reports changed" in refresh
+    assert "sleep 180" not in refresh
 
 
-def test_realtime_workflow_runs_direct_tushare_at_exact_beijing_checkpoints():
+def test_realtime_workflow_runs_direct_tushare_at_safe_beijing_checkpoints():
     workflow = (repo_root() / ".github/workflows/run_intraday_realtime.yml").read_text(encoding="utf-8")
 
     assert "Wait for matching CNSVdata checkpoint" not in workflow
@@ -101,11 +106,14 @@ def test_realtime_workflow_runs_direct_tushare_at_exact_beijing_checkpoints():
     for cron in (
         '"15 1 * * 1-5"',  # 09:15 Beijing
         '"30 3 * * 1-5"',  # 11:30 Beijing
-        '"0 5 * * 1-5"',   # 13:00 Beijing
+        '"2 5 * * 1-5"',   # 13:02 Beijing
         '"10 7 * * 1-5"',  # 15:10 Beijing
         '"4 12 * * 1-5"',  # 20:04 Beijing
     ):
         assert f"- cron: {cron}" in workflow
+    assert "group: cnsv-report-writer-main" in workflow
+    assert "cancel-in-progress: true" in workflow
+    assert "Open or update realtime failure incident" in workflow
 
     deploy = (repo_root() / ".github/workflows/deploy_pages_refresh.yml").read_text(encoding="utf-8")
     assert "Run CNSV realtime next-day prediction" in deploy

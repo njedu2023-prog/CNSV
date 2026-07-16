@@ -81,7 +81,7 @@ def build_trading_markdown(payload: dict[str, Any]) -> str:
         f"- T+1 扩展窗口方向准确率: {probability_pct(t1_std.get('directional_accuracy'))} / 样本数: {t1_std.get('sample_size', 'N/A')}",
         f"- T+1 准确率 95% 区间: {probability_pct(t1_std.get('accuracy_ci_95_low'))} ~ {probability_pct(t1_std.get('accuracy_ci_95_high'))}",
         f"- T+1 高置信样本准确率: {probability_pct(t1_std.get('high_confidence_accuracy'))} / 覆盖率: {probability_pct(t1_std.get('high_confidence_coverage'))}",
-        f"- T+1 校准 Brier / AUC: {fmt_number(t1_std.get('brier_calibrated'))} / {fmt_number(t1_std.get('roc_auc'))}",
+        f"- T+1 验证 Brier / AUC: {fmt_number(t1_std.get('brier_active', t1_std.get('brier_calibrated')))} / {fmt_number(t1_std.get('roc_auc'))}",
         f"- 5D 辅助模型方向准确率: {probability_pct(b2_std.get('directional_accuracy'))} / purged: {probability_pct(b2_purged.get('directional_accuracy'))}",
         f"- P2 5D 路径区间覆盖率: {probability_pct(p2_std.get('terminal_p10_p90_coverage', 0.0))} / Brier: {fmt_number(p2_std.get('positive_terminal_brier'))}",
         f"- 说明: {hist.get('interpretation', '历史验证只作为参考，不保证未来收益。')}",
@@ -242,7 +242,7 @@ def build_trading_html(payload: dict[str, Any]) -> str:
   <section><h2>模型表现追踪</h2><div class="three-grid">
     <div class="metric"><div class="label">T+1 扩展窗口</div><div class="value">{probability_pct(historical_stats.get('direction_accuracy'))}</div><p class="note">样本数：{fmt_count(historical_stats.get('sample_count'))}</p><p class="note">95% 区间：{probability_pct(historical_stats.get('accuracy_ci_95_low'))} ~ {probability_pct(historical_stats.get('accuracy_ci_95_high'))}</p></div>
     <div class="metric"><div class="label">{live_stats.get('name', '实盘统计线')}</div><div class="value">{_live_accuracy_text(live_stats)}</div><p class="note">起始：{live_stats.get('start_date', 'N/A')} · 样本：{live_stats.get('sample_count', 0)}</p><p class="note">正确：{live_stats.get('correct_count', 0)} · 错误：{live_stats.get('wrong_count', 0)}</p></div>
-    <div class="metric"><div class="label">高置信子集</div><div class="value">{probability_pct(t1_std.get('high_confidence_accuracy'))}</div><p class="note">覆盖率：{probability_pct(t1_std.get('high_confidence_coverage'))}</p><p class="note">Brier：{fmt_number(t1_std.get('brier_calibrated'))} · AUC：{fmt_number(t1_std.get('roc_auc'))}</p></div>
+    <div class="metric"><div class="label">高置信子集</div><div class="value">{probability_pct(t1_std.get('high_confidence_accuracy'))}</div><p class="note">覆盖率：{probability_pct(t1_std.get('high_confidence_coverage'))}</p><p class="note">验证 Brier：{fmt_number(t1_std.get('brier_active', t1_std.get('brier_calibrated')))} · AUC：{fmt_number(t1_std.get('roc_auc'))}</p></div>
   </div></section>
   <section><h2>人工执行说明</h2>
     <span class="pill">自动下单 <strong>关闭</strong></span>

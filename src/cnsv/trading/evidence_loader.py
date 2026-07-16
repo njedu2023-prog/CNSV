@@ -12,6 +12,7 @@ REPORT_FILES = {
     "baseline_validation_report": "latest_baseline_validation_report.json",
     "path_distribution_report": "latest_path_distribution_report.json",
     "path_validation_report": "latest_path_validation_report.json",
+    "observation_backtest_report": "latest_observation_backtest_report.json",
     "live_manual_decision_report": "latest_live_manual_decision_report.json",
     "risk_explanation_report": "latest_risk_explanation_report.json",
 }

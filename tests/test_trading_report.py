@@ -90,6 +90,7 @@ def test_realtime_probability_controls_data_date_and_market_basis(monkeypatch):
             "direction_label_anchor": "current_trade_day_official_close",
             "feature_price_anchor": "latest_valid_intraday_trade_at_checkpoint",
             "uses_intraday_snapshot": True,
+            "reliability_gate": {"passed": True, "reasons": []},
             "validation": {},
             "model_return_distribution": {},
         },
@@ -113,6 +114,55 @@ def test_trading_timeline_fallback_skips_known_a_share_holidays():
 
     assert timeline["prediction_date"] == "2026-06-22"
     assert timeline["verify_date"] == "2026-06-22"
+
+
+def test_realtime_timeline_fails_closed_without_trade_calendar():
+    timeline = _decision_timeline(
+        "2026-07-17",
+        {"predicted_direction": "UP"},
+        {"reports": {"intraday_realtime_ready": {"ready": True}}},
+    )
+
+    assert timeline["prediction_date"] == ""
+    assert timeline["verify_date"] == ""
+    assert timeline["prediction_date_source"] == "trade_calendar_unavailable"
+
+
+def test_realtime_model_date_mismatch_is_blocked(monkeypatch):
+    import cnsv.trading.fusion as fusion
+
+    evidence = load_trading_evidence(repo_root())
+    evidence["reports"]["intraday_realtime_ready"] = {
+        "status": "PASS",
+        "ready": True,
+        "trade_date": "2026-07-17",
+        "asof_time": "14:22:00",
+        "asof_price": 33.25,
+    }
+    evidence["trade_calendar"] = ["2026-07-17", "2026-07-20"]
+    monkeypatch.setattr(
+        fusion,
+        "compute_next_day_probability",
+        lambda reports: {
+            "model_ready": True,
+            "model_id": "T1_INTRADAY_TEST",
+            "predicted_direction": "UP",
+            "prob_up_1d": 0.56,
+            "prob_down_1d": 0.44,
+            "direction_confidence": 0.56,
+            "latest_data_trade_date": "2026-07-16",
+            "uses_intraday_snapshot": True,
+            "reliability_gate": {"passed": True, "reasons": []},
+            "validation": {},
+            "model_return_distribution": {},
+        },
+    )
+
+    payload = fusion.build_trading_decision_payload(evidence)
+
+    assert payload["trade_date"] == "2026-07-17"
+    assert payload["decision"]["signal"] == "BLOCKED"
+    assert any("实时交易日不一致" in reason for reason in payload["risk"]["block_reasons"])
 
 
 def test_trading_archive_uses_beijing_generation_date(tmp_path):

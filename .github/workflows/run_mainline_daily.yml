@@ -159,6 +159,9 @@ jobs:
   run-mainline-daily:
     needs: check-upstream
     if: needs.check-upstream.outputs.should_run == 'true'
+    concurrency:
+      group: cnsv-report-writer-main
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -179,15 +182,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests
-        id: tests
-        continue-on-error: true
         run: pytest
-
-      - name: Report non-blocking test failure
-        if: steps.tests.outcome == 'failure'
-        run: |
-          echo "::warning::pytest failed, but daily report generation will continue so Pages data is not left stale."
-          echo "Please inspect the test output in this workflow run."
 
       - name: Generate data report
         run: |

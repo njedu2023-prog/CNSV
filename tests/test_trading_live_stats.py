@@ -1,3 +1,5 @@
+import pandas as pd
+
 from cnsv.trading.live_stats import build_model_performance, default_live_registry_entry, predicted_direction, update_live_stats_registry
 
 
@@ -246,3 +248,77 @@ def test_live_registry_backfills_verified_archive_entry(tmp_path):
     assert [item["trade_date"] for item in registry].count("2026-07-15") == 1
     assert performance["live_stats"]["sample_count"] == 1
     assert performance["live_stats"]["wrong_count"] == 1
+
+
+def test_intraday_prediction_is_verified_with_two_official_daily_closes(tmp_path):
+    path = tmp_path / "live_stats_registry.json"
+    path.write_text("[]\n", encoding="utf-8")
+    payload = {
+        "decision": {"signal": "WATCH"},
+        "probability": {
+            "model_ready": True,
+            "model_id": "T1_INTRADAY_20M_HGB_V3",
+            "predicted_direction": "UP",
+            "prob_up_1d": 0.56,
+            "prob_down_1d": 0.44,
+        },
+        "decision_timeline": {
+            "data_trade_date": "2026-07-17",
+            "signal_date": "2026-07-20",
+            "prediction_date": "2026-07-20",
+            "verify_date": "2026-07-20",
+        },
+        "market_snapshot": {
+            "latest_trade_date": "2026-07-17",
+            "latest_close": 33.25,
+            "asof_time": "14:22:00",
+            "price_kind": "intraday_asof",
+        },
+    }
+
+    first = update_live_stats_registry(payload, path, {"feature_report": {}})
+
+    assert first[0]["asof_price"] == 33.25
+    assert first[0]["close_t"] is None
+
+    reports = {
+        "daily_price_history": pd.DataFrame({
+            "trade_date": ["2026-07-17", "2026-07-20"],
+            "close": [33.0, 33.33],
+            "pct_chg": [-3.0, 99.0],
+        }),
+        "feature_report": {},
+    }
+    verified = update_live_stats_registry(payload, path, reports)
+
+    assert verified[0]["close_t"] == 33.0
+    assert verified[0]["close_t1"] == 33.33
+    assert verified[0]["return_1d"] == 33.33 / 33.0 - 1.0
+    assert verified[0]["actual_direction"] == "UP"
+    assert verified[0]["is_correct"] is True
+
+
+def test_registry_preserves_prior_t1_model_versions(tmp_path):
+    path = tmp_path / "live_stats_registry.json"
+    path.write_text(
+        """[
+  {
+    "trade_date": "2026-07-16",
+    "data_trade_date": "2026-07-15",
+    "signal_date": "2026-07-16",
+    "verify_date": "2026-07-16",
+    "predicted_direction": "DOWN",
+    "model_id": "T1_INTRADAY_20M_HGB_V2",
+    "asof_price": 36.14,
+    "close_t": null,
+    "is_correct": null
+  }
+]
+""",
+        encoding="utf-8",
+    )
+
+    registry = update_live_stats_registry({}, path, {"feature_report": {}})
+
+    assert len(registry) == 1
+    assert registry[0]["model_id"] == "T1_INTRADAY_20M_HGB_V2"

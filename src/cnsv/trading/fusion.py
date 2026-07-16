@@ -56,7 +56,12 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     features = feature_report.get("features") or {}
     price_volume = features.get("price_volume") or {}
     report_trade_date = meta.get("latest_trade_date") or (data_report.get("data_manifest") or {}).get("latest_trade_date") or "N/A"
-    trade_date = probability.get("latest_data_trade_date") or report_trade_date
+    realtime_status = reports.get("intraday_realtime_ready")
+    realtime_trade_date = (
+        realtime_status.get("trade_date")
+        if isinstance(realtime_status, dict) and realtime_status.get("ready") else None
+    )
+    trade_date = realtime_trade_date or probability.get("latest_data_trade_date") or report_trade_date
     decision = {
         **signal,
         **position,
@@ -97,6 +102,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "direct_execution_enabled": False,
         "forbidden_actions": FORBIDDEN_TRADING_AUTOMATION,
         "cnsvdata_gate": data_report.get("cnsvdata_gate") or {},
+        "realtime_status": realtime_status or {},
         "decision": decision,
         "decision_timeline": timeline,
         "freshness": _freshness_contract(trade_date, timeline, generated_at_beijing),
@@ -113,12 +119,30 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         "model_sources": _model_sources(reports, probability),
         "missing_reports": evidence_bundle.get("missing_reports", []),
     }
-    model_date_mismatch = probability.get("latest_data_trade_date") not in {None, trade_date}
+    model_date = probability.get("latest_data_trade_date")
+    model_date_mismatch = bool(
+        (realtime_trade_date and model_date != realtime_trade_date)
+        or (model_date and model_date != trade_date)
+    )
     if not probability.get("model_ready") or model_date_mismatch:
-        reason = probability.get("fallback_reason") or "T+1 模型数据日期与主报告不一致"
+        reason = (
+            "T+1 模型数据日期与实时交易日不一致"
+            if model_date_mismatch else probability.get("fallback_reason") or "T+1 模型不可用"
+        )
         payload["decision"]["signal"] = "BLOCKED"
         payload["decision"]["signal_cn"] = "风控阻断"
         payload["decision"]["suggested_action"] = "T+1 模型不可用，不允许输出买卖建议"
+        payload["decision"]["suggested_position_pct"] = 0.0
+        payload["decision"]["position_range"] = "0%"
+        payload["risk"]["blocked"] = True
+        payload["risk"]["risk_passed"] = False
+        payload["risk"]["block_reasons"] = payload["risk"].get("block_reasons", []) + [reason]
+        payload["is_trade_signal"] = False
+    if isinstance(realtime_status, dict) and not timeline.get("prediction_date"):
+        reason = timeline.get("prediction_date_source") or "trade_calendar_missing_next_open_date"
+        payload["decision"]["signal"] = "BLOCKED"
+        payload["decision"]["signal_cn"] = "风控阻断"
+        payload["decision"]["suggested_action"] = "交易日历不可用，不允许输出次交易日建议"
         payload["decision"]["suggested_position_pct"] = 0.0
         payload["decision"]["position_range"] = "0%"
         payload["risk"]["blocked"] = True
@@ -156,13 +180,20 @@ def _freshness_contract(trade_date: str, timeline: dict[str, Any], generated_at_
 
 def _decision_timeline(trade_date: str, probability: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
     calendar_dates = _open_trade_dates(evidence_bundle.get("trade_calendar"))
-    prediction_date, prediction_source = _next_trade_date(trade_date, calendar_dates)
+    realtime_context = isinstance((evidence_bundle.get("reports") or {}).get("intraday_realtime_ready"), dict)
+    prediction_date, prediction_source = _next_trade_date(
+        trade_date,
+        calendar_dates,
+        allow_fallback=not realtime_context,
+    )
     verify_date = prediction_date
     verify_source = prediction_source
     signal_date = prediction_date
     calendar_source = evidence_bundle.get("trade_calendar_source")
     if not calendar_source:
-        calendar_source = "CNSVdata trade_calendar" if calendar_dates else "fallback_business_day"
+        calendar_source = "CNSVdata trade_calendar" if calendar_dates else (
+            "unavailable" if realtime_context else "fallback_business_day"
+        )
     return {
         "data_trade_date": trade_date,
         "signal_date": signal_date,
@@ -197,12 +228,18 @@ def _open_trade_dates(calendar: Any) -> list[str]:
     return []
 
 
-def _next_trade_date(current: str, open_dates: list[str]) -> tuple[str, str]:
+def _next_trade_date(
+    current: str, open_dates: list[str], *, allow_fallback: bool = True
+) -> tuple[str, str]:
     current_date = _date_text(current)
     if open_dates and current_date:
         for item in open_dates:
             if item > current_date:
                 return item, "trade_calendar"
+        if not allow_fallback:
+            return "", "trade_calendar_missing_next_open_date"
+    if not allow_fallback:
+        return "", "trade_calendar_unavailable"
     return _next_business_day(current_date), "fallback_cn_market_holiday_business_day"
 
 
@@ -285,6 +322,7 @@ def _historical_validation(reports: dict[str, Any], probability: dict[str, Any])
                 "accuracy_ci_95_low",
                 "accuracy_ci_95_high",
                 "brier_raw",
+                "brier_active",
                 "brier_calibrated",
                 "roc_auc",
                 "high_confidence_threshold",
@@ -293,6 +331,7 @@ def _historical_validation(reports: dict[str, Any], probability: dict[str, Any])
                 "high_confidence_accuracy",
                 "refit_interval_days",
                 "leakage_guard",
+                "reliability_gate",
             ),
         },
         "supporting_5d_validation": {

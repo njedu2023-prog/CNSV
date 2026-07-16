@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: cnsv-trading-decision-main
+  group: cnsv-report-writer-main
   cancel-in-progress: true
 
 jobs:

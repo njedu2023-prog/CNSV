@@ -16,7 +16,7 @@ on:
       - completed
 
 concurrency:
-  group: cnsv-pages-refresh-main
+  group: pages
   cancel-in-progress: true
 
 permissions:
@@ -50,16 +50,6 @@ jobs:
           else
             echo "deploy=true" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Wait for earlier Pages deployment
-        if: steps.changes.outputs.deploy == 'true'
-        run: sleep 180
-
-      - name: Refresh latest main after wait
-        if: steps.changes.outputs.deploy == 'true'
-        uses: actions/checkout@v4
-        with:
-          ref: main
 
       - name: Configure Pages
         if: steps.changes.outputs.deploy == 'true'

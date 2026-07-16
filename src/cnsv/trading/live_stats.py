@@ -7,13 +7,11 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from cnsv.trading.intraday_next_day_model import MODEL_ID as INTRADAY_MODEL_ID
 from cnsv.trading.next_day_model import MODEL_ID as DAILY_MODEL_ID
 from cnsv.utils.io import ensure_parent
 
 LIVE_STATS_START_DATE = "2026-07-15"
 VERIFIABLE_DIRECTIONS = {"UP", "DOWN"}
-TRACKED_MODEL_IDS = {DAILY_MODEL_ID, INTRADAY_MODEL_ID}
 
 
 def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None = None) -> dict[str, Any]:
@@ -23,6 +21,12 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
     market = payload.get("market_snapshot") or {}
     probability = payload.get("probability") or {}
     data_trade_date = timeline.get("data_trade_date") or market.get("latest_trade_date")
+    official_base_close = (
+        market.get("latest_close")
+        if market.get("price_kind", "daily_close") == "daily_close"
+        and market.get("latest_trade_date") == data_trade_date
+        else None
+    )
     return {
         "trade_date": timeline.get("prediction_date") or signal_day,
         "data_trade_date": data_trade_date,
@@ -35,7 +39,10 @@ def default_live_registry_entry(payload: dict[str, Any], signal_date: str | None
         "direction_confidence": _finite_or_none(probability.get("direction_confidence")),
         "actual_direction": None,
         "is_correct": None,
-        "close_t": market.get("latest_close"),
+        "asof_price": market.get("latest_close"),
+        "asof_time": market.get("asof_time"),
+        "price_kind": market.get("price_kind", "daily_close"),
+        "close_t": official_base_close,
         "close_t1": None,
         "return_1d": None,
     }
@@ -50,7 +57,7 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
     signal_date = (payload.get("decision_timeline") or {}).get("signal_date") or _today()
     current_direction = predicted_direction(payload)
     model_ready = bool((payload.get("probability") or {}).get("model_ready"))
-    if signal_date >= LIVE_STATS_START_DATE and model_ready and current_direction in VERIFIABLE_DIRECTIONS and _has_base_close(payload):
+    if signal_date >= LIVE_STATS_START_DATE and model_ready and current_direction in VERIFIABLE_DIRECTIONS and _has_prediction_anchor(payload):
         replacement = default_live_registry_entry(payload, signal_date)
         found = False
         updated: list[dict[str, Any]] = []
@@ -69,9 +76,9 @@ def update_live_stats_registry(payload: dict[str, Any], path: str | Path, report
         item
         for item in registry
         if str(item.get("signal_date", "")) >= LIVE_STATS_START_DATE
-        and item.get("model_id") in TRACKED_MODEL_IDS
+        and _is_tracked_model(item.get("model_id"))
         and item.get("predicted_direction") in VERIFIABLE_DIRECTIONS
-        and _has_finite_number(item.get("close_t"))
+        and (_has_finite_number(item.get("close_t")) or _has_finite_number(item.get("asof_price")))
         and _has_auditable_base_date(item)
     ]
     registry = _dedupe_prediction_dates(registry)
@@ -122,6 +129,7 @@ def write_live_stats_registry(registry: list[dict[str, Any]], path: str | Path) 
 
 def _sanitize_entry(item: dict[str, Any]) -> dict[str, Any]:
     out = dict(item)
+    out["asof_price"] = _finite_or_none(out.get("asof_price"))
     out["close_t"] = _finite_or_none(out.get("close_t"))
     out["close_t1"] = _finite_or_none(out.get("close_t1"))
     out["return_1d"] = _finite_or_none(out.get("return_1d"))
@@ -205,26 +213,30 @@ def predicted_direction(payload: dict[str, Any]) -> str | None:
 def _try_verify_entry(item: dict[str, Any], reports: dict[str, Any]) -> dict[str, Any]:
     if item.get("is_correct") is not None or item.get("verification_status") == "TIE_EXCLUDED":
         return item
+    out = dict(item)
+    data_trade_date = str(item.get("data_trade_date") or "")
+    official_base_close, _ = _market_on_date(reports, data_trade_date) if data_trade_date else (None, None)
+    if official_base_close is not None:
+        out["close_t"] = official_base_close
     verify_date = item.get("verify_date")
-    verify_close, verify_pct_chg = _market_on_date(reports, str(verify_date)) if verify_date else (None, None)
+    verify_close, _ = _market_on_date(reports, str(verify_date)) if verify_date else (None, None)
     latest_date, latest_close = _latest_close(reports)
     if verify_close is None and verify_date == latest_date:
         verify_close = latest_close
     if not verify_date or verify_close is None:
-        return item
-    close_t = item.get("close_t")
+        return out
+    close_t = out.get("close_t")
     if close_t is None:
-        return item
+        return out
     try:
         base_close = float(close_t)
         end_close = float(verify_close)
     except (TypeError, ValueError):
-        return item
+        return out
     if not math.isfinite(base_close) or not math.isfinite(end_close) or base_close == 0:
-        return item
-    ret = verify_pct_chg / 100.0 if verify_pct_chg is not None else (end_close / base_close) - 1.0
+        return out
+    ret = (end_close / base_close) - 1.0
     actual = "UP" if ret > 0 else "DOWN" if ret < 0 else "FLAT"
-    out = dict(item)
     out["close_t1"] = end_close
     out["return_1d"] = ret
     out["actual_direction"] = actual
@@ -274,7 +286,7 @@ def _latest_close(reports: dict[str, Any]) -> tuple[str | None, float | None]:
     return date_value, close
 
 
-def _has_base_close(payload: dict[str, Any]) -> bool:
+def _has_prediction_anchor(payload: dict[str, Any]) -> bool:
     market = payload.get("market_snapshot") or {}
     return _has_finite_number(market.get("latest_close"))
 
@@ -302,7 +314,7 @@ def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | N
         return None
 
     model_id = _md_value(text, "模型ID")
-    if model_id not in TRACKED_MODEL_IDS:
+    if not _is_tracked_model(model_id):
         return None
     close_t = _parse_float(_md_value(text, "行情基准价") or _md_value(text, "收盘价"))
     direction = (_md_value(text, "预测方向") or "").upper()
@@ -318,6 +330,9 @@ def _archived_markdown_entry(path: Path, latest_date: str) -> dict[str, Any] | N
         "actual_direction": None,
         "is_correct": None,
         "close_t": close_t,
+        "asof_price": close_t,
+        "asof_time": _md_value(text, "行情截止时间"),
+        "price_kind": "daily_close",
         "close_t1": None,
         "return_1d": None,
         "source": "reports_archive",
@@ -341,6 +356,10 @@ def _parse_float(value: str | None) -> float | None:
 
 def _has_finite_number(value: Any) -> bool:
     return _finite_or_none(value) is not None
+
+
+def _is_tracked_model(value: Any) -> bool:
+    return str(value or "").startswith("T1_")
 
 
 def _finite_or_none(value: Any) -> float | None:

@@ -1,7 +1,7 @@
 -e .
-pandas
-pyarrow
-requests
-scikit-learn>=1.5,<2
-PyYAML
-pytest
+pandas>=3.0,<3.1
+pyarrow>=25,<26
+requests>=2.34,<3
+scikit-learn>=1.9,<2
+PyYAML>=6,<7
+pytest>=9,<10

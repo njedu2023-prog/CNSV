@@ -34,6 +34,11 @@ def evaluate_trading_risk(reports: dict[str, Any], probability: dict[str, Any], 
     if validation_status == "WARN" or path_validation_status == "WARN":
         warnings.append("模型验证存在 WARN，需要人工复核")
 
+    reliability = probability.get("reliability_gate") or {}
+    if probability.get("model_ready") and probability.get("uses_intraday_snapshot") and reliability.get("passed") is not True:
+        details = ",".join(reliability.get("reasons") or [])
+        block_reasons.append(f"T+1 模型可靠性门禁未通过{':' + details if details else ''}")
+
     crash_prob = safe_float((distribution.get("return_bins_1d") or {}).get("lt_minus_5pct"))
     p10 = safe_float(distribution.get("p10_return_1d"))
     confidence = safe_float(probability.get("direction_confidence"))

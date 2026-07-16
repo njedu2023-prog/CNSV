@@ -64,7 +64,8 @@ def _attach_trade_calendar(evidence):
         evidence["trade_calendar"] = fetch_parquet(remote_url(source_config, "trade_calendar"), timeout=8)
         evidence["trade_calendar_source"] = "CNSVdata trade_calendar"
     except Exception as exc:
-        evidence["trade_calendar_source"] = "fallback_cn_market_holiday_business_day"
+        evidence["trade_calendar"] = None
+        evidence["trade_calendar_source"] = "unavailable"
         evidence["trade_calendar_error"] = str(exc)
 
 
@@ -92,6 +93,11 @@ def _attach_moneyflow_history(evidence):
 
 def _attach_intraday_history(evidence):
     now = datetime.now(ZoneInfo("Asia/Shanghai"))
+    preflight = build_realtime_ready(None, now=now, trade_calendar=evidence.get("trade_calendar"))
+    if preflight.get("blocking_reason") != "tushare_realtime_minutes_unavailable":
+        evidence["reports"]["intraday_realtime_ready"] = preflight
+        evidence["reports"]["intraday_minute_history"] = None
+        return preflight
     current = fetch_realtime_minutes(now=now)
     ready = build_realtime_ready(current, now=now, trade_calendar=evidence.get("trade_calendar"))
     evidence["reports"]["intraday_realtime_ready"] = ready

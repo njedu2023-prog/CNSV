@@ -16,6 +16,13 @@ MIN_TRAIN_ROWS = 500
 TRAIN_WINDOW_ROWS = 2000
 VALIDATION_DAYS = 60
 HIGH_CONFIDENCE_THRESHOLD = 0.55
+MIN_ACTIONABLE_VALIDATION_DAYS = 50
+MIN_ACTIONABLE_RECENT_DAYS = 25
+MIN_ACTIONABLE_HIGH_CONFIDENCE_SAMPLES = 20
+MIN_ACTIONABLE_HIGH_CONFIDENCE_ACCURACY = 0.55
+MIN_ACTIONABLE_ROC_AUC = 0.52
+MIN_ACTIONABLE_RECENT_ACCURACY = 0.50
+MAX_ACTIONABLE_BRIER_MARGIN = 0.005
 
 CHECKPOINT_TIMES = (
     "09:35:00", "09:55:00", "10:15:00", "10:35:00", "10:55:00", "11:15:00",
@@ -153,6 +160,7 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
         baseline_metrics,
         candidate_accepted,
     )
+    reliability_gate = _reliability_gate(validation_summary)
     distribution = _return_distribution(validation, active_probability, prob_up, labelled)
     latest = current.iloc[0]
     return {
@@ -160,7 +168,7 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
         "model_id": MODEL_ID,
         "model_version": MODEL_VERSION,
         "primary_model": (
-            "20-minute pseudo-daily HGB using 2000 historical trading days"
+            "daily-close HGB evaluated on same-checkpoint pseudo-daily snapshots"
             if candidate_accepted else "expanding historical next-day direction baseline"
         ),
         "predicted_direction": "UP" if prob_up >= 0.5 else "DOWN",
@@ -170,7 +178,8 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
         "direction_confidence": max(prob_up, prob_down),
         "raw_prob_up_1d": candidate_prob_up,
         "baseline_prob_up_1d": baseline_prob_up,
-        "calibration_slope": 1.0,
+        "calibration_slope": None,
+        "calibration_method": "none_small_sample",
         "ensemble_dispersion": abs(candidate_prob_up - baseline_prob_up),
         "fallback_used": not candidate_accepted,
         "fallback_reason": None if candidate_accepted else "walk_forward_candidate_did_not_beat_recent_baseline",
@@ -196,10 +205,14 @@ def fit_intraday_next_day_model(reports: dict[str, Any]) -> dict[str, Any]:
             "current_day_moneyflow_policy": "T-1 lag only",
         },
         "validation": validation_summary,
+        "reliability_gate": reliability_gate,
+        "actionable_model": reliability_gate["passed"],
         "model_return_distribution": distribution,
         "inputs": {
             "realtime_source": ready.get("data_source", "unknown"),
             "realtime_endpoint": ready.get("data_endpoint", "unknown"),
+            "realtime_coverage_ratio": ready.get("coverage_ratio"),
+            "realtime_trading_minute_lag": ready.get("trading_minute_lag"),
             "minute_rows": int(len(minutes)),
             "daily_rows": int(len(daily)),
             "moneyflow_rows": int(len(moneyflow)),
@@ -225,7 +238,8 @@ def unavailable_model(reason: str) -> dict[str, Any]:
         "prob_flat_1d": 0.0,
         "direction_confidence": 0.5,
         "raw_prob_up_1d": 0.5,
-        "calibration_slope": 0.0,
+        "calibration_slope": None,
+        "calibration_method": "none_model_unavailable",
         "ensemble_dispersion": None,
         "fallback_used": True,
         "fallback_reason": reason,
@@ -236,6 +250,8 @@ def unavailable_model(reason: str) -> dict[str, Any]:
         "uses_intraday_snapshot": False,
         "training": {},
         "validation": {},
+        "reliability_gate": {"passed": False, "reasons": [reason]},
+        "actionable_model": False,
         "model_return_distribution": {},
         "inputs": {},
     }
@@ -479,7 +495,7 @@ def _validation_summary(
     return {
         "model": MODEL_ID,
         "horizon": "next_trading_day_close_vs_current_trade_day_close",
-        "method": "strict_expanding_walk_forward_with_recent_holdout_gate",
+        "method": "chronological_walk_forward_with_recent_safety_slice",
         "sample_size": int(len(validation)),
         "trading_day_count": int(validation["trade_date"].nunique()),
         "start_date": str(validation["trade_date"].min()),
@@ -489,7 +505,9 @@ def _validation_summary(
         "accuracy_ci_95_low": ci_low,
         "accuracy_ci_95_high": ci_high,
         "brier_raw": candidate["brier"],
+        "brier_active": active["brier"],
         "brier_calibrated": active["brier"],
+        "calibration_method": "none_small_sample",
         "roc_auc": active["roc_auc"],
         "actual_up_rate": float(target.mean()),
         "high_confidence_threshold": HIGH_CONFIDENCE_THRESHOLD,
@@ -502,12 +520,57 @@ def _validation_summary(
         "baseline_directional_accuracy": baseline["directional_accuracy"],
         "baseline_brier": baseline["brier"],
         "development": _metric_summary(target[:split], candidate_probability[:split]),
+        "recent_validation": _metric_summary(target[split:], probability[split:]),
         "recent_holdout": _metric_summary(target[split:], candidate_probability[split:]),
         "recent_holdout_baseline": _metric_summary(target[split:], baseline_probability[split:]),
         "refit_interval_days": 1,
         "leakage_guard": (
             "validation T uses labelled daily rows through T-2 and minute bars through the checkpoint only"
         ),
+    }
+
+
+def _reliability_gate(validation: dict[str, Any]) -> dict[str, Any]:
+    reasons: list[str] = []
+    sample_size = int(validation.get("sample_size") or 0)
+    recent = validation.get("recent_validation") or {}
+    recent_size = int(recent.get("sample_size") or 0)
+    high_sample = int(validation.get("high_confidence_sample_size") or 0)
+    high_accuracy = validation.get("high_confidence_accuracy")
+    roc_auc = validation.get("roc_auc")
+    brier = validation.get("brier_active")
+    baseline_brier = validation.get("baseline_brier")
+
+    if sample_size < MIN_ACTIONABLE_VALIDATION_DAYS:
+        reasons.append("validation_sample_lt_50")
+    if recent_size < MIN_ACTIONABLE_RECENT_DAYS:
+        reasons.append("recent_validation_sample_lt_25")
+    if high_sample < MIN_ACTIONABLE_HIGH_CONFIDENCE_SAMPLES:
+        reasons.append("high_confidence_sample_lt_20")
+    if high_accuracy is None or float(high_accuracy) < MIN_ACTIONABLE_HIGH_CONFIDENCE_ACCURACY:
+        reasons.append("high_confidence_accuracy_lt_55pct")
+    if roc_auc is None or float(roc_auc) < MIN_ACTIONABLE_ROC_AUC:
+        reasons.append("roc_auc_lt_0_52")
+    if float(recent.get("directional_accuracy") or 0.0) < MIN_ACTIONABLE_RECENT_ACCURACY:
+        reasons.append("recent_accuracy_lt_50pct")
+    if (
+        brier is None
+        or baseline_brier is None
+        or float(brier) > float(baseline_brier) + MAX_ACTIONABLE_BRIER_MARGIN
+    ):
+        reasons.append("brier_worse_than_baseline_tolerance")
+    return {
+        "passed": not reasons,
+        "reasons": reasons,
+        "thresholds": {
+            "validation_sample_size": MIN_ACTIONABLE_VALIDATION_DAYS,
+            "recent_sample_size": MIN_ACTIONABLE_RECENT_DAYS,
+            "high_confidence_sample_size": MIN_ACTIONABLE_HIGH_CONFIDENCE_SAMPLES,
+            "high_confidence_accuracy": MIN_ACTIONABLE_HIGH_CONFIDENCE_ACCURACY,
+            "roc_auc": MIN_ACTIONABLE_ROC_AUC,
+            "recent_directional_accuracy": MIN_ACTIONABLE_RECENT_ACCURACY,
+            "max_brier_margin_vs_baseline": MAX_ACTIONABLE_BRIER_MARGIN,
+        },
     }
 
 

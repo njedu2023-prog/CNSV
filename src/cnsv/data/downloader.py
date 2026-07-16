@@ -1,21 +1,49 @@
 from __future__ import annotations
 
 import io
+import time
 from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import pandas as pd
 import requests
 
 DEFAULT_TIMEOUT = 30
+DEFAULT_ATTEMPTS = 3
+NO_CACHE_HEADERS = {
+    "Cache-Control": "no-cache, no-store, max-age=0",
+    "Pragma": "no-cache",
+    "User-Agent": "CNSV-data-fetch/1.0",
+}
 
 
 def _get(url: str, timeout: int = DEFAULT_TIMEOUT) -> requests.Response:
-    try:
-        response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
-        return response
-    except requests.RequestException as exc:
-        raise RuntimeError(f"failed to fetch URL {url}: {exc}") from exc
+    last_error: requests.RequestException | None = None
+    for attempt in range(1, DEFAULT_ATTEMPTS + 1):
+        try:
+            response = requests.get(
+                _cache_busted_url(url),
+                timeout=timeout,
+                headers=NO_CACHE_HEADERS,
+            )
+            response.raise_for_status()
+            return response
+        except requests.RequestException as exc:
+            last_error = exc
+            if attempt < DEFAULT_ATTEMPTS:
+                time.sleep(2 ** (attempt - 1))
+    raise RuntimeError(
+        f"failed to fetch URL {url} after {DEFAULT_ATTEMPTS} attempts: {last_error}"
+    ) from last_error
+
+
+def _cache_busted_url(url: str) -> str:
+    parts = urlsplit(url)
+    if parts.hostname not in {"raw.githubusercontent.com", "githubusercontent.com"}:
+        return url
+    query = parse_qsl(parts.query, keep_blank_values=True)
+    query.append(("cnsv_cache_bust", str(time.time_ns())))
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))
 
 
 def fetch_text(url: str, timeout: int = DEFAULT_TIMEOUT) -> str:
