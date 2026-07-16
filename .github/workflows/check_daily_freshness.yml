@@ -3,8 +3,12 @@ name: Check CNSV Daily Freshness
 on:
   workflow_dispatch:
   schedule:
-    # Beijing 22:00, after the 20:04 update and all scheduled fallbacks.
+    # Prewake at Beijing 20:00 and 21:00, then verify at 22:00.
+    # The final 22:30 event is an independent recovery check.
+    - cron: "0 12 * * *"
+    - cron: "0 13 * * *"
     - cron: "0 14 * * *"
+    - cron: "30 14 * * *"
 
 permissions:
   contents: read
@@ -12,12 +16,30 @@ permissions:
 
 concurrency:
   group: cnsv-daily-freshness-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 140
     steps:
+      - name: Hold prewarmed runner until Beijing 22:00
+        if: github.event_name == 'schedule'
+        run: |
+          python - <<'PY'
+          import time
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.now(ZoneInfo("Asia/Shanghai"))
+          target = now.replace(hour=22, minute=0, second=0, microsecond=0)
+          wait_seconds = (target - now).total_seconds()
+          if 0 < wait_seconds <= 2 * 60 * 60 + 5 * 60:
+              print(f"Prewarmed at {now.isoformat()}; waiting {wait_seconds:.0f}s until {target.isoformat()}")
+              time.sleep(wait_seconds)
+          else:
+              print(f"No prewarm wait needed at {now.isoformat()}")
+          PY
       - uses: actions/checkout@v4
         with:
           ref: main

@@ -15,14 +15,16 @@ on:
       - ".github/workflows/run_human_decision_support.yml"
       - ".github/workflows/run_risk_explanation.yml"
   schedule:
-    # Beijing 20:24 primary, then every 15 minutes through 21:24.
-    # CNSVdata starts at 20:04. The freshness precheck makes early or holiday
-    # runs a no-op until a new completed close-data snapshot is available.
+    # Prewake at Beijing 18:24 and 19:24, then hold the runner until 20:24.
+    # The check job polls CNSVdata until its new close snapshot is committed.
+    - cron: "24 10 * * *"
+    - cron: "24 11 * * *"
     - cron: "24 12 * * *"
-    - cron: "39 12 * * *"
     - cron: "54 12 * * *"
-    - cron: "9 13 * * *"
     - cron: "24 13 * * *"
+    - cron: "54 13 * * *"
+    - cron: "24 14 * * *"
+    - cron: "54 14 * * *"
 
 concurrency:
   group: cnsv-mainline-daily-main
@@ -34,10 +36,28 @@ permissions:
 jobs:
   check-upstream:
     runs-on: ubuntu-latest
+    timeout-minutes: 320
     outputs:
       should_run: ${{ steps.freshness.outputs.should_run }}
       reason: ${{ steps.freshness.outputs.reason }}
     steps:
+      - name: Hold prewarmed runner until Beijing 20:24
+        if: github.event_name == 'schedule'
+        run: |
+          python - <<'PY'
+          import time
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.now(ZoneInfo("Asia/Shanghai"))
+          target = now.replace(hour=20, minute=24, second=0, microsecond=0)
+          wait_seconds = (target - now).total_seconds()
+          if 0 < wait_seconds <= 2 * 60 * 60 + 5 * 60:
+              print(f"Prewarmed at {now.isoformat()}; waiting {wait_seconds:.0f}s until {target.isoformat()}")
+              time.sleep(wait_seconds)
+          else:
+              print(f"No prewarm wait needed at {now.isoformat()}")
+          PY
       - name: Checkout for freshness comparison
         uses: actions/checkout@v4
       - name: Check whether CNSVdata has a new snapshot
@@ -45,20 +65,37 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           UPSTREAM_READY_URL: https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main/metadata/downstream_ready.json
+          UPSTREAM_NEXT_DATE_URL: https://raw.githubusercontent.com/njedu2023-prog/CNSVdata/refs/heads/main/metadata/daily/daily_next_trade_date.json
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           import os
+          import sys
+          import time
           import urllib.request
+          from datetime import datetime, timedelta
           from pathlib import Path
+          from zoneinfo import ZoneInfo
 
           def iso_date(value):
               text = str(value or "")[:10].replace("-", "")
               return f"{text[:4]}-{text[4:6]}-{text[6:8]}" if len(text) == 8 and text.isdigit() else ""
 
+          def remote_json(url):
+              separator = "&" if "?" in url else "?"
+              request = urllib.request.Request(
+                  f"{url}{separator}t={time.time_ns()}",
+                  headers={"Cache-Control": "no-cache", "User-Agent": "CNSV-mainline-freshness"},
+              )
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  return json.load(response)
+
+          def emit(should_run, reason):
+              print(f"should_run={str(should_run).lower()}")
+              print(f"reason={reason}")
+
           if os.environ["EVENT_NAME"] != "schedule":
-              print("should_run=true")
-              print("reason=manual_or_code_change")
+              emit(True, "manual_or_code_change")
               raise SystemExit(0)
 
           current_path = Path("docs/data/latest_trading_decision_report.json")
@@ -67,23 +104,56 @@ jobs:
           data_report_path = Path("docs/data/latest_data_report.json")
           data_report = json.loads(data_report_path.read_text(encoding="utf-8")) if data_report_path.exists() else {}
           current_snapshot = str(((data_report.get("data_manifest") or {}).get("snapshot_id")) or "")
-          try:
-              request = urllib.request.Request(
-                  os.environ["UPSTREAM_READY_URL"],
-                  headers={"Cache-Control": "no-cache", "User-Agent": "CNSV-mainline-freshness"},
+
+          started = datetime.now(ZoneInfo("Asia/Shanghai"))
+          end_of_window = started.replace(hour=23, minute=30, second=0, microsecond=0)
+          if started.hour < 6 or end_of_window <= started:
+              deadline = started + timedelta(minutes=45)
+          else:
+              deadline = min(started + timedelta(hours=3), end_of_window)
+
+          last_state = "upstream_not_checked"
+          while True:
+              now = datetime.now(ZoneInfo("Asia/Shanghai"))
+              today = now.date().isoformat()
+              try:
+                  upstream = remote_json(os.environ["UPSTREAM_READY_URL"])
+                  next_payload = remote_json(os.environ["UPSTREAM_NEXT_DATE_URL"])
+                  upstream_date = iso_date(upstream.get("latest_trade_date"))
+                  next_trade = iso_date(next_payload.get("next_trade_date"))
+                  upstream_snapshot = str(upstream.get("manifest_snapshot_id") or "")
+                  ready = bool(upstream.get("ready")) and upstream.get("status") in {"PASS", "WARN"}
+                  changed = bool(upstream_date) and (not current_date or upstream_date != current_date)
+                  if current_snapshot and upstream_snapshot:
+                      changed = changed or upstream_snapshot != current_snapshot
+
+                  if ready and changed:
+                      emit(True, "new_upstream_snapshot")
+                      raise SystemExit(0)
+                  if ready and upstream_date == current_date and next_trade and today < next_trade:
+                      emit(False, "upstream_unchanged_non_trading_day")
+                      raise SystemExit(0)
+                  last_state = (
+                      f"ready={ready}, current={current_date}, upstream={upstream_date}, "
+                      f"next={next_trade}, today={today}"
+                  )
+              except (SystemExit, KeyboardInterrupt):
+                  raise
+              except Exception as exc:
+                  last_state = f"{type(exc).__name__}: {exc}"
+
+              if now >= deadline:
+                  emit(False, "upstream_stale_at_deadline")
+                  print(f"::error::CNSVdata did not publish a new close snapshot: {last_state}", file=sys.stderr)
+                  raise SystemExit(1)
+
+              wait_seconds = min(300, max(1, int((deadline - now).total_seconds())))
+              print(
+                  f"Waiting {wait_seconds}s for CNSVdata; deadline={deadline.isoformat()}; {last_state}",
+                  file=sys.stderr,
+                  flush=True,
               )
-              with urllib.request.urlopen(request, timeout=15) as response:
-                  upstream = json.load(response)
-              upstream_date = iso_date(upstream.get("latest_trade_date"))
-              upstream_snapshot = str(upstream.get("manifest_snapshot_id") or "")
-              changed = not current_date or upstream_date != current_date
-              if current_snapshot and upstream_snapshot:
-                  changed = changed or upstream_snapshot != current_snapshot
-              print(f"should_run={str(changed).lower()}")
-              print(f"reason={'new_upstream_snapshot' if changed else 'upstream_unchanged'}")
-          except Exception as exc:
-              print("should_run=true")
-              print(f"reason=upstream_check_failed_{type(exc).__name__}")
+              time.sleep(wait_seconds)
           PY
 
   run-mainline-daily:
