@@ -14,7 +14,8 @@
     "prob_up_1d": 0.5256086534814411,
     "prob_down_1d": 0.47439134651855885,
     "direction_confidence": 0.5256086534814411,
-    "verification_status": "VERIFIED"
+    "verification_status": "VERIFIED",
+    "asof_price": null
   },
   {
     "trade_date": "2026-07-16",
@@ -31,7 +32,8 @@
     "close_t": 34.31,
     "close_t1": 33.0,
     "return_1d": -0.038181,
-    "verification_status": "VERIFIED"
+    "verification_status": "VERIFIED",
+    "asof_price": null
   },
   {
     "trade_date": "2026-07-17",
@@ -46,6 +48,26 @@
     "actual_direction": null,
     "is_correct": null,
     "close_t": 33.0,
+    "close_t1": null,
+    "return_1d": null,
+    "asof_price": null
+  },
+  {
+    "trade_date": "2026-07-20",
+    "data_trade_date": "2026-07-17",
+    "signal_date": "2026-07-20",
+    "verify_date": "2026-07-20",
+    "predicted_direction": "DOWN",
+    "model_id": "T1_INTRADAY_20M_HGB_V3",
+    "prob_up_1d": 0.49387285075719095,
+    "prob_down_1d": 0.506127149242809,
+    "direction_confidence": 0.506127149242809,
+    "actual_direction": null,
+    "is_correct": null,
+    "asof_price": 32.69,
+    "asof_time": "11:30:00",
+    "price_kind": "intraday_asof",
+    "close_t": null,
     "close_t1": null,
     "return_1d": null
   }
