@@ -69,14 +69,22 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     timeline = _decision_timeline(trade_date, probability, evidence_bundle)
     historical_validation = _historical_validation(reports, probability)
     realtime_basis = bool(probability.get("uses_intraday_snapshot"))
+    market_trade_date = trade_date if realtime_basis else price_volume.get("latest_trade_date") or trade_date
+    market_asof_time = probability.get("asof_time") if realtime_basis else "15:00:00"
+    market_asof_datetime = (
+        f"{market_trade_date} {str(market_asof_time)[:5]}"
+        if market_trade_date and market_trade_date != "N/A" and market_asof_time
+        else "N/A"
+    )
     market_snapshot = {
-        "latest_trade_date": trade_date if realtime_basis else price_volume.get("latest_trade_date") or trade_date,
+        "latest_trade_date": market_trade_date,
         "latest_close": probability.get("asof_price") if realtime_basis else price_volume.get("latest_close"),
         "latest_pct_chg": probability.get("asof_pct_chg") if realtime_basis else price_volume.get("latest_pct_chg"),
         "latest_amount": probability.get("asof_amount") if realtime_basis else price_volume.get("latest_amount"),
         "ma5": price_volume.get("ma5"),
         "ma20": price_volume.get("ma20"),
-        "asof_time": probability.get("asof_time") if realtime_basis else "15:00:00",
+        "asof_time": market_asof_time,
+        "asof_datetime_beijing": market_asof_datetime,
         "price_kind": "intraday_asof" if realtime_basis else "daily_close",
         "prediction_basis": probability.get("prediction_basis"),
         "direction_label_anchor": probability.get("direction_label_anchor"),

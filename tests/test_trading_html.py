@@ -21,12 +21,16 @@ def test_trading_html_is_chinese_dashboard():
     assert "验证日（T+1 收盘）" in html
     assert "生成时间（北京时间）" in html
     assert 'aria-label="交易决策日期表"' in html
-    assert "行情数据日" in html
+    assert "行情数据时间（北京时间）" in html
+    assert 'data-field="market.asof_datetime_beijing"' in html
+    assert "marketAsOf.slice(0, 5)" in html
     assert "行情基准价" in html
     assert "基准价涨跌幅" in html
     assert "行情截止时间" in html
     assert "实时数据源" in html
     assert "分钟数据质量" in html
+    assert 'class="value long-text" data-field="risk.reasons"' in html
+    assert ".value.long-text{font-size:13px" in html
     assert "模型可靠性" in html
     assert "超过 45 分钟未生成新预测" in html
     assert "预测口径" in html

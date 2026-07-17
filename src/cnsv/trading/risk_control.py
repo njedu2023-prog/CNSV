@@ -4,6 +4,16 @@ from typing import Any
 
 from cnsv.trading.utils import safe_float
 
+RELIABILITY_REASON_CN = {
+    "validation_sample_lt_50": "验证样本少于 50 个",
+    "recent_validation_sample_lt_25": "近期验证样本少于 25 个",
+    "high_confidence_sample_lt_20": "高置信样本少于 20 个",
+    "high_confidence_accuracy_lt_55pct": "高置信准确率低于 55%",
+    "roc_auc_lt_0_52": "ROC AUC 低于 0.52",
+    "recent_accuracy_lt_50pct": "近期准确率低于 50%",
+    "brier_worse_than_baseline_tolerance": "Brier 评分未优于基准容差",
+}
+
 
 def evaluate_trading_risk(reports: dict[str, Any], probability: dict[str, Any], distribution: dict[str, Any], ev: dict[str, Any]) -> dict[str, Any]:
     data = reports.get("data_report") or {}
@@ -36,8 +46,11 @@ def evaluate_trading_risk(reports: dict[str, Any], probability: dict[str, Any], 
 
     reliability = probability.get("reliability_gate") or {}
     if probability.get("model_ready") and probability.get("uses_intraday_snapshot") and reliability.get("passed") is not True:
-        details = ",".join(reliability.get("reasons") or [])
-        block_reasons.append(f"T+1 模型可靠性门禁未通过{':' + details if details else ''}")
+        details = "；".join(
+            RELIABILITY_REASON_CN.get(reason, reason)
+            for reason in (reliability.get("reasons") or [])
+        )
+        block_reasons.append(f"T+1 模型可靠性门禁未通过{'：' + details if details else ''}")
 
     crash_prob = safe_float((distribution.get("return_bins_1d") or {}).get("lt_minus_5pct"))
     p10 = safe_float(distribution.get("p10_return_1d"))

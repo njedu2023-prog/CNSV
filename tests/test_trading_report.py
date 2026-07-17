@@ -32,6 +32,9 @@ def test_trading_report_payload_contains_required_sections():
     assert payload["probability"]["prob_flat_1d"] == 0.0
     assert payload["market_snapshot"]["latest_trade_date"]
     assert payload["market_snapshot"]["latest_close"] is not None
+    assert payload["market_snapshot"]["asof_datetime_beijing"].startswith(
+        payload["market_snapshot"]["latest_trade_date"]
+    )
     assert set(payload["price_prediction_distribution"]) == {"5D", "10D", "20D"}
     assert payload["price_prediction_distribution"]["5D"]["terminal_price_p50"] is not None
     assert payload["decision"]["signal"] in {"STRONG_BUY", "BUY", "HOLD", "WATCH", "REDUCE", "SELL", "STRONG_SELL", "BLOCKED"}
@@ -39,7 +42,7 @@ def test_trading_report_payload_contains_required_sections():
     assert "信号生成日" in markdown
     assert "预测日" in markdown
     assert "行情基准价" in markdown
-    assert "行情截止时间" in markdown
+    assert "行情数据时间（北京时间）" in markdown
     assert "预测口径" in markdown
     assert "5D / 10D / 20D 价格预测分布" in markdown
     assert "历史验证与回测" in markdown
@@ -103,6 +106,7 @@ def test_realtime_probability_controls_data_date_and_market_basis(monkeypatch):
     assert payload["decision_timeline"]["prediction_date"] == "2026-07-17"
     assert payload["market_snapshot"]["latest_close"] == 33.12
     assert payload["market_snapshot"]["asof_time"] == "14:10:00"
+    assert payload["market_snapshot"]["asof_datetime_beijing"] == "2026-07-16 14:10"
     assert payload["market_snapshot"]["price_kind"] == "intraday_asof"
     assert payload["market_snapshot"]["direction_label_anchor"] == "current_trade_day_official_close"
     assert payload["market_snapshot"]["feature_price_anchor"] == "latest_valid_intraday_trade_at_checkpoint"

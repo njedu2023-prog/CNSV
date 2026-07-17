@@ -41,3 +41,5 @@ def test_intraday_model_must_pass_reliability_gate_before_actions():
 
     assert risk["blocked"] is True
     assert any("可靠性门禁未通过" in reason for reason in risk["block_reasons"])
+    assert any("高置信样本少于 20 个" in reason for reason in risk["block_reasons"])
+    assert all("high_confidence_sample_lt_20" not in reason for reason in risk["block_reasons"])
