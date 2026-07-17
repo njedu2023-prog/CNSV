@@ -37,7 +37,10 @@ def test_trading_html_is_chinese_dashboard():
     assert "次交易日官方收盘价 vs 本交易日官方收盘价" in html
     assert 'aria-label="实时行情数据表"' in html
     assert html.count('class="timeline-table pair-table"') == 2
-    assert ".pair-table tr{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content minmax(0,1fr)" in html
+    assert ".pair-table tr{display:grid;grid-template-columns:168px minmax(0,1fr) 168px minmax(0,1fr)" in html
+    assert ".pair-table th{padding-right:0;text-align:right;white-space:normal}" in html
+    assert ".pair-table td{padding-left:6px;text-align:left" in html
+    assert ".pair-table tr{grid-template-columns:148px minmax(0,1fr)}" in html
     assert '.pair-table th::after{content:"："}' in html
     assert ".pair-table td{padding-left:6px" in html
     assert "累计成交额" in html
