@@ -45,12 +45,13 @@
     "prob_up_1d": 0.5055173846145089,
     "prob_down_1d": 0.4944826153854911,
     "direction_confidence": 0.5055173846145089,
-    "actual_direction": null,
-    "is_correct": null,
+    "actual_direction": "DOWN",
+    "is_correct": false,
     "close_t": 33.0,
-    "close_t1": null,
-    "return_1d": null,
-    "asof_price": null
+    "close_t1": 32.34,
+    "return_1d": -0.019999999999999907,
+    "asof_price": null,
+    "verification_status": "VERIFIED"
   },
   {
     "trade_date": "2026-07-20",
