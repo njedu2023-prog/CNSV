@@ -5,8 +5,8 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-07-21",
-  "generated_at": "2026-07-21T09:39:18.530243+00:00",
-  "generated_at_beijing": "2026-07-21T17:39:18.530243+08:00",
+  "generated_at": "2026-07-21T12:27:52.387482+00:00",
+  "generated_at_beijing": "2026-07-21T20:27:52.387482+08:00",
   "timezone": "Asia/Shanghai",
   "data_status": "PASS",
   "is_trade_signal": false,
@@ -46,7 +46,7 @@
     "last_valid_trade_time": "2026-07-21 15:00:00",
     "asof_price": 32.96,
     "minute_rows_today": 241,
-    "lag_minutes": 159.19,
+    "lag_minutes": 327.76,
     "expected_asof_time": "15:00:00",
     "expected_minute_rows": 241,
     "observed_expected_minute_rows": 241,
@@ -64,7 +64,7 @@
     "future_data_guard": "current-day features use only trade_time <= reported asof_time",
     "schedule_window_beijing": "09:15-11:30,13:02-15:10; final 20:04",
     "blocking_reason": null,
-    "created_at": "2026-07-21 17:39:11"
+    "created_at": "2026-07-21 20:27:45"
   },
   "decision": {
     "signal": "BLOCKED",
@@ -94,7 +94,7 @@
     "data_trade_date": "2026-07-21",
     "decision_trade_date": "2026-07-22",
     "generated_date_beijing": "2026-07-21",
-    "generated_at_beijing": "2026-07-21T17:39:18.530243+08:00",
+    "generated_at_beijing": "2026-07-21T20:27:52.387482+08:00",
     "valid_until_beijing": "2026-07-22T15:00:00+08:00",
     "runtime_status_required": true
   },
@@ -103,8 +103,8 @@
     "latest_close": 32.96,
     "latest_pct_chg": -0.15146925174188697,
     "latest_amount": 3072219.854,
-    "ma5": 33.286,
-    "ma20": 34.933,
+    "ma5": 33.124,
+    "ma20": 34.7905,
     "asof_time": "15:00:00",
     "asof_datetime_beijing": "2026-07-21 15:00",
     "price_kind": "intraday_asof",
@@ -116,10 +116,10 @@
     "5D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 33.01,
-      "terminal_price_p10": 28.62732723480679,
-      "terminal_price_p50": 33.33272346368715,
-      "terminal_price_p90": 36.07616105649889,
+      "latest_close": 32.96,
+      "terminal_price_p10": 28.583965636450525,
+      "terminal_price_p50": 33.282234636871515,
+      "terminal_price_p90": 36.02151676528942,
       "terminal_return_p10": -0.13276803287468064,
       "terminal_return_p50": 0.009776536312849249,
       "terminal_return_p90": 0.09288582418960604,
@@ -132,10 +132,10 @@
     "10D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 33.01,
-      "terminal_price_p10": 29.745921973091736,
-      "terminal_price_p50": 33.020497694387025,
-      "terminal_price_p90": 37.37335519896134,
+      "latest_close": 32.96,
+      "terminal_price_p10": 29.70086604765537,
+      "terminal_price_p50": 32.97048179360789,
+      "terminal_price_p90": 37.31674605749063,
       "terminal_return_p10": -0.09888149127259195,
       "terminal_return_p50": 0.00031801558276356445,
       "terminal_return_p90": 0.1321828294141576,
@@ -148,10 +148,10 @@
     "20D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 33.01,
-      "terminal_price_p10": 27.00520421097882,
-      "terminal_price_p50": 32.462682288266365,
-      "terminal_price_p90": 38.43021602920081,
+      "latest_close": 32.96,
+      "terminal_price_p10": 26.964299630229082,
+      "terminal_price_p50": 32.41351130630898,
+      "terminal_price_p90": 38.37200606853858,
       "terminal_return_p10": -0.18190838500518558,
       "terminal_return_p50": -0.016580360852275988,
       "terminal_return_p90": 0.1641992132444957,
@@ -206,50 +206,50 @@
       "method": "chronological_walk_forward_with_recent_safety_slice",
       "sample_size": 60,
       "trading_day_count": 60,
-      "start_date": "2026-04-20",
-      "end_date": "2026-07-17",
+      "start_date": "2026-04-21",
+      "end_date": "2026-07-20",
       "checkpoint_time": "15:00:00",
       "directional_accuracy": 0.5833333333333334,
       "accuracy_ci_95_low": 0.45728081022640116,
       "accuracy_ci_95_high": 0.6993572144165838,
-      "brier_raw": 0.24592354810330697,
-      "brier_active": 0.24592354810330697,
-      "brier_calibrated": 0.24592354810330697,
+      "brier_raw": 0.24601398007852573,
+      "brier_active": 0.24601398007852573,
+      "brier_calibrated": 0.24601398007852573,
       "calibration_method": "none_small_sample",
-      "roc_auc": 0.6084538375973304,
-      "actual_up_rate": 0.48333333333333334,
+      "roc_auc": 0.6116071428571429,
+      "actual_up_rate": 0.4666666666666667,
       "high_confidence_threshold": 0.55,
       "high_confidence_sample_size": 6,
       "high_confidence_coverage": 0.1,
       "high_confidence_accuracy": 0.5,
       "candidate_accepted": true,
       "candidate_directional_accuracy": 0.5833333333333334,
-      "candidate_brier": 0.24592354810330697,
-      "baseline_directional_accuracy": 0.48333333333333334,
-      "baseline_brier": 0.25017801666666667,
+      "candidate_brier": 0.24601398007852573,
+      "baseline_directional_accuracy": 0.4666666666666667,
+      "baseline_brier": 0.25033595416666665,
       "development": {
         "sample_size": 30,
-        "directional_accuracy": 0.6,
-        "brier": 0.24397217281967196,
-        "roc_auc": 0.6473214285714286
+        "directional_accuracy": 0.5666666666666667,
+        "brier": 0.24535414702210412,
+        "roc_auc": 0.6425339366515838
       },
       "recent_validation": {
         "sample_size": 30,
-        "directional_accuracy": 0.5666666666666667,
-        "brier": 0.247874923386942,
-        "roc_auc": 0.5422222222222222
+        "directional_accuracy": 0.6,
+        "brier": 0.24667381313494735,
+        "roc_auc": 0.5644444444444445
       },
       "recent_holdout": {
         "sample_size": 30,
-        "directional_accuracy": 0.5666666666666667,
-        "brier": 0.247874923386942,
-        "roc_auc": 0.5422222222222222
+        "directional_accuracy": 0.6,
+        "brier": 0.24667381313494735,
+        "roc_auc": 0.5644444444444445
       },
       "recent_holdout_baseline": {
         "sample_size": 30,
         "directional_accuracy": 0.5,
-        "brier": 0.25013185833333335,
-        "roc_auc": 0.31333333333333335
+        "brier": 0.2500982583333334,
+        "roc_auc": 0.3600000000000001
       },
       "refit_interval_days": 1,
       "leakage_guard": "validation T uses labelled daily rows through T-2 and minute bars through the checkpoint only"
@@ -273,19 +273,19 @@
     "actionable_model": false,
     "model_return_distribution": {
       "return_bins_1d": {
-        "gt_5pct": 0.041666666666666664,
-        "plus_2_to_5pct": 0.20833333333333334,
-        "zero_to_plus_2pct": 0.125,
-        "zero_to_minus_2pct": 0.375,
-        "minus_2_to_5pct": 0.20833333333333334,
-        "lt_minus_5pct": 0.041666666666666664
+        "gt_5pct": 0.04,
+        "plus_2_to_5pct": 0.2,
+        "zero_to_plus_2pct": 0.12,
+        "zero_to_minus_2pct": 0.4,
+        "minus_2_to_5pct": 0.2,
+        "lt_minus_5pct": 0.04
       },
-      "expected_return_1d": -0.003175590455135782,
-      "median_return_1d": -0.006459948320413522,
-      "p10_return_1d": -0.03757608474067188,
-      "p90_return_1d": 0.0327318349272405,
+      "expected_return_1d": -0.003109154537627106,
+      "median_return_1d": -0.0051679586563307955,
+      "p10_return_1d": -0.03737435023617806,
+      "p90_return_1d": 0.032666611852812104,
       "distribution_source": "T1_INTRADAY_20M_HGB_V3:walk_forward_same_direction",
-      "sample_size": 24
+      "sample_size": 25
     },
     "inputs": {
       "realtime_source": "Tushare direct realtime",
@@ -293,8 +293,8 @@
       "realtime_coverage_ratio": 1.0,
       "realtime_trading_minute_lag": 0,
       "minute_rows": 36873,
-      "daily_rows": 3860,
-      "moneyflow_rows": 3860,
+      "daily_rows": 3861,
+      "moneyflow_rows": 3861,
       "historical_intraday_days": 153,
       "feature_columns": [
         "ret_1",
@@ -329,26 +329,26 @@
   },
   "return_distribution": {
     "return_bins_1d": {
-      "gt_5pct": 0.041666666666666664,
-      "plus_2_to_5pct": 0.20833333333333334,
-      "zero_to_plus_2pct": 0.125,
-      "zero_to_minus_2pct": 0.375,
-      "minus_2_to_5pct": 0.20833333333333334,
-      "lt_minus_5pct": 0.041666666666666664
+      "gt_5pct": 0.04,
+      "plus_2_to_5pct": 0.2,
+      "zero_to_plus_2pct": 0.12,
+      "zero_to_minus_2pct": 0.4,
+      "minus_2_to_5pct": 0.2,
+      "lt_minus_5pct": 0.04
     },
-    "expected_return_1d": -0.003175590455135782,
-    "median_return_1d": -0.006459948320413522,
-    "p10_return_1d": -0.03757608474067188,
-    "p90_return_1d": 0.0327318349272405,
+    "expected_return_1d": -0.003109154537627106,
+    "median_return_1d": -0.0051679586563307955,
+    "p10_return_1d": -0.03737435023617806,
+    "p90_return_1d": 0.032666611852812104,
     "distribution_source": "T1_INTRADAY_20M_HGB_V3:walk_forward_same_direction",
-    "sample_size": 24
+    "sample_size": 25
   },
   "ev": {
-    "raw_ev": -0.0024999999999999996,
+    "raw_ev": -0.002800000000000001,
     "transaction_cost": 0.0015,
-    "risk_penalty": 0.004047753445920417,
-    "cost_adjusted_ev": -0.004,
-    "risk_adjusted_ev": -0.008047753445920416,
+    "risk_penalty": 0.003989948018894245,
+    "cost_adjusted_ev": -0.004300000000000001,
+    "risk_adjusted_ev": -0.008289948018894246,
     "ev_rating": "negative",
     "ev_rating_cn": "负期望"
   },
@@ -368,8 +368,8 @@
       "波动率异常"
     ],
     "warnings": [],
-    "downside_tail_prob": 0.041666666666666664,
-    "p10_return_1d": -0.03757608474067188,
+    "downside_tail_prob": 0.04,
+    "p10_return_1d": -0.03737435023617806,
     "human_risk_explanation": "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；高置信准确率低于 55%；方向置信度不足；风险调整 EV 为负；波动率异常，因此需要风控降级或拦截。"
   },
   "exit": {
@@ -386,15 +386,15 @@
       "horizon": "1D",
       "standard": {
         "sample_size": 60,
-        "start_date": "2026-04-20",
-        "end_date": "2026-07-17",
+        "start_date": "2026-04-21",
+        "end_date": "2026-07-20",
         "directional_accuracy": 0.5833333333333334,
         "accuracy_ci_95_low": 0.45728081022640116,
         "accuracy_ci_95_high": 0.6993572144165838,
-        "brier_raw": 0.24592354810330697,
-        "brier_active": 0.24592354810330697,
-        "brier_calibrated": 0.24592354810330697,
-        "roc_auc": 0.6084538375973304,
+        "brier_raw": 0.24601398007852573,
+        "brier_active": 0.24601398007852573,
+        "brier_calibrated": 0.24601398007852573,
+        "roc_auc": 0.6116071428571429,
         "high_confidence_threshold": 0.55,
         "high_confidence_sample_size": 6,
         "high_confidence_coverage": 0.1,
@@ -411,10 +411,10 @@
       "model": "B2_state_grouped_distribution",
       "horizon": "5D",
       "standard": {
-        "sample_size": 716,
-        "directional_accuracy": 0.505586592178771,
-        "positive_prob_brier": 0.2509269343874313,
-        "p10_p90_interval_coverage": 0.7821229050279329
+        "sample_size": 717,
+        "directional_accuracy": 0.5062761506276151,
+        "positive_prob_brier": 0.2508312206917994,
+        "p10_p90_interval_coverage": 0.7824267782426778
       },
       "purged": {
         "sample_size": 144,
@@ -473,10 +473,10 @@
     "live_stats": {
       "name": "实盘统计线",
       "start_date": "2026-07-15",
-      "direction_accuracy": 0.0,
-      "correct_count": 0,
+      "direction_accuracy": 0.5,
+      "correct_count": 1,
       "wrong_count": 1,
-      "sample_count": 1,
+      "sample_count": 2,
       "model_id": "T1_INTRADAY_20M_HGB_V3",
       "description": "从新 T+1 模型上线日起，逐日按下一交易日收盘方向验证。"
     }
