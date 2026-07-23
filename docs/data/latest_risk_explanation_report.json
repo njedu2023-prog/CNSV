@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-22T12:27:28.916616+00:00",
-    "latest_trade_date": "2026-07-22",
+    "generated_at": "2026-07-23T12:28:02.130161+00:00",
+    "latest_trade_date": "2026-07-23",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -270,7 +270,7 @@
     }
   },
   "feature_risk_explanation": {
-    "risk_level": "medium",
+    "risk_level": "low",
     "trend_state_risk": {
       "risk_level": "medium",
       "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
@@ -288,8 +288,8 @@
       "human_review_required": true
     },
     "flow_strength_basic_risk": {
-      "risk_level": "medium",
-      "risk_reason": "资金流强弱状态为 mixed。",
+      "risk_level": "low",
+      "risk_reason": "资金流强弱状态为 positive。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -312,7 +312,7 @@
       "human_review_required": true
     },
     "feature_conflict_risk": {
-      "risk_level": "medium",
+      "risk_level": "low",
       "risk_reason": "趋势与资金流可能出现解释冲突。",
       "risk_evidence": [
         "latest_feature_report.json"
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 91。",
+      "risk_reason": "B2 最小状态样本数为 79。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -375,7 +375,7 @@
     },
     "touch_down_risk": {
       "risk_level": "high",
-      "risk_reason": "20D touch_down_5pct_prob=0.6572。",
+      "risk_reason": "20D touch_down_5pct_prob=0.6615。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -383,7 +383,7 @@
     },
     "max_drawdown_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.1015。",
+      "risk_reason": "20D max_drawdown_p50=-0.1028。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=91。",
+      "risk_reason": "P2 min_state_sample_size=79。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
