@@ -14,7 +14,7 @@ from cnsv.trading.position_engine import compute_position
 from cnsv.trading.probability import compute_next_day_probability
 from cnsv.trading.return_distribution import compute_return_distribution
 from cnsv.trading.risk_control import evaluate_trading_risk
-from cnsv.trading.signal_engine import decide_signal
+from cnsv.trading.signal_engine import build_trade_advice, decide_signal
 from cnsv.trading.utils import pct
 
 CN_MARKET_HOLIDAY_FALLBACK = {
@@ -139,7 +139,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         )
         payload["decision"]["signal"] = "BLOCKED"
         payload["decision"]["signal_cn"] = "风控阻断"
-        payload["decision"]["suggested_action"] = "T+1 模型不可用，不允许输出买卖建议"
+        payload["decision"]["suggested_action"] = "暂不买入；持仓减仓"
         payload["decision"]["suggested_position_pct"] = 0.0
         payload["decision"]["position_range"] = "0%"
         payload["risk"]["blocked"] = True
@@ -150,7 +150,7 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
         reason = timeline.get("prediction_date_source") or "trade_calendar_missing_next_open_date"
         payload["decision"]["signal"] = "BLOCKED"
         payload["decision"]["signal_cn"] = "风控阻断"
-        payload["decision"]["suggested_action"] = "交易日历不可用，不允许输出次交易日建议"
+        payload["decision"]["suggested_action"] = "暂不买入；持仓减仓"
         payload["decision"]["suggested_position_pct"] = 0.0
         payload["decision"]["position_range"] = "0%"
         payload["risk"]["blocked"] = True
@@ -160,13 +160,27 @@ def build_trading_decision_payload(evidence_bundle: dict[str, Any]) -> dict[str,
     if evidence_bundle.get("missing_reports"):
         payload["decision"]["signal"] = "BLOCKED"
         payload["decision"]["signal_cn"] = "风控阻断"
-        payload["decision"]["suggested_action"] = "缺少上游证据，不允许输出买卖建议"
+        payload["decision"]["suggested_action"] = "暂不买入；持仓减仓"
         payload["decision"]["suggested_position_pct"] = 0.0
         payload["decision"]["position_range"] = "0%"
         payload["risk"]["blocked"] = True
         payload["risk"]["risk_passed"] = False
         payload["risk"]["block_reasons"] = payload["risk"].get("block_reasons", []) + ["缺少上游报告"]
         payload["is_trade_signal"] = False
+    payload["decision"].update(
+        build_trade_advice(
+            payload["decision"]["signal"],
+            probability,
+            ev,
+            payload["risk"],
+        )
+    )
+    payload["human_explanation"] = _human_explanation(
+        payload["decision"],
+        probability,
+        ev,
+        payload["risk"],
+    )
     return payload
 
 
@@ -421,7 +435,7 @@ def _pick(data: dict[str, Any], *keys: str) -> dict[str, Any]:
 def _human_explanation(decision: dict[str, Any], probability: dict[str, Any], ev: dict[str, Any], risk: dict[str, Any]) -> dict[str, str]:
     signal = decision["signal"]
     if signal == "BLOCKED":
-        summary = "当前数据或模型条件不满足交易决策要求，不允许输出买卖建议。"
+        summary = f"明确建议：{decision.get('trade_advice_cn', decision.get('suggested_action', '暂不买入'))}。模型方向继续展示，风控限制单独说明。"
     elif signal in {"BUY", "STRONG_BUY"}:
         summary = f"模型认为次日上涨概率为 {pct(probability['prob_up_1d'])}，风险调整 EV 为 {pct(ev['risk_adjusted_ev'])}，可作为人工轻仓参与参考。"
     elif signal in {"SELL", "STRONG_SELL"}:

@@ -3,13 +3,14 @@ import pandas as pd
 from cnsv.trading.evidence_loader import load_trading_evidence
 from cnsv.trading.fusion import build_trading_decision_payload, _decision_timeline
 from cnsv.trading.live_stats import update_live_stats_registry
-from cnsv.trading.report import build_trading_markdown, write_trading_markdown
+from cnsv.trading.report import build_trading_html, build_trading_markdown, write_trading_markdown
 from cnsv.utils.io import repo_root
 
 
 def test_trading_report_payload_contains_required_sections():
     payload = build_trading_decision_payload(load_trading_evidence(repo_root()))
     markdown = build_trading_markdown(payload)
+    html = build_trading_html(payload)
 
     assert payload["version"] == "CNSV_V3.0"
     assert payload["auto_order_enabled"] is False
@@ -38,7 +39,14 @@ def test_trading_report_payload_contains_required_sections():
     assert set(payload["price_prediction_distribution"]) == {"5D", "10D", "20D"}
     assert payload["price_prediction_distribution"]["5D"]["terminal_price_p50"] is not None
     assert payload["decision"]["signal"] in {"STRONG_BUY", "BUY", "HOLD", "WATCH", "REDUCE", "SELL", "STRONG_SELL", "BLOCKED"}
+    assert payload["decision"]["trade_advice"]
+    assert payload["decision"]["trade_advice_cn"]
+    assert payload["decision"]["entry_advice"]
+    assert payload["decision"]["holding_advice"]
     assert "今日总决策" in markdown
+    assert "明确买卖建议" in markdown
+    assert "空仓操作" in markdown
+    assert "持仓操作" in markdown
     assert "信号生成日" in markdown
     assert "预测日" in markdown
     assert "行情基准价" in markdown
@@ -50,6 +58,10 @@ def test_trading_report_payload_contains_required_sections():
     assert "模型表现追踪" in markdown
     assert "实盘统计线方向准确率" in markdown
     assert "人工交易决策参考" in markdown
+    assert 'aria-label="明确买卖建议"' in html
+    assert "空仓操作" in html
+    assert "已有仓位" in html
+    assert "不允许输出买卖建议" not in html
 
 
 def test_trading_timeline_uses_trade_calendar_after_data_trade_date():
@@ -166,6 +178,8 @@ def test_realtime_model_date_mismatch_is_blocked(monkeypatch):
 
     assert payload["trade_date"] == "2026-07-17"
     assert payload["decision"]["signal"] == "BLOCKED"
+    assert payload["decision"]["trade_advice"] == "NO_BUY_REDUCE"
+    assert "不允许输出买卖建议" not in payload["decision"]["suggested_action"]
     assert any("实时交易日不一致" in reason for reason in payload["risk"]["block_reasons"])
 
 

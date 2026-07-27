@@ -52,22 +52,66 @@ def decide_signal(probability: dict[str, Any], distribution: dict[str, Any], ev:
     else:
         signal = "WATCH"
         reasons = ["信号强度不足，适合观察而非主动交易"]
+    advice = build_trade_advice(signal, probability, ev, risk)
     return {
         "signal": signal,
         "signal_cn": SIGNAL_CN[signal],
-        "suggested_action": _action(signal),
         "decision_reasons": reasons,
+        **advice,
     }
 
 
-def _action(signal: str) -> str:
+def build_trade_advice(
+    signal: str,
+    probability: dict[str, Any],
+    ev: dict[str, Any],
+    risk: dict[str, Any],
+) -> dict[str, str]:
+    if signal == "STRONG_BUY":
+        return _advice("BUY", "分批买入；持仓继续持有", "分批买入", "继续持有，可小幅加仓")
+    if signal == "BUY":
+        return _advice("BUY", "轻仓买入；持仓继续持有", "轻仓买入", "继续持有")
+    if signal == "HOLD":
+        return _advice("HOLD", "暂不追买；持仓继续持有", "暂不追买", "继续持有，触发止损时卖出")
+    if signal == "WATCH":
+        return _advice("WAIT", "暂不买入；持仓观察", "暂不买入", "继续观察，不加仓，触发止损时卖出")
+    if signal == "REDUCE":
+        return _advice("REDUCE", "暂不买入；持仓减仓", "暂不买入", "降低至低仓位")
+    if signal == "SELL":
+        return _advice("SELL", "不买入；持仓卖出或降至低仓位", "不买入", "卖出或降低至低仓位")
+    if signal == "STRONG_SELL":
+        return _advice("SELL", "不买入；持仓卖出", "不买入", "优先卖出")
+
+    up = safe_float(probability.get("prob_up_1d"))
+    down = safe_float(probability.get("prob_down_1d"))
+    direction = probability.get("predicted_direction") or ("UP" if up >= down else "DOWN")
+    risk_ev = safe_float(ev.get("risk_adjusted_ev"))
+    reasons = risk.get("block_reasons") or []
+    hard_data_block = any(
+        marker in str(reason)
+        for reason in reasons
+        for marker in ("数据门禁", "模型不可用", "缺少", "交易日历", "交易日不一致")
+    )
+    if direction == "DOWN" or risk_ev < 0 or hard_data_block:
+        return _advice(
+            "NO_BUY_REDUCE",
+            "暂不买入；持仓减仓",
+            "暂不买入",
+            "减至低仓位，触发止损时卖出",
+        )
+    return _advice(
+        "NO_BUY_HOLD",
+        "暂不买入；持仓观察",
+        "暂不买入",
+        "继续持有但不加仓，触发止损时卖出",
+    )
+
+
+def _advice(code: str, summary: str, entry: str, holding: str) -> dict[str, str]:
     return {
-        "STRONG_BUY": "分批参与，仍需控制仓位",
-        "BUY": "轻仓参与",
-        "HOLD": "持仓继续观察",
-        "WATCH": "观察等待",
-        "REDUCE": "降低仓位",
-        "SELL": "降低至低仓位或退出",
-        "STRONG_SELL": "优先退出",
-        "BLOCKED": "不允许输出买卖建议",
-    }[signal]
+        "trade_advice": code,
+        "trade_advice_cn": summary,
+        "entry_advice": entry,
+        "holding_advice": holding,
+        "suggested_action": summary,
+    }

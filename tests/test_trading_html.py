@@ -16,6 +16,13 @@ def test_trading_html_is_chinese_dashboard():
     assert "Date.now()" in html
     assert 'cache: "no-store"' in html
     assert "function render(payload)" in html
+    assert "function resolveTradeAdvice(decision, probability, ev, risk)" in html
+    assert 'aria-label="明确买卖建议"' in html
+    assert 'data-field="decision.entry_advice"' in html
+    assert 'data-field="decision.holding_advice"' in html
+    assert 'data-field="decision.trade_advice_cn"' in html
+    assert "明确建议：${advice.summary}" in html
+    assert "暂不买入；持仓减仓" in html
     assert "数据交易日（T）" in html
     assert "决策适用日（T+1）" in html
     assert "验证日（T+1 收盘）" in html
@@ -31,6 +38,7 @@ def test_trading_html_is_chinese_dashboard():
     assert "分钟数据质量" in html
     assert 'class="value long-text" data-field="risk.reasons"' in html
     assert ".value.long-text{font-size:13px" in html
+    assert ".timeline-table{table-layout:fixed}" in html
     assert "模型可靠性" in html
     assert "超过 45 分钟未生成新预测" in html
     assert "预测口径" in html
@@ -62,6 +70,7 @@ def test_trading_html_is_chinese_dashboard():
     assert "V2.0 人工决策" not in html
     assert "原始 JSON" not in html
     assert "建议仓位" in html
+    assert "明确买卖建议" in html
     assert "风险调整 EV" in html
     assert "模型表现追踪" in html
     assert "T+1 扩展窗口" in html
