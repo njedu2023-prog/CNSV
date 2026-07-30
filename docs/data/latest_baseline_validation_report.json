@@ -6,8 +6,8 @@
     "report_type": "baseline_validation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-29T12:26:37.033941+00:00",
-    "latest_trade_date": "2026-07-29",
+    "generated_at": "2026-07-30T12:25:25.636807+00:00",
+    "latest_trade_date": "2026-07-30",
     "is_trade_signal": false
   },
   "validation_quality": {
@@ -431,7 +431,7 @@
           "p10_coverage": 0.9220055710306406,
           "p90_coverage": 0.8857938718662952,
           "p10_p90_interval_coverage": 0.807799442896936,
-          "median_error": -0.001409768732828029,
+          "median_error": -0.0014097687328280286,
           "mean_error": -0.003367601182249227,
           "mae_median": 0.06722694244446743,
           "rmse_median": 0.09594779369973701,
@@ -526,7 +526,7 @@
           "p90_coverage": 0.8746518105849582,
           "p10_p90_interval_coverage": 0.7701949860724234,
           "median_error": -0.005886335999404777,
-          "mean_error": -0.002356746243902889,
+          "mean_error": -0.0023567462439028877,
           "mae_median": 0.10266379907519019,
           "rmse_median": 0.1396399304874969,
           "positive_prob_brier": 0.26021490252220864,
@@ -550,7 +550,7 @@
           "p10_coverage": 0.9220055710306406,
           "p90_coverage": 0.8857938718662952,
           "p10_p90_interval_coverage": 0.807799442896936,
-          "median_error": -0.0036671706344631903,
+          "median_error": -0.003667170634463191,
           "mean_error": -0.0026930935584364778,
           "mae_median": 0.04615895944659844,
           "rmse_median": 0.0682192316610867,
@@ -906,7 +906,7 @@
         "B2_vs_B1_brier_delta": 0.004173213763813077,
         "B2_vs_B1_pinball_loss_delta": 0.0004057151646391366,
         "B2_vs_B1_directional_accuracy_delta": -0.01671309192200554,
-        "B2_vs_B1_median_error_delta": -0.0009968913311499425,
+        "B2_vs_B1_median_error_delta": -0.000996891331149942,
         "B2_vs_B1_conclusion": "B2 underperforms B1"
       },
       "20D": {

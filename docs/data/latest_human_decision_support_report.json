@@ -6,8 +6,8 @@
     "report_type": "human_decision_support_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-29T12:28:57.099208+00:00",
-    "latest_trade_date": "2026-07-29",
+    "generated_at": "2026-07-30T12:27:10.815310+00:00",
+    "latest_trade_date": "2026-07-30",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -71,8 +71,8 @@
     }
   },
   "current_state_summary": {
-    "latest_trade_date": "2026-07-29",
-    "latest_close": 34.73,
+    "latest_trade_date": "2026-07-30",
+    "latest_close": 34.63,
     "trend_state": "neutral",
     "volatility_state": "high_vol",
     "flow_strength_basic": "mixed",
@@ -102,13 +102,13 @@
     }
   },
   "path_opportunity_observation": {
-    "positive_terminal_observation": 0.48739277358981026,
-    "touch_up_observation": 0.643878346763712,
+    "positive_terminal_observation": 0.4875259875259875,
+    "touch_up_observation": 0.639033264033264,
     "evidence_strength": "观察项，仅供人工复核"
   },
   "path_risk_observation": {
-    "downside_path_observation": 0.6441382895762933,
-    "drawdown_observation": -0.09699784341887685,
+    "downside_path_observation": 0.6387733887733887,
+    "drawdown_observation": -0.09569375511715111,
     "risk_attention_level": "high"
   },
   "model_consistency_summary": {
