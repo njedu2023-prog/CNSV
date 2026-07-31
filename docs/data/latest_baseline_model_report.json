@@ -6,8 +6,8 @@
     "report_type": "baseline_model_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-07-30T12:24:39.529369+00:00",
-    "latest_trade_date": "2026-07-30",
+    "generated_at": "2026-07-31T12:24:44.176155+00:00",
+    "latest_trade_date": "2026-07-31",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -26,9 +26,9 @@
     ]
   },
   "data_manifest": {
-    "snapshot_id": "cnsvdata-2026-07-30-d68c5891b29c",
-    "latest_trade_date": "2026-07-30",
-    "generated_at": "2026-07-30 20:04:43",
+    "snapshot_id": "cnsvdata-2026-07-31-f05451f0431d",
+    "latest_trade_date": "2026-07-31",
+    "generated_at": "2026-07-31 20:07:20",
     "file_count": 14
   },
   "feature_quality": {
@@ -134,12 +134,12 @@
       {
         "name": "latest_trade_date_daily_vs_1min",
         "status": "PASS",
-        "detail": "daily=2026-07-30, one_min=2026-07-30"
+        "detail": "daily=2026-07-31, one_min=2026-07-31"
       },
       {
         "name": "latest_trade_date_daily_vs_moneyflow",
         "status": "PASS",
-        "detail": "daily=2026-07-30, moneyflow=2026-07-30"
+        "detail": "daily=2026-07-31, moneyflow=2026-07-31"
       }
     ]
   },
@@ -149,8 +149,8 @@
     "warn_count": 0,
     "blocking_error_count": 0,
     "gating_warning_count": 0,
-    "non_gating_warning_count": 3,
-    "fallback_count": 3,
+    "non_gating_warning_count": 0,
+    "fallback_count": 0,
     "checks": [
       {
         "name": "required_models_present",
@@ -315,12 +315,6 @@
         "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.5D.controlled_fallback",
-        "status": "PASS",
-        "detail": "B2_state_grouped_distribution 5D state sample below threshold; transparent fallback to B1, non-gating",
-        "category": "non_gating"
-      },
-      {
         "name": "B2_state_grouped_distribution.10D.present",
         "status": "PASS",
         "detail": "B2_state_grouped_distribution 10D present",
@@ -339,12 +333,6 @@
         "category": "gating"
       },
       {
-        "name": "B2_state_grouped_distribution.10D.controlled_fallback",
-        "status": "PASS",
-        "detail": "B2_state_grouped_distribution 10D state sample below threshold; transparent fallback to B1, non-gating",
-        "category": "non_gating"
-      },
-      {
         "name": "B2_state_grouped_distribution.20D.present",
         "status": "PASS",
         "detail": "B2_state_grouped_distribution 20D present",
@@ -361,12 +349,6 @@
         "status": "PASS",
         "detail": "prices positive",
         "category": "gating"
-      },
-      {
-        "name": "B2_state_grouped_distribution.20D.controlled_fallback",
-        "status": "PASS",
-        "detail": "B2_state_grouped_distribution 20D state sample below threshold; transparent fallback to B1, non-gating",
-        "category": "non_gating"
       },
       {
         "name": "B3_volatility_adjusted.5D.present",
@@ -425,70 +407,14 @@
     ],
     "warnings": [],
     "gating_warnings": [],
-    "non_gating_warnings": [
-      "B2_state_grouped_distribution 5D state sample below threshold; transparent fallback to B1, non-gating",
-      "B2_state_grouped_distribution 10D state sample below threshold; transparent fallback to B1, non-gating",
-      "B2_state_grouped_distribution 20D state sample below threshold; transparent fallback to B1, non-gating"
-    ],
-    "fallback_notes": [
-      {
-        "model": "B2_state_grouped_distribution",
-        "horizon": "5D",
-        "state_key": "neutral|high_vol|mixed",
-        "reason": "state_sample_size_lt_30",
-        "state_sample_size": 23,
-        "state_coverage": {
-          "has_state_columns": true,
-          "state_rows": 3868,
-          "usable_state_rows": 3819
-        },
-        "fallback_method": "B1_historical_distribution",
-        "gating": false,
-        "non_blocking": true,
-        "is_trade_signal": false,
-        "next_coverage_action": "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic"
-      },
-      {
-        "model": "B2_state_grouped_distribution",
-        "horizon": "10D",
-        "state_key": "neutral|high_vol|mixed",
-        "reason": "state_sample_size_lt_30",
-        "state_sample_size": 23,
-        "state_coverage": {
-          "has_state_columns": true,
-          "state_rows": 3868,
-          "usable_state_rows": 3819
-        },
-        "fallback_method": "B1_historical_distribution",
-        "gating": false,
-        "non_blocking": true,
-        "is_trade_signal": false,
-        "next_coverage_action": "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic"
-      },
-      {
-        "model": "B2_state_grouped_distribution",
-        "horizon": "20D",
-        "state_key": "neutral|high_vol|mixed",
-        "reason": "state_sample_size_lt_30",
-        "state_sample_size": 23,
-        "state_coverage": {
-          "has_state_columns": true,
-          "state_rows": 3868,
-          "usable_state_rows": 3819
-        },
-        "fallback_method": "B1_historical_distribution",
-        "gating": false,
-        "non_blocking": true,
-        "is_trade_signal": false,
-        "next_coverage_action": "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic"
-      }
-    ]
+    "non_gating_warnings": [],
+    "fallback_notes": []
   },
   "current_state": {
-    "latest_close": 34.63,
+    "latest_close": 35.18,
     "trend_state": "neutral",
     "volatility_state": "high_vol",
-    "flow_strength_basic": "mixed",
+    "flow_strength_basic": "positive",
     "can_use_moneyflow_as_strong_factor": true
   },
   "baseline_models": {
@@ -498,47 +424,47 @@
         "5D": {
           "model_id": "B0_random_walk",
           "horizon": 5,
-          "current_close": 34.63,
+          "current_close": 35.18,
           "expected_return": 0.0,
-          "expected_price": 34.63,
-          "volatility_estimate": 0.060278318649227405,
-          "p10_return": -0.07724977363331366,
+          "expected_price": 35.18,
+          "volatility_estimate": 0.0604263163625245,
+          "p10_return": -0.07743944033448658,
           "p50_return": 0.0,
-          "p90_return": 0.07724977363331366,
-          "p10_price": 32.055557997197894,
-          "p50_price": 34.63,
-          "p90_price": 37.411200270007164,
-          "sample_size": 3863
+          "p90_return": 0.07743944033448658,
+          "p10_price": 32.558494390101075,
+          "p50_price": 35.18,
+          "p90_price": 38.012580839004755,
+          "sample_size": 3864
         },
         "10D": {
           "model_id": "B0_random_walk",
           "horizon": 10,
-          "current_close": 34.63,
+          "current_close": 35.18,
           "expected_return": 0.0,
-          "expected_price": 34.63,
-          "volatility_estimate": 0.08524641575078447,
-          "p10_return": -0.10924767756248371,
+          "expected_price": 35.18,
+          "volatility_estimate": 0.08545571612412942,
+          "p10_return": -0.109515906783613,
           "p50_return": 0.0,
-          "p90_return": 0.10924767756248371,
-          "p10_price": 31.046083987230446,
-          "p50_price": 34.63,
-          "p90_price": 38.627638206907434,
-          "sample_size": 3858
+          "p90_return": 0.109515906783613,
+          "p10_price": 31.53070498616855,
+          "p50_price": 35.18,
+          "p90_price": 39.25165645813841,
+          "sample_size": 3859
         },
         "20D": {
           "model_id": "B0_random_walk",
           "horizon": 20,
-          "current_close": 34.63,
+          "current_close": 35.18,
           "expected_return": 0.0,
-          "expected_price": 34.63,
-          "volatility_estimate": 0.12055663729845481,
-          "p10_return": -0.15449954726662732,
+          "expected_price": 35.18,
+          "volatility_estimate": 0.120852632725049,
+          "p10_return": -0.15487888066897315,
           "p50_return": 0.0,
-          "p90_return": 0.15449954726662732,
-          "p10_price": 29.672503566610388,
-          "p50_price": 34.63,
-          "p90_price": 40.41576395156178,
-          "sample_size": 3848
+          "p90_return": 0.15487888066897315,
+          "p10_price": 30.132335331160977,
+          "p50_price": 35.18,
+          "p90_price": 41.07323200801227,
+          "sample_size": 3849
         }
       }
     },
@@ -548,71 +474,71 @@
         "5D": {
           "model_id": "B1_historical_distribution",
           "horizon": 5,
-          "sample_size": 3863,
-          "mean_return": -0.0010587441943592007,
-          "median_return": -0.0016689850883880742,
-          "std_return": 0.06674580788005216,
-          "p05_return": -0.09929708327980387,
-          "p10_return": -0.06911251463831505,
-          "p25_return": -0.033096086615479324,
-          "p50_return": -0.0016689850883880742,
-          "p75_return": 0.03209489274575589,
-          "p90_return": 0.07162624742186398,
-          "p95_return": 0.10211918923566118,
-          "positive_prob": 0.48304426611441886,
-          "negative_prob": 0.5143670722236604,
-          "expected_price": 34.59335509076486,
-          "p10_price": 32.31746653847944,
-          "p50_price": 34.57225125069484,
-          "p90_price": 37.20140784416334
+          "sample_size": 3864,
+          "mean_return": -0.001042384879889508,
+          "median_return": -0.0016484935379798365,
+          "std_return": 0.06674491539759549,
+          "p05_return": -0.09929379974456835,
+          "p10_return": -0.06910190623888304,
+          "p25_return": -0.03308353672968069,
+          "p50_return": -0.0016484935379798365,
+          "p75_return": 0.03210853552413321,
+          "p90_return": 0.0716238667655733,
+          "p95_return": 0.10210957459905819,
+          "positive_prob": 0.4831780538302277,
+          "negative_prob": 0.5142339544513458,
+          "expected_price": 35.14334800598641,
+          "p10_price": 32.83108674210355,
+          "p50_price": 35.12205377244726,
+          "p90_price": 37.79215744406875
         },
         "10D": {
           "model_id": "B1_historical_distribution",
           "horizon": 10,
-          "sample_size": 3858,
-          "mean_return": -0.002172477041201529,
-          "median_return": -0.003888308809226023,
-          "std_return": 0.09511726241579808,
-          "p05_return": -0.1395241333507792,
-          "p10_return": -0.10153211869782428,
-          "p25_return": -0.049150176398991025,
-          "p50_return": -0.003888308809226023,
-          "p75_return": 0.047269193452790306,
-          "p90_return": 0.10299710679121443,
-          "p95_return": 0.1439256360021094,
-          "positive_prob": 0.47667185069984447,
-          "negative_prob": 0.5222913426645931,
-          "expected_price": 34.554848781768634,
-          "p10_price": 31.286548341291024,
-          "p50_price": 34.495609311505895,
-          "p90_price": 38.38694643469079
+          "sample_size": 3859,
+          "mean_return": -0.0021501019797343997,
+          "median_return": -0.0038486256612943375,
+          "std_return": 0.095115090909647,
+          "p05_return": -0.13951768944829504,
+          "p10_return": -0.10150953548937933,
+          "p25_return": -0.049133031506041064,
+          "p50_return": -0.0038486256612943375,
+          "p75_return": 0.04736688370262337,
+          "p90_return": 0.10299550374580532,
+          "p95_return": 0.14391673342807346,
+          "positive_prob": 0.47680746307333505,
+          "negative_prob": 0.522155998963462,
+          "expected_price": 35.104440671592585,
+          "p10_price": 31.784164810248345,
+          "p50_price": 35.04486555697823,
+          "p90_price": 38.9965524324873
         },
         "20D": {
           "model_id": "B1_historical_distribution",
           "horizon": 20,
-          "sample_size": 3848,
-          "mean_return": -0.0041126670604495295,
-          "median_return": -0.003378885942239401,
-          "std_return": 0.13428841121961846,
-          "p05_return": -0.2156987229239336,
-          "p10_return": -0.14912124636568264,
-          "p25_return": -0.0751748088487463,
-          "p50_return": -0.003378885942239401,
-          "p75_return": 0.07171662746638999,
-          "p90_return": 0.14231672793436825,
-          "p95_return": 0.2030482423030286,
-          "positive_prob": 0.4875259875259875,
-          "negative_prob": 0.5114345114345115,
-          "expected_price": 34.48787080505723,
-          "p10_price": 29.832521144894905,
-          "p50_price": 34.513186640466344,
-          "p90_price": 39.92637313409878
+          "sample_size": 3849,
+          "mean_return": -0.004125754450627214,
+          "median_return": -0.0033840979842405684,
+          "std_return": 0.134273415891359,
+          "p05_return": -0.21565354266954995,
+          "p10_return": -0.1491159998389299,
+          "p25_return": -0.0751217295231955,
+          "p50_return": -0.0033840979842405684,
+          "p75_return": 0.07166167477903179,
+          "p90_return": 0.14226706749764514,
+          "p95_return": 0.2030437394431979,
+          "positive_prob": 0.4873993244998701,
+          "negative_prob": 0.511561444531047,
+          "expected_price": 35.03515496141904,
+          "p10_price": 30.306485710775018,
+          "p50_price": 35.06114864864865,
+          "p90_price": 40.558476900176956
         }
       }
     },
     "B2_state_grouped_distribution": {
       "model_id": "B2_state_grouped_distribution",
-      "state_key": "neutral|high_vol|mixed",
+      "state_key": "neutral|high_vol|positive",
       "state_columns": [
         "trend_state",
         "volatility_state",
@@ -620,121 +546,118 @@
       ],
       "state_coverage": {
         "has_state_columns": true,
-        "state_rows": 3868,
-        "usable_state_rows": 3819
+        "state_rows": 3869,
+        "usable_state_rows": 3820
       },
       "horizons": {
         "5D": {
           "model_id": "B2_state_grouped_distribution",
           "horizon": 5,
-          "state_key": "neutral|high_vol|mixed",
-          "state_sample_size": 23,
-          "fallback_used": true,
-          "fallback_reason": "state_sample_size_lt_30",
-          "fallback_method": "B1_historical_distribution",
+          "state_key": "neutral|high_vol|positive",
+          "state_sample_size": 33,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "fallback_method": "",
           "fallback_gating": false,
-          "next_coverage_action": "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic",
-          "mean_return": -0.0010587441943592007,
-          "median_return": -0.0016689850883880742,
-          "p10_return": -0.06911251463831505,
-          "p50_return": -0.0016689850883880742,
-          "p90_return": 0.07162624742186398,
-          "positive_prob": 0.48304426611441886,
-          "expected_price": 34.59335509076486,
-          "p10_price": 32.31746653847944,
-          "p50_price": 34.57225125069484,
-          "p90_price": 37.20140784416334
+          "mean_return": 0.008205648151385869,
+          "median_return": 0.005939771387784158,
+          "p10_return": -0.07582798925217513,
+          "p50_return": 0.005939771387784158,
+          "p90_return": 0.09054121627762506,
+          "positive_prob": 0.5757575757575758,
+          "expected_price": 35.46986232967891,
+          "p10_price": 32.6110031073763,
+          "p50_price": 35.3895829787234,
+          "p90_price": 38.51389000530311
         },
         "10D": {
           "model_id": "B2_state_grouped_distribution",
           "horizon": 10,
-          "state_key": "neutral|high_vol|mixed",
-          "state_sample_size": 23,
-          "fallback_used": true,
-          "fallback_reason": "state_sample_size_lt_30",
-          "fallback_method": "B1_historical_distribution",
+          "state_key": "neutral|high_vol|positive",
+          "state_sample_size": 33,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "fallback_method": "",
           "fallback_gating": false,
-          "next_coverage_action": "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic",
-          "mean_return": -0.002172477041201529,
-          "median_return": -0.003888308809226023,
-          "p10_return": -0.10153211869782428,
-          "p50_return": -0.003888308809226023,
-          "p90_return": 0.10299710679121443,
-          "positive_prob": 0.47667185069984447,
-          "expected_price": 34.554848781768634,
-          "p10_price": 31.286548341291024,
-          "p50_price": 34.495609311505895,
-          "p90_price": 38.38694643469079
+          "mean_return": 0.008726376974160649,
+          "median_return": 0.005904698724738323,
+          "p10_return": -0.1045566731759319,
+          "p50_return": 0.005904698724738323,
+          "p90_return": 0.08770096083341035,
+          "positive_prob": 0.5757575757575758,
+          "expected_price": 35.48833731914612,
+          "p10_price": 31.687461492805504,
+          "p50_price": 35.38834179357022,
+          "p90_price": 38.40465591932443
         },
         "20D": {
           "model_id": "B2_state_grouped_distribution",
           "horizon": 20,
-          "state_key": "neutral|high_vol|mixed",
-          "state_sample_size": 23,
-          "fallback_used": true,
-          "fallback_reason": "state_sample_size_lt_30",
-          "fallback_method": "B1_historical_distribution",
+          "state_key": "neutral|high_vol|positive",
+          "state_sample_size": 33,
+          "fallback_used": false,
+          "fallback_reason": "",
+          "fallback_method": "",
           "fallback_gating": false,
-          "next_coverage_action": "extend historical state coverage for trend_state, volatility_state, and flow_strength_basic",
-          "mean_return": -0.0041126670604495295,
-          "median_return": -0.003378885942239401,
-          "p10_return": -0.14912124636568264,
-          "p50_return": -0.003378885942239401,
-          "p90_return": 0.14231672793436825,
-          "positive_prob": 0.4875259875259875,
-          "expected_price": 34.48787080505723,
-          "p10_price": 29.832521144894905,
-          "p50_price": 34.513186640466344,
-          "p90_price": 39.92637313409878
+          "mean_return": 0.016194164610778054,
+          "median_return": -0.015005640617870275,
+          "p10_return": -0.08866060357016457,
+          "p50_return": -0.015005640617870275,
+          "p90_return": 0.15120419141236371,
+          "positive_prob": 0.36363636363636365,
+          "expected_price": 35.75434870786291,
+          "p10_price": 32.19519235762194,
+          "p50_price": 34.65604255319148,
+          "p90_price": 40.92257761718202
         }
       }
     },
     "B3_volatility_adjusted": {
       "model_id": "B3_volatility_adjusted",
-      "volatility_scale": 1.1244551551107222,
+      "volatility_scale": 0.9253365238570729,
       "warnings": [],
       "horizons": {
         "5D": {
           "model_id": "B3_volatility_adjusted",
           "horizon": 5,
-          "mean_return": -0.0010587441943592007,
-          "adjusted_std": 0.07505266775275451,
-          "volatility_scale": 1.1244551551107222,
-          "p10_return": -0.09724260805120048,
-          "p50_return": -0.0010587441943592007,
-          "p90_return": 0.09512511966248209,
-          "p10_price": 31.42104057020075,
-          "p50_price": 34.59335509076486,
-          "p90_price": 38.085951156266916,
-          "sample_size": 3863
+          "mean_return": -0.001042384879889508,
+          "adjusted_std": 0.061761507999145426,
+          "volatility_scale": 0.9253365238570729,
+          "p10_return": -0.08019294214658969,
+          "p50_return": -0.001042384879889508,
+          "p90_return": 0.07810817238681068,
+          "p10_price": 32.468967829136666,
+          "p50_price": 35.14334800598641,
+          "p90_price": 38.038009571760035,
+          "sample_size": 3864
         },
         "10D": {
           "model_id": "B3_volatility_adjusted",
           "horizon": 10,
-          "mean_return": -0.002172477041201529,
-          "adjusted_std": 0.10695509606346351,
-          "volatility_scale": 1.1244551551107222,
-          "p10_return": -0.1392409478443063,
-          "p50_return": -0.002172477041201529,
-          "p90_return": 0.13489599376190325,
-          "p10_price": 30.128736296801716,
-          "p50_price": 34.554848781768634,
-          "p90_price": 39.631186737083596,
-          "sample_size": 3858
+          "mean_return": -0.0021501019797343997,
+          "adjusted_std": 0.08801346758868223,
+          "volatility_scale": 0.9253365238570729,
+          "p10_return": -0.11494389915701905,
+          "p50_return": -0.0021501019797343997,
+          "p90_return": 0.11064369519755024,
+          "p10_price": 31.360020216863546,
+          "p50_price": 35.104440671592585,
+          "p90_price": 39.29594899312898,
+          "sample_size": 3859
         },
         "20D": {
           "model_id": "B3_volatility_adjusted",
           "horizon": 20,
-          "mean_return": -0.0041126670604495295,
-          "adjusted_std": 0.15100129626752853,
-          "volatility_scale": 1.1244551551107222,
-          "p10_return": -0.19762861469136472,
-          "p50_return": -0.0041126670604495295,
-          "p90_return": 0.18940328057046568,
-          "p10_price": 28.419960810382022,
-          "p50_price": 34.48787080505723,
-          "p90_price": 41.85133261098013,
-          "sample_size": 3848
+          "mean_return": -0.004125754450627214,
+          "adjusted_std": 0.12424809590732518,
+          "volatility_scale": 0.9253365238570729,
+          "p10_return": -0.16335609627659545,
+          "p50_return": -0.004125754450627214,
+          "p90_return": 0.15510458737534102,
+          "p10_price": 29.87797667762149,
+          "p50_price": 35.03515496141904,
+          "p90_price": 41.082503558214846,
+          "sample_size": 3849
         }
       }
     }
