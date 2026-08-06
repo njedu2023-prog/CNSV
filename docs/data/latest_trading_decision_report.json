@@ -5,8 +5,8 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-08-06",
-  "generated_at": "2026-08-06T09:46:12.549605+00:00",
-  "generated_at_beijing": "2026-08-06T17:46:12.549605+08:00",
+  "generated_at": "2026-08-06T09:50:50.289340+00:00",
+  "generated_at_beijing": "2026-08-06T17:50:50.289340+08:00",
   "timezone": "Asia/Shanghai",
   "data_status": "PASS",
   "is_trade_signal": false,
@@ -46,7 +46,7 @@
     "last_valid_trade_time": "2026-08-06 15:00:00",
     "asof_price": 34.9,
     "minute_rows_today": 241,
-    "lag_minutes": 166.08,
+    "lag_minutes": 170.72,
     "expected_asof_time": "15:00:00",
     "expected_minute_rows": 241,
     "observed_expected_minute_rows": 241,
@@ -64,7 +64,7 @@
     "future_data_guard": "current-day features use only trade_time <= reported asof_time",
     "schedule_window_beijing": "09:15-11:30,13:02-15:10; final 20:04",
     "blocking_reason": null,
-    "created_at": "2026-08-06 17:46:04"
+    "created_at": "2026-08-06 17:50:43"
   },
   "decision": {
     "signal": "BLOCKED",
@@ -98,7 +98,7 @@
     "data_trade_date": "2026-08-06",
     "decision_trade_date": "2026-08-07",
     "generated_date_beijing": "2026-08-06",
-    "generated_at_beijing": "2026-08-06T17:46:12.549605+08:00",
+    "generated_at_beijing": "2026-08-06T17:50:50.289340+08:00",
     "valid_until_beijing": "2026-08-07T15:00:00+08:00",
     "runtime_status_required": true
   },
