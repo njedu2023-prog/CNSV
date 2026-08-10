@@ -6,8 +6,8 @@
     "report_type": "human_decision_support_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-08-07T12:32:59.235811+00:00",
-    "latest_trade_date": "2026-08-07",
+    "generated_at": "2026-08-10T12:28:20.681769+00:00",
+    "latest_trade_date": "2026-08-10",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -71,10 +71,10 @@
     }
   },
   "current_state_summary": {
-    "latest_trade_date": "2026-08-07",
-    "latest_close": 34.85,
+    "latest_trade_date": "2026-08-10",
+    "latest_close": 34.83,
     "trend_state": "uptrend",
-    "volatility_state": "high_vol",
+    "volatility_state": "normal_vol",
     "flow_strength_basic": "negative",
     "data_quality_status": "PASS",
     "feature_quality_status": "PASS"
@@ -102,14 +102,14 @@
     }
   },
   "path_opportunity_observation": {
-    "positive_terminal_observation": 0.4867669953295278,
-    "touch_up_observation": 0.565905552672548,
+    "positive_terminal_observation": 0.4869001297016861,
+    "touch_up_observation": 0.4575875486381323,
     "evidence_strength": "观察项，仅供人工复核"
   },
   "path_risk_observation": {
-    "downside_path_observation": 0.5529320186818889,
-    "drawdown_observation": -0.07567544906275353,
-    "risk_attention_level": "high"
+    "downside_path_observation": 0.421011673151751,
+    "drawdown_observation": -0.055522146789804716,
+    "risk_attention_level": "medium"
   },
   "model_consistency_summary": {
     "model_consistency_status": "mostly_consistent",
@@ -128,20 +128,11 @@
   "evidence_conflict_summary": {
     "evidence_conflict": true,
     "evidence_conflict_reasons": [
-      "上行触达概率与下行触达概率同时偏高，路径机会与风险并存。",
       "20D P1 相对 P0 表现偏弱。",
       "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
     ]
   },
   "human_attention_items": [
-    {
-      "category": "risk_items",
-      "text": "路径下行或回撤观察偏高，需要人工优先关注风险证据。"
-    },
-    {
-      "category": "model_items",
-      "text": "需要人工复核证据冲突：上行触达概率与下行触达概率同时偏高，路径机会与风险并存。"
-    },
     {
       "category": "model_items",
       "text": "需要人工复核证据冲突：20D P1 相对 P0 表现偏弱。"
@@ -187,7 +178,7 @@
   ],
   "support_levels": {
     "observation_priority": "high",
-    "risk_attention_level": "high",
+    "risk_attention_level": "medium",
     "evidence_strength": "moderate",
     "model_consistency_level": "mostly_consistent",
     "human_review_required": true
