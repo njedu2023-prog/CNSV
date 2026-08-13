@@ -6,8 +6,8 @@
     "report_type": "observation_backtest_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-08-12T12:31:58.699626+00:00",
-    "latest_trade_date": "2026-08-12",
+    "generated_at": "2026-08-13T12:28:23.412490+00:00",
+    "latest_trade_date": "2026-08-13",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {

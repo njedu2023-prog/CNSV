@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-08-12T12:31:59.908083+00:00",
-    "latest_trade_date": "2026-08-12",
+    "generated_at": "2026-08-13T12:28:24.923741+00:00",
+    "latest_trade_date": "2026-08-13",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -280,8 +280,8 @@
       "human_review_required": true
     },
     "volatility_state_risk": {
-      "risk_level": "low",
-      "risk_reason": "波动率状态为 normal_vol。",
+      "risk_level": "medium",
+      "risk_reason": "波动率状态为 low_vol。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 199。",
+      "risk_reason": "B2 最小状态样本数为 188。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -375,15 +375,15 @@
     },
     "touch_down_risk": {
       "risk_level": "medium",
-      "risk_reason": "20D touch_down_5pct_prob=0.4296。",
+      "risk_reason": "20D touch_down_5pct_prob=0.3709。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
       "human_review_required": true
     },
     "max_drawdown_risk": {
-      "risk_level": "medium",
-      "risk_reason": "20D max_drawdown_p50=-0.0564。",
+      "risk_level": "low",
+      "risk_reason": "20D max_drawdown_p50=-0.0498。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=199。",
+      "risk_reason": "P2 min_state_sample_size=188。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -561,7 +561,7 @@
     {
       "scenario_id": "max_drawdown_risk_card",
       "scenario_name": "最大回撤风险",
-      "risk_level": "medium",
+      "risk_level": "low",
       "trigger_evidence": [
         "max_drawdown_p50",
         "max_drawdown_p90"

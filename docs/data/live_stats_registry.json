@@ -423,14 +423,15 @@
     "prob_up_1d": 0.5093198340813088,
     "prob_down_1d": 0.49068016591869124,
     "direction_confidence": 0.5093198340813088,
-    "actual_direction": null,
-    "is_correct": null,
+    "actual_direction": "DOWN",
+    "is_correct": false,
     "asof_price": 33.89,
     "asof_time": "15:00:00",
     "price_kind": "intraday_asof",
     "close_t": 33.89,
-    "close_t1": null,
-    "return_1d": null
+    "close_t1": 33.78,
+    "return_1d": -0.0032457952198288176,
+    "verification_status": "VERIFIED"
   },
   {
     "trade_date": "2026-08-14",
