@@ -6,8 +6,8 @@
     "report_type": "live_manual_decision_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-08-17T12:33:03.750491+00:00",
-    "latest_trade_date": "2026-08-17",
+    "generated_at": "2026-08-18T12:28:43.897712+00:00",
+    "latest_trade_date": "2026-08-18",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -61,61 +61,61 @@
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "feature_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "baseline_model_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "baseline_validation_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json",
         "quality_status": "N/A",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "path_distribution_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "path_validation_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "observation_backtest_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "human_decision_support_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json",
         "quality_status": "WARN",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       },
       "risk_explanation_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json",
         "quality_status": "WARN",
-        "latest_trade_date": "2026-08-17"
+        "latest_trade_date": "2026-08-18"
       }
     }
   },
   "live_state_overview": {
-    "latest_trade_date": "2026-08-17",
-    "latest_close": 33.65,
+    "latest_trade_date": "2026-08-18",
+    "latest_close": 33.49,
     "data_status": "PASS",
     "feature_status": "PASS",
     "baseline_status": "PASS",
@@ -166,55 +166,55 @@
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "feature_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "baseline_model_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "baseline_validation_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json",
           "quality_status": "N/A",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "path_distribution_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "path_validation_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "observation_backtest_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "human_decision_support_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json",
           "quality_status": "WARN",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         },
         "risk_explanation_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json",
           "quality_status": "WARN",
-          "latest_trade_date": "2026-08-17"
+          "latest_trade_date": "2026-08-18"
         }
       }
     },
@@ -236,10 +236,10 @@
   },
   "current_state_card": {
     "current_price_context": {
-      "latest_close": 33.65,
-      "latest_pct_chg": 0.6882,
-      "ma5": 33.742000000000004,
-      "ma20": 34.1215
+      "latest_close": 33.49,
+      "latest_pct_chg": -0.4755,
+      "ma5": 33.646,
+      "ma20": 34.147999999999996
     },
     "trend_state_context": {
       "trend_state": "downtrend",
@@ -248,33 +248,33 @@
     },
     "volatility_state_context": {
       "volatility_state": "low_vol",
-      "realized_vol_20d": 0.24060639985368765,
-      "atr_14d": 0.7942857142857136
+      "realized_vol_20d": 0.24134165075900393,
+      "atr_14d": 0.725714285714285
     },
     "flow_strength_context": {
-      "flow_strength_basic": "mixed",
-      "main_force_net": -6701.310000000005,
-      "net_mf_ratio": 0.003726346128953448,
-      "flow_strength_score": 0.23481920258081823,
+      "flow_strength_basic": "negative",
+      "main_force_net": -8875.399999999994,
+      "net_mf_ratio": -0.01464756634502799,
+      "flow_strength_score": -19.974189804436627,
       "price_flow_confirm": true,
       "price_flow_divergence": false,
       "volume_flow_confirm": "neutral"
     },
     "minute_structure_context": {
-      "latest_intraday_close": 33.65,
-      "intraday_range_pct": 0.021693907875185645,
-      "close_position_in_day_range": 0.7534246575342459
+      "latest_intraday_close": 33.49,
+      "intraday_range_pct": 0.015228426395939026,
+      "close_position_in_day_range": 0.4117647058823562
     },
     "state_sample_context": {
       "B2_state_sample_size": {
-        "5D": 97,
-        "10D": 97,
-        "20D": 97
+        "5D": 188,
+        "10D": 188,
+        "20D": 188
       },
       "P2_state_sample_size": {
-        "5D": 97,
-        "10D": 97,
-        "20D": 97
+        "5D": 188,
+        "10D": 188,
+        "20D": 188
       },
       "P2_role": "auxiliary_only"
     }
@@ -283,38 +283,38 @@
     "terminal_distribution_summary": {},
     "touch_up_summary": {
       "5D": {
-        "touch_up_5pct_prob": 0.1329032258064516
+        "touch_up_5pct_prob": 0.13415892672858618
       },
       "10D": {
-        "touch_up_5pct_prob": 0.24599483204134368
+        "touch_up_5pct_prob": 0.24670627744768794
       },
       "20D": {
-        "touch_up_5pct_prob": 0.40077720207253886
+        "touch_up_5pct_prob": 0.4011914011914012
       }
     },
     "touch_down_summary": {
       "5D": {
-        "touch_down_5pct_prob": 0.09393548387096774
+        "touch_down_5pct_prob": 0.09391124871001032
       },
       "10D": {
-        "touch_down_5pct_prob": 0.18940568475452196
+        "touch_down_5pct_prob": 0.189873417721519
       },
       "20D": {
-        "touch_down_5pct_prob": 0.34378238341968914
+        "touch_down_5pct_prob": 0.34498834498834496
       }
     },
     "drawdown_summary": {
       "5D": {
-        "max_drawdown_p50": -0.016332644681921638,
-        "max_drawdown_p90": -0.004670084896999782
+        "max_drawdown_p50": -0.0163665971439233,
+        "max_drawdown_p90": -0.0046853159929293176
       },
       "10D": {
-        "max_drawdown_p50": -0.029615840526036052,
-        "max_drawdown_p90": -0.011526284330648852
+        "max_drawdown_p50": -0.02970018196385027,
+        "max_drawdown_p90": -0.011564087019931502
       },
       "20D": {
-        "max_drawdown_p50": -0.046458672430820414,
-        "max_drawdown_p90": -0.021630525853150853
+        "max_drawdown_p50": -0.04657865352221102,
+        "max_drawdown_p90": -0.021702703982431126
       }
     },
     "path_validation_summary": {
@@ -326,7 +326,7 @@
         {
           "name": "validation_samples_present",
           "status": "PASS",
-          "detail": "rows=648"
+          "detail": "rows=657"
         },
         {
           "name": "path_leakage_checks",
@@ -346,12 +346,12 @@
         {
           "name": "P0_historical_path_replay.5D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P0_historical_path_replay.5D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.75"
+          "detail": "coverage=0.7534246575342466"
         },
         {
           "name": "P0_historical_path_replay.5D.path_metrics",
@@ -361,12 +361,12 @@
         {
           "name": "P0_historical_path_replay.10D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P0_historical_path_replay.10D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.7638888888888888"
+          "detail": "coverage=0.7671232876712328"
         },
         {
           "name": "P0_historical_path_replay.10D.path_metrics",
@@ -376,12 +376,12 @@
         {
           "name": "P0_historical_path_replay.20D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P0_historical_path_replay.20D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.75"
+          "detail": "coverage=0.7534246575342466"
         },
         {
           "name": "P0_historical_path_replay.20D.path_metrics",
@@ -401,12 +401,12 @@
         {
           "name": "P1_volatility_adjusted_path.5D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P1_volatility_adjusted_path.5D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.6944444444444444"
+          "detail": "coverage=0.6986301369863014"
         },
         {
           "name": "P1_volatility_adjusted_path.5D.path_metrics",
@@ -416,12 +416,12 @@
         {
           "name": "P1_volatility_adjusted_path.10D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P1_volatility_adjusted_path.10D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.6527777777777778"
+          "detail": "coverage=0.6575342465753424"
         },
         {
           "name": "P1_volatility_adjusted_path.10D.path_metrics",
@@ -431,12 +431,12 @@
         {
           "name": "P1_volatility_adjusted_path.20D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P1_volatility_adjusted_path.20D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.6666666666666666"
+          "detail": "coverage=0.6712328767123288"
         },
         {
           "name": "P1_volatility_adjusted_path.20D.path_metrics",
@@ -456,12 +456,12 @@
         {
           "name": "P2_state_conditional_path.5D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P2_state_conditional_path.5D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.7222222222222222"
+          "detail": "coverage=0.726027397260274"
         },
         {
           "name": "P2_state_conditional_path.5D.path_metrics",
@@ -471,17 +471,17 @@
         {
           "name": "P2_state_conditional_path.5D.fallback_rate",
           "status": "PASS",
-          "detail": "fallback_rate=0.3194444444444444"
+          "detail": "fallback_rate=0.3150684931506849"
         },
         {
           "name": "P2_state_conditional_path.10D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P2_state_conditional_path.10D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.6944444444444444"
+          "detail": "coverage=0.6986301369863014"
         },
         {
           "name": "P2_state_conditional_path.10D.path_metrics",
@@ -491,17 +491,17 @@
         {
           "name": "P2_state_conditional_path.10D.fallback_rate",
           "status": "PASS",
-          "detail": "fallback_rate=0.3194444444444444"
+          "detail": "fallback_rate=0.3150684931506849"
         },
         {
           "name": "P2_state_conditional_path.20D.sample_size",
           "status": "PASS",
-          "detail": "sample_size=72"
+          "detail": "sample_size=73"
         },
         {
           "name": "P2_state_conditional_path.20D.terminal_coverage",
           "status": "PASS",
-          "detail": "coverage=0.6944444444444444"
+          "detail": "coverage=0.6986301369863014"
         },
         {
           "name": "P2_state_conditional_path.20D.path_metrics",
@@ -511,7 +511,7 @@
         {
           "name": "P2_state_conditional_path.20D.fallback_rate",
           "status": "PASS",
-          "detail": "fallback_rate=0.3194444444444444"
+          "detail": "fallback_rate=0.3150684931506849"
         }
       ]
     },
@@ -545,7 +545,7 @@
           {
             "name": "standard_samples_present",
             "status": "PASS",
-            "detail": "standard_sample_size=648"
+            "detail": "standard_sample_size=657"
           },
           {
             "name": "purged_samples_present",
@@ -565,7 +565,7 @@
           {
             "name": "P0_historical_path_replay.5D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P0_historical_path_replay.5D.probabilities",
@@ -580,7 +580,7 @@
           {
             "name": "P0_historical_path_replay.10D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P0_historical_path_replay.10D.probabilities",
@@ -595,7 +595,7 @@
           {
             "name": "P0_historical_path_replay.20D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P0_historical_path_replay.20D.probabilities",
@@ -620,7 +620,7 @@
           {
             "name": "P1_volatility_adjusted_path.5D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P1_volatility_adjusted_path.5D.probabilities",
@@ -635,7 +635,7 @@
           {
             "name": "P1_volatility_adjusted_path.10D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P1_volatility_adjusted_path.10D.probabilities",
@@ -650,7 +650,7 @@
           {
             "name": "P1_volatility_adjusted_path.20D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P1_volatility_adjusted_path.20D.probabilities",
@@ -675,7 +675,7 @@
           {
             "name": "P2_state_conditional_path.5D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P2_state_conditional_path.5D.probabilities",
@@ -690,7 +690,7 @@
           {
             "name": "P2_state_conditional_path.10D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P2_state_conditional_path.10D.probabilities",
@@ -705,7 +705,7 @@
           {
             "name": "P2_state_conditional_path.20D.sample_size",
             "status": "PASS",
-            "detail": "sample_size=72"
+            "detail": "sample_size=73"
           },
           {
             "name": "P2_state_conditional_path.20D.probabilities",
@@ -757,7 +757,7 @@
         ],
         "standard_walk_forward": true,
         "purged_walk_forward": true,
-        "standard_sample_size": 648,
+        "standard_sample_size": 657,
         "purged_sample_size": 81,
         "validation_step": 50,
         "backtest_type": "observation_only"
@@ -765,38 +765,38 @@
       "model_comparison": {
         "standard_walk_forward": {
           "5D": {
-            "P1_vs_P0_terminal_coverage_delta": -0.05555555555555558,
-            "P1_vs_P0_touch_brier_delta": -0.0027254293659199347,
-            "P1_vs_P0_drawdown_coverage_delta": -0.05555555555555558,
+            "P1_vs_P0_terminal_coverage_delta": -0.0547945205479452,
+            "P1_vs_P0_touch_brier_delta": -0.0022175416263204573,
+            "P1_vs_P0_drawdown_coverage_delta": -0.0547945205479452,
             "P1_vs_P0_conclusion": "P1 is neutral versus P0",
-            "P2_vs_P1_terminal_coverage_delta": 0.02777777777777779,
-            "P2_vs_P1_touch_brier_delta": 0.005348539438699618,
-            "P2_vs_P1_drawdown_coverage_delta": -0.02777777777777779,
-            "P2_vs_P1_fallback_rate_delta": 0.3194444444444444,
+            "P2_vs_P1_terminal_coverage_delta": 0.0273972602739726,
+            "P2_vs_P1_touch_brier_delta": 0.005220951999172718,
+            "P2_vs_P1_drawdown_coverage_delta": -0.0273972602739726,
+            "P2_vs_P1_fallback_rate_delta": 0.3150684931506849,
             "P2_vs_P1_conclusion": "P2 is neutral versus P1",
             "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
           },
           "10D": {
-            "P1_vs_P0_terminal_coverage_delta": -0.11111111111111105,
-            "P1_vs_P0_touch_brier_delta": 0.005915639438580478,
-            "P1_vs_P0_drawdown_coverage_delta": -0.04166666666666663,
+            "P1_vs_P0_terminal_coverage_delta": -0.1095890410958904,
+            "P1_vs_P0_touch_brier_delta": 0.005833183557736765,
+            "P1_vs_P0_drawdown_coverage_delta": -0.04109589041095896,
             "P1_vs_P0_conclusion": "P1 is neutral versus P0",
-            "P2_vs_P1_terminal_coverage_delta": 0.04166666666666663,
-            "P2_vs_P1_touch_brier_delta": -0.0034425229427541004,
-            "P2_vs_P1_drawdown_coverage_delta": -0.01388888888888895,
-            "P2_vs_P1_fallback_rate_delta": 0.3194444444444444,
+            "P2_vs_P1_terminal_coverage_delta": 0.04109589041095896,
+            "P2_vs_P1_touch_brier_delta": -0.0037702410616485826,
+            "P2_vs_P1_drawdown_coverage_delta": -0.013698630136986245,
+            "P2_vs_P1_fallback_rate_delta": 0.3150684931506849,
             "P2_vs_P1_conclusion": "P2 is neutral versus P1",
             "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
           },
           "20D": {
-            "P1_vs_P0_terminal_coverage_delta": -0.08333333333333337,
-            "P1_vs_P0_touch_brier_delta": 0.010676954928078908,
-            "P1_vs_P0_drawdown_coverage_delta": -0.05555555555555558,
+            "P1_vs_P0_terminal_coverage_delta": -0.0821917808219178,
+            "P1_vs_P0_touch_brier_delta": 0.010671735332582616,
+            "P1_vs_P0_drawdown_coverage_delta": -0.0547945205479452,
             "P1_vs_P0_conclusion": "P1 underperforms P0",
-            "P2_vs_P1_terminal_coverage_delta": 0.02777777777777779,
-            "P2_vs_P1_touch_brier_delta": -0.0057745532937951705,
-            "P2_vs_P1_drawdown_coverage_delta": -0.01388888888888884,
-            "P2_vs_P1_fallback_rate_delta": 0.3194444444444444,
+            "P2_vs_P1_terminal_coverage_delta": 0.0273972602739726,
+            "P2_vs_P1_touch_brier_delta": -0.005486463490657456,
+            "P2_vs_P1_drawdown_coverage_delta": -0.013698630136986356,
+            "P2_vs_P1_fallback_rate_delta": 0.3150684931506849,
             "P2_vs_P1_conclusion": "P2 is neutral versus P1",
             "P2_auxiliary_note": "P2 is auxiliary only and must not be used as core decision dependency."
           }
@@ -1104,9 +1104,9 @@
   ],
   "manual_confirmation_panel": {
     "operator_name": "N/A",
-    "decision_session_id": "manual-2026-08-17-20260817123303",
-    "decision_snapshot_id": "live-2026-08-17-9reports",
-    "manual_review_timestamp": "2026-08-17T12:33:03.750476+00:00",
+    "decision_session_id": "manual-2026-08-18-20260818122843",
+    "decision_snapshot_id": "live-2026-08-18-9reports",
+    "manual_review_timestamp": "2026-08-18T12:28:43.897698+00:00",
     "manual_review_status": "not_started",
     "operator_notes": "",
     "manual_confirmation_items": [
@@ -1195,8 +1195,8 @@
   ],
   "next_stage": "V2.0 acceptance and daily manual operation",
   "manual_action_log": {
-    "decision_session_id": "manual-2026-08-17-20260817123303",
-    "decision_snapshot_id": "live-2026-08-17-9reports",
+    "decision_session_id": "manual-2026-08-18-20260818122843",
+    "decision_snapshot_id": "live-2026-08-18-9reports",
     "manual_review_status": "not_started",
     "execution_action_recorded": false
   },
