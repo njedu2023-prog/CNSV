@@ -6,8 +6,8 @@
     "report_type": "human_decision_support_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-08-21T12:31:04.146052+00:00",
-    "latest_trade_date": "2026-08-21",
+    "generated_at": "2026-08-24T12:28:01.607709+00:00",
+    "latest_trade_date": "2026-08-24",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -71,11 +71,11 @@
     }
   },
   "current_state_summary": {
-    "latest_trade_date": "2026-08-21",
-    "latest_close": 33.68,
+    "latest_trade_date": "2026-08-24",
+    "latest_close": 33.8,
     "trend_state": "downtrend",
     "volatility_state": "low_vol",
-    "flow_strength_basic": "positive",
+    "flow_strength_basic": "negative",
     "data_quality_status": "PASS",
     "feature_quality_status": "PASS"
   },
@@ -102,13 +102,13 @@
     }
   },
   "path_opportunity_observation": {
-    "positive_terminal_observation": 0.48757763975155277,
-    "touch_up_observation": 0.38664596273291924,
+    "positive_terminal_observation": 0.48771021992238034,
+    "touch_up_observation": 0.381888745148771,
     "evidence_strength": "观察项，仅供人工复核"
   },
   "path_risk_observation": {
-    "downside_path_observation": 0.3201345755693582,
-    "drawdown_observation": -0.04461545463479899,
+    "downside_path_observation": 0.3133247089262613,
+    "drawdown_observation": -0.044117647058823595,
     "risk_attention_level": "medium"
   },
   "model_consistency_summary": {
@@ -129,7 +129,8 @@
     "evidence_conflict": true,
     "evidence_conflict_reasons": [
       "20D P1 相对 P0 表现偏弱。",
-      "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+      "P2 fallback_rate 偏高，P2 只能作为辅助观察。",
+      "path_quality 状态为 WARN，需要降级复核。"
     ]
   },
   "human_attention_items": [
@@ -140,6 +141,10 @@
     {
       "category": "model_items",
       "text": "需要人工复核证据冲突：P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+    },
+    {
+      "category": "model_items",
+      "text": "需要人工复核证据冲突：path_quality 状态为 WARN，需要降级复核。"
     },
     {
       "category": "model_items",
@@ -188,7 +193,7 @@
     "feature_quality": "PASS",
     "baseline_quality": "PASS",
     "validation_quality": "PASS",
-    "path_quality": "PASS",
+    "path_quality": "WARN",
     "path_validation_quality": "PASS",
     "observation_backtest_quality": "PASS",
     "leakage_checks": "PASS"
