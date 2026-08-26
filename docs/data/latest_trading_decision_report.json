@@ -5,8 +5,8 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-08-26",
-  "generated_at": "2026-08-26T07:58:06.618823+00:00",
-  "generated_at_beijing": "2026-08-26T15:58:06.618823+08:00",
+  "generated_at": "2026-08-26T12:28:58.072939+00:00",
+  "generated_at_beijing": "2026-08-26T20:28:58.072939+08:00",
   "timezone": "Asia/Shanghai",
   "data_status": "PASS",
   "is_trade_signal": false,
@@ -46,7 +46,7 @@
     "last_valid_trade_time": "2026-08-26 15:00:00",
     "asof_price": 34.11,
     "minute_rows_today": 241,
-    "lag_minutes": 57.98,
+    "lag_minutes": 328.83,
     "expected_asof_time": "15:00:00",
     "expected_minute_rows": 241,
     "observed_expected_minute_rows": 241,
@@ -64,13 +64,13 @@
     "future_data_guard": "current-day features use only trade_time <= reported asof_time",
     "schedule_window_beijing": "09:15-11:30,13:02-15:10; final 20:04",
     "blocking_reason": null,
-    "created_at": "2026-08-26 15:57:58"
+    "created_at": "2026-08-26 20:28:50"
   },
   "decision": {
     "signal": "BLOCKED",
     "signal_cn": "风控阻断",
     "decision_reasons": [
-      "T+1 模型可靠性门禁未通过：高置信样本少于 20 个"
+      "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；近期准确率低于 50%"
     ],
     "trade_advice": "NO_BUY_REDUCE",
     "trade_advice_cn": "暂不买入；持仓减仓",
@@ -98,7 +98,7 @@
     "data_trade_date": "2026-08-26",
     "decision_trade_date": "2026-08-27",
     "generated_date_beijing": "2026-08-26",
-    "generated_at_beijing": "2026-08-26T15:58:06.618823+08:00",
+    "generated_at_beijing": "2026-08-26T20:28:58.072939+08:00",
     "valid_until_beijing": "2026-08-27T15:00:00+08:00",
     "runtime_status_required": true
   },
@@ -107,8 +107,8 @@
     "latest_close": 34.11,
     "latest_pct_chg": 0.7978723404255206,
     "latest_amount": 2204941.842,
-    "ma5": 33.49,
-    "ma20": 34.177499999999995,
+    "ma5": 33.684000000000005,
+    "ma20": 34.146499999999996,
     "asof_time": "15:00:00",
     "asof_datetime_beijing": "2026-08-26 15:00",
     "price_kind": "intraday_asof",
@@ -120,48 +120,48 @@
     "5D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 33.84,
-      "terminal_price_p10": 32.197095396335236,
-      "terminal_price_p50": 33.89012031029708,
-      "terminal_price_p90": 35.421382712483826,
-      "terminal_return_p10": -0.048549190415625616,
-      "terminal_return_p50": 0.001481096639984525,
-      "terminal_return_p90": 0.046731167626590506,
-      "positive_terminal_prob": 0.5408163265306123,
-      "sample_size": 98,
-      "state_sample_size": 98,
+      "latest_close": 34.11,
+      "terminal_price_p10": 32.121864468182615,
+      "terminal_price_p50": 34.173219394740016,
+      "terminal_price_p90": 36.23738767535768,
+      "terminal_return_p10": -0.05828600210546404,
+      "terminal_return_p50": 0.0018533976763418503,
+      "terminal_return_p90": 0.06236844548102262,
+      "positive_terminal_prob": 0.5125,
+      "sample_size": 80,
+      "state_sample_size": 80,
       "fallback_used": false,
       "fallback_reason": ""
     },
     "10D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 33.84,
-      "terminal_price_p10": 31.14635862935215,
-      "terminal_price_p50": 34.195102992615624,
-      "terminal_price_p90": 36.59817257088116,
-      "terminal_return_p10": -0.07959933128392002,
-      "terminal_return_p50": 0.010493587252234704,
-      "terminal_return_p90": 0.08150628164542427,
-      "positive_terminal_prob": 0.5773195876288659,
-      "sample_size": 97,
-      "state_sample_size": 97,
+      "latest_close": 34.11,
+      "terminal_price_p10": 30.568824641671647,
+      "terminal_price_p50": 33.968430121607334,
+      "terminal_price_p90": 37.7308548374854,
+      "terminal_return_p10": -0.10381634002721644,
+      "terminal_return_p50": -0.004150392213212173,
+      "terminal_return_p90": 0.10615229661346848,
+      "positive_terminal_prob": 0.45,
+      "sample_size": 80,
+      "state_sample_size": 80,
       "fallback_used": false,
       "fallback_reason": ""
     },
     "20D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 33.84,
-      "terminal_price_p10": 30.56154021876166,
-      "terminal_price_p50": 34.74014962593516,
-      "terminal_price_p90": 38.33874532088258,
-      "terminal_return_p10": -0.09688119920917089,
-      "terminal_return_p50": 0.026600166251038893,
-      "terminal_return_p90": 0.13294164659818483,
-      "positive_terminal_prob": 0.5773195876288659,
-      "sample_size": 97,
-      "state_sample_size": 97,
+      "latest_close": 34.11,
+      "terminal_price_p10": 29.904087977634227,
+      "terminal_price_p50": 33.800310256036134,
+      "terminal_price_p90": 40.97286277365404,
+      "terminal_return_p10": -0.1233043688761587,
+      "terminal_return_p50": -0.00907914816663341,
+      "terminal_return_p90": 0.20119797049704025,
+      "positive_terminal_prob": 0.475,
+      "sample_size": 80,
+      "state_sample_size": 80,
       "fallback_used": false,
       "fallback_reason": ""
     }
@@ -210,50 +210,50 @@
       "method": "chronological_walk_forward_with_recent_safety_slice",
       "sample_size": 60,
       "trading_day_count": 60,
-      "start_date": "2026-06-01",
-      "end_date": "2026-08-24",
+      "start_date": "2026-06-02",
+      "end_date": "2026-08-25",
       "checkpoint_time": "15:00:00",
       "directional_accuracy": 0.5333333333333333,
       "accuracy_ci_95_low": 0.4089342702715789,
       "accuracy_ci_95_high": 0.6537209395856151,
-      "brier_raw": 0.24751388084136114,
-      "brier_active": 0.24751388084136114,
-      "brier_calibrated": 0.24751388084136114,
+      "brier_raw": 0.24764155028095478,
+      "brier_active": 0.24764155028095478,
+      "brier_calibrated": 0.24764155028095478,
       "calibration_method": "none_small_sample",
-      "roc_auc": 0.5622171945701357,
-      "actual_up_rate": 0.43333333333333335,
+      "roc_auc": 0.5521885521885521,
+      "actual_up_rate": 0.45,
       "high_confidence_threshold": 0.55,
       "high_confidence_sample_size": 8,
       "high_confidence_coverage": 0.13333333333333333,
       "high_confidence_accuracy": 0.625,
       "candidate_accepted": true,
       "candidate_directional_accuracy": 0.5333333333333333,
-      "candidate_brier": 0.24751388084136114,
-      "baseline_directional_accuracy": 0.43333333333333335,
-      "baseline_brier": 0.250529175,
+      "candidate_brier": 0.24764155028095478,
+      "baseline_directional_accuracy": 0.45,
+      "baseline_brier": 0.2504204625,
       "development": {
         "sample_size": 30,
-        "directional_accuracy": 0.5666666666666667,
-        "brier": 0.24971648531057716,
-        "roc_auc": 0.5357142857142857
+        "directional_accuracy": 0.6,
+        "brier": 0.2479528287627083,
+        "roc_auc": 0.5555555555555556
       },
       "recent_validation": {
         "sample_size": 30,
-        "directional_accuracy": 0.5,
-        "brier": 0.2453112763721451,
-        "roc_auc": 0.5648148148148149
+        "directional_accuracy": 0.4666666666666667,
+        "brier": 0.24733027179920136,
+        "roc_auc": 0.5
       },
       "recent_holdout": {
         "sample_size": 30,
-        "directional_accuracy": 0.5,
-        "brier": 0.2453112763721451,
-        "roc_auc": 0.5648148148148149
+        "directional_accuracy": 0.4666666666666667,
+        "brier": 0.24733027179920136,
+        "roc_auc": 0.5
       },
       "recent_holdout_baseline": {
         "sample_size": 30,
         "directional_accuracy": 0.4,
-        "brier": 0.250592575,
-        "roc_auc": 0.5347222222222221
+        "brier": 0.250691975,
+        "roc_auc": 0.4537037037037037
       },
       "refit_interval_days": 1,
       "leakage_guard": "validation T uses labelled daily rows through T-2 and minute bars through the checkpoint only"
@@ -261,7 +261,8 @@
     "reliability_gate": {
       "passed": false,
       "reasons": [
-        "high_confidence_sample_lt_20"
+        "high_confidence_sample_lt_20",
+        "recent_accuracy_lt_50pct"
       ],
       "thresholds": {
         "validation_sample_size": 50,
@@ -277,18 +278,18 @@
     "model_return_distribution": {
       "return_bins_1d": {
         "gt_5pct": 0.0,
-        "plus_2_to_5pct": 0.17857142857142858,
-        "zero_to_plus_2pct": 0.21428571428571427,
-        "zero_to_minus_2pct": 0.35714285714285715,
-        "minus_2_to_5pct": 0.25,
+        "plus_2_to_5pct": 0.1724137931034483,
+        "zero_to_plus_2pct": 0.2413793103448276,
+        "zero_to_minus_2pct": 0.3448275862068966,
+        "minus_2_to_5pct": 0.2413793103448276,
         "lt_minus_5pct": 0.0
       },
-      "expected_return_1d": -0.002455734427525867,
-      "median_return_1d": -0.0018943559232915685,
-      "p10_return_1d": -0.028685995106977044,
-      "p90_return_1d": 0.03244007397369333,
+      "expected_return_1d": -0.0020959255367747954,
+      "median_return_1d": -0.0015146925174188697,
+      "p10_return_1d": -0.027617716806657318,
+      "p90_return_1d": 0.032370441091288706,
       "distribution_source": "T1_INTRADAY_20M_HGB_V3:walk_forward_same_direction",
-      "sample_size": 28
+      "sample_size": 29
     },
     "inputs": {
       "realtime_source": "Tushare direct realtime",
@@ -296,8 +297,8 @@
       "realtime_coverage_ratio": 1.0,
       "realtime_trading_minute_lag": 0,
       "minute_rows": 43139,
-      "daily_rows": 3886,
-      "moneyflow_rows": 3886,
+      "daily_rows": 3887,
+      "moneyflow_rows": 3887,
       "historical_intraday_days": 179,
       "feature_columns": [
         "ret_1",
@@ -333,25 +334,25 @@
   "return_distribution": {
     "return_bins_1d": {
       "gt_5pct": 0.0,
-      "plus_2_to_5pct": 0.17857142857142858,
-      "zero_to_plus_2pct": 0.21428571428571427,
-      "zero_to_minus_2pct": 0.35714285714285715,
-      "minus_2_to_5pct": 0.25,
+      "plus_2_to_5pct": 0.1724137931034483,
+      "zero_to_plus_2pct": 0.2413793103448276,
+      "zero_to_minus_2pct": 0.3448275862068966,
+      "minus_2_to_5pct": 0.2413793103448276,
       "lt_minus_5pct": 0.0
     },
-    "expected_return_1d": -0.002455734427525867,
-    "median_return_1d": -0.0018943559232915685,
-    "p10_return_1d": -0.028685995106977044,
-    "p90_return_1d": 0.03244007397369333,
+    "expected_return_1d": -0.0020959255367747954,
+    "median_return_1d": -0.0015146925174188697,
+    "p10_return_1d": -0.027617716806657318,
+    "p90_return_1d": 0.032370441091288706,
     "distribution_source": "T1_INTRADAY_20M_HGB_V3:walk_forward_same_direction",
-    "sample_size": 28
+    "sample_size": 29
   },
   "ev": {
-    "raw_ev": -0.00392857142857143,
+    "raw_ev": -0.0034482758620689655,
     "transaction_cost": 0.0015,
-    "risk_penalty": 0.0022948796085581636,
-    "cost_adjusted_ev": -0.00542857142857143,
-    "risk_adjusted_ev": -0.007723451037129594,
+    "risk_penalty": 0.0022094173445325856,
+    "cost_adjusted_ev": -0.004948275862068965,
+    "risk_adjusted_ev": -0.007157693206601551,
     "ev_rating": "negative",
     "ev_rating_cn": "负期望"
   },
@@ -361,21 +362,21 @@
     "risk_passed": false,
     "blocked": true,
     "block_reasons": [
-      "T+1 模型可靠性门禁未通过：高置信样本少于 20 个"
+      "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；近期准确率低于 50%"
     ],
     "buy_blocked": true,
     "buy_block_reasons": [
-      "T+1 模型可靠性门禁未通过：高置信样本少于 20 个",
+      "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；近期准确率低于 50%",
       "方向置信度不足",
       "风险调整 EV 为负"
     ],
     "warnings": [],
     "downside_tail_prob": 0.0,
-    "p10_return_1d": -0.028685995106977044,
-    "human_risk_explanation": "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；方向置信度不足；风险调整 EV 为负，因此需要风控降级或拦截。"
+    "p10_return_1d": -0.027617716806657318,
+    "human_risk_explanation": "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；近期准确率低于 50%；方向置信度不足；风险调整 EV 为负，因此需要风控降级或拦截。"
   },
   "exit": {
-    "take_profit_range": "+4.8%~+7.5%",
+    "take_profit_range": "+5.8%~+10.2%",
     "stop_loss_reference": "-2.0%",
     "time_exit_days": 10,
     "signal_exit_rule": "若信号降级为 SELL 或 STRONG_SELL，应重新评估并降低仓位。",
@@ -388,15 +389,15 @@
       "horizon": "1D",
       "standard": {
         "sample_size": 60,
-        "start_date": "2026-06-01",
-        "end_date": "2026-08-24",
+        "start_date": "2026-06-02",
+        "end_date": "2026-08-25",
         "directional_accuracy": 0.5333333333333333,
         "accuracy_ci_95_low": 0.4089342702715789,
         "accuracy_ci_95_high": 0.6537209395856151,
-        "brier_raw": 0.24751388084136114,
-        "brier_active": 0.24751388084136114,
-        "brier_calibrated": 0.24751388084136114,
-        "roc_auc": 0.5622171945701357,
+        "brier_raw": 0.24764155028095478,
+        "brier_active": 0.24764155028095478,
+        "brier_calibrated": 0.24764155028095478,
+        "roc_auc": 0.5521885521885521,
         "high_confidence_threshold": 0.55,
         "high_confidence_sample_size": 8,
         "high_confidence_coverage": 0.13333333333333333,
@@ -475,17 +476,17 @@
     "live_stats": {
       "name": "实盘统计线",
       "start_date": "2026-07-15",
-      "direction_accuracy": 0.48148148148148145,
+      "direction_accuracy": 0.4642857142857143,
       "correct_count": 13,
-      "wrong_count": 14,
-      "sample_count": 27,
+      "wrong_count": 15,
+      "sample_count": 28,
       "model_id": "T1_INTRADAY_20M_HGB_V3",
       "description": "从新 T+1 模型上线日起，逐日按下一交易日收盘方向验证。"
     }
   },
   "human_explanation": {
     "summary": "明确建议：暂不买入；持仓减仓。模型方向继续展示，风控限制单独说明。",
-    "risk_note": "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；方向置信度不足；风险调整 EV 为负，因此需要风控降级或拦截。",
+    "risk_note": "T+1 模型可靠性门禁未通过：高置信样本少于 20 个；近期准确率低于 50%；方向置信度不足；风险调整 EV 为负，因此需要风控降级或拦截。",
     "execution_note": "所有信号、仓位、止盈止损均为人工参考，不代表自动交易指令。"
   },
   "model_sources": {
