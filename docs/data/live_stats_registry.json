@@ -650,5 +650,24 @@
     "close_t": null,
     "close_t1": null,
     "return_1d": null
+  },
+  {
+    "trade_date": "2026-08-31",
+    "data_trade_date": "2026-08-28",
+    "signal_date": "2026-08-31",
+    "verify_date": "2026-08-31",
+    "predicted_direction": "DOWN",
+    "model_id": "T1_INTRADAY_20M_HGB_V3",
+    "prob_up_1d": 0.4745820162576011,
+    "prob_down_1d": 0.5254179837423989,
+    "direction_confidence": 0.5254179837423989,
+    "actual_direction": null,
+    "is_correct": null,
+    "asof_price": 34.78,
+    "asof_time": "15:00:00",
+    "price_kind": "intraday_asof",
+    "close_t": null,
+    "close_t1": null,
+    "return_1d": null
   }
 ]
