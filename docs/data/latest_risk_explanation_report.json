@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-09-01T15:01:23.178325+00:00",
-    "latest_trade_date": "2026-09-01",
+    "generated_at": "2026-09-02T14:36:46.751988+00:00",
+    "latest_trade_date": "2026-09-02",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -272,8 +272,8 @@
   "feature_risk_explanation": {
     "risk_level": "low",
     "trend_state_risk": {
-      "risk_level": "low",
-      "risk_reason": "趋势状态为 uptrend，需要结合路径风险复核。",
+      "risk_level": "medium",
+      "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -289,7 +289,7 @@
     },
     "flow_strength_basic_risk": {
       "risk_level": "low",
-      "risk_reason": "资金流强弱状态为 positive。",
+      "risk_reason": "资金流强弱状态为 negative。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 44。",
+      "risk_reason": "B2 最小状态样本数为 188。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=44。",
+      "risk_reason": "P2 min_state_sample_size=188。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
