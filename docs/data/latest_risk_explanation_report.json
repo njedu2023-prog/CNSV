@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-09-02T14:36:46.751988+00:00",
-    "latest_trade_date": "2026-09-02",
+    "generated_at": "2026-09-03T14:43:40.367216+00:00",
+    "latest_trade_date": "2026-09-03",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -80,12 +80,12 @@
     "overall_risk_level": "high",
     "risk_confidence": "medium",
     "primary_risk_sources": [
+      "data_risk",
+      "feature_risk",
       "p2_auxiliary_risk",
       "evidence_conflict_risk"
     ],
     "secondary_risk_sources": [
-      "data_risk",
-      "feature_risk",
       "baseline_model_risk",
       "path_distribution_risk",
       "path_validation_risk",
@@ -99,7 +99,7 @@
   "risk_source_breakdown": {
     "data_risk": {
       "risk_type": "data_risk",
-      "risk_level": "low",
+      "risk_level": "high",
       "risk_reason": "数据门禁、数据新鲜度与 manifest 一致性需要人工确认。",
       "risk_evidence": [
         "latest_data_report.json"
@@ -111,7 +111,7 @@
     },
     "feature_risk": {
       "risk_type": "feature_risk",
-      "risk_level": "low",
+      "risk_level": "high",
       "risk_reason": "趋势、波动率、资金流状态共同决定特征风险；unknown 状态需要降级复核。",
       "risk_evidence": [
         "latest_feature_report.json",
@@ -272,8 +272,8 @@
   "feature_risk_explanation": {
     "risk_level": "low",
     "trend_state_risk": {
-      "risk_level": "medium",
-      "risk_reason": "趋势状态为 downtrend，需要结合路径风险复核。",
+      "risk_level": "low",
+      "risk_reason": "趋势状态为 strong_uptrend，需要结合路径风险复核。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -289,7 +289,7 @@
     },
     "flow_strength_basic_risk": {
       "risk_level": "low",
-      "risk_reason": "资金流强弱状态为 negative。",
+      "risk_reason": "资金流强弱状态为 positive。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 188。",
+      "risk_reason": "B2 最小状态样本数为 85。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -375,7 +375,7 @@
     },
     "touch_down_risk": {
       "risk_level": "low",
-      "risk_reason": "20D touch_down_5pct_prob=0.3128。",
+      "risk_reason": "20D touch_down_5pct_prob=0.3127。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=188。",
+      "risk_reason": "P2 min_state_sample_size=85。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -536,6 +536,8 @@
     "risk_evidence": [
       "20D P1 相对 P0 表现偏弱。",
       "P2 fallback_rate 偏高，P2 只能作为辅助观察。",
+      "data_quality 状态为 WARN，需要降级复核。",
+      "feature_quality 状态为 WARN，需要降级复核。",
       "path_quality 状态为 WARN，需要降级复核。"
     ],
     "source_reports": [
@@ -582,6 +584,8 @@
       "trigger_evidence": [
         "20D P1 相对 P0 表现偏弱。",
         "P2 fallback_rate 偏高，P2 只能作为辅助观察。",
+        "data_quality 状态为 WARN，需要降级复核。",
+        "feature_quality 状态为 WARN，需要降级复核。",
         "path_quality 状态为 WARN，需要降级复核。"
       ],
       "risk_explanation": "模型分歧表示证据不一致，需要人工复核。",

@@ -6,8 +6,8 @@
     "report_type": "human_decision_support_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-09-02T14:36:46.362462+00:00",
-    "latest_trade_date": "2026-09-02",
+    "generated_at": "2026-09-03T14:43:39.863984+00:00",
+    "latest_trade_date": "2026-09-03",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -71,13 +71,13 @@
     }
   },
   "current_state_summary": {
-    "latest_trade_date": "2026-09-02",
-    "latest_close": 33.93,
-    "trend_state": "downtrend",
+    "latest_trade_date": "2026-09-03",
+    "latest_close": 34.32,
+    "trend_state": "strong_uptrend",
     "volatility_state": "low_vol",
-    "flow_strength_basic": "negative",
-    "data_quality_status": "PASS",
-    "feature_quality_status": "PASS"
+    "flow_strength_basic": "positive",
+    "data_quality_status": "WARN",
+    "feature_quality_status": "WARN"
   },
   "model_evidence_summary": {
     "observation_backtest_summary": {
@@ -102,13 +102,13 @@
     }
   },
   "path_opportunity_observation": {
-    "positive_terminal_observation": 0.48708677685950413,
-    "touch_up_observation": 0.381198347107438,
+    "positive_terminal_observation": 0.48696101213529563,
+    "touch_up_observation": 0.38109992254066616,
     "evidence_strength": "观察项，仅供人工复核"
   },
   "path_risk_observation": {
-    "downside_path_observation": 0.3127582644628099,
-    "drawdown_observation": -0.04406483923362292,
+    "downside_path_observation": 0.3126775109734056,
+    "drawdown_observation": -0.044064171122994655,
     "risk_attention_level": "medium"
   },
   "model_consistency_summary": {
@@ -130,6 +130,8 @@
     "evidence_conflict_reasons": [
       "20D P1 相对 P0 表现偏弱。",
       "P2 fallback_rate 偏高，P2 只能作为辅助观察。",
+      "data_quality 状态为 WARN，需要降级复核。",
+      "feature_quality 状态为 WARN，需要降级复核。",
       "path_quality 状态为 WARN，需要降级复核。"
     ]
   },
@@ -141,6 +143,14 @@
     {
       "category": "model_items",
       "text": "需要人工复核证据冲突：P2 fallback_rate 偏高，P2 只能作为辅助观察。"
+    },
+    {
+      "category": "model_items",
+      "text": "需要人工复核证据冲突：data_quality 状态为 WARN，需要降级复核。"
+    },
+    {
+      "category": "model_items",
+      "text": "需要人工复核证据冲突：feature_quality 状态为 WARN，需要降级复核。"
     },
     {
       "category": "model_items",
@@ -189,8 +199,8 @@
     "human_review_required": true
   },
   "upstream_quality_statuses": {
-    "data_quality": "PASS",
-    "feature_quality": "PASS",
+    "data_quality": "WARN",
+    "feature_quality": "WARN",
     "baseline_quality": "PASS",
     "validation_quality": "PASS",
     "path_quality": "WARN",
