@@ -6,8 +6,8 @@
     "report_type": "risk_explanation_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-09-03T18:11:57.196899+00:00",
-    "latest_trade_date": "2026-09-03",
+    "generated_at": "2026-09-04T14:29:09.819306+00:00",
+    "latest_trade_date": "2026-09-04",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -80,12 +80,12 @@
     "overall_risk_level": "high",
     "risk_confidence": "medium",
     "primary_risk_sources": [
-      "data_risk",
-      "feature_risk",
       "p2_auxiliary_risk",
       "evidence_conflict_risk"
     ],
     "secondary_risk_sources": [
+      "data_risk",
+      "feature_risk",
       "baseline_model_risk",
       "path_distribution_risk",
       "path_validation_risk",
@@ -99,7 +99,7 @@
   "risk_source_breakdown": {
     "data_risk": {
       "risk_type": "data_risk",
-      "risk_level": "high",
+      "risk_level": "low",
       "risk_reason": "数据门禁、数据新鲜度与 manifest 一致性需要人工确认。",
       "risk_evidence": [
         "latest_data_report.json"
@@ -111,7 +111,7 @@
     },
     "feature_risk": {
       "risk_type": "feature_risk",
-      "risk_level": "high",
+      "risk_level": "low",
       "risk_reason": "趋势、波动率、资金流状态共同决定特征风险；unknown 状态需要降级复核。",
       "risk_evidence": [
         "latest_feature_report.json",
@@ -139,7 +139,7 @@
     },
     "path_distribution_risk": {
       "risk_type": "path_distribution_risk",
-      "risk_level": "low",
+      "risk_level": "medium",
       "risk_reason": "路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。",
       "risk_evidence": [
         "latest_path_distribution_report.json",
@@ -281,7 +281,7 @@
     },
     "volatility_state_risk": {
       "risk_level": "medium",
-      "risk_reason": "波动率状态为 low_vol。",
+      "risk_reason": "波动率状态为 high_vol。",
       "risk_evidence": [
         "latest_feature_report.json"
       ],
@@ -340,7 +340,7 @@
     },
     "B2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "B2 最小状态样本数为 85。",
+      "risk_reason": "B2 最小状态样本数为 99。",
       "risk_evidence": [
         "latest_baseline_model_report.json"
       ],
@@ -364,9 +364,9 @@
     }
   },
   "path_distribution_risk_explanation": {
-    "risk_level": "low",
+    "risk_level": "medium",
     "downside_path_risk": {
-      "risk_level": "low",
+      "risk_level": "medium",
       "risk_reason": "20D 下行路径概率需要人工复核。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
@@ -374,16 +374,16 @@
       "human_review_required": true
     },
     "touch_down_risk": {
-      "risk_level": "low",
-      "risk_reason": "20D touch_down_5pct_prob=0.3127。",
+      "risk_level": "medium",
+      "risk_reason": "20D touch_down_5pct_prob=0.5367。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
       "human_review_required": true
     },
     "max_drawdown_risk": {
-      "risk_level": "low",
-      "risk_reason": "20D max_drawdown_p50=-0.0441。",
+      "risk_level": "medium",
+      "risk_reason": "20D max_drawdown_p50=-0.0711。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -512,7 +512,7 @@
     },
     "p2_state_sample_risk": {
       "risk_level": "medium",
-      "risk_reason": "P2 min_state_sample_size=85。",
+      "risk_reason": "P2 min_state_sample_size=99。",
       "risk_evidence": [
         "latest_path_distribution_report.json"
       ],
@@ -534,11 +534,9 @@
     "evidence_conflict": true,
     "risk_reason": "证据冲突需要人工复核，不得转化为交易动作。",
     "risk_evidence": [
+      "上行触达概率与下行触达概率同时偏高，路径机会与风险并存。",
       "20D P1 相对 P0 表现偏弱。",
-      "P2 fallback_rate 偏高，P2 只能作为辅助观察。",
-      "data_quality 状态为 WARN，需要降级复核。",
-      "feature_quality 状态为 WARN，需要降级复核。",
-      "path_quality 状态为 WARN，需要降级复核。"
+      "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
     ],
     "source_reports": [
       "latest_human_decision_support_report.json"
@@ -549,7 +547,7 @@
     {
       "scenario_id": "downside_touch_risk_card",
       "scenario_name": "下穿路径风险",
-      "risk_level": "low",
+      "risk_level": "medium",
       "trigger_evidence": [
         "touch_down_5pct_prob"
       ],
@@ -564,7 +562,7 @@
     {
       "scenario_id": "max_drawdown_risk_card",
       "scenario_name": "最大回撤风险",
-      "risk_level": "low",
+      "risk_level": "medium",
       "trigger_evidence": [
         "max_drawdown_p50",
         "max_drawdown_p90"
@@ -582,11 +580,9 @@
       "scenario_name": "模型分歧风险",
       "risk_level": "high",
       "trigger_evidence": [
+        "上行触达概率与下行触达概率同时偏高，路径机会与风险并存。",
         "20D P1 相对 P0 表现偏弱。",
-        "P2 fallback_rate 偏高，P2 只能作为辅助观察。",
-        "data_quality 状态为 WARN，需要降级复核。",
-        "feature_quality 状态为 WARN，需要降级复核。",
-        "path_quality 状态为 WARN，需要降级复核。"
+        "P2 fallback_rate 偏高，P2 只能作为辅助观察。"
       ],
       "risk_explanation": "模型分歧表示证据不一致，需要人工复核。",
       "historical_support": "来自 V1.0-V1.5 已生成报告的观察证据",
