@@ -1,0 +1,40 @@
+# CNSV Data Status Report
+
+## CNSVdata Gate
+- ready: True
+- status: PASS
+- can_continue: True
+- can_run_backtest: True
+- can_use_moneyflow_as_strong_factor: True
+- can_generate_formal_signal: False
+- blocking_reason: None
+
+## Data Manifest
+- snapshot_id: cnsvdata-2026-09-24-e6aca438d85f
+- latest_trade_date: 2026-09-24
+- generated_at: 2026-09-24 22:53:32
+- file_count: 14
+
+## Loaded Data
+- daily_rows: 3908
+- one_min_rows: 18557
+- moneyflow_rows: 3908
+- latest_trade_date: 2026-09-24
+
+## Validation
+- status: PASS
+- failed_count: 0
+- warn_count: 0
+
+## Feature Summary
+- price_volume: {'latest_trade_date': '2026-09-24', 'latest_open': 38.59, 'latest_high': 38.85, 'latest_low': 38.02, 'latest_close': 38.09, 'latest_pre_close': 38.59, 'latest_pct_chg': -1.2957, 'latest_volume': 642629.57, 'latest_amount': 2464364.597, 'ma5': 39.458000000000006, 'ma10': 39.093, 'ma20': 37.8875, 'ma60': 35.526500000000006, 'ret_1d': -0.012956724540036269, 'ret_3d': -0.0714285714285714, 'ret_5d': -0.022330595482546123, 'ret_10d': -0.06687898089171962, 'ret_20d': 0.10341830822711473, 'ret_60d': 0.10855646100116423, 'volume_ma5': 985632.2860000001, 'volume_ma20': 1288220.776, 'volume_ratio_5d': 0.586896222652358, 'volume_ratio_20d': 0.49997364522574766, 'amount_ma5': 3903257.1396000003, 'amount_ma20': 4909040.622350001, 'amount_ratio_5d': 0.5699220062629655, 'amount_ratio_20d': 0.5043786631379313, 'price_position_20d': 0.5912698412698418, 'price_position_60d': 0.6596916299559474, 'new_high_20d': False, 'new_low_20d': False, 'new_high_60d': False, 'new_low_60d': False}
+- minute_structure: {'latest_intraday_date': '2026-09-24', 'latest_intraday_open': 38.59, 'latest_intraday_high': 38.85, 'latest_intraday_low': 38.02, 'latest_intraday_close': 38.09, 'intraday_range_pct': 0.02179049619322652, 'close_position_in_day_range': 0.08433734939759088, 'morning_return': -0.009847110650427648, 'afternoon_return': -0.0031405391258831905, 'last_30min_return': -0.0013109596224435416, 'last_60min_return': -0.005483028720626448, 'morning_volume_ratio': 0.6048743446399455, 'afternoon_volume_ratio': 0.39512565536005445, 'last_30min_volume_ratio': 0.156810882511989, 'last_60min_volume_ratio': 0.23396609340587923, 'intraday_volume_sum': 64262957.0, 'intraday_amount_sum': 2464364602.0, 'late_session_strength': False, 'late_session_weakness': True, 'intraday_reversal_flag': True}
+- moneyflow: {'net_mf_amount': -15337.16, 'net_mf_ratio': -0.006223575853455583, 'small_order_net': 6269.400000000009, 'medium_order_net': 10544.929999999993, 'large_order_net': 815.4100000000035, 'extra_large_order_net': -17629.739999999998, 'main_force_net': -16814.329999999994, 'main_force_ratio': -0.006822987970395679, 'main_force_available': True, 'moneyflow_latest_trade_date': '2026-09-24', 'moneyflow_lag_days': 0, 'moneyflow_strength_basic': 'negative', 'flow_strength_basic': 'negative', 'flow_strength_score': -13.046563823851262, 'flow_continuity_3d': -3, 'flow_continuity_5d': -1, 'flow_continuity_10d': -4, 'positive_flow_days_5d': 2, 'positive_flow_days_10d': 3, 'flow_reversal_1d': False, 'flow_reversal_3d': False, 'price_flow_confirm': True, 'price_flow_divergence': False, 'volume_flow_confirm': 'neutral', 'moneyflow_warning': '', 'can_use_as_strong_factor': True}
+
+## Forbidden Actions
+- formal_signal_generation
+- auto_order
+- broker_api
+
+## Next Step
+- Continue V1.1 feature enhancement only after V1.0 data gate remains stable.
