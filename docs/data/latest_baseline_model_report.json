@@ -6,7 +6,7 @@
     "report_type": "baseline_model_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-10-01T18:38:46.200558+00:00",
+    "generated_at": "2026-10-01T18:57:04.188074+00:00",
     "latest_trade_date": "2026-09-24",
     "is_trade_signal": false
   },
@@ -499,7 +499,7 @@
           "mean_return": -0.001750668410397556,
           "median_return": -0.0035975884185699926,
           "std_return": 0.09494556745066661,
-          "p05_return": -0.13939190043550542,
+          "p05_return": -0.1393919004355054,
           "p10_return": -0.10074852533604169,
           "p25_return": -0.0485637246304678,
           "p50_return": -0.0035975884185699926,
