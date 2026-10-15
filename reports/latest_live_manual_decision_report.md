@@ -5,7 +5,7 @@
 ## 阶段说明
 - 版本: 2.0
 - 阶段: V2.0_live_manual_decision_system
-- latest_trade_date: 2026-10-14
+- latest_trade_date: 2026-10-15
 - 质量状态: WARN
 - FAIL 数量: 0
 - WARN 数量: 4
@@ -24,13 +24,13 @@
 
 ## 路径观察摘要
 - terminal_distribution_summary: {}
-- touch_down_summary: {'5D': {'touch_down_5pct_prob': 0.2370237790846331}, '10D': {'touch_down_5pct_prob': 0.3911930363543267}, '20D': {'touch_down_5pct_prob': 0.5413244353182751}}
-- drawdown_summary: {'5D': {'max_drawdown_p50': -0.025912063406106856, 'max_drawdown_p90': -0.007455112062695113}, '10D': {'max_drawdown_p50': -0.04677368450612224, 'max_drawdown_p90': -0.018367533004270686}, '20D': {'max_drawdown_p50': -0.07274453979985257, 'max_drawdown_p90': -0.03423924876305684}}
+- touch_down_summary: {'5D': {'touch_down_5pct_prob': 0.29473415132924335}, '10D': {'touch_down_5pct_prob': 0.45303301766060916}, '20D': {'touch_down_5pct_prob': 0.5948165255324609}}
+- drawdown_summary: {'5D': {'max_drawdown_p50': -0.030450162777547918, 'max_drawdown_p90': -0.00873104736599376}, '10D': {'max_drawdown_p50': -0.054482762519471484, 'max_drawdown_p90': -0.02152391198101895}, '20D': {'max_drawdown_p50': -0.08465237030236916, 'max_drawdown_p90': -0.03983040698632682}}
 
 ## 风险解释摘要
 - overall_risk_level: high
-- primary_risk_sources: p2_auxiliary_risk, evidence_conflict_risk
-- secondary_risk_sources: data_risk, feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
+- primary_risk_sources: path_distribution_risk, p2_auxiliary_risk, evidence_conflict_risk
+- secondary_risk_sources: data_risk, feature_risk, baseline_model_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
 
 ## 证据冲突摘要
 - evidence_conflict: True
@@ -53,8 +53,8 @@
 - [check_human_review_required] 确认所有人工复核项已逐条记录。
 
 ## 人工确认区
-- decision_session_id: manual-2026-10-14-20261014151543
-- decision_snapshot_id: live-2026-10-14-9reports
+- decision_session_id: manual-2026-10-15-20261015150953
+- decision_snapshot_id: live-2026-10-15-9reports
 - manual_review_status: not_started
 
 ## 禁止自动交易声明

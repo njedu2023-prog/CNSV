@@ -6,8 +6,8 @@
     "report_type": "live_manual_decision_report",
     "ts_code": "600150.SH",
     "name": "中国船舶",
-    "generated_at": "2026-10-14T15:15:43.249762+00:00",
-    "latest_trade_date": "2026-10-14",
+    "generated_at": "2026-10-15T15:09:53.184810+00:00",
+    "latest_trade_date": "2026-10-15",
     "is_trade_signal": false
   },
   "cnsvdata_gate": {
@@ -61,61 +61,61 @@
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "feature_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "baseline_model_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "baseline_validation_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json",
         "quality_status": "N/A",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "path_distribution_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "path_validation_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "observation_backtest_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json",
         "quality_status": "PASS",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "human_decision_support_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json",
         "quality_status": "WARN",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       },
       "risk_explanation_report": {
         "available": true,
         "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json",
         "quality_status": "WARN",
-        "latest_trade_date": "2026-10-14"
+        "latest_trade_date": "2026-10-15"
       }
     }
   },
   "live_state_overview": {
-    "latest_trade_date": "2026-10-14",
-    "latest_close": 38.11,
+    "latest_trade_date": "2026-10-15",
+    "latest_close": 35.45,
     "data_status": "PASS",
     "feature_status": "PASS",
     "baseline_status": "PASS",
@@ -166,55 +166,55 @@
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_data_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "feature_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_feature_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "baseline_model_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_model_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "baseline_validation_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_baseline_validation_report.json",
           "quality_status": "N/A",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "path_distribution_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_distribution_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "path_validation_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_path_validation_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "observation_backtest_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_observation_backtest_report.json",
           "quality_status": "PASS",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "human_decision_support_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_human_decision_support_report.json",
           "quality_status": "WARN",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         },
         "risk_explanation_report": {
           "available": true,
           "path": "/home/runner/work/CNSV/CNSV/docs/data/latest_risk_explanation_report.json",
           "quality_status": "WARN",
-          "latest_trade_date": "2026-10-14"
+          "latest_trade_date": "2026-10-15"
         }
       }
     },
@@ -236,45 +236,45 @@
   },
   "current_state_card": {
     "current_price_context": {
-      "latest_close": 38.11,
-      "latest_pct_chg": -2.6564,
-      "ma5": 38.722,
-      "ma20": 39.051
+      "latest_close": 35.45,
+      "latest_pct_chg": -6.9798,
+      "ma5": 37.85,
+      "ma20": 38.847
     },
     "trend_state_context": {
-      "trend_state": "downtrend",
+      "trend_state": "strong_downtrend",
       "ma5_minus_ma20": null,
       "close_above_ma20": false
     },
     "volatility_state_context": {
       "volatility_state": "high_vol",
-      "realized_vol_20d": 0.3863674986522081,
-      "atr_14d": 1.6292857142857124
+      "realized_vol_20d": 0.45348479154784477,
+      "atr_14d": 1.7607142857142841
     },
     "flow_strength_context": {
-      "flow_strength_basic": "mixed",
-      "main_force_net": 3319.970000000001,
-      "net_mf_ratio": -0.009375958873683506,
-      "flow_strength_score": -8.332973725350064,
+      "flow_strength_basic": "negative",
+      "main_force_net": -102068.53,
+      "net_mf_ratio": -0.011014098504493095,
+      "flow_strength_score": -25.69160765225875,
       "price_flow_confirm": true,
       "price_flow_divergence": false,
-      "volume_flow_confirm": "neutral"
+      "volume_flow_confirm": "outflow_confirmed"
     },
     "minute_structure_context": {
-      "latest_intraday_close": 38.11,
-      "intraday_range_pct": 0.029126213592232997,
-      "close_position_in_day_range": 0.18918918918919006
+      "latest_intraday_close": 35.45,
+      "intraday_range_pct": 0.09365303244005642,
+      "close_position_in_day_range": 0.3132530120481946
     },
     "state_sample_context": {
       "B2_state_sample_size": {
-        "5D": 97,
-        "10D": 97,
-        "20D": 97
+        "5D": 154,
+        "10D": 154,
+        "20D": 154
       },
       "P2_state_sample_size": {
-        "5D": 97,
-        "10D": 97,
-        "20D": 97
+        "5D": 154,
+        "10D": 154,
+        "20D": 154
       },
       "P2_role": "auxiliary_only"
     }
@@ -283,38 +283,38 @@
     "terminal_distribution_summary": {},
     "touch_up_summary": {
       "5D": {
-        "touch_up_5pct_prob": 0.27486576323191
+        "touch_up_5pct_prob": 0.3282208588957055
       },
       "10D": {
-        "touch_up_5pct_prob": 0.41935483870967744
+        "touch_up_5pct_prob": 0.4701817251087791
       },
       "20D": {
-        "touch_up_5pct_prob": 0.5567248459958932
+        "touch_up_5pct_prob": 0.603027970233513
       }
     },
     "touch_down_summary": {
       "5D": {
-        "touch_down_5pct_prob": 0.2370237790846331
+        "touch_down_5pct_prob": 0.29473415132924335
       },
       "10D": {
-        "touch_down_5pct_prob": 0.3911930363543267
+        "touch_down_5pct_prob": 0.45303301766060916
       },
       "20D": {
-        "touch_down_5pct_prob": 0.5413244353182751
+        "touch_down_5pct_prob": 0.5948165255324609
       }
     },
     "drawdown_summary": {
       "5D": {
-        "max_drawdown_p50": -0.025912063406106856,
-        "max_drawdown_p90": -0.007455112062695113
+        "max_drawdown_p50": -0.030450162777547918,
+        "max_drawdown_p90": -0.00873104736599376
       },
       "10D": {
-        "max_drawdown_p50": -0.04677368450612224,
-        "max_drawdown_p90": -0.018367533004270686
+        "max_drawdown_p50": -0.054482762519471484,
+        "max_drawdown_p90": -0.02152391198101895
       },
       "20D": {
-        "max_drawdown_p50": -0.07274453979985257,
-        "max_drawdown_p90": -0.03423924876305684
+        "max_drawdown_p50": -0.08465237030236916,
+        "max_drawdown_p90": -0.03983040698632682
       }
     },
     "path_validation_summary": {
@@ -846,6 +846,7 @@
     "overall_risk_level": "high",
     "risk_confidence": "medium",
     "primary_risk_sources": [
+      "path_distribution_risk",
       "p2_auxiliary_risk",
       "evidence_conflict_risk"
     ],
@@ -853,7 +854,6 @@
       "data_risk",
       "feature_risk",
       "baseline_model_risk",
-      "path_distribution_risk",
       "path_validation_risk",
       "observation_backtest_risk",
       "decision_support_risk",
@@ -863,7 +863,7 @@
       {
         "scenario_id": "downside_touch_risk_card",
         "scenario_name": "下穿路径风险",
-        "risk_level": "medium",
+        "risk_level": "high",
         "trigger_evidence": [
           "touch_down_5pct_prob"
         ],
@@ -1106,9 +1106,9 @@
   ],
   "manual_confirmation_panel": {
     "operator_name": "N/A",
-    "decision_session_id": "manual-2026-10-14-20261014151543",
-    "decision_snapshot_id": "live-2026-10-14-9reports",
-    "manual_review_timestamp": "2026-10-14T15:15:43.249751+00:00",
+    "decision_session_id": "manual-2026-10-15-20261015150953",
+    "decision_snapshot_id": "live-2026-10-15-9reports",
+    "manual_review_timestamp": "2026-10-15T15:09:53.184798+00:00",
     "manual_review_status": "not_started",
     "operator_notes": "",
     "manual_confirmation_items": [
@@ -1197,8 +1197,8 @@
   ],
   "next_stage": "V2.0 acceptance and daily manual operation",
   "manual_action_log": {
-    "decision_session_id": "manual-2026-10-14-20261014151543",
-    "decision_snapshot_id": "live-2026-10-14-9reports",
+    "decision_session_id": "manual-2026-10-15-20261015150953",
+    "decision_snapshot_id": "live-2026-10-15-9reports",
     "manual_review_status": "not_started",
     "execution_action_recorded": false
   },
