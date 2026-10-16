@@ -5,7 +5,7 @@
 ## 阶段说明
 - 版本: 2.0
 - 阶段: V2.0_live_manual_decision_system
-- latest_trade_date: 2026-10-15
+- latest_trade_date: 2026-10-16
 - 质量状态: WARN
 - FAIL 数量: 0
 - WARN 数量: 4
@@ -24,8 +24,8 @@
 
 ## 路径观察摘要
 - terminal_distribution_summary: {}
-- touch_down_summary: {'5D': {'touch_down_5pct_prob': 0.29473415132924335}, '10D': {'touch_down_5pct_prob': 0.45303301766060916}, '20D': {'touch_down_5pct_prob': 0.5948165255324609}}
-- drawdown_summary: {'5D': {'max_drawdown_p50': -0.030450162777547918, 'max_drawdown_p90': -0.00873104736599376}, '10D': {'max_drawdown_p50': -0.054482762519471484, 'max_drawdown_p90': -0.02152391198101895}, '20D': {'max_drawdown_p50': -0.08465237030236916, 'max_drawdown_p90': -0.03983040698632682}}
+- touch_down_summary: {'5D': {'touch_down_5pct_prob': 0.2811142346026067}, '10D': {'touch_down_5pct_prob': 0.43781985670419654}, '20D': {'touch_down_5pct_prob': 0.5815802975885069}}
+- drawdown_summary: {'5D': {'max_drawdown_p50': -0.029286609755163062, 'max_drawdown_p90': -0.008376416962649125}, '10D': {'max_drawdown_p50': -0.05235560536597372, 'max_drawdown_p90': -0.02064642872886688}, '20D': {'max_drawdown_p50': -0.0812545237312457, 'max_drawdown_p90': -0.03828670704081741}}
 
 ## 风险解释摘要
 - overall_risk_level: high
@@ -53,8 +53,8 @@
 - [check_human_review_required] 确认所有人工复核项已逐条记录。
 
 ## 人工确认区
-- decision_session_id: manual-2026-10-15-20261015150953
-- decision_snapshot_id: live-2026-10-15-9reports
+- decision_session_id: manual-2026-10-16-20261016145755
+- decision_snapshot_id: live-2026-10-16-9reports
 - manual_review_status: not_started
 
 ## 禁止自动交易声明

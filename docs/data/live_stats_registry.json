@@ -1223,14 +1223,15 @@
     "prob_up_1d": 0.4931596093440808,
     "prob_down_1d": 0.5068403906559191,
     "direction_confidence": 0.5068403906559191,
-    "actual_direction": null,
-    "is_correct": null,
+    "actual_direction": "UP",
+    "is_correct": false,
     "asof_price": 35.45,
     "asof_time": "15:00:00",
     "price_kind": "intraday_asof",
     "close_t": 35.45,
-    "close_t1": null,
-    "return_1d": null
+    "close_t1": 35.77,
+    "return_1d": 0.009026798307475215,
+    "verification_status": "VERIFIED"
   },
   {
     "trade_date": "2026-10-19",
