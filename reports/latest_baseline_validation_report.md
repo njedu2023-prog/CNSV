@@ -16,38 +16,38 @@
 
 ## 防未来函数
 - 状态: PASS
-- 检查次数: 728
+- 检查次数: 729
 - 规则: training data must be <= as_of_date
 - 重叠样本说明: 20D validation includes overlapping samples; purged metrics use every_horizon_step.
 
 ## 模型指标
 
 ### B0_random_walk
-- 5D: sample=728, coverage=81.18%, brier=N/A, directional_accuracy=48.63%, fallback_rate=0.00%
-- 10D: sample=728, coverage=78.71%, brier=N/A, directional_accuracy=46.70%, fallback_rate=0.00%
-- 20D: sample=728, coverage=79.12%, brier=N/A, directional_accuracy=49.18%, fallback_rate=0.00%
+- 5D: sample=729, coverage=81.21%, brier=N/A, directional_accuracy=48.70%, fallback_rate=0.00%
+- 10D: sample=729, coverage=78.74%, brier=N/A, directional_accuracy=46.78%, fallback_rate=0.00%
+- 20D: sample=729, coverage=79.15%, brier=N/A, directional_accuracy=49.11%, fallback_rate=0.00%
 
 ### B1_historical_distribution
-- 5D: sample=728, coverage=80.63%, brier=0.2504, directional_accuracy=51.37%, fallback_rate=0.00%
-- 10D: sample=728, coverage=80.77%, brier=0.2504, directional_accuracy=52.75%, fallback_rate=0.00%
-- 20D: sample=728, coverage=79.67%, brier=0.2531, directional_accuracy=49.73%, fallback_rate=0.00%
+- 5D: sample=729, coverage=80.66%, brier=0.2505, directional_accuracy=51.30%, fallback_rate=0.00%
+- 10D: sample=729, coverage=80.80%, brier=0.2504, directional_accuracy=52.67%, fallback_rate=0.00%
+- 20D: sample=729, coverage=79.70%, brier=0.2530, directional_accuracy=49.79%, fallback_rate=0.00%
 
 ### B2_state_grouped_distribution
-- 5D: sample=728, coverage=78.16%, brier=0.2503, directional_accuracy=51.10%, fallback_rate=30.49%
-- 10D: sample=728, coverage=77.88%, brier=0.2537, directional_accuracy=51.79%, fallback_rate=30.77%
-- 20D: sample=728, coverage=77.06%, brier=0.2600, directional_accuracy=46.57%, fallback_rate=31.18%
+- 5D: sample=729, coverage=78.19%, brier=0.2504, directional_accuracy=51.03%, fallback_rate=30.45%
+- 10D: sample=729, coverage=77.91%, brier=0.2539, directional_accuracy=51.71%, fallback_rate=30.73%
+- 20D: sample=729, coverage=77.09%, brier=0.2598, directional_accuracy=46.64%, fallback_rate=31.14%
 
 ### B3_volatility_adjusted
-- 5D: sample=728, coverage=80.77%, brier=N/A, directional_accuracy=50.82%, fallback_rate=0.00%
-- 10D: sample=728, coverage=78.30%, brier=N/A, directional_accuracy=53.02%, fallback_rate=0.00%
-- 20D: sample=728, coverage=75.69%, brier=N/A, directional_accuracy=49.86%, fallback_rate=0.00%
+- 5D: sample=729, coverage=80.80%, brier=N/A, directional_accuracy=50.75%, fallback_rate=0.00%
+- 10D: sample=729, coverage=78.33%, brier=N/A, directional_accuracy=52.95%, fallback_rate=0.00%
+- 20D: sample=729, coverage=75.72%, brier=N/A, directional_accuracy=49.93%, fallback_rate=0.00%
 
 ## B2 vs B1
 
 ### standard_walk_forward_metrics
-- 10D: conclusion=B2 underperforms B1, coverage_delta=-0.0288, brier_delta=0.0034, pinball_delta=0.0003
-- 20D: conclusion=B2 underperforms B1, coverage_delta=-0.0261, brier_delta=0.0069, pinball_delta=0.0012
-- 5D: conclusion=B2 is neutral versus B1, coverage_delta=-0.0247, brier_delta=-0.0001, pinball_delta=0.0001
+- 10D: conclusion=B2 underperforms B1, coverage_delta=-0.0288, brier_delta=0.0035, pinball_delta=0.0004
+- 20D: conclusion=B2 underperforms B1, coverage_delta=-0.0261, brier_delta=0.0068, pinball_delta=0.0012
+- 5D: conclusion=B2 is neutral versus B1, coverage_delta=-0.0247, brier_delta=-0.0000, pinball_delta=0.0001
 
 ### purged_walk_forward_metrics
 - 10D: conclusion=B2 is neutral versus B1, coverage_delta=-0.0411, brier_delta=-0.0012, pinball_delta=-0.0003
@@ -64,4 +64,4 @@
 - V1.3 20D path distribution after validation acceptance
 
 ## 生成信息
-- generated_at: 2026-10-20T15:12:52.117292+00:00
+- generated_at: 2026-10-21T15:23:05.001768+00:00

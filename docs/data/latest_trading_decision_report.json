@@ -5,8 +5,8 @@
   "symbol": "600150.SH",
   "name": "中国船舶",
   "trade_date": "2026-10-21",
-  "generated_at": "2026-10-21T12:55:19.568180+00:00",
-  "generated_at_beijing": "2026-10-21T20:55:19.568180+08:00",
+  "generated_at": "2026-10-21T15:25:03.537216+00:00",
+  "generated_at_beijing": "2026-10-21T23:25:03.537216+08:00",
   "timezone": "Asia/Shanghai",
   "data_status": "PASS",
   "is_trade_signal": false,
@@ -46,7 +46,7 @@
     "last_valid_trade_time": "2026-10-21 15:00:00",
     "asof_price": 34.86,
     "minute_rows_today": 241,
-    "lag_minutes": 355.19,
+    "lag_minutes": 504.96,
     "expected_asof_time": "15:00:00",
     "expected_minute_rows": 241,
     "observed_expected_minute_rows": 241,
@@ -64,7 +64,7 @@
     "future_data_guard": "current-day features use only trade_time <= reported asof_time",
     "schedule_window_beijing": "09:15-11:30,13:02-15:10; final 20:04",
     "blocking_reason": null,
-    "created_at": "2026-10-21 20:55:11"
+    "created_at": "2026-10-21 23:24:57"
   },
   "decision": {
     "signal": "BLOCKED",
@@ -98,7 +98,7 @@
     "data_trade_date": "2026-10-21",
     "decision_trade_date": "2026-10-22",
     "generated_date_beijing": "2026-10-21",
-    "generated_at_beijing": "2026-10-21T20:55:19.568180+08:00",
+    "generated_at_beijing": "2026-10-21T23:25:03.537216+08:00",
     "valid_until_beijing": "2026-10-22T15:00:00+08:00",
     "runtime_status_required": true
   },
@@ -107,8 +107,8 @@
     "latest_close": 34.86,
     "latest_pct_chg": -1.0221465076660996,
     "latest_amount": 1951484.454,
-    "ma5": 36.122,
-    "ma20": 38.222,
+    "ma5": 35.472,
+    "ma20": 38.057,
     "asof_time": "15:00:00",
     "asof_datetime_beijing": "2026-10-21 15:00",
     "price_kind": "intraday_asof",
@@ -120,10 +120,10 @@
     "5D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 35.22,
-      "terminal_price_p10": 32.83816453857141,
-      "terminal_price_p50": 35.245466377440344,
-      "terminal_price_p90": 37.83945345244793,
+      "latest_close": 34.86,
+      "terminal_price_p10": 32.502510386558754,
+      "terminal_price_p50": 34.885206073752705,
+      "terminal_price_p90": 37.452678800463794,
       "terminal_return_p10": -0.06762735552040293,
       "terminal_return_p50": 0.000723065798987621,
       "terminal_return_p90": 0.07437403328926556,
@@ -136,10 +136,10 @@
     "10D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 35.22,
-      "terminal_price_p10": 32.19485586894449,
-      "terminal_price_p50": 35.18502185995713,
-      "terminal_price_p90": 38.62598329918033,
+      "latest_close": 34.86,
+      "terminal_price_p10": 31.86577727403194,
+      "terminal_price_p50": 34.82537938779403,
+      "terminal_price_p90": 38.231169159836064,
       "terminal_return_p10": -0.08589279190958285,
       "terminal_return_p50": -0.0009931328802629813,
       "terminal_return_p90": 0.09670594262295083,
@@ -152,10 +152,10 @@
     "20D": {
       "model_id": "P2_state_conditional_path",
       "source_model": "state_matched_history",
-      "latest_close": 35.22,
-      "terminal_price_p10": 29.556794161630854,
-      "terminal_price_p50": 35.0849389406648,
-      "terminal_price_p90": 40.14462923467665,
+      "latest_close": 34.86,
+      "terminal_price_p10": 29.254680422329688,
+      "terminal_price_p50": 34.72631946256601,
+      "terminal_price_p90": 39.734292308938905,
       "terminal_return_p10": -0.160795168607869,
       "terminal_return_p50": -0.0038347830589209875,
       "terminal_return_p90": 0.13982479371597545,
@@ -297,8 +297,8 @@
       "realtime_coverage_ratio": 1.0,
       "realtime_trading_minute_lag": 0,
       "minute_rows": 43380,
-      "daily_rows": 3920,
-      "moneyflow_rows": 3920,
+      "daily_rows": 3921,
+      "moneyflow_rows": 3921,
       "historical_intraday_days": 180,
       "feature_columns": [
         "ret_1",
@@ -415,10 +415,10 @@
       "model": "B2_state_grouped_distribution",
       "horizon": "5D",
       "standard": {
-        "sample_size": 728,
-        "directional_accuracy": 0.510989010989011,
-        "positive_prob_brier": 0.25034216865847514,
-        "p10_p90_interval_coverage": 0.7815934065934066
+        "sample_size": 729,
+        "directional_accuracy": 0.5102880658436214,
+        "positive_prob_brier": 0.2504373482318235,
+        "p10_p90_interval_coverage": 0.7818930041152263
       },
       "purged": {
         "sample_size": 146,
@@ -477,10 +477,10 @@
     "live_stats": {
       "name": "实盘统计线",
       "start_date": "2026-07-15",
-      "direction_accuracy": 0.5081967213114754,
+      "direction_accuracy": 0.5,
       "correct_count": 31,
-      "wrong_count": 30,
-      "sample_count": 61,
+      "wrong_count": 31,
+      "sample_count": 62,
       "model_id": "T1_INTRADAY_20M_HGB_V3",
       "description": "从新 T+1 模型上线日起，逐日按下一交易日收盘方向验证。"
     }
