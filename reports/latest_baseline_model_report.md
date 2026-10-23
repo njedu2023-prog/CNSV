@@ -16,41 +16,43 @@
 - 状态: PASS
 - blocking_errors: 0
 - gating_warnings: 0
-- non_gating_warnings: 0
-- fallback_count: 0
+- non_gating_warnings: 3
+- fallback_count: 3
 
 ## 受控回退说明
 B2 状态分组样本不足时透明回退到 B1 历史分布基准；该回退不生成正式交易信号，也不影响 V1.2 基准模型层验收状态。
-- 无
+- B2_state_grouped_distribution 5D: state_key=strong_downtrend|high_vol|positive, reason=state_sample_size_lt_30, state_sample_size=21, usable_state_rows=3874, fallback_method=B1_historical_distribution, gating=NO, non_blocking=YES, next_coverage_action=extend historical state coverage for trend_state, volatility_state, and flow_strength_basic
+- B2_state_grouped_distribution 10D: state_key=strong_downtrend|high_vol|positive, reason=state_sample_size_lt_30, state_sample_size=21, usable_state_rows=3874, fallback_method=B1_historical_distribution, gating=NO, non_blocking=YES, next_coverage_action=extend historical state coverage for trend_state, volatility_state, and flow_strength_basic
+- B2_state_grouped_distribution 20D: state_key=strong_downtrend|high_vol|positive, reason=state_sample_size_lt_30, state_sample_size=21, usable_state_rows=3874, fallback_method=B1_historical_distribution, gating=NO, non_blocking=YES, next_coverage_action=extend historical state coverage for trend_state, volatility_state, and flow_strength_basic
 
 ## 当前状态
-- 最新交易日: 2026-10-22
-- 最新收盘价: 34.5300
+- 最新交易日: 2026-10-23
+- 最新收盘价: 35.1000
 - 趋势状态: strong_downtrend
 - 波动率状态: high_vol
-- 资金流强弱: negative
+- 资金流强弱: positive
 
 ## 基准模型
 
 ### B0_random_walk
-- 5D: p10=-0.0668, p50=0.0000, p90=0.0668, p10_price=32.2995, p50_price=34.5300, p90_price=36.9146, sample=3917, fallback=N/A
-- 10D: p10=-0.0944, p50=0.0000, p90=0.0944, p10_price=31.4183, p50_price=34.5300, p90_price=37.9499, sample=3912, fallback=N/A
-- 20D: p10=-0.1336, p50=0.0000, p90=0.1336, p10_price=30.2130, p50_price=34.5300, p90_price=39.4638, sample=3902, fallback=N/A
+- 5D: p10=-0.0666, p50=0.0000, p90=0.0666, p10_price=32.8400, p50_price=35.1000, p90_price=37.5155, sample=3918, fallback=N/A
+- 10D: p10=-0.0941, p50=0.0000, p90=0.0941, p10_price=31.9471, p50_price=35.1000, p90_price=38.5641, sample=3913, fallback=N/A
+- 20D: p10=-0.1331, p50=0.0000, p90=0.1331, p10_price=30.7256, p50_price=35.1000, p90_price=40.0972, sample=3903, fallback=N/A
 
 ### B1_historical_distribution
-- 5D: p10=-0.0690, p50=-0.0017, p90=0.0716, p10_price=32.2270, p50_price=34.4723, p90_price=37.0936, sample=3917, fallback=N/A
-- 10D: p10=-0.1010, p50=-0.0036, p90=0.1035, p10_price=31.2128, p50_price=34.4044, p90_price=38.2962, sample=3912, fallback=N/A
-- 20D: p10=-0.1486, p50=-0.0028, p90=0.1432, p10_price=29.7631, p50_price=34.4333, p90_price=39.8472, sample=3902, fallback=N/A
+- 5D: p10=-0.0690, p50=-0.0017, p90=0.0716, p10_price=32.7590, p50_price=35.0412, p90_price=37.7059, sample=3918, fallback=N/A
+- 10D: p10=-0.1010, p50=-0.0036, p90=0.1035, p10_price=31.7292, p50_price=34.9723, p90_price=38.9283, sample=3913, fallback=N/A
+- 20D: p10=-0.1485, p50=-0.0028, p90=0.1432, p10_price=30.2577, p50_price=35.0002, p90_price=40.5041, sample=3903, fallback=N/A
 
 ### B2_state_grouped_distribution
-- 5D: p10=-0.0691, p50=0.0005, p90=0.0711, p10_price=32.2248, p50_price=34.5481, p90_price=37.0751, sample=156, fallback=NO
-- 10D: p10=-0.0898, p50=-0.0010, p90=0.0923, p10_price=31.5641, p50_price=34.4957, p90_price=37.8693, sample=154, fallback=NO
-- 20D: p10=-0.1753, p50=-0.0038, p90=0.1309, p10_price=28.9775, p50_price=34.3976, p90_price=39.3581, sample=154, fallback=NO
+- 5D: p10=-0.0690, p50=-0.0017, p90=0.0716, p10_price=32.7590, p50_price=35.0412, p90_price=37.7059, sample=21, fallback=YES
+- 10D: p10=-0.1010, p50=-0.0036, p90=0.1035, p10_price=31.7292, p50_price=34.9723, p90_price=38.9283, sample=21, fallback=YES
+- 20D: p10=-0.1485, p50=-0.0028, p90=0.1432, p10_price=30.2577, p50_price=35.0002, p90_price=40.5041, sample=21, fallback=YES
 
 ### B3_volatility_adjusted
-- 5D: p10=-0.0813, p50=-0.0010, p90=0.0793, p10_price=31.8338, p50_price=34.4957, p90_price=37.3803, sample=3917, fallback=N/A
-- 10D: p10=-0.1163, p50=-0.0019, p90=0.1125, p10_price=30.7393, p50_price=34.4639, p90_price=38.6398, sample=3912, fallback=N/A
-- 20D: p10=-0.1650, p50=-0.0036, p90=0.1578, p10_price=29.2792, p50_price=34.4065, p90_price=40.4317, sample=3902, fallback=N/A
+- 5D: p10=-0.0789, p50=-0.0010, p90=0.0769, p10_price=32.4368, p50_price=35.0650, p90_price=37.9062, sample=3918, fallback=N/A
+- 10D: p10=-0.1129, p50=-0.0019, p90=0.1090, p10_price=31.3525, p50_price=35.0320, p90_price=39.1432, sample=3913, fallback=N/A
+- 20D: p10=-0.1602, p50=-0.0036, p90=0.1529, p10_price=29.9053, p50_price=34.9736, p90_price=40.9009, sample=3903, fallback=N/A
 
 ## 禁止动作
 - 正式交易动作生成
@@ -63,5 +65,5 @@ B2 状态分组样本不足时透明回退到 B1 历史分布基准；该回退�
 - V1.2.2 baseline validation / walk-forward validation
 
 ## 生成信息
-- generated_at: 2026-10-22T15:23:12.647641+00:00
-- 数据快照: cnsvdata-2026-10-22-acf74a3708b5
+- generated_at: 2026-10-23T15:12:27.104584+00:00
+- 数据快照: cnsvdata-2026-10-23-59bf937f511b
