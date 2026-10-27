@@ -5,7 +5,7 @@
 ## 阶段说明
 - 版本: 1.6
 - 阶段: V1.6_risk_explanation
-- latest_trade_date: 2026-10-23
+- latest_trade_date: 2026-10-27
 - 质量状态: WARN
 - FAIL 数量: 0
 - WARN 数量: 2
@@ -18,8 +18,8 @@
 ## 风险总览
 - 总体风险等级: high
 - 风险置信度: medium
-- 主要风险来源: path_distribution_risk, p2_auxiliary_risk, evidence_conflict_risk
-- 次要风险来源: data_risk, feature_risk, baseline_model_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
+- 主要风险来源: p2_auxiliary_risk, evidence_conflict_risk
+- 次要风险来源: data_risk, feature_risk, baseline_model_risk, path_distribution_risk, path_validation_risk, observation_backtest_risk, decision_support_risk, system_boundary_risk
 - 需要人工复核: True
 - 风险原因: 风险等级由数据、特征、模型、路径、回测和人工辅助证据综合得到，仅用于人工复核。
 
@@ -27,7 +27,7 @@
 - data_risk: low；数据门禁、数据新鲜度与 manifest 一致性需要人工确认。
 - feature_risk: low；趋势、波动率、资金流状态共同决定特征风险；unknown 状态需要降级复核。
 - baseline_model_risk: medium；基准模型分布与验证结果用于识别 B 模型之间的方向分歧。
-- path_distribution_risk: high；路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。
+- path_distribution_risk: medium；路径下穿概率、最大回撤与路径波动率共同构成路径分布风险。
 - path_validation_risk: low；路径验证质量用于判断路径分布证据是否需要降级。
 - observation_backtest_risk: medium；观察级回测只提供历史观察证据，purged 样本偏少时需要提高复核强度。
 - decision_support_risk: medium；V1.5 WARN 代表人工复核要求，不是阻断错误，但需要在 V1.6 明确解释。
@@ -44,10 +44,10 @@
 - manifest_consistency_risk: low；manifest 与报告快照需人工抽查。
 
 ## 特征风险解释
-- risk_level: low
+- risk_level: medium
 - trend_state_risk: low；趋势状态为 strong_downtrend，需要结合路径风险复核。
-- volatility_state_risk: medium；波动率状态为 high_vol。
-- flow_strength_basic_risk: low；资金流强弱状态为 positive。
+- volatility_state_risk: low；波动率状态为 normal_vol。
+- flow_strength_basic_risk: medium；资金流强弱状态为 mixed。
 - moneyflow_reliability_risk: medium；moneyflow 只能作为强因子观察，不是单独结论。
 - feature_unknown_risk: low；unknown 状态会降低风险解释置信度。
 - feature_conflict_risk: low；趋势与资金流可能出现解释冲突。
@@ -56,15 +56,15 @@
 - risk_level: medium
 - baseline_distribution_risk: medium；基准分布仅为历史/状态分布观察。
 - B1_B3_conflict_risk: medium；B1 与 B3 分布方向差异需要人工复核。
-- B2_state_sample_risk: high；B2 最小状态样本数为 21。
+- B2_state_sample_risk: medium；B2 最小状态样本数为 63。
 - positive_prob_calibration_risk: medium；正向概率校准只能用于观察，不代表确定结果。
 - quantile_coverage_risk: low；分位覆盖需要结合验证层。
 
 ## 路径风险解释
-- risk_level: high
-- downside_path_risk: high；20D 下行路径概率需要人工复核。
-- touch_down_risk: high；20D touch_down_5pct_prob=0.5657。
-- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0781。
+- risk_level: medium
+- downside_path_risk: medium；20D 下行路径概率需要人工复核。
+- touch_down_risk: medium；20D touch_down_5pct_prob=0.5360。
+- max_drawdown_risk: medium；20D max_drawdown_p50=-0.0713。
 - path_volatility_risk: medium；路径波动率放大时需要额外复核。
 - terminal_distribution_risk: medium；终端分布为历史路径观察，不代表未来承诺。
 
@@ -88,7 +88,7 @@
 ## P2 辅助层风险解释
 - p2_auxiliary_risk_level: high
 - p2_fallback_risk: high；P2 max_fallback_rate=0.3151。
-- p2_state_sample_risk: high；P2 min_state_sample_size=21。
+- p2_state_sample_risk: medium；P2 min_state_sample_size=63。
 - p2_state_space_fragmentation_risk: medium；状态空间分组容易碎片化，需要避免核心依赖。
 - p2_core_dependency_forbidden: True
 - p2_role: 辅助状态层，不作为核心决策依赖
@@ -102,7 +102,7 @@
 - human_review_required: True
 
 ## 风险情景卡片
-- [downside_touch_risk_card] 下穿路径风险: high；下穿概率升高时，风险解释层要求人工复核路径尾部。
+- [downside_touch_risk_card] 下穿路径风险: medium；下穿概率升高时，风险解释层要求人工复核路径尾部。
 - [max_drawdown_risk_card] 最大回撤风险: medium；历史路径回撤仅表示观察风险，不构成执行参数。
 - [model_conflict_risk_card] 模型分歧风险: high；模型分歧表示证据不一致，需要人工复核。
 - [p2_instability_risk_card] P2 辅助层不稳定风险: high；P2 只作为辅助状态层，禁止作为核心依赖。
