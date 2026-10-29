@@ -1,6 +1,6 @@
 # CNSV V2.0 人工复核日志
 
-- decision_session_id: manual-2026-10-27-20261029183744
+- decision_session_id: manual-2026-10-27-20261029184726
 - decision_snapshot_id: live-2026-10-27-9reports
 - latest_trade_date: 2026-10-27
 - manual_review_status: not_started
