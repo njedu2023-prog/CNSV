@@ -53,7 +53,7 @@
 - [check_human_review_required] 确认所有人工复核项已逐条记录。
 
 ## 人工确认区
-- decision_session_id: manual-2026-10-27-20261028195852
+- decision_session_id: manual-2026-10-27-20261029170301
 - decision_snapshot_id: live-2026-10-27-9reports
 - manual_review_status: not_started
 
