@@ -12,23 +12,23 @@
 - Warn count: 0
 
 ## Latest Trade Date
-- 2026-10-27
+- 2026-10-30
 
 ## Price Volume Summary
-- Close: 34.6400
-- Ret 1D: -0.0151
-- MA20: 37.1670
-- Price position 20D: 0.1261
+- Close: 33.3900
+- Ret 1D: -0.0139
+- MA20: 36.3780
+- Price position 20D: 0.0313
 
 ## Minute Structure Summary
-- Intraday close: 34.6400
-- Close position: 0.0781
-- Last 30min return: -0.0097
+- Intraday close: 33.3900
+- Close position: 0.2826
+- Last 30min return: -0.0045
 
 ## Moneyflow Summary
-- Net moneyflow amount: -14122.0700
-- Main force net: 1182.6200
-- Flow strength score: -6.7329
+- Net moneyflow amount: -15375.8900
+- Main force net: 5141.0500
+- Flow strength score: -4.3677
 - Can use as strong factor: YES
 
 ## Trend Summary
@@ -36,7 +36,7 @@
 - Close above MA20: NO
 
 ## Volatility Summary
-- Realized vol 20D: 0.3774
+- Realized vol 20D: 0.3641
 - Volatility state: normal_vol
 
 ## Forbidden Actions
