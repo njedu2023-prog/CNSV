@@ -41,4 +41,4 @@
 - V1.4 observation backtest after path validation acceptance
 
 ## 生成信息
-- generated_at: 2026-11-08T17:10:44.588194+00:00
+- generated_at: 2026-11-08T18:00:13.739532+00:00
