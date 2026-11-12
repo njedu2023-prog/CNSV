@@ -63,5 +63,5 @@ B2 状态分组样本不足时透明回退到 B1 历史分布基准；该回退�
 - V1.2.2 baseline validation / walk-forward validation
 
 ## 生成信息
-- generated_at: 2026-11-12T18:24:57.931087+00:00
+- generated_at: 2026-11-12T19:00:39.750559+00:00
 - 数据快照: cnsvdata-2026-10-30-e4b07ef535de
