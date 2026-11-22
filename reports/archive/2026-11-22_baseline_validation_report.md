@@ -64,4 +64,4 @@
 - V1.3 20D path distribution after validation acceptance
 
 ## 生成信息
-- generated_at: 2026-11-22T20:46:03.263809+00:00
+- generated_at: 2026-11-22T20:52:38.726254+00:00
